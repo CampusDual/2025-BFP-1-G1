@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.Set;
 
 @Entity
-@Table(name = "USERS")
+@Table(name = "users")
 public class User implements UserDetails {
 
     @Id
@@ -27,16 +27,19 @@ public class User implements UserDetails {
     private int id;
 
     @Column
-    private String nif;
+    private String cif;
 
     @Column
     private String name;
 
     @Column
-    private String surname1;
+    private String telephone;
 
     @Column
-    private String surname2;
+    private String email;
+
+    @Column
+    private String address;
 
     @Column
     private String login;
@@ -48,12 +51,13 @@ public class User implements UserDetails {
     private Set<UserRole> userRoles = new HashSet<>();
 
     public User(){ }
-    public User(int id, String nif, String name, String surname1, String surname2, String login, String password) {
+    public User(int id, String cif, String name, String telephone, String email,String address, String login, String password) {
         this.id = id;
-        this.nif = nif;
+        this.cif = cif;
         this.name = name;
-        this.surname1 = surname1;
-        this.surname2 = surname2;
+        this.telephone = telephone;
+        this.email = email;
+        this.address = address;
         this.login = login;
         this.password = password;
     }
@@ -66,12 +70,12 @@ public class User implements UserDetails {
         this.id = id;
     }
 
-    public String getNif() {
-        return nif;
+    public String getCif() {
+        return cif;
     }
 
-    public void setNif(String nif) {
-        this.nif = nif;
+    public void setCif(String cif) {
+        this.cif = cif;
     }
 
     public String getName() {
@@ -82,20 +86,26 @@ public class User implements UserDetails {
         this.name = name;
     }
 
-    public String getSurname1() {
-        return surname1;
+    public String getTelephone() {
+        return telephone;
     }
 
-    public void setSurname1(String surname1) {
-        this.surname1 = surname1;
+    public void setTelephone(String telephone) {
+        this.telephone = telephone;
     }
 
-    public String getSurname2() {
-        return surname2;
+    public String getEmail() {
+        return email;
     }
 
-    public void setSurname2(String surname2) {
-        this.surname2 = surname2;
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getAddress(){return this.address;}
+
+    public void setAddress(String address){
+        this.address = address;
     }
 
     public String getLogin() {
