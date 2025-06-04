@@ -3,11 +3,13 @@ server:
 spring:
   banner:
     location: classpath:banner.txt
+
   datasource:
-    driver-class-name: org.hsqldb.jdbcDriver
+    driver-class-name: org.postgresql.Driver  # CORREGIDO: antes estaba mal con HSQLDB
     url: jdbc:postgresql://45.84.210.174:65432/cd2025bfp1g1
     username: testuser
     password: testuser
+
   jpa:
     hibernate:
       ddl-auto: none
@@ -17,6 +19,7 @@ spring:
       hibernate:
         format_sql: false
         dialect: org.hibernate.dialect.PostgreSQLDialect
+
 logging:
   level:
     org:

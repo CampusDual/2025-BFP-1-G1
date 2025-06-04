@@ -26,7 +26,7 @@ public class User implements UserDetails {
     @GeneratedValue( strategy = GenerationType.IDENTITY )
     private int id;
 
-    @Column
+    @Column(name="cif")
     private String cif;
 
     @Column
