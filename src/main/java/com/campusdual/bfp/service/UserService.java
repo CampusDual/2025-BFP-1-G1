@@ -53,7 +53,7 @@ public class UserService implements UserDetailsService {
         user.setPassword(this.passwordEncoder().encode(password));
         User savedUser = this.userDao.saveAndFlush(user);
 
-        Role role = this.roleDao.findByRoleName("role_user");
+        Role role = this.roleDao.findByRoleName("ROLE_USER");
         if (role != null) {
             UserRole userRole = new UserRole();
             userRole.setUser(savedUser);
