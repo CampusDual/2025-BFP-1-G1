@@ -1,0 +1,19 @@
+.login-content{
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: #ce1ae5;
+    position: relative;
+        
+}
+.form-container{
+    width:500px;
+    height: 500px;
+    background-color: blue;
+}
+.login-header{
+    color: white;
+    margin-bottom: 20px;
+}
