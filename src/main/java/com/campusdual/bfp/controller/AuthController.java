@@ -58,6 +58,7 @@ public class AuthController {
             String token = this.jwtUtils.generateJWTToken(userDetails.getUsername());
 
             return ResponseEntity.ok(token);
+            //return ResponseEntity.ok(new LoginResponse(token, "Login successful"));
 
         } catch (AuthenticationException ex) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Bad credentials");

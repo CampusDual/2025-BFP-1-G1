@@ -9,7 +9,9 @@ body {
   padding: 0;
 }
 
-h1, h2, h3 {
+h1,
+h2,
+h3 {
   font-family: $font-family-headings;
   color: $darker;
 }
@@ -26,5 +28,12 @@ h1, h2, h3 {
   margin-bottom: 1rem;
 }
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}

@@ -5,7 +5,7 @@
     </div>
     <div class="login-body">
 
-      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <form [formGroup]="loginForm" (ngSubmit)="login()">
         <div class="form-group">
           <label for="username">Username</label>
           <input type="text" id="username" formControlName="username" placeholder=" Enter your username"
