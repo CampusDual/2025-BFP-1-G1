@@ -1,0 +1,38 @@
+@mixin box-shadow-xs {
+  box-shadow: $shadow-xs;
+}
+@mixin box-shadow-sm {
+  box-shadow: $shadow-sm;
+}
+@mixin box-shadow-md {
+  box-shadow: $shadow-md;
+}
+@mixin box-shadow-lg {
+  box-shadow: $shadow-lg;
+}
+@mixin box-shadow-xl {
+  box-shadow: $shadow-xl;
+}
+
+@mixin button-base {
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+  font-family: $font-family-base;
+  transition: background-color 0.3s ease;
+}
+
+@mixin button-primary {
+  @include button-base;
+  background-color: $primary;
+  color: white;
+  @include box-shadow-sm;
+
+  &:hover {
+    background-color: $primary-light;
+  }
+  &:active {
+    background-color: $primary-dark;
+  }
+}

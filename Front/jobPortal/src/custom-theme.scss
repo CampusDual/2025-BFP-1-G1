@@ -1,0 +1,64 @@
+@use "@angular/material" as mat;
+
+@include mat.core();
+
+// Colores principales
+$primary: #e03c31; 
+$primary-light: #f44c42;
+$primary-dark: #b22e28;
+
+$text-base: #4a4a4a;
+$gray-lightest: #f9f9f9; // Para fondo general
+$gray-light: #e6e6e6;
+
+// Paleta primaria (rojo solo para acentos, no fondo)
+$jobPortal-primary: mat.define-palette(
+  (
+    500: $primary,
+    100: $primary-light,
+    700: $primary-dark,
+    contrast: (
+      500: white,
+      100: white,
+      700: white,
+    ),
+  )
+);
+
+// Paleta de acento (puedes usar azul, verde, o un gris azulado)
+$jobPortal-accent: mat.define-palette(mat.$blue-grey-palette, 200);
+
+// Warn (errores, alertas)
+$jobPortal-warn: mat.define-palette(mat.$red-palette, 700);
+
+// Paleta de fondo personalizada
+$jobPortal-background: (
+  background: $gray-lightest, // Fondo principal
+  status-bar: $gray-light,    // Barra superior
+  app-bar: $gray-light,       // Barra de la app
+  hover: $gray-light,         // Hover en listas, etc.
+  card: white,                // Fondo de tarjetas
+  dialog: white,              // Fondo de diálogos
+  disabled-button: $gray-light,
+  raised-button: white,
+  focused-button: $gray-light,
+  selected-button: $gray-light,
+  selected-disabled-button: $gray-light,
+  disabled-button-toggle: $gray-light,
+  unselected-chip: $gray-light,
+  disabled-list-option: $gray-light,
+);
+
+// Tema claro con fondo personalizado
+$jobPortal-theme: mat.define-light-theme(
+  (
+    color: (
+      primary: $jobPortal-primary,
+      accent: $jobPortal-accent,
+      warn: $jobPortal-warn,
+      background: $jobPortal-background,
+    ),
+  )
+);
+
+@include mat.all-component-themes($jobPortal-theme);

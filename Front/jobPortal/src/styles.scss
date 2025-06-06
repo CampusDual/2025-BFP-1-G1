@@ -1,5 +1,18 @@
-@import 'variables';
-@import 'mixins';
+@import 'styles/mixins';
+@import 'styles/variables';
+
+:root {
+  --primary: #e03c31;
+  --primary-light: #f44c42;
+  --primary-dark: #b22e28;
+  --gray-lightest: #f9f9f9;
+  --gray-light: #e6e6e6;
+  --gray: #b1b1b1;
+  --gray-dark: #7a7a7a;
+  --text-base: #4a4a4a;
+  --darker: #1e1e1e;
+  --font-base: 'Roboto', sans-serif;
+}
 
 body {
   font-family: $font-family-base;
@@ -9,7 +22,9 @@ body {
   padding: 0;
 }
 
-h1, h2, h3 {
+h1,
+h2,
+h3 {
   font-family: $font-family-headings;
   color: $darker;
 }
@@ -25,6 +40,3 @@ h1, h2, h3 {
   box-shadow: $shadow-md;
   margin-bottom: 1rem;
 }
-
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
