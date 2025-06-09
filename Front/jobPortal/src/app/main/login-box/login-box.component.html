@@ -5,7 +5,7 @@
     </div>
     <div class="login-body">
 
-      <form [formGroup]="loginForm" (ngSubmit)="login()">
+      <form [formGroup]="loginForm" >
         <div class="form-group">
           <label for="username">Username</label>
           <input type="text" id="username" formControlName="username" placeholder=" Enter your username"
@@ -25,15 +25,14 @@
           <!-- <div class="forget">
             <p>Did you forget your password? <a href="">Enter here.</a></p>
           </div> -->
-          <button type="submit">Login</button>
+          <button mat-button (click)="login()" >Login</button>
           <!-- <div>
             <p>Join us! <a href="">Register</a> for an account.</p>
           </div> -->
+          <p id="error">Wrong credentials!</p>
         </div>
       </form>
     </div>
-
-
   </div>
 
 </div>

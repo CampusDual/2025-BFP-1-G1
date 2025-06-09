@@ -19,4 +19,18 @@ export class UsersService {
       responseType: 'text',
     });
   }
+
+  getUserProfile(username: string): Observable<any> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      Authorization: 'Basic ' + btoa(`${username}:`),
+    });
+    return this.http.get(`${this.urlEnpoint}/user/${username}`, { headers }).pipe(
+      map((response) => response),
+      catchError((error) => {
+        console.error('Error al obtener el perfil del usuario:', error);
+        return throwError(() => new Error('Error al obtener el perfil del usuario'));
+      })
+    );
+  }
 }

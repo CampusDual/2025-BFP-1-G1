@@ -1,9 +1,8 @@
-import { UsersService } from './../services/users.service';
+import { UsersService } from '../../services/users.service';
 import { Component } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Router } from '@angular/router';
 import {
   FormBuilder,
-  FormControl,
   FormGroup,
   Validators,
 } from '@angular/forms';
@@ -16,7 +15,7 @@ import {
 export class LoginBoxComponent {
   loginForm: FormGroup;
 
-  constructor(private fb: FormBuilder, private usersService: UsersService) {
+  constructor(private fb: FormBuilder, private usersService: UsersService, private router: Router) {
     this.loginForm = this.fb.group({
       username: ['', Validators.required],
       password: ['', Validators.required],
@@ -24,6 +23,7 @@ export class LoginBoxComponent {
   }
 
   login() {
+    const errorMessage = document.getElementById('error');
     if (this.loginForm.valid) {
       const username = this.loginForm.value.username;
       const password = this.loginForm.value.password;
@@ -33,10 +33,13 @@ export class LoginBoxComponent {
       this.usersService.login(username, password).subscribe({
         next: (response) => {
           console.log('Login correcto:', response);
+          this.router.navigate(['/main/userprofile/:name']);
         },
         error: (error) => {
           console.error('Login fallido:', error);
-          alert('Datos incorrectos');
+          if (errorMessage){
+            errorMessage.style.visibility = 'visible';
+          }
         },
       });
     } else {
@@ -46,4 +49,6 @@ export class LoginBoxComponent {
       alert('Por favor, ingresa tu usuario y contraseña.');
     }
   }
+
+
 }
