@@ -1,7 +1,9 @@
 package com.campusdual.bfp.controller;
 
 import com.campusdual.bfp.auth.JWTUtil;
+import com.campusdual.bfp.model.User;
 import com.campusdual.bfp.model.dto.SignupDTO;
+import com.campusdual.bfp.model.dto.UserDTO;
 import com.campusdual.bfp.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -11,17 +13,21 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import com.campusdual.bfp.model.dto.UserDTO;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/auth")
@@ -56,12 +62,31 @@ public class AuthController {
                     new UsernamePasswordAuthenticationToken(values[0], values[1])
             );
 
-            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-            String token = this.jwtUtils.generateJWTToken(userDetails.getUsername());
 
-            // Devolver JSON con token JWT
-            Map<String, String> response = new HashMap<>();
-            response.put("token", token);
+            User authenticatedUser = (User) authentication.getPrincipal();
+
+            String token = this.jwtUtils.generateJWTToken(authenticatedUser.getLogin());
+
+
+            List<String> roles = authenticatedUser.getAuthorities().stream()
+                    .map(GrantedAuthority::getAuthority)
+                    .collect(Collectors.toList());
+
+            UserDTO response = new UserDTO(
+                    token,
+                    authenticatedUser.getId(),
+                    authenticatedUser.getLogin(),
+                    authenticatedUser.getName(),
+                    authenticatedUser.getEmail(),
+                    authenticatedUser.getCif(),
+                    authenticatedUser.getTelephone(),
+                    authenticatedUser.getAddress(),
+                    authenticatedUser.getLogin()
+
+            );
+
+
+
 
             return ResponseEntity.ok(response);
 

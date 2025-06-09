@@ -1,11 +1,7 @@
 import { UsersService } from '../../services/users.service';
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import {
-  FormBuilder,
-  FormGroup,
-  Validators,
-} from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-login-box',
@@ -15,7 +11,11 @@ import {
 export class LoginBoxComponent {
   loginForm: FormGroup;
 
-  constructor(private fb: FormBuilder, private usersService: UsersService, private router: Router) {
+  constructor(
+    private fb: FormBuilder,
+    private usersService: UsersService,
+    private router: Router
+  ) {
     this.loginForm = this.fb.group({
       username: ['', Validators.required],
       password: ['', Validators.required],
@@ -34,11 +34,11 @@ export class LoginBoxComponent {
         next: (response) => {
           console.log('Login correcto:', response);
           localStorage.setItem('token', response.token);
-          this.router.navigate(['/main/userprofile/:name']);
+          this.router.navigate(['/main/userprofile', { username }]);
         },
         error: (error) => {
           console.error('Login fallido:', error);
-          if (errorMessage){
+          if (errorMessage) {
             errorMessage.style.visibility = 'visible';
           }
         },
@@ -50,6 +50,4 @@ export class LoginBoxComponent {
       alert('Por favor, ingresa tu usuario y contraseña.');
     }
   }
-
-
 }

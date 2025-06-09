@@ -1,5 +1,6 @@
 package com.campusdual.bfp.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -24,7 +25,7 @@ public class User implements UserDetails {
 
     @Id
     @GeneratedValue( strategy = GenerationType.IDENTITY )
-    private int id;
+    private long id;
 
     @Column(name="cif")
     private String cif;
@@ -44,6 +45,7 @@ public class User implements UserDetails {
     @Column
     private String login;
 
+    @JsonIgnore
     @Column
     private String password;
 
@@ -62,7 +64,7 @@ public class User implements UserDetails {
         this.password = password;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
@@ -116,9 +118,7 @@ public class User implements UserDetails {
         this.login = login;
     }
 
-    public String getPassword() {
-        return password;
-    }
+
 
     public void setPassword(String password) {
         this.password = password;
@@ -127,8 +127,12 @@ public class User implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<GrantedAuthority> authorities = new ArrayList<>();
-        for (UserRole userRole : userRoles) {
-            authorities.add(new SimpleGrantedAuthority(userRole.getRole().getRoleName()));
+        if (userRoles != null) {
+            for (UserRole userRole : userRoles) {
+                if (userRole.getRole() != null) {
+                    authorities.add(new SimpleGrantedAuthority(userRole.getRole().getRoleName()));
+                }
+            }
         }
         return authorities;
     }
@@ -156,5 +160,9 @@ public class User implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+    @Override
+    public String getPassword() {
+        return password;
     }
 }

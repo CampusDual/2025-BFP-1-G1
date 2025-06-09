@@ -7,10 +7,4 @@ export class User {
   address!: string;
   login!: string;
   password!: string;
-
-
-  getName(): string {
-    return this.name;
-  }
 }
-
