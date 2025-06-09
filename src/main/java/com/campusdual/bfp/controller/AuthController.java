@@ -12,30 +12,32 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
+
     @Autowired
     AuthenticationManager authenticationManager;
+
     @Autowired
     UserService userService;
-    @Autowired
-    PasswordEncoder encoder;
+
     @Autowired
     JWTUtil jwtUtils;
 
     @PostMapping("/signin")
-    public ResponseEntity<String> authenticateUser(@RequestHeader(HttpHeaders.AUTHORIZATION) String authHeader) {
+    public ResponseEntity<?> authenticateUser(@RequestHeader(HttpHeaders.AUTHORIZATION) String authHeader) {
         if (authHeader == null || !authHeader.toLowerCase().startsWith("basic ")) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Header auth is missing.");
         }
@@ -57,8 +59,11 @@ public class AuthController {
             UserDetails userDetails = (UserDetails) authentication.getPrincipal();
             String token = this.jwtUtils.generateJWTToken(userDetails.getUsername());
 
-            return ResponseEntity.ok(token);
-            //return ResponseEntity.ok(new LoginResponse(token, "Login successful"));
+            // Devolver JSON con token JWT
+            Map<String, String> response = new HashMap<>();
+            response.put("token", token);
+
+            return ResponseEntity.ok(response);
 
         } catch (AuthenticationException ex) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Bad credentials");
@@ -73,6 +78,5 @@ public class AuthController {
 
         this.userService.registerNewUser(request.getLogin(), request.getPassword());
         return ResponseEntity.status(HttpStatus.CREATED).body("User successfully registered.");
-
     }
 }

@@ -33,6 +33,7 @@ export class LoginBoxComponent {
       this.usersService.login(username, password).subscribe({
         next: (response) => {
           console.log('Login correcto:', response);
+          localStorage.setItem('token', response.token);
           this.router.navigate(['/main/userprofile/:name']);
         },
         error: (error) => {
