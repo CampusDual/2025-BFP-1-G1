@@ -40,10 +40,10 @@
 
 .login-header h1 {
   font-family: var(--font-base);
-  font-size: 3em;
+  font-size: 2.3em;
   color: var(--primary);
   text-shadow: 1px 1px 6px rgba(83, 81, 81, 0.1);
-  letter-spacing: 0.08em;
+  letter-spacing: 0.03em;
 }
 
 .login-body {
