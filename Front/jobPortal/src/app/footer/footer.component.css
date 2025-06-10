@@ -1,19 +1,19 @@
 .container {
   width: 100%;
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
-  background-color: #c5bebe;
-  padding: 0.2rem 0;
+  background-color: #dcd8d8;
 }
 
 .logo {
   height: 60px;
   object-fit: contain;
-  margin-left: 40rem;
+  padding-right: 1.2rem;
 }
 
 .logoCluster {
   height: 30px;
   object-fit: contain;
+  padding-left: 1.2rem;
 }
