@@ -1,0 +1,20 @@
+.container {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #dcd8d8;
+  margin: 0; 
+}
+
+.logo {
+  height: 60px;
+  object-fit: contain;
+  padding-right: 1.2rem;
+}
+
+.logoCluster {
+  height: 30px;
+  object-fit: contain;
+  padding-left: 1.2rem;
+}

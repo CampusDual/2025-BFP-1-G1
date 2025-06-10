@@ -1,39 +1,17 @@
 @import 'variables';
 @import 'mixins';
 
-body {
-  font-family: $font-family-base;
-  background-color: $gray-lightest;
-  color: $text-base;
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  width: 100%;
   margin: 0;
   padding: 0;
+  overflow-x: hidden;
 }
 
-h1,
-h2,
-h3 {
-  font-family: $font-family-headings;
-  color: $darker;
-}
-
-.button-primary {
-  @include button-primary;
-}
-
-.card {
-  background-color: white;
-  border-radius: 6px;
-  padding: 1rem;
-  box-shadow: $shadow-md;
-  margin-bottom: 1rem;
-}
-
-html,
-body {
-  height: 100%;
-}
-
-body {
-  margin: 0;
-  font-family: Roboto, "Helvetica Neue", sans-serif;
-}

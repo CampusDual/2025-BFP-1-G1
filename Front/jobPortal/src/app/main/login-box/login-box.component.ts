@@ -1,12 +1,7 @@
-import { UsersService } from './../services/users.service';
+import { UsersService } from '../../services/users.service';
 import { Component } from '@angular/core';
-import { Observable } from 'rxjs';
-import {
-  FormBuilder,
-  FormControl,
-  FormGroup,
-  Validators,
-} from '@angular/forms';
+import { Router } from '@angular/router';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-login-box',
@@ -16,7 +11,11 @@ import {
 export class LoginBoxComponent {
   loginForm: FormGroup;
 
-  constructor(private fb: FormBuilder, private usersService: UsersService) {
+  constructor(
+    private fb: FormBuilder,
+    private usersService: UsersService,
+    private router: Router
+  ) {
     this.loginForm = this.fb.group({
       username: ['', Validators.required],
       password: ['', Validators.required],
@@ -24,6 +23,7 @@ export class LoginBoxComponent {
   }
 
   login() {
+    const errorMessage = document.getElementById('error');
     if (this.loginForm.valid) {
       const username = this.loginForm.value.username;
       const password = this.loginForm.value.password;
@@ -33,10 +33,14 @@ export class LoginBoxComponent {
       this.usersService.login(username, password).subscribe({
         next: (response) => {
           console.log('Login correcto:', response);
+          localStorage.setItem('token', response.token);
+          this.router.navigate(['/main/userprofile', { username }]);
         },
         error: (error) => {
           console.error('Login fallido:', error);
-          alert('Datos incorrectos');
+          if (errorMessage) {
+            errorMessage.style.visibility = 'visible';
+          }
         },
       });
     } else {
