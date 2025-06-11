@@ -1,26 +1,46 @@
-# Getting Started
+# Job Portal
 
-## First init and after modify any DTO or Entity
-```
-mvn clean install
-```
-## Launch database
-```
-mvn exec:java -Prun_database
-```
-## Launch backend
+This project is a **Job Portal web application**. It is currently in development and allows **companies** to register and log in to publish and manage job offers.
 
-We strongly recommend launching the server in debug mode when you are doing active development. To do this, go to the Application class inside your <code>src/main/java</code> folder.
+> 🔒 At the moment, only company login is implemented. Candidate functionality is not yet available.  
+> 🛠️ Company account creation is done **via Postman** (API), not through the web interface.
 
-![Launch in debug](https://i.imgur.com/t4ACRB0.gif)
+---
 
-If you are no longer doing active development on the backend (e.g.: you are developing the frontend), you can launch the backend by running the <code>mvn spring-boot:run</code> command.   To make sure that you are launching the backend with the source code up to date, you can first run a <code>mvn clean install</code> command.
+## Features (current state)
 
+- ✅ Company registration via Postman  
+- ✅ Company login from frontend  
+- ✅ Company dashboard to manage job offers  
+- 🔒 Candidate features not implemented yet  
+- 🔐 Secure authentication using Spring Security  
+
+---
+
+## Getting Started
+
+### Prerequisites
+
+Make sure you have the following installed:
+
+- Java 11 or higher  
+- Maven  
+- Node.js and npm  
+- Angular CLI  
+- PostgreSQL  
+- Postman (or any REST client)
+
+---
+
+## Launch frontend
 ```
-mvn clean install
-mvn spring-boot:run
+ng serve
 ```
 
+The app will be available at:
+```
+http://localhost:4200
+```
 
 ### Reference Documentation
 For further reference, please consider the following sections:
