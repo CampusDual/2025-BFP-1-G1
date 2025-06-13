@@ -1,0 +1,34 @@
+.content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top: 3%;
+}
+
+.card {
+  width: 90%;
+  height: 90%;
+  display: flex;
+  flex-direction: column;
+  align-items: justify-content;
+  justify-content: justify-content;
+  background-color: #f8f9fa;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+
+}
+
+mat-card-title {
+  font-family: "Montserrat", "Poppins", "Segoe UI", Arial, sans-serif;
+  font-size: 1.5rem;
+  padding-bottom: 0.3em;
+  border-bottom: #6c757d solid 1px;
+}
+
+mat-card-subtitle {
+  font-family: "Poppins", Arial, sans-serif;
+  font-size: 1rem;
+  color: #6c757d;
+  padding-bottom: 0.5em;
+}

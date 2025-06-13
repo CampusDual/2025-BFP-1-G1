@@ -13,6 +13,7 @@ import { UsersListComponent } from './users-list/users-list.component';
 import { HttpClientModule } from '@angular/common/http';
 import { UserProfileComponent } from './main/user-profile/user-profile.component';
 
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -21,6 +22,7 @@ import { UserProfileComponent } from './main/user-profile/user-profile.component
     HeaderComponent,
     UsersListComponent,
     UserProfileComponent,
+    
   ],
   imports: [
     BrowserModule,
@@ -29,6 +31,7 @@ import { UserProfileComponent } from './main/user-profile/user-profile.component
     BrowserAnimationsModule,
     MatButtonModule,
     HttpClientModule,
+    
   ],
   providers: [],
   bootstrap: [AppComponent],

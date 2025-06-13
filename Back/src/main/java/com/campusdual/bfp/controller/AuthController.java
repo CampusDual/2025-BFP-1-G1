@@ -85,9 +85,6 @@ public class AuthController {
 
             );
 
-
-
-
             return ResponseEntity.ok(response);
 
         } catch (AuthenticationException ex) {
