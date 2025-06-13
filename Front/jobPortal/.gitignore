@@ -40,3 +40,9 @@ testem.log
 # System files
 .DS_Store
 Thumbs.db
+
+
+### Visual Studio Code template
+.vscode/
+
+.DS_Store
