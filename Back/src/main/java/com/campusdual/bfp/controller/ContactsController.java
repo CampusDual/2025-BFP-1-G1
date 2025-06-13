@@ -34,8 +34,7 @@ public class ContactsController {
     @GetMapping(value = "/getAll")
     public List<ContactDTO> queryAllContact() {
         return contactService.queryAllContact();
-    }
-
+}
     @PostMapping(value = "/add")
     public int addContact(@RequestBody ContactDTO contactDTO) {
         return contactService.insertContact(contactDTO);
