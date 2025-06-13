@@ -1,9 +1,10 @@
 @import url('https://fonts.googleapis.com/css?family=Montserrat:700,800&display=swap');
+
 .header {
   width: 100%;
-  background:var(--gray-lightest);
-  box-shadow: 0 4px 12px -4px var(--gray); 
-  border-radius: 0 0 4px 4px; 
+  background: var(--gray-lightest);
+  box-shadow: 0 4px 12px -4px var(--gray);
+  border-radius: 0 0 4px 4px;
   overflow: visible;
   position: relative;
   margin: 0;
@@ -42,5 +43,39 @@
   letter-spacing: 2px;
   font-family: "Montserrat", "Poppins", "Segoe UI", Arial, sans-serif;
   text-transform: uppercase;
-  white-space: nowrap; 
+  white-space: nowrap;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+  .header {
+    padding: 10px;
+    box-shadow: none;
+  }
+
+  .img-container {
+    flex-direction: column;
+    gap: 0.4rem;
+    text-align: center;
+  }
+
+  .logo {
+    max-height: 40px;
+    padding: 2px 5px;
+  }
+}
+
+@media (max-width: 480px) {
+  .header {
+    border-radius: 0;
+    padding: 5px;
+  }
+
+  .img-container {
+    gap: 0.2rem;
+  }
+
+  .logo {
+    max-height: 30px;
+  }
 }
