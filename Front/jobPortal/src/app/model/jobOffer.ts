@@ -3,5 +3,6 @@ export class JobOffer{
     email!: string;
     user_id!: number;
     title!: string;
+    companyName!: string;
 }
 

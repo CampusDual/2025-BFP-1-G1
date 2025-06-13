@@ -29,7 +29,7 @@ public class JobOffersService implements IJobOffersService {
 
     @Override
     public List<JobOffersDTO> queryAllJobOffer() {
-        return JobOffersMapper.INSTANCE.toDTOList((jobOffersDao.findAll()));
+        return jobOffersDao.findAllJobOffersWithCompanyName();
     }
 
     @Override

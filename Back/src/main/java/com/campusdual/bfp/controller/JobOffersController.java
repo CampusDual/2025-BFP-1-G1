@@ -47,9 +47,4 @@ public class JobOffersController {
         return jobOffersService.deleteJobOffer(jobOffersDTO);
     }
 
-
-
-
-
-
 }
