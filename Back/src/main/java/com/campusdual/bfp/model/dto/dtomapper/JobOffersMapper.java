@@ -1,4 +1,4 @@
 package com.campusdual.bfp.model.dto.dtomapper;
 
-public interface jobOffers {
+public interface JobOffersMapper {
 }
