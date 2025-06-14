@@ -12,7 +12,7 @@ import { HeaderComponent } from './header/header.component';
 import { UsersListComponent } from './users-list/users-list.component';
 import { HttpClientModule } from '@angular/common/http';
 import { UserProfileComponent } from './main/user-profile/user-profile.component';
-
+import { MatCardModule } from '@angular/material/card';
 
 @NgModule({
   declarations: [
@@ -22,7 +22,6 @@ import { UserProfileComponent } from './main/user-profile/user-profile.component
     HeaderComponent,
     UsersListComponent,
     UserProfileComponent,
-    
   ],
   imports: [
     BrowserModule,
@@ -31,7 +30,7 @@ import { UserProfileComponent } from './main/user-profile/user-profile.component
     BrowserAnimationsModule,
     MatButtonModule,
     HttpClientModule,
-    
+    MatCardModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
