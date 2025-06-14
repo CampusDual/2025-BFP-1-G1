@@ -1,22 +1,28 @@
-.content {
+mat-grid-list {
+  margin: 20px auto;
+  max-width: 1200px;
+  padding: 0 16px;
+}
+
+.grid-tile {
   display: flex;
-  flex-direction: column;
-  align-items: center;
   justify-content: center;
-  margin-top: 3%;
+  align-items: stretch;
 }
 
 .card {
-  width: 90%;
-  height: 90%;
+  width: 100%;
+  height: 100%;
   display: flex;
   flex-direction: column;
-  align-items: justify-content;
-  justify-content: justify-content;
+  align-items: flex-start;
+  justify-content: flex-start;
   background-color: #f8f9fa;
   border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+  padding: 20px;
+  box-sizing: border-box;
+  text-align: left;
 }
 
 mat-card-title {
@@ -24,6 +30,14 @@ mat-card-title {
   font-size: 1.5rem;
   padding-bottom: 0.3em;
   border-bottom: #6c757d solid 1px;
+  margin-bottom: 15px;
+  width: 100%;
+
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  word-break: break-word;
+
 }
 
 mat-card-subtitle {
@@ -31,4 +45,31 @@ mat-card-subtitle {
   font-size: 1rem;
   color: #6c757d;
   padding-bottom: 0.5em;
+  margin-bottom: 5px;
+
+  /* --- EVITAR QUE EL TEXTO SE SALGA --- */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  word-break: break-word;
+}
+
+
+/* --- Responsive Adjustments for Cards --- */
+
+@media (max-width: 599px) {
+  .card {
+    padding: 15px;
+  }
+
+  mat-card-title {
+    font-size: 1.2rem;
+    padding-bottom: 0.2em;
+    margin-bottom: 8px;
+  }
+
+  mat-card-subtitle {
+    font-size: 0.9rem;
+    padding-bottom: 0.3em;
+  }
 }
