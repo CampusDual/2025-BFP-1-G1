@@ -13,6 +13,7 @@ import { UsersListComponent } from './users-list/users-list.component';
 import { HttpClientModule } from '@angular/common/http';
 import { UserProfileComponent } from './main/user-profile/user-profile.component';
 import { MatCardModule } from '@angular/material/card';
+import { CreateOfferComponent } from './main/user-profile/create-offer/create-offer.component';
 
 @NgModule({
   declarations: [
@@ -22,6 +23,7 @@ import { MatCardModule } from '@angular/material/card';
     HeaderComponent,
     UsersListComponent,
     UserProfileComponent,
+    CreateOfferComponent,
   ],
   imports: [
     BrowserModule,

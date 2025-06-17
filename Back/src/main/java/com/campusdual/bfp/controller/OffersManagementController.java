@@ -9,15 +9,15 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/jobOffers")
-public class JobOffersController {
+@RequestMapping("/offersManagement")
+public class OffersManagementController {
 
     @Autowired
     private IJobOffersService jobOffersService;
 
     @GetMapping(value= "/testController")
     public String testJobOffersController() {
-        return "jobOffers controller works!";
+        return "offersManagement controller works!";
     }
 
     @PostMapping(value="/get")
@@ -31,5 +31,20 @@ public class JobOffersController {
         return jobOffersService.queryAllJobOffer();
     }
 
+    @PostMapping(value="/add")
+    public long addJobOffer(@RequestBody JobOffersDTO jobOffersDTO){
+        return jobOffersService.insertJobOffer(jobOffersDTO);
+    }
+
+    @PutMapping (value="/update")
+    public long updateJobOffer(@RequestBody JobOffersDTO jobOffersDTO){
+        return jobOffersService.updateJobOffer(jobOffersDTO);
+
+    }
+
+    @DeleteMapping (value="/delete")
+    public long deleteJobOffer(@RequestBody JobOffersDTO jobOffersDTO){
+        return jobOffersService.deleteJobOffer(jobOffersDTO);
+    }
 
 }

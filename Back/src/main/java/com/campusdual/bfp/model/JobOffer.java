@@ -8,7 +8,7 @@ import javax.persistence.*;
 public class JobOffer {
 
     @Id
-    @GeneratedValue( strategy = GenerationType.IDENTITY )
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     @Column
@@ -19,6 +19,9 @@ public class JobOffer {
 
     @Column
     private String title;
+
+    @Column
+    private String description;
 
     public JobOffer() {
     }
@@ -62,4 +65,11 @@ public class JobOffer {
         this.title = title;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
 }

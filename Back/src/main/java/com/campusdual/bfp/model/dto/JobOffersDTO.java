@@ -7,16 +7,18 @@ public class JobOffersDTO {
     private long user_id;
     private String title;
     private String companyName;
+    private String description;
 
     public JobOffersDTO() {
     }
 
-    public JobOffersDTO(long id, String email, long user_id, String title, String companyName) {
+    public JobOffersDTO(long id, String email, long user_id, String title, String companyName, String description) {
         this.id = id;
         this.email = email;
         this.user_id = user_id;
         this.title = title;
         this.companyName = companyName;
+        this.description = description;
     }
 
     public long getId() {
@@ -57,5 +59,13 @@ public class JobOffersDTO {
 
     public void setCompanyName(String companyName) {
         this.companyName = companyName;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

@@ -1,0 +1,23 @@
+<div class="container">
+    <form class="formulario" [formGroup]="offerForm" (ngSubmit)="onSubmit()">
+        <label for="title">Oferta: </label><br>
+        <input type="text" id="title" name="title" placeholder="Título de oferta" formControlName="title"><br>
+        <label for="description">Descripción</label><br>
+        <textarea rows="10" cols="69" id="description" name="description" placeholder="Descripción"
+            formControlName="description"></textarea>
+        <div class="error-message-container">
+            <div *ngIf="offerForm.get('title')?.invalid && offerForm.get('description')?.touched" class="error-message">
+                Los campos de Oferta y Descripción son obligatorios.
+            </div>
+            <div>
+                <p id="published" class="published">Se ha creado correctamente la oferta de trabajo.</p>
+            </div>
+        </div>
+        <button mat-button type="submit">Publicar</button>
+    </form>
+
+    <div>
+        <button mat-button type="button" class="catalogueButton" (click)="goCatalogue()">Ir a Catálogo de
+            Ofertas</button>
+    </div>
+</div>
