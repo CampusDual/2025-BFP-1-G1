@@ -1,18 +1,20 @@
-.container{
+.container {
   position: relative;
   justify-content: center;
   display: flex;
+  background: var(--gray-megalightest);
+
 }
 
 .formulario {
-    margin: 1.5em;
-    width: 35em;
-    justify-content: center;
+  margin: 1.5em;
+  width: 35em;
+  justify-content: center;
 }
 
 .form {
   width: 42em;
-  background-color: var(--gray-megalightest);
+  background-color: var(--gray-lightest);
   box-shadow: 3px 3px 5px rgb(190, 190, 190);
   margin-top: 2em;
   margin-bottom: 3em;
@@ -26,21 +28,21 @@
   padding: 1em;
 }
 
-.back{
+.back {
   position: absolute;
-  top: 5px;  
+  top: 5px;
   left: 100px;
   width: auto;
   padding: 1em;
 }
 
 
-#description{
-    resize: none;
+#description {
+  resize: none;
 }
 
 .mat-form-field-outline {
-background-color: var(--primary);
+  background-color: var(--primary);
 }
 
 button {
@@ -68,5 +70,3 @@ button:hover {
 ::ng-deep .mat-mdc-text-field-wrapper {
   background-color: white;
 }
-
-
