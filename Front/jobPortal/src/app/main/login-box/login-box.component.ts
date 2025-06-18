@@ -2,6 +2,7 @@ import { UsersService } from '../../services/users.service';
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-login-box',
@@ -11,10 +12,18 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 export class LoginBoxComponent {
   loginForm: FormGroup;
 
+  get password() {
+    return this.loginForm.get('password');
+  }
+  get username() {
+    return this.loginForm.get('username');
+  }
+
   constructor(
     private fb: FormBuilder,
     private usersService: UsersService,
-    private router: Router
+    private router: Router,
+    private snackBar: MatSnackBar
   ) {
     this.loginForm = this.fb.group({
       username: ['', Validators.required],
@@ -33,21 +42,36 @@ export class LoginBoxComponent {
       this.usersService.login(username, password).subscribe({
         next: (response) => {
           console.log('Login correcto:', response);
+
           localStorage.setItem('token', response.token);
           this.router.navigate(['/main/userprofile', { username }]);
         },
         error: (error) => {
           console.error('Login fallido:', error);
+          this.snackBar.open('Inicio de sesión incorrecto', 'Cerrar', {
+            duration: 3000,
+            verticalPosition: 'top',
+          });
           if (errorMessage) {
             errorMessage.style.visibility = 'visible';
           }
         },
       });
     } else {
+      this.loginForm.markAllAsTouched();
       console.warn(
         'Formulario inválido. No se puede enviar la petición de login.'
       );
       alert('Por favor, ingresa tu usuario y contraseña.');
     }
+  }
+  getFieldErrorMessage(controlName: string): string {
+    const control = this.loginForm.get(controlName);
+
+    if (control?.hasError('required')) {
+      return 'Este campo es obligatorio';
+    }
+
+    return '';
   }
 }
