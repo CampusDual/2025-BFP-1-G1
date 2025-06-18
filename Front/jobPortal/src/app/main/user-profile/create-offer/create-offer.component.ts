@@ -2,9 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { JobOffer } from 'src/app/model/jobOffer';
 import { User } from 'src/app/model/user';
 import { UsersService } from 'src/app/services/users.service';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { JobOfferService } from 'src/app/services/job-offer.service';
 import { Router } from '@angular/router';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-create-offer',
@@ -14,14 +15,23 @@ import { Router } from '@angular/router';
 export class CreateOfferComponent implements OnInit {
   user: User | null = null;
 
+
   offerForm!: FormGroup;
   jobOffers!: JobOffer;
+  
+  get title(){
+    return this.offerForm.get('title');
+  }
+  get description(){
+    return this.offerForm.get('description');
+  }
 
   constructor(
     private usersService: UsersService,
     private fb: FormBuilder, 
     private jobOfferService: JobOfferService,
-    private router: Router
+    private router: Router,
+    private snackBar: MatSnackBar
   ) {
 
     this.offerForm = this.fb.group({
@@ -55,10 +65,10 @@ export class CreateOfferComponent implements OnInit {
       this.jobOfferService.addJobOffers(newOffer).subscribe({
         next: (response) => {
           console.log('Oferta creada con éxito: ', response);
-          if(publishMessage){
-            setTimeout(() => {
-            publishMessage.style.visibility = 'visible';},10000);
-          }
+          this.snackBar.open('Oferta publicada correctamente', 'Cerrar', {
+            duration: 3000,
+            verticalPosition: 'top'
+          } );
           this.offerForm.reset();
         },
         error: (error) => {
@@ -67,7 +77,13 @@ export class CreateOfferComponent implements OnInit {
       });
 
     } else {
-      console.log('Formulario no válido o usuario no cargado.')
+      console.log('Formulario no válido o usuario no cargado.');
+      this.offerForm.markAllAsTouched();
+
+      this.snackBar.open('Por favor, completa todos los campos antes de enviar', 'Cerrar', {
+        duration: 3000,
+        verticalPosition: 'top'
+      });
     }
   }
 
@@ -75,7 +91,21 @@ export class CreateOfferComponent implements OnInit {
     this.router.navigate(['/main/catalogue']);
   }
 
+  goBack(): void {
+        this.router.navigate(['/main/userprofile']);
+  }
+
+  getFieldErrorMessage(controlName: string): string {
+    const control = this.offerForm.get(controlName);
+
+    if(control?.hasError('required')){
+      return 'Este campo es obligatorio';
 
 
+    }
+
+    return '';
+  }
 }
+
 

@@ -1,23 +1,51 @@
 .container{
-  align-items: center;
-  border: 1px black;
+  position: relative;
+  justify-content: center;
+  display: flex;
 }
 
-.formulario{
+.formulario {
     margin: 1.5em;
+    width: 35em;
+    justify-content: center;
 }
 
-.formulario label, input, textarea {
-    margin: 1em;
+.form {
+  width: 42em;
+  background-color: var(--gray-megalightest);
+  box-shadow: 3px 3px 5px rgb(190, 190, 190);
+  margin-top: 2em;
+  margin-bottom: 3em;
+  text-align: center;
+  align-self: center;
+  justify-self: center;
+  display: grid;
+  grid-template-rows: auto 1fr;
+  align-items: center;
+  gap: 1em;
+  padding: 1em;
 }
-#descripcion{
+
+.back{
+  position: absolute;
+  top: 5px;  
+  left: 100px;
+  width: auto;
+  padding: 1em;
+}
+
+
+#description{
     resize: none;
 }
 
+.mat-form-field-outline {
+background-color: var(--primary);
+}
+
 button {
-  display: block;
-  width: 70%;
-  height: 2.5em;
+  width: 15em;
+  height: 4em;
   background-color: var(--primary);
   border: none;
   margin: 1em auto 0 auto;
@@ -37,13 +65,8 @@ button:hover {
   box-shadow: 0 4px 16px rgba(224, 60, 49, 0.13);
 }
 
-.published {
-  visibility: hidden;
-  color: red;
-  text-align: center;
-  min-height: 1.2em;
-  font-size: 0.9em;
-  line-height: 1.2em;
-
+::ng-deep .mat-mdc-text-field-wrapper {
+  background-color: white;
 }
+
 
