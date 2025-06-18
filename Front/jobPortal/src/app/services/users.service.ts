@@ -77,4 +77,9 @@ export class UsersService {
     console.error(errorMessage);
     return throwError(() => new Error(errorMessage));
   }
+
+  isLoggedIn(): boolean {
+    const token = localStorage.getItem('token');
+    return !!token; 
+  }
 }
