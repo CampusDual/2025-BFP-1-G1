@@ -1,0 +1,28 @@
+<div class="container">
+    <div>
+        <button mat-button type="button" class="back" (click)="goBack()">Volver</button>
+    </div>
+    <div class="form">
+        <form [formGroup]="offerForm" (ngSubmit)="onSubmit()">
+            <mat-form-field appearance="outline" class="formulario">
+                <mat-label>Oferta</mat-label>
+                <input matInput id="title" placeholder="Título de oferta" formControlName="title" required>
+                <mat-error *ngIf="title?.invalid && (title?.touched || title?.dirty)">{{
+                    getFieldErrorMessage('title')}}</mat-error>
+            </mat-form-field><br>
+            <mat-form-field appearance="outline" class="formulario">
+                <mat-label>Descripción</mat-label>
+                <textarea matInput id="description" placeholder="Descripción" formControlName="description" rows="10"
+                    required></textarea>
+                <mat-error *ngIf="description?.invalid && (description?.touched || description?.dirty)">
+                    {{ getFieldErrorMessage('description') }}
+                </mat-error>
+            </mat-form-field>
+            <button mat-button type="submit">Publicar</button>
+            <div>
+                <button mat-button type="button" class="catalogueButton" (click)="goCatalogue()">Ir a Catálogo de
+                    Ofertas</button>
+            </div>
+        </form>
+    </div>
+</div>

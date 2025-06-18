@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, catchError, map, throwError } from 'rxjs';
+import { BehaviorSubject, Observable, catchError, map, throwError } from 'rxjs';
 import {
   HttpClient,
   HttpHeaders,
@@ -13,7 +13,11 @@ export class UsersService {
   private urlEnpoint: string = 'http://localhost:30030/auth';
   private urlUserProfile: string = 'http://localhost:30030/user';
 
+  private userSubject = new BehaviorSubject<User | null>(null);
+  user$ = this.userSubject.asObservable();
+
   constructor(private http: HttpClient) {}
+
   login(username: string, password: string): Observable<any> {
     const body = { username, password };
     const headers = new HttpHeaders({
@@ -44,7 +48,21 @@ export class UsersService {
     });
     return this.http
       .get<User>(`${this.urlUserProfile}/getUser`, { headers })
-      .pipe(catchError(this.handleError));
+      .pipe(
+        map(user => {
+          this.userSubject.next(user);
+          return user;
+        }),        
+        catchError(this.handleError)
+      );
+  }
+
+  setUser(user: User){
+    this.userSubject.next(user);
+  }
+
+  getUserValue(): User | null{
+    return this.userSubject.value;
   }
 
   private handleError(error: HttpErrorResponse) {

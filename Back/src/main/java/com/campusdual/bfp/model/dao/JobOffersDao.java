@@ -11,7 +11,7 @@ import java.util.List;
 
 @Repository
 public interface JobOffersDao extends JpaRepository<JobOffer, Long> {
-    @Query("SELECT new com.campusdual.bfp.model.dto.JobOffersDTO(j.id, j.email, j.user_id, j.title, u.name) " +
+    @Query("SELECT new com.campusdual.bfp.model.dto.JobOffersDTO(j.id, j.email, j.user_id, j.title, u.name, j.description) " +
             "FROM JobOffer j JOIN User u ON j.user_id = u.id WHERE j.user_id = u.id")
     List<JobOffersDTO> findAllJobOffersWithCompanyName();
 

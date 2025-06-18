@@ -2,21 +2,28 @@
 @import 'styles/variables';
 
 :root {
-  --primary: #e03c31;
-  --primary-light: #f44c42;
-  --primary-dark: #b22e28;
-  --gray-lightest: #f9f9f9;
-  --gray-light: #e6e6e6;
-  --gray: #b1b1b1;
-  --gray-dark: #7a7a7a;
+  --primary: #E81C34;
+  --primary-light: #FA6F76;
+  --primary-lightest: #FBADB0;
+  --primary-dark: #A71123;
+  --primary-darkest: #6B0712;
+
   --text-base: #4a4a4a;
   --darker: #1e1e1e;
+  --soft-black: #2d2d2d;
+
+  --gray-megalightest: #EBE9E9;
+  --gray-lightest: #C6C0C1;
+  --gray-light: #A3999A;
+  --gray: #817374;
+  --gray-dark: #5B5152;
+  --gray-darkest: #383132;
+
   --font-base: 'Roboto', sans-serif;
 }
 
 body {
   font-family: $font-family-base;
-  background-color: $gray-lightest;
   color: $text-base;
   margin: 0;
   padding: 0;
