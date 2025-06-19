@@ -1,0 +1,58 @@
+.global-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  max-height: 100vh;
+  max-width: 100vw;
+  justify-content: center;
+  text-align: center;
+  align-items: center;
+  margin: auto;
+  padding: auto;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 20% auto;
+  width: 100%;
+  height: 100%;
+  max-height: 100vh;
+  max-width: 100vw;
+
+}
+
+.left-container {
+  display: grid;
+  grid-template-rows: 20% auto;
+  height: 100%;
+  width: 100%;
+  background-color: brown;
+}
+
+.right-container {
+  display: grid;
+  grid-template-rows: 15% auto;
+  height: 100%;
+  width: 100%;
+  max-height: 100vh;
+  background-color: blue;
+
+}
+
+.right-container h1 {
+  margin: 0;
+  box-sizing: border-box;
+  align-self: center;
+}
+
+.offer-list {
+  border: solid black 1px;
+  height: 100%;
+  width: 100%;
+  overflow-y: auto;
+  scrollbar-width: none;
+
+}
+

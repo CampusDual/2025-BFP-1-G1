@@ -4,6 +4,7 @@ import { User } from 'src/app/model/user';
 import { UsersService } from 'src/app/services/users.service';
 
 
+
 @Component({
   selector: 'app-user-profile',
   templateUrl: './user-profile.component.html',
@@ -12,7 +13,6 @@ import { UsersService } from 'src/app/services/users.service';
 
 export class UserProfileComponent implements OnInit {
   user: User | null = null;
-
 
 
   constructor(
@@ -35,3 +35,6 @@ export class UserProfileComponent implements OnInit {
   }
 
 }
+
+
+

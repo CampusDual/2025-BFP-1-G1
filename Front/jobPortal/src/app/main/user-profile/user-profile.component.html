@@ -1,4 +1,21 @@
-<h1>Bienvenido, {{user?.name}}</h1>
-<div>
-   <button mat-button class="newOffer" (click)="moveToCreateOffer()">Nueva Oferta</button> 
+<div class="global-container">
+
+  <div class="grid">
+
+    <div class="left-container">
+      <h1>Bienvenido, {{ user?.name }}</h1>
+      <button mat-button class="newOffer" (click)="moveToCreateOffer()">
+        Nueva Oferta
+      </button>
+    </div>
+
+    <div class="right-container">
+      <h1>Tus ofertas publicadas</h1>
+      <div class="offer-list">
+      <app-company-offer-list></app-company-offer-list>
+      </div>
+    </div>
+
+  </div>
+
 </div>
