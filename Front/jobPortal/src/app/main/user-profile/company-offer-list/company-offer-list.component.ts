@@ -18,7 +18,7 @@ export class CompanyOfferListComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.jobOfferService.getJobOffers().subscribe((offers) => {
+    this.jobOfferService.getProfileOffers().subscribe((offers) => {
       this.jobOffers = offers;
     });
     this.breakpointObserver

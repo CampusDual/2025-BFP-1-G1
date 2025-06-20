@@ -59,9 +59,9 @@ export class CreateOfferComponent implements OnInit {
       const newOffer: JobOffer = {
         title: this.offerForm.value.title,
         description: this.offerForm.value.description,
-        user_id: this.user.id,
+        user: this.user,
         email: this.user.email,
-        companyName: this.user.name,
+        releaseDate: this.jobOffers.releaseDate
       };
 
       this.jobOfferService.addJobOffers(newOffer).subscribe({

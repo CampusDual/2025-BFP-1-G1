@@ -1,24 +1,28 @@
 package com.campusdual.bfp.model.dto;
 
+import com.campusdual.bfp.model.User;
+
+import java.time.LocalDateTime;
+
 public class JobOffersDTO {
 
     private long id;
     private String email;
-    private long user_id;
+    private User user;
     private String title;
-    private String companyName;
     private String description;
+    private LocalDateTime releaseDate;
 
     public JobOffersDTO() {
     }
 
-    public JobOffersDTO(long id, String email, long user_id, String title, String companyName, String description) {
+    public JobOffersDTO(long id, String email, User user, String title, String description, LocalDateTime releaseDate) {
         this.id = id;
         this.email = email;
-        this.user_id = user_id;
+        this.user = user;
         this.title = title;
-        this.companyName = companyName;
         this.description = description;
+        this.releaseDate = releaseDate;
     }
 
     public long getId() {
@@ -37,12 +41,12 @@ public class JobOffersDTO {
         this.email = email;
     }
 
-    public long getUser_id() {
-        return user_id;
+    public User getUser() {
+        return user;
     }
 
-    public void setUser_id(long user_id) {
-        this.user_id = user_id;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public String getTitle() {
@@ -53,13 +57,6 @@ public class JobOffersDTO {
         this.title = title;
     }
 
-    public String getCompanyName() {
-        return companyName;
-    }
-
-    public void setCompanyName(String companyName) {
-        this.companyName = companyName;
-    }
 
     public String getDescription() {
         return description;
@@ -67,5 +64,13 @@ public class JobOffersDTO {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public LocalDateTime getReleaseDate() {
+        return releaseDate;
+    }
+
+    public void setReleaseDate(LocalDateTime releaseDate) {
+        this.releaseDate = releaseDate;
     }
 }
