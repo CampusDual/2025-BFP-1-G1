@@ -7,7 +7,7 @@ import { User } from '../model/user';
 
 
 @Injectable({ providedIn: 'root' })
-export class JobOfferService implements OnInit{
+export class JobOfferService{
   private urlJobOffers = 'http://localhost:30030/jobOffers';
   private urlOffersManagement = "http://localhost:30030/offersManagement";
   private urlProfileOffers = "http://localhost:30030/profileOffers";
@@ -15,15 +15,6 @@ export class JobOfferService implements OnInit{
   constructor(private http: HttpClient,
               private usersService: UsersService
   ) {}
-
-ngOnInit(): void {
-    this.usersService.getUserProfile().subscribe({
-      next: (data) => (this.user = data),
-      error: (err) => {
-        console.error('No se pudo obtener el usuario', err);
-      },
-    });
-  }
 
   getJobOffers(): Observable<JobOffer[]> {
     return this.http.get<JobOffer[]>(`${this.urlJobOffers}/getAll`);
@@ -48,20 +39,22 @@ ngOnInit(): void {
   }
 
 getProfileOffers(): Observable<JobOffer[]> {
+  console.log('Llamando a getProfileOffers()');
   const token = localStorage.getItem('token');
-    if (!token) {
-      return throwError(
-        () =>
-          new Error(
-            'No se encontró el token de autenticación. Por favor, inicia sesión.'
-          )
-      );
-    }
+  if (!token) {
+    return throwError(
+      () =>
+        new Error(
+          'No se encontró el token de autenticación. Por favor, inicia sesión.'
+        )
+    );
+  }
 
-    const headers = new HttpHeaders({
-      Authorization: `Bearer ${token}`,
-    });
-    return this.http.get<JobOffer[]>(this.urlProfileOffers.concat("/getUser"), { headers });
+  const headers = new HttpHeaders({
+    Authorization: `Bearer ${token}`,
+  });
+  console.log('URL:', this.urlProfileOffers.concat("/getUser"));
+  return this.http.get<JobOffer[]>(this.urlProfileOffers.concat("/getAll"), { headers });
 }
 
 }
