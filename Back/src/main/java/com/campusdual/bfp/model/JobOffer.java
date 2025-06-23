@@ -28,10 +28,6 @@ public class JobOffer {
     @Column(name = "release_date")
     private LocalDateTime releaseDate;
 
-    public JobOffer() {
-    }
-
-
     public long getId() {
         return id;
     }

@@ -4,7 +4,6 @@ import { User } from 'src/app/model/user';
 import { UsersService } from 'src/app/services/users.service';
 import {
   FormBuilder,
-  FormControl,
   FormGroup,
   Validators,
 } from '@angular/forms';

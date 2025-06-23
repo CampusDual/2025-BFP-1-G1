@@ -29,11 +29,7 @@
   width: 100%;
   height: 100%;
   object-fit: contain;
-}
-
-.iconContainer{
-  margin: 0;
-  padding: 0;
+  cursor: pointer;
 }
 
 .icon {
@@ -44,6 +40,27 @@
   color: var(--primary);
   margin: 0;
   padding: 0;
+}
+
+.iconContainer .mat-mdc-fab{
+  background-color: var(--primary);
+  color: white;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0;
+  min-width: unset;
+}
+
+.iconContainer .mat-mdc-fab .mat-icon{
+  font-size: 3em;
+  color: white;
+  width: 1em;
+  height: 1em;
+  line-height: 1;
 }
 
 @media (max-width: 768px) {

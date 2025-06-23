@@ -1,7 +1,7 @@
 .content {
   background-color: var(--font-base);
   padding: 2em;
-  min-height: 60%;
+  min-height: auto; 
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -11,17 +11,14 @@
 
 .card {
   width: 100%;
-  height: 100%;
+  height: 9em;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  justify-content: flex-start;
   background-color: #f8f9fa;
-  border-radius: 10px;
-  padding: 20px;
   border-radius: 9px;
   border: 1px solid #ccc;
-  box-shadow: 0 4px 8px rgba(0, 0, 0.2, 0.2);
-  text-align: left;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  padding: 20px;
   margin: 0.2em;
+  align-items: flex-start;
 }

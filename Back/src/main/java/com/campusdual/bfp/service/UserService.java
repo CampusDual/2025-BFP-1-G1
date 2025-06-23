@@ -1,5 +1,4 @@
 package com.campusdual.bfp.service;
-import java.util.Optional;
 import com.campusdual.bfp.model.Role;
 import com.campusdual.bfp.model.User;
 import com.campusdual.bfp.model.UserRole;
@@ -21,7 +20,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 
 import java.nio.file.AccessDeniedException;
-import java.util.Collections;
 
 @Service
 @Lazy
@@ -44,7 +42,7 @@ public class UserService implements UserDetailsService {
             throw new UsernameNotFoundException("User not found: " + username);
         }
 
-        return user;//new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), Collections.emptyList());
+        return user;
     }
     @Transactional
     public boolean existsByUsername(String username) {

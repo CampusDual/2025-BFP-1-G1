@@ -1,7 +1,6 @@
 package com.campusdual.bfp.api;
 
 import com.campusdual.bfp.model.User;
-import com.campusdual.bfp.model.dao.JobOffersDao;
 import com.campusdual.bfp.model.dto.JobOffersDTO;
 
 import java.util.List;

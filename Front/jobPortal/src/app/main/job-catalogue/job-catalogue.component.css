@@ -1,7 +1,19 @@
+.content {
+  background-color: var(--font-base);
+  padding: 2em;
+  min-height: auto; 
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  margin: 1em;
+}
+
 mat-grid-list {
-  margin: 20px auto;
+  margin: 20px auto 0;
   max-width: 1200px;
   padding: 0 16px;
+  min-height: 0;
 }
 
 .grid-tile {
@@ -32,7 +44,6 @@ mat-card-title {
   border-bottom: #6c757d solid 1px;
   margin-bottom: 15px;
   width: 100%;
-
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -46,16 +57,11 @@ mat-card-subtitle {
   color: #6c757d;
   padding-bottom: 0.5em;
   margin-bottom: 5px;
-
-  /* --- EVITAR QUE EL TEXTO SE SALGA --- */
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
   word-break: break-word;
 }
-
-
-/* --- Responsive Adjustments for Cards --- */
 
 @media (max-width: 599px) {
   .card {
