@@ -62,7 +62,10 @@ export class LoginBoxComponent {
       console.warn(
         'Formulario inválido. No se puede enviar la petición de login.'
       );
-      alert('Por favor, ingresa tu usuario y contraseña.');
+
+      if (errorMessage) {
+        errorMessage.style.visibility = 'visible';
+      }
     }
   }
   getFieldErrorMessage(controlName: string): string {

@@ -1,7 +1,8 @@
 package com.campusdual.bfp.model.dto;
 
 import com.campusdual.bfp.model.User;
-
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 
 public class JobOffersDTO {
@@ -10,13 +11,19 @@ public class JobOffersDTO {
     private String email;
     private User user;
     private String title;
+
+    @NotBlank(message = "La descripción es obligatoria")
+    @Size(max = 4000, message = "La descripción no puede exceder los 4000 caracteres")
     private String description;
+
     private LocalDateTime releaseDate;
 
+    // Constructores
     public JobOffersDTO() {
     }
 
-    public JobOffersDTO(long id, String email, User user, String title, String description, LocalDateTime releaseDate) {
+    public JobOffersDTO(long id, String email, User user, String title,
+                        String description, LocalDateTime releaseDate) {
         this.id = id;
         this.email = email;
         this.user = user;
@@ -25,6 +32,12 @@ public class JobOffersDTO {
         this.releaseDate = releaseDate;
     }
 
+    // Método de validación
+    public void validateDescription() {
+        if (this.description != null && this.description.length() > 4000) {
+            throw new IllegalArgumentException("La descripción excede los 4000 caracteres permitidos");
+        }
+    }
     public long getId() {
         return id;
     }

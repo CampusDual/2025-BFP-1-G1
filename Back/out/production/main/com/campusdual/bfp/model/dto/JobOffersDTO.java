@@ -1,32 +1,29 @@
-package com.campusdual.bfp.model;
+package com.campusdual.bfp.model.dto;
 
-import javax.persistence.*;
+import com.campusdual.bfp.model.User;
+
 import java.time.LocalDateTime;
 
+public class JobOffersDTO {
 
-@Entity
-@Table(name = "joboffers")
-public class JobOffer {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-
-    @ManyToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
-    private User user;
-
-    @Column
     private String email;
-
-    @Column
+    private User user;
     private String title;
-
-    @Column(columnDefinition = "VARCHAR(4000)")
     private String description;
-
-    @Column(name = "release_date")
     private LocalDateTime releaseDate;
+
+    public JobOffersDTO() {
+    }
+
+    public JobOffersDTO(long id, String email, User user, String title, String description, LocalDateTime releaseDate) {
+        this.id = id;
+        this.email = email;
+        this.user = user;
+        this.title = title;
+        this.description = description;
+        this.releaseDate = releaseDate;
+    }
 
     public long getId() {
         return id;
@@ -59,6 +56,7 @@ public class JobOffer {
     public void setTitle(String title) {
         this.title = title;
     }
+
 
     public String getDescription() {
         return description;

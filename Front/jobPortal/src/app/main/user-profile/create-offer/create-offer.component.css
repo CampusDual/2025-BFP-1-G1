@@ -50,7 +50,35 @@ h2 {
   background-color: var(--primary);
 }
 
-button[mat-button] {
+
+button[mat-raised-button].publish-button {
+  background-color: var(--primary);
+}
+
+.catalogueButton {
+  background-color: transparent;
+  color: var(--primary);
+  border: 1px solid var(--primary);
+}
+
+
+button[mat-raised-button].publish-button:hover:not([disabled]) {
+  background-color: var(--primary-dark);
+  box-shadow: 0 4px 16px rgba(224, 60, 49, 0.13);
+}
+
+.catalogueButton:hover {
+  background-color: rgba(224, 60, 49, 0.08);
+}
+
+button[mat-raised-button].publish-button:disabled {
+  background-color: #e0e0e0 !important;
+  color: #757575 !important;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+button[mat-button], button[mat-raised-button].publish-button {
   background-color: var(--primary);
   border: none;
   border-radius: 8px;
@@ -79,8 +107,6 @@ button[mat-button]:hover {
   background-color: var(--primary-dark);
   box-shadow: 0 4px 16px rgba(224, 60, 49, 0.13);
 }
-
-
 
 button[mat-button] .back {
   background-color: var(--primary);

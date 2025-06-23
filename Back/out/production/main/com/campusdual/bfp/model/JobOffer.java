@@ -22,11 +22,15 @@ public class JobOffer {
     @Column
     private String title;
 
-    @Column(columnDefinition = "VARCHAR(4000)")
+    @Column
     private String description;
 
     @Column(name = "release_date")
     private LocalDateTime releaseDate;
+
+    public JobOffer() {
+    }
+
 
     public long getId() {
         return id;

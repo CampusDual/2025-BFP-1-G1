@@ -7,21 +7,41 @@
     <form [formGroup]="offerForm" (ngSubmit)="onSubmit()">
       <mat-form-field appearance="outline" class="formulario">
         <mat-label>Oferta</mat-label>
-        <input matInput id="title" placeholder="Título de oferta" formControlName="title" required>
-        <mat-error *ngIf="title?.invalid && (title?.touched || title?.dirty)">{{
-          getFieldErrorMessage('title')}}</mat-error>
+        <input matInput id="title" placeholder="Título de oferta" formControlName="title" required
+          (input)="titleCharCount = title?.value?.length || 0">
+
+        <!-- Contador para el título -->
+        <mat-hint align="end" [class.char-limit]="titleCharCount > maxTitleChars">
+          {{ titleCharCount }}/{{ maxTitleChars }}
+        </mat-hint>
+
+        <mat-error *ngIf="title?.invalid && (title?.touched || title?.dirty)">
+          {{ getFieldErrorMessage('title') }}
+        </mat-error>
       </mat-form-field><br>
+
       <mat-form-field appearance="outline" class="formulario">
         <mat-label>Descripción</mat-label>
-        <textarea matInput id="description" placeholder="Descripción" formControlName="description" rows="10"
-          required></textarea>
+        <textarea matInput id="description" placeholder="Descripción" formControlName="description" rows="10" required
+          (input)="descCharCount = description?.value?.length || 0"></textarea>
+
+        <!-- Contador para la descripción -->
+        <mat-hint align="end" [class.char-limit]="descCharCount > maxDescChars">
+          {{ descCharCount }}/{{ maxDescChars }}
+        </mat-hint>
+
         <mat-error *ngIf="description?.invalid && (description?.touched || description?.dirty)">
           {{ getFieldErrorMessage('description') }}
         </mat-error>
       </mat-form-field>
+
       <div class="button-container">
-        <button mat-button type="submit">Publicar</button>
-        <button mat-button type="button" class="catalogueButton" (click)="goCatalogue()">Ir al Catálogo General</button>
+        <button mat-raised-button class="publish-button" color="primary" type="submit" [disabled]="offerForm.invalid">
+          Publicar
+        </button>
+        <button mat-button type="button" class="catalogueButton" (click)="goCatalogue()">
+          Ir al Catálogo General
+        </button>
       </div>
     </form>
   </div>

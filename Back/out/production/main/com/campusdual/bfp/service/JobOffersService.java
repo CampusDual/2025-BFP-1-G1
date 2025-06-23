@@ -41,13 +41,6 @@ public class JobOffersService implements IJobOffersService {
 
     @Override
     public long insertJobOffer(JobOffersDTO jobOffersDTO) {
-        jobOffersDTO.validateDescription();
-
-        if (jobOffersDTO.getDescription() != null) {
-            jobOffersDTO.setDescription(
-                    jobOffersDTO.getDescription().substring(0, Math.min(jobOffersDTO.getDescription().length(), 4000))
-            );
-        }
         JobOffer jobOffer = JobOffersMapper.INSTANCE.toEntity(jobOffersDTO);
         jobOffersDao.saveAndFlush(jobOffer);
         return jobOffer.getId();
