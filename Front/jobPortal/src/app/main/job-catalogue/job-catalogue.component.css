@@ -1,19 +1,14 @@
 .content {
-  background-color: var(--font-base);
-  padding: 2em;
-  min-height: auto; 
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
-  margin: 1em;
+margin: 1em;
+padding: 3em;
+
 }
 
 mat-grid-list {
-  margin: 20px auto 0;
   max-width: 1200px;
   padding: 0 16px;
   min-height: 0;
+  position: unset;
 }
 
 .grid-tile {
@@ -23,18 +18,19 @@ mat-grid-list {
 }
 
 .card {
-  width: 100%;
+  width: 94%;
   height: 100%;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   justify-content: flex-start;
-  background-color: #f8f9fa;
-  border-radius: 10px;
+  background-color: #EBE9E9;
+  border-radius: 9px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
   padding: 20px;
   box-sizing: border-box;
   text-align: left;
+  isolation: isolate;
 }
 
 mat-card-title {
@@ -48,13 +44,12 @@ mat-card-title {
   text-overflow: ellipsis;
   white-space: nowrap;
   word-break: break-word;
-
 }
 
 mat-card-subtitle {
   font-family: "Poppins", Arial, sans-serif;
   font-size: 1rem;
-  color: #6c757d;
+  color: #A3999A;
   padding-bottom: 0.5em;
   margin-bottom: 5px;
   overflow: hidden;
