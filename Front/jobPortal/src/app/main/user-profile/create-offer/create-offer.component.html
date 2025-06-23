@@ -8,11 +8,11 @@
       <mat-form-field appearance="outline" class="formulario">
         <mat-label>Oferta</mat-label>
         <input matInput 
-               id="title" 
-               placeholder="Título de oferta" 
-               formControlName="title" 
-               required
-               (input)="titleCharCount = title?.value?.length || 0">
+              id="title" 
+              placeholder="Título de oferta" 
+              formControlName="title" 
+              required
+              (input)="titleCharCount = title?.value?.length || 0">
         
         <!-- Contador para el título -->
         <mat-hint align="end" [class.char-limit]="titleCharCount > maxTitleChars">
@@ -27,12 +27,12 @@
       <mat-form-field appearance="outline" class="formulario">
         <mat-label>Descripción</mat-label>
         <textarea matInput 
-                 id="description" 
-                 placeholder="Descripción" 
-                 formControlName="description" 
-                 rows="10"
-                 required
-                 (input)="descCharCount = description?.value?.length || 0"></textarea>
+                id="description" 
+                placeholder="Descripción" 
+                formControlName="description" 
+                rows="10"
+                required
+                (input)="descCharCount = description?.value?.length || 0"></textarea>
         
         <!-- Contador para la descripción -->
         <mat-hint align="end" [class.char-limit]="descCharCount > maxDescChars">
@@ -46,7 +46,7 @@
       
       <div class="button-container">
         <button mat-raised-button 
-                class="catalogueButton"
+                class="publish-button"
                 color="primary" 
                 type="submit"
                 [disabled]="offerForm.invalid">
