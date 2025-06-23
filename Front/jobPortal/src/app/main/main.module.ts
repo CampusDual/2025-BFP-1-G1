@@ -1,10 +1,10 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MainRoutingModule } from './main-routing.module';
-import { MatCardModule } from '@angular/material/card'; 
+import { MatCardModule } from '@angular/material/card';
 import { JobCatalogueComponent } from './job-catalogue/job-catalogue.component';
 import { MatGridListModule } from '@angular/material/grid-list';
-import { MatFormFieldModule } from '@angular/material/form-field'; 
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CreateOfferComponent } from './user-profile/create-offer/create-offer.component';
@@ -13,17 +13,17 @@ import { MatButtonModule } from '@angular/material/button';
 import { LoginBoxComponent } from './login-box/login-box.component';
 import { UsersListComponent } from '../users-list/users-list.component';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { CompanyOfferListComponent } from './user-profile/company-offer-list/company-offer-list.component';
 
 
 @NgModule({
   declarations: [
     JobCatalogueComponent,
-    CreateOfferComponent,  
+    CreateOfferComponent,
     UserProfileComponent,
     LoginBoxComponent,
     UsersListComponent,
-
-    
+    CompanyOfferListComponent,
   ],
   imports: [
     CommonModule,
@@ -35,7 +35,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     ReactiveFormsModule,
     MatButtonModule,
     MatSnackBarModule,
-    
+    MatGridListModule,
 
   ]
 })

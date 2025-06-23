@@ -55,7 +55,6 @@ form {
 }
 
 .form-section h2 {
-  margin-bottom: 1px;
   font-size: 28px;
   color: var(--darker);
   margin-bottom: 40px;
@@ -153,6 +152,7 @@ input[type="password"]:focus {
 .circle-image img {
   width: 100%;
   height: auto;
+  cursor: pointer;
 }
 
 /* responsive: cuando la pantalla es menor que 768px (tablet y móvil) */

@@ -2,6 +2,7 @@ package com.campusdual.bfp.service;
 
 import com.campusdual.bfp.api.IJobOffersService;
 import com.campusdual.bfp.model.JobOffer;
+import com.campusdual.bfp.model.User;
 import com.campusdual.bfp.model.dao.JobOffersDao;
 import com.campusdual.bfp.model.dto.JobOffersDTO;
 import com.campusdual.bfp.model.dto.dtomapper.JobOffersMapper;
@@ -29,8 +30,14 @@ public class JobOffersService implements IJobOffersService {
 
     @Override
     public List<JobOffersDTO> queryAllJobOffer() {
-        return jobOffersDao.findAllJobOffersWithCompanyName();
+        return JobOffersMapper.INSTANCE.toDTOList(jobOffersDao.findAll());
     }
+
+    @Override
+    public List<JobOffersDTO> queryAllJobOfferByUser(User user) {
+        return JobOffersMapper.INSTANCE.toDTOList(jobOffersDao.findByUser(user));
+    }
+
 
     @Override
     public long insertJobOffer(JobOffersDTO jobOffersDTO) {

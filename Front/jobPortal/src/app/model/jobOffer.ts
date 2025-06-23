@@ -1,9 +1,13 @@
+import { Timestamp } from "rxjs";
+import { User } from "./user";
+import { formatDate } from "@angular/common";
+
 export class JobOffer{
     id? : number;
     email!: string;
-    user_id!: number;
+    user!: User;
     title!: string;
-    companyName!: string;
     description!: string;
+    releaseDate!: Date;
 }
 

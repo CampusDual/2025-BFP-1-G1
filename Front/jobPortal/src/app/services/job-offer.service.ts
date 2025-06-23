@@ -1,18 +1,25 @@
-import { Injectable } from '@angular/core';
+import { Injectable, OnInit } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { catchError, map, Observable, throwError } from 'rxjs';
 import { JobOffer } from '../model/jobOffer';
+import { UsersService } from './users.service';
+import { User } from '../model/user';
 
 
 @Injectable({ providedIn: 'root' })
-export class JobOfferService {
-  private urlJobOffers = 'http://localhost:30030/jobOffers'; 
+export class JobOfferService{
+  private urlJobOffers = 'http://localhost:30030/jobOffers';
   private urlOffersManagement = "http://localhost:30030/offersManagement";
-  constructor(private http: HttpClient) {}
+  private urlProfileOffers = "http://localhost:30030/profileOffers";
+  user: User | null = null;
+  constructor(private http: HttpClient,
+              private usersService: UsersService
+  ) {}
 
   getJobOffers(): Observable<JobOffer[]> {
     return this.http.get<JobOffer[]>(`${this.urlJobOffers}/getAll`);
   }
+
   addJobOffers(jobOffer: JobOffer): Observable<JobOffer>{
     const token = localStorage.getItem('token');
     const httpHeaders = new HttpHeaders({
@@ -29,6 +36,25 @@ export class JobOfferService {
         return throwError(() => e);
       })
     )
-
   }
+
+getProfileOffers(): Observable<JobOffer[]> {
+  console.log('Llamando a getProfileOffers()');
+  const token = localStorage.getItem('token');
+  if (!token) {
+    return throwError(
+      () =>
+        new Error(
+          'No se encontró el token de autenticación. Por favor, inicia sesión.'
+        )
+    );
+  }
+
+  const headers = new HttpHeaders({
+    Authorization: `Bearer ${token}`,
+  });
+  console.log('URL:', this.urlProfileOffers.concat("/getUser"));
+  return this.http.get<JobOffer[]>(this.urlProfileOffers.concat("/getAll"), { headers });
+}
+
 }

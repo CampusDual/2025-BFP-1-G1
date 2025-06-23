@@ -1,11 +1,12 @@
 <header class="header">
-  <div>
-    <div class="img-container">
-    <img src="assets/img/logoCluster.png" alt="Logo Cluster TIC Galiza" class="logo" />
-    <h1 class="title">Portal de Empleo </h1>
-  </div>
-  <span class="material-icons">
-      account_circle
-    </span>
+  <div class="container">
+    <div class="logo">
+      <img src="assets/img/logoCluster.png" alt="Logo Cluster TIC Galiza" onclick="window.location.href='/main/catalogue'">
+    </div>
+    <div class="iconContainer">
+      <button mat-fab (click)="redirectToProfile()">
+        <mat-icon class="icon">account_circle</mat-icon>
+      </button>
+    </div>
   </div>
 </header>

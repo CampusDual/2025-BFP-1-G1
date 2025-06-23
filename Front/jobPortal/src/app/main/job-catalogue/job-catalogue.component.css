@@ -1,7 +1,14 @@
+.content {
+margin: 1em;
+padding: 3em;
+
+}
+
 mat-grid-list {
-  margin: 20px auto;
   max-width: 1200px;
   padding: 0 16px;
+  min-height: 0;
+  position: unset;
 }
 
 .grid-tile {
@@ -11,18 +18,19 @@ mat-grid-list {
 }
 
 .card {
-  width: 100%;
+  width: 94%;
   height: 100%;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   justify-content: flex-start;
-  background-color: #f8f9fa;
-  border-radius: 10px;
+  background-color: #EBE9E9;
+  border-radius: 9px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
   padding: 20px;
   box-sizing: border-box;
   text-align: left;
+  isolation: isolate;
 }
 
 mat-card-title {
@@ -32,30 +40,23 @@ mat-card-title {
   border-bottom: #6c757d solid 1px;
   margin-bottom: 15px;
   width: 100%;
-
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
   word-break: break-word;
-
 }
 
 mat-card-subtitle {
   font-family: "Poppins", Arial, sans-serif;
   font-size: 1rem;
-  color: #6c757d;
+  color: #A3999A;
   padding-bottom: 0.5em;
   margin-bottom: 5px;
-
-  /* --- EVITAR QUE EL TEXTO SE SALGA --- */
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
   word-break: break-word;
 }
-
-
-/* --- Responsive Adjustments for Cards --- */
 
 @media (max-width: 599px) {
   .card {
