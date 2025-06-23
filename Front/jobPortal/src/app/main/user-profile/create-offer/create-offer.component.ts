@@ -20,7 +20,7 @@ export class CreateOfferComponent implements OnInit {
   user: User | null = null;
 
   offerForm!: FormGroup;
-  jobOffers!: JobOffer;
+  jobOffers: JobOffer[]=[];
 
   get title() {
     return this.offerForm.get('title');
@@ -60,7 +60,7 @@ export class CreateOfferComponent implements OnInit {
         description: this.offerForm.value.description,
         user: this.user,
         email: this.user.email,
-        releaseDate: this.jobOffers.releaseDate
+        releaseDate: new Date(),
       };
 
       this.jobOfferService.addJobOffers(newOffer).subscribe({
