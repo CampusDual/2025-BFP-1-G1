@@ -2,11 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { JobOffer } from 'src/app/model/jobOffer';
 import { User } from 'src/app/model/user';
 import { UsersService } from 'src/app/services/users.service';
-import {
-  FormBuilder,
-  FormGroup,
-  Validators,
-} from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { JobOfferService } from 'src/app/services/job-offer.service';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -18,16 +14,13 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 })
 export class CreateOfferComponent implements OnInit {
   user: User | null = null;
-
   offerForm!: FormGroup;
-  jobOffers: JobOffer[]=[];
 
-  get title() {
-    return this.offerForm.get('title');
-  }
-  get description() {
-    return this.offerForm.get('description');
-  }
+  // Contadores
+  titleCharCount = 0;
+  descCharCount = 0;
+  maxTitleChars = 120; // Límite para el título
+  maxDescChars = 4000; // Límite para la descripción
 
   constructor(
     private usersService: UsersService,
@@ -37,8 +30,14 @@ export class CreateOfferComponent implements OnInit {
     private snackBar: MatSnackBar
   ) {
     this.offerForm = this.fb.group({
-      title: ['', Validators.required],
-      description: ['', Validators.required],
+      title: [
+        '',
+        [Validators.required, Validators.maxLength(this.maxTitleChars)],
+      ],
+      description: [
+        '',
+        [Validators.required, Validators.maxLength(this.maxDescChars)],
+      ],
     });
   }
 
@@ -50,10 +49,26 @@ export class CreateOfferComponent implements OnInit {
     if (!this.user) {
       this.usersService.getUserProfile().subscribe();
     }
+
+    // Actualizar contadores
+    this.offerForm.get('title')?.valueChanges.subscribe((val) => {
+      this.titleCharCount = val?.length || 0;
+    });
+
+    this.offerForm.get('description')?.valueChanges.subscribe((val) => {
+      this.descCharCount = val?.length || 0;
+    });
+  }
+
+  get title() {
+    return this.offerForm.get('title');
+  }
+
+  get description() {
+    return this.offerForm.get('description');
   }
 
   onSubmit(): void {
-    const publishMessage = document.getElementById('published');
     if (this.offerForm.valid && this.user) {
       const newOffer: JobOffer = {
         title: this.offerForm.value.title,
@@ -65,29 +80,24 @@ export class CreateOfferComponent implements OnInit {
 
       this.jobOfferService.addJobOffers(newOffer).subscribe({
         next: (response) => {
-          console.log('Oferta creada con éxito: ', response);
           this.snackBar.open('Oferta publicada correctamente', 'Cerrar', {
             duration: 3000,
             verticalPosition: 'top',
           });
           this.offerForm.reset();
+          this.titleCharCount = 0;
+          this.descCharCount = 0;
         },
         error: (error) => {
           console.error('Error al crear la oferta: ', error);
+          this.snackBar.open('Error al crear la oferta', 'Cerrar', {
+            duration: 3000,
+            verticalPosition: 'top',
+          });
         },
       });
     } else {
-      console.log('Formulario no válido o usuario no cargado.');
       this.offerForm.markAllAsTouched();
-
-      this.snackBar.open(
-        'Por favor, completa todos los campos antes de enviar',
-        'Cerrar',
-        {
-          duration: 3000,
-          verticalPosition: 'top',
-        }
-      );
     }
   }
 
@@ -101,11 +111,14 @@ export class CreateOfferComponent implements OnInit {
 
   getFieldErrorMessage(controlName: string): string {
     const control = this.offerForm.get(controlName);
-
     if (control?.hasError('required')) {
       return 'Este campo es obligatorio';
     }
-
+    if (control?.hasError('maxlength')) {
+      return controlName === 'title'
+        ? `Título demasiado largo (máx. ${this.maxTitleChars} caracteres)`
+        : `Descripción demasiado larga (máx. ${this.maxDescChars} caracteres)`;
+    }
     return '';
   }
 }

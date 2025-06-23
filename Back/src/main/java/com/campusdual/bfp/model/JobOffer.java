@@ -22,7 +22,7 @@ public class JobOffer {
     @Column
     private String title;
 
-    @Column
+    @Column(columnDefinition = "VARCHAR(4000)")
     private String description;
 
     @Column(name = "release_date")
