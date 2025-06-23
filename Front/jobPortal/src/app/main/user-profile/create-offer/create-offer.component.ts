@@ -82,7 +82,7 @@ export class CreateOfferComponent implements OnInit {
         next: (response) => {
           this.snackBar.open('Oferta publicada correctamente', 'Cerrar', {
             duration: 3000,
-            verticalPosition: 'top',
+            verticalPosition: 'bottom',
           });
           this.offerForm.reset();
           this.titleCharCount = 0;
@@ -92,7 +92,7 @@ export class CreateOfferComponent implements OnInit {
           console.error('Error al crear la oferta: ', error);
           this.snackBar.open('Error al crear la oferta', 'Cerrar', {
             duration: 3000,
-            verticalPosition: 'top',
+            verticalPosition: 'bottom',
           });
         },
       });
