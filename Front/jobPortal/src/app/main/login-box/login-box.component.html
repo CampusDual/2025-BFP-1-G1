@@ -2,7 +2,7 @@
   <div class="login-box">
     <div class="form-section">
       <h2>Iniciar Sesión</h2>
-      <form [formGroup]="loginForm">
+      <form [formGroup]="loginForm" (ngSubmit)="login()">
         <mat-form-field appearance="outline" class="formulario">
           <mat-label>Nombre de usuario</mat-label>
           <input matInput id="username" formControlName="username" placeholder="Tu usuario" required />
@@ -16,13 +16,15 @@
           <mat-error *ngIf="password?.invalid && (password?.touched || password?.dirty)">{{
             getFieldErrorMessage('password')}}</mat-error>
         </mat-form-field>
-        <button mat-button (click)="login()">Entrar</button>
+        <button mat-raised-button class="publish-button" color="primary" type="submit"
+          [disabled]="loginForm.invalid">Entrar</button>
         <p id="error">Usuario o contraseña erróneos.</p>
       </form>
     </div>
     <div class="image-section">
       <div class="circle-image">
-        <img src="./assets/img/logoCluster.png" alt="Login illustration" onclick="window.location.href='/main/catalogue'" />
+        <img src="./assets/img/logoCluster.png" alt="Login illustration"
+          onclick="window.location.href='/main/catalogue'" />
       </div>
     </div>
   </div>
