@@ -1,4 +1,4 @@
-<mat-grid-list class="content" cols="2" rowHeight="2:1" gutterSize="32px">
+<mat-grid-list class="content" [cols]="gridCols" rowHeight="1:0.5" gutterSize="24px">
   <mat-grid-tile *ngFor="let offer of jobOffers">
       <mat-card class="card">
         <mat-card-title>{{ offer.title }}</mat-card-title>

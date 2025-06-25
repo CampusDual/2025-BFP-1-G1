@@ -10,7 +10,7 @@ import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 })
 export class JobCatalogueComponent implements OnInit {
   jobOffers: JobOffer[] = [];
-  gridCols: number = 2;
+  gridCols: number = 3;
 
   constructor(
     private jobOfferService: JobOfferService,
