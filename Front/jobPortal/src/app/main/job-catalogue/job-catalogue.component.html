@@ -1,10 +1,11 @@
-<mat-grid-list class="content" cols="2" rowHeight="2:1" gutterSize="32px">
+<mat-grid-list class="content" [cols]="gridCols" rowHeight="1:0.5" gutterSize="24px">
   <mat-grid-tile *ngFor="let offer of jobOffers">
-      <mat-card class="card">
-        <mat-card-title>{{ offer.title }}</mat-card-title>
-        <mat-card-subtitle> {{ offer.user.name }} </mat-card-subtitle>
-        <mat-card-subtitle>{{ offer.email }}</mat-card-subtitle>
-        <!-- <mat-card-content>{{offer.description}}</mat-card-content> -->
-      </mat-card>
+    <mat-card class="card">
+      <mat-card-title #titleElement [matTooltip]="isTruncated(titleElement) ? offer.title : ''">
+        {{ offer.title }}
+      </mat-card-title> <mat-card-subtitle> {{ offer.user.name }} </mat-card-subtitle>
+      <mat-card-subtitle>{{ offer.email }}</mat-card-subtitle>
+      <!-- <mat-card-content>{{offer.description}}</mat-card-content> -->
+    </mat-card>
   </mat-grid-tile>
 </mat-grid-list>
