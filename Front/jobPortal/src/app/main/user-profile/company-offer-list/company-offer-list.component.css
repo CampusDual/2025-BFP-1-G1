@@ -22,3 +22,30 @@
   margin: 0.2em;
   align-items: flex-start;
 }
+
+/* Responsive: tablet */
+@media (max-width: 900px) {
+  .content {
+    padding: 1em;
+    margin: 0.5em;
+  }
+  .card {
+    height: auto;
+    padding: 16px;
+    font-size: 0.95em;
+  }
+}
+
+/* Responsive: móvil */
+@media (max-width: 600px) {
+  .content {
+    padding: 0.5em;
+    margin: 0;
+  }
+  .card {
+    width: 100%;
+    height: auto;
+    padding: 10px;
+    font-size: 0.9em;
+  }
+}
