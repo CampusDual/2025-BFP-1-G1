@@ -25,6 +25,8 @@
 
 .sort-controls {
   display: block;
+  position: fixed;
+  z-index: 50;
   flex-wrap: wrap;
   align-items: center;
   gap: 15px;

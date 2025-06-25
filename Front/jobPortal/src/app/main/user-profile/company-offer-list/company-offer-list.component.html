@@ -35,30 +35,30 @@
       (input)="onSearchChange()" class="search-input" />
   </div>
 </div> -->
-  <div>
-    <mat-grid-list
-      class="content"
-      [cols]="gridCols"
-      rowHeight="2:1"
-      gutterSize="16px"
-    >
-      <mat-grid-tile *ngFor="let offer of jobOffers">
-        <mat-card class="card">
-          <mat-card-title>{{ offer.title }}</mat-card-title>
-          <mat-card-subtitle>{{
-            offer.releaseDate | date : "dd/MM/yyyy HH:mm"
-          }}</mat-card-subtitle>
-          <mat-card-content> </mat-card-content>
-        </mat-card>
-      </mat-grid-tile>
-      <mat-grid-tile *ngIf="jobOffers.length === 0">
-        <mat-card class="card-empty">
-          <mat-card-title>No hay ofertas disponibles</mat-card-title>
-          <mat-card-content>
-            <p>Parece que no se han encontrado ofertas de trabajo.</p>
-          </mat-card-content>
-        </mat-card>
-      </mat-grid-tile>
-    </mat-grid-list>
-  </div>
+</div>
+<div>
+  <mat-grid-list
+    class="content"
+    [cols]="gridCols"
+    rowHeight="2:1"
+    gutterSize="16px"
+  >
+    <mat-grid-tile *ngFor="let offer of jobOffers">
+      <mat-card class="card">
+        <mat-card-title>{{ offer.title }}</mat-card-title>
+        <mat-card-subtitle>{{
+          offer.releaseDate | date : "dd/MM/yyyy HH:mm"
+        }}</mat-card-subtitle>
+        <mat-card-content> </mat-card-content>
+      </mat-card>
+    </mat-grid-tile>
+    <mat-grid-tile *ngIf="jobOffers.length === 0">
+      <mat-card class="card-empty">
+        <mat-card-title>No hay ofertas disponibles</mat-card-title>
+        <mat-card-content>
+          <p>Parece que no se han encontrado ofertas de trabajo.</p>
+        </mat-card-content>
+      </mat-card>
+    </mat-grid-tile>
+  </mat-grid-list>
 </div>

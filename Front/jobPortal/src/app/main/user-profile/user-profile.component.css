@@ -10,6 +10,7 @@
   text-align: center;
   margin: auto;
   padding: auto;
+  position: fixed;
 }
 
 .grid {
