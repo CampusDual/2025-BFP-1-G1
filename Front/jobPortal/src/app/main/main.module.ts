@@ -14,6 +14,7 @@ import { LoginBoxComponent } from './login-box/login-box.component';
 import { UsersListComponent } from '../users-list/users-list.component';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { CompanyOfferListComponent } from './user-profile/company-offer-list/company-offer-list.component';
+import { MatIconModule } from '@angular/material/icon';
 
 
 @NgModule({
@@ -36,6 +37,7 @@ import { CompanyOfferListComponent } from './user-profile/company-offer-list/com
     MatButtonModule,
     MatSnackBarModule,
     MatGridListModule,
+    MatIconModule
 
   ]
 })
