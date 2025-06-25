@@ -45,5 +45,9 @@ export class JobCatalogueComponent implements OnInit {
           }
         }
       });
+      
+      }
+      isTruncated(element:HTMLElement):boolean{
+        return element.scrollWidth > element.clientWidth;
   }
 }
