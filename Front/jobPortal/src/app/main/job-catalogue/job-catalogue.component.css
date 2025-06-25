@@ -1,7 +1,9 @@
 .content {
-margin: 1em;
-padding: 3em;
-
+  margin: 1em;
+  padding: 3em;
+  overflow: hidden; 
+  padding-top: 100px;
+  margin-bottom: 100px;
 }
 
 mat-grid-list {
@@ -9,6 +11,8 @@ mat-grid-list {
   padding: 0 16px;
   min-height: 0;
   position: unset;
+  max-height: 70vh;   
+  overflow-y: auto;    
 }
 
 .grid-tile {

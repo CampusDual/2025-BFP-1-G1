@@ -13,6 +13,7 @@ html, body {
   margin: 0;
   padding: 0;
   overflow-x: hidden;
+  overflow-y: hidden; 
 }
 
 /*Responsividad*/
@@ -29,33 +30,51 @@ html, body {
   height: auto;
 }
 
-@media (max-width: 768px) {
-  .header {
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-  }
-
-  .menu {
-    margin-top: 1rem;
-  }
+/* HEADER Y CONTAINER RESPONSIVE */
+.header, .container {
+  width: 100vw;          /* ocupa toda la anchura de la ventana */
+  height: 100vh;         /* ocupa toda la altura de la ventana */
+  min-width: 0;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 16px;
+  overflow: hidden;      /* quita cualquier scroll externo */
 }
 
+/* Lista de ofertas con scroll interno */
+.offer-list {
+  max-height: calc(100vh - 120px); /* ajusta 120px según header o título arriba */
+  overflow-y: auto;                /* scroll solo en esta caja */
+  scrollbar-width: none;           /* ocultar scroll en Firefox */
+  margin: 0;
+  padding: 0 1em;
+}
 
-/* Responsividad para pantallas pequeñas */
-@media (max-width: 768px) {
+/* Tablet */
+@media (max-width: 900px) {
   .logo-container img {
-    max-width: 80px;
+    max-width: 90px;
+  }
+  .header, .container {
+    padding: 0 8px;
   }
 }
 
-@media (max-width: 480px) {
-  .logo-container {
-    flex-direction: column;
-    gap: 0.5rem;
-  }
-
+/* Móvil */
+@media (max-width: 600px) {
   .logo-container img {
     max-width: 60px;
+  }
+  .header, .container {
+    flex-direction: row !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    box-sizing: border-box !important;
+    padding: 0 4px !important;
   }
 }
