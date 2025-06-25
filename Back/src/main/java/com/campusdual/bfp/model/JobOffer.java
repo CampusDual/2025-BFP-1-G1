@@ -1,7 +1,7 @@
 package com.campusdual.bfp.model;
 
 import javax.persistence.*;
-import java.time.ZonedDateTime;
+import java.time.LocalDateTime;
 
 
 @Entity
@@ -26,7 +26,7 @@ public class JobOffer {
     private String description;
 
     @Column(name = "release_date")
-    private ZonedDateTime releaseDate;
+    private LocalDateTime releaseDate;
 
     public long getId() {
         return id;
@@ -68,11 +68,11 @@ public class JobOffer {
         this.description = description;
     }
 
-    public ZonedDateTime getReleaseDate() {
+    public LocalDateTime getReleaseDate() {
         return releaseDate;
     }
 
-    public void setReleaseDate(ZonedDateTime releaseDate) {
+    public void setReleaseDate(LocalDateTime releaseDate) {
         this.releaseDate = releaseDate;
     }
 }
