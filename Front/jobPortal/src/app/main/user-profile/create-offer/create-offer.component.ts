@@ -102,10 +102,6 @@ export class CreateOfferComponent implements OnInit {
     }
   }
 
-  goCatalogue(): void {
-    this.router.navigate(['/main/catalogue']);
-  }
-
   goBack(): void {
     this.router.navigate(['/main/userprofile']);
   }

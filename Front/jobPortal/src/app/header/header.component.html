@@ -5,6 +5,8 @@
     </div>
 
     <div class="iconContainer" *ngIf="usersService.isLoggedIn(); else guestMenu">
+      <span class="company-name">{{ user?.name }}</span>
+
       <button mat-fab [matMenuTriggerFor]="userMenu">
         <mat-icon class="icon">account_circle</mat-icon>
       </button>
@@ -21,4 +23,4 @@
       </div>
     </ng-template>
   </div>
-</header> 
+</header>

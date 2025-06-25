@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { UsersService } from '../services/users.service';
 
@@ -7,8 +7,14 @@ import { UsersService } from '../services/users.service';
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css']
 })
-export class HeaderComponent {
+export class HeaderComponent implements OnInit {
+  user: any = null;
+
   constructor(public usersService: UsersService, private router: Router) {}
+
+  ngOnInit(): void {
+    this.user = this.usersService.getUserValue();
+  }
 
   goToCatalogue(): void {
     this.router.navigate(['/main/catalogue']);
@@ -21,6 +27,7 @@ export class HeaderComponent {
       this.router.navigate(['/main/login']);
     }
   }
+
   goToLogin(): void {
     this.router.navigate(['/main/login']);
   }
@@ -34,3 +41,5 @@ export class HeaderComponent {
     this.router.navigate(['/main/login']);
   }
 }
+
+

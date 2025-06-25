@@ -1,116 +1,133 @@
 .global-container {
   box-sizing: border-box;
-  width: 100vw;
-  height: 100vh;
-  overflow: hidden;
   display: flex;
   flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  width: 100vw;
+  height: 100vh;
+  margin: 0 auto;
+  padding: 60px 0 0 0;
+  overflow: hidden;
 }
 
 .grid {
+  box-sizing: border-box;
   display: grid;
   grid-template-columns: 20% auto;
   width: 100%;
   height: 100%;
+  max-width: 100vw;
+  max-height: 100vh;
+  overflow: hidden;
 }
 
 .left-container {
+  box-sizing: border-box;
+  display: grid;
+  grid-template-rows: 20% auto;
+  width: 100%;
+  height: 100%;
   background-color: var(--gray-lightest);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding-top: 2rem;
+  justify-content: center;
 }
 
 .left-container h1 {
+  box-sizing: border-box;
   margin: 0;
+  align-self: center;
   font-size: 2.5em;
+  letter-spacing: 0.5px;
+  white-space: normal;
   text-align: center;
   padding: 0 5px;
   word-break: break-word;
+  max-width: 100%;
 }
 
 .right-container {
-  background-color: var(--font-base);
+  box-sizing: border-box;
   display: grid;
-  grid-template-rows: auto 1fr;
+  grid-template-rows: 15% auto;
+  width: 100%;
+  height: 100%;
+  max-height: 100vh;
+  background-color: var(--font-base);
 }
 
 .right-container h1 {
+  box-sizing: border-box;
   margin: 0;
-  text-align: center;
   align-self: center;
 }
 
 .offer-list {
+  box-sizing: border-box;
+  height: auto;
+  max-height: calc(100vh - 150px);
   overflow-y: auto;
   scrollbar-width: none;
-  padding: 1rem;
+  box-shadow: 0 2px 17px rgba(224, 60, 49, 0.08);
+  margin: 0 10px;
 }
 
-.newOffer {
+.newOffer[mat-button] {
+  box-sizing: border-box;
   background-color: var(--primary);
-  color: white;
+  border: none;
   border-radius: 8px;
-  padding: 1.5em;
-  margin: 1em;
-  width: 200px;
-  font-weight: bold;
+  cursor: pointer;
   box-shadow: 0 2px 10px rgba(224, 60, 49, 0.08);
-  transition: all 0.3s ease;
-}
-
-.newOffer:hover {
-  background-color: var(--primary-dark);
-}
-
-/* Botón flotante móvil */
-.mobile-add-button {
-  position: fixed;
-  bottom: 30px;
-  right: 30px;
-  background-color: var(--primary);
+  font-family: var(--font-base);
+  letter-spacing: 0.04em;
   color: white;
-  z-index: 1000;
-  width: 60px;
-  height: 60px;
-  display: none;
-  align-items: center;
-  justify-content: center;
-  border-radius: 50%;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  transition: all 0.3s ease;
+  font-size: 14px;
+  font-weight: bold;
+  margin: 1em;
+  padding: 1.5em;
+  justify-self: center;
+  transition: background-color 0.3s, box-shadow 0.3s;
+  width: 200px;
 }
-
-.mobile-add-button:hover {
-  background-color: var(--primary-dark);
-  transform: scale(1.1);
-}
-
-.mobile-add-button .mat-icon {
-  font-size: 30px;
-}
-
-/* Responsive */
 @media (max-width: 768px) {
+  .global-container {
+    padding-top: 0;
+    height: auto;
+    min-height: 100vh;
+    overflow: visible;
+  }
+
   .grid {
     grid-template-columns: 1fr;
-    grid-template-rows: auto 1fr;
+    grid-template-rows: auto auto; 
+    gap: 0;
   }
-  
+
   .left-container {
-    display: none; /* Oculto completamente en móvil */
+    padding: 15px;
+    overflow: visible;
+    height: auto; 
+    position: relative; 
+    grid-template-rows: auto;
+    background-color: var(--gray-lightest);
   }
-  
+
   .right-container {
-    grid-row: 2;
+    grid-template-rows: auto auto;
+    height: auto;
+    margin-top: 0; 
+    position: relative;
+    background-color: var(--font-base);
   }
-  
-  .mobile-add-button {
-    display: flex; /* Mostrar botón flotante */
+
+  .left-container h1 {
+    font-size: 1.5em;
+    margin-bottom: 15px;
   }
-  
+
   .offer-list {
-    padding-bottom: 30px; /* Espacio para el botón flotante */
+    max-height: 50vh;
+    margin: 10px;
   }
 }

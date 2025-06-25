@@ -8,6 +8,11 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  position: fixed;   
+  top: 0;       
+  left: 0;        
+  width: 100%;      
+  z-index: 1000;  
 }
 
 .container {
@@ -32,6 +37,7 @@
   cursor: pointer;
 }
 
+/* Menú de usuario */
 .icon {
   font-size: 4em;
   display: flex;
@@ -41,7 +47,6 @@
   margin: 0;
   padding: 0;
 }
-
 .iconContainer .mat-mdc-fab {
   background-color: var(--primary);
   color: white;
@@ -62,63 +67,114 @@
   height: 1em;
   line-height: 1;
 }
+
+.company-name {
+  margin-right: 1rem;
+  font-weight: 600;
+  font-size: 1rem;
+  color:var(--primary); 
+  align-self: center;
+}
+
+/* Menú desplegable */
 ::ng-deep .mat-menu-panel {
   background-color: var(--gray-darkest) !important;
   color: #fff !important;
   border-radius: 6px !important;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5) !important;
-  min-width: 160px !important;
-  padding-top: 4px !important;
-  padding-bottom: 4px !important;
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif !important;
-  font-size: 1rem !important;
+  min-width: 200px !important;
 }
 
 ::ng-deep .mat-menu-item {
   color: #fff !important;
-  padding: 10px 20px !important;
-  transition: background-color 0.2s ease !important;
+  padding: 10px 16px !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
 }
 
-::ng-deep .mat-menu-item:hover,
-::ng-deep .mat-menu-item.cdk-focused,
-::ng-deep .mat-menu-item.cdk-program-focused {
+::ng-deep .mat-menu-item .mat-icon {
+  margin-right: 8px !important;
+}
+
+::ng-deep .mat-menu-item:hover {
   background-color: var(--primary) !important;
-  color: white !important;
-  cursor: pointer !important;
+}
+
+/* Botones para invitados */
+.guest-buttons {
+  display: flex;
+  gap: 10px;
 }
 
 .guest-buttons button {
-  color: #fff !important;
-  margin-left: 15px !important;
-  font-weight: 600 !important;
-  text-transform: uppercase !important;
-  border: 2px solid var(--primary) !important;
-  background-color: transparent !important;
-  transition: background-color 0.3s ease, color 0.3s ease !important;
-  border-radius: 4px !important;
-  padding: 6px 16px !important;
+  color: #fff;
+  font-weight: 600;
+  text-transform: uppercase;
+  border: 2px solid var(--primary);
+  background-color: transparent;
+  border-radius: 4px;
+  padding: 6px 12px;
+  transition: all 0.3s ease;
 }
 
 .guest-buttons button:hover {
-  background-color: var(--primary) !important;
-  color: #fff !important;
-  cursor: pointer !important;
+  background-color: var(--primary);
 }
 
+/* Versión móvil */
 @media (max-width: 768px) {
   .header {
-    padding: 5px 20px 15px 20px;
+    padding: 5px 15px;
+    max-height: none;
+    height: auto;
   }
+
   .container {
-    flex-direction: column;
-    padding: 0 10px;
+    padding: 5px 10px;
+    flex-wrap: wrap;
   }
+
   .logo {
-    width: 150px;
-    height: 60px;
+    width: 120px;
+    height: 40px;
     margin-right: 0;
-    margin-bottom: 10px;
+    order: 1;
+  }
+
+  .iconContainer {
+    order: 3;
+    width: 100%;
+    justify-content: flex-end;
+    margin-top: 5px;
+    padding-top: 5px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .guest-buttons {
+    order: 2;
+    margin-left: auto;
+    gap: 5px;
+  }
+
+  .guest-buttons button {
+    padding: 4px 8px;
+    font-size: 0.8rem;
+  }
+
+  /* Menú desplegable en móvil */
+  ::ng-deep .mat-menu-panel {
+    min-width: 180px !important;
   }
 }
 
+@media (max-width: 480px) {
+  .logo {
+    width: 100px;
+  }
+
+  .guest-buttons button {
+    font-size: 0.7rem;
+    padding: 3px 6px;
+  }
+}
