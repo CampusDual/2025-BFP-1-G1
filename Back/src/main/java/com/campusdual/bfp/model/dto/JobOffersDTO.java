@@ -3,7 +3,7 @@ package com.campusdual.bfp.model.dto;
 import com.campusdual.bfp.model.User;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
-import java.time.ZonedDateTime;
+import java.time.LocalDateTime;
 
 public class JobOffersDTO {
 
@@ -16,14 +16,14 @@ public class JobOffersDTO {
     @Size(max = 4000, message = "La descripción no puede exceder los 4000 caracteres")
     private String description;
 
-    private ZonedDateTime releaseDate;
+    private LocalDateTime releaseDate;
 
     // Constructores
     public JobOffersDTO() {
     }
 
     public JobOffersDTO(long id, String email, User user, String title,
-                        String description, ZonedDateTime releaseDate) {
+                        String description, LocalDateTime releaseDate) {
         this.id = id;
         this.email = email;
         this.user = user;
@@ -79,11 +79,11 @@ public class JobOffersDTO {
         this.description = description;
     }
 
-    public ZonedDateTime getReleaseDate() {
+    public LocalDateTime getReleaseDate() {
         return releaseDate;
     }
 
-    public void setReleaseDate(ZonedDateTime releaseDate) {
+    public void setReleaseDate(LocalDateTime releaseDate) {
         this.releaseDate = releaseDate;
     }
 }

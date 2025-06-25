@@ -4,28 +4,31 @@
   align-items: start;
   background: var(--gray-megalightest);
   padding: 2em;
-  min-height: 100vh;
+  height: 100vh; 
+  overflow: hidden;
+  box-sizing: border-box;
+  padding-top: 95px;
 }
 
 .left-side {
   display: flex;
   justify-content: center;
-  align-items: flex-start;
+  align-items: center; 
   margin-left: 5em;
   margin-right: 5em;
+  height: 100%;
 }
-
 
 .form {
   width: 35em;
+  max-height: 80vh; 
+  overflow-y: auto;
   background-color: white;
   box-shadow: 3px 3px 5px rgb(190, 190, 190);
-  padding: 4em;
+  padding: 3em;
   display: grid;
   gap: 1em;
-  margin: 1em 0;
   border-radius: 8px;
-
 }
 
 mat-form-field:first-child {
@@ -132,4 +135,39 @@ button[mat-button] .back {
 mat-label {
   color: var(--gray-dark);
   font-weight: 600;
+}
+
+@media (max-width: 1200px) {
+  .left-side {
+    margin-left: 2em;
+    margin-right: 2em;
+  }
+}
+
+@media (max-width: 992px) {
+  .container {
+    grid-template-columns: 1fr; 
+    padding: 1em;
+  }
+  
+  .left-side {
+    margin: 0;
+    width: 100%;
+  }
+  
+  .form {
+    width: 100%;
+    max-width: 35em; 
+    padding: 3em;
+  }
+}
+
+@media (max-width: 576px) {
+  .form {
+    padding: 2em;
+  }
+  
+  h2 {
+    font-size: 24px;
+  }
 }

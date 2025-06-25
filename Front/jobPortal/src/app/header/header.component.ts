@@ -8,7 +8,11 @@ import { UsersService } from '../services/users.service';
   styleUrls: ['./header.component.css']
 })
 export class HeaderComponent {
-  constructor(private usersService: UsersService, private router: Router) { }
+  constructor(public usersService: UsersService, private router: Router) {}
+
+  goToCatalogue(): void {
+    this.router.navigate(['/main/catalogue']);
+  }
 
   redirectToProfile(): void {
     if (this.usersService.isLoggedIn()) {
@@ -17,5 +21,16 @@ export class HeaderComponent {
       this.router.navigate(['/main/login']);
     }
   }
-  
+  goToLogin(): void {
+    this.router.navigate(['/main/login']);
+  }
+
+//  goToRegister(): void {
+//  this.router.navigate(['/main/register']);
+//  }
+
+  logout(): void {
+    this.usersService.logout(); 
+    this.router.navigate(['/main/login']);
+  }
 }

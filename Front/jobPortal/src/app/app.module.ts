@@ -10,6 +10,8 @@ import { HeaderComponent } from './header/header.component';
 import { HttpClientModule } from '@angular/common/http';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
+import { MatMenuModule } from '@angular/material/menu';
+
 
 @NgModule({
   declarations: [
@@ -26,6 +28,8 @@ import { MatIconModule } from '@angular/material/icon';
     HttpClientModule,
     MatCardModule,
     MatIconModule, 
+    MatMenuModule,
+    
   ],
   providers: [],
   bootstrap: [AppComponent],
