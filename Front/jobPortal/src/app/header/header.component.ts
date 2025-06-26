@@ -9,7 +9,7 @@ import { User } from '../model/user';
   styleUrls: ['./header.component.css']
 })
 export class HeaderComponent implements OnInit {
-   user: User | null = null;
+  user: User | null = null;
 
   constructor(public usersService: UsersService, private router: Router) {}
 

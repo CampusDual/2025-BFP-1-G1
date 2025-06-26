@@ -12,6 +12,7 @@ export class JobCatalogueComponent implements OnInit {
   jobOffers: JobOffer[] = [];
   gridCols: number = 3;
 
+
   constructor(
     private jobOfferService: JobOfferService,
     private breakpointObserver: BreakpointObserver
