@@ -36,6 +36,20 @@ h3 {
   color: $darker;
 }
 
+// Estilos personalizados para MatTooltip
+.mat-mdc-tooltip {
+  --mdc-plain-tooltip-container-color: #D32F2F !important;
+  --mdc-plain-tooltip-supporting-text-color: #fff !important;
+  --mdc-plain-tooltip-container-width: 800px !important;
+  --mdc-plain-tooltip-container-padding: 24px 32px !important;
+  --mdc-plain-tooltip-container-border-radius: 12px !important;
+  --mdc-plain-tooltip-container-box-shadow: 0 6px 8px rgba(0, 0, 0, 0.12) !important;
+  --mdc-plain-tooltip-supporting-text-font-size: 1.6rem !important;
+  --mdc-plain-tooltip-supporting-text-line-height: 1.8 !important;
+  --mdc-plain-tooltip-supporting-text-white-space: normal !important;
+  --mdc-plain-tooltip-supporting-text-font-weight: 400 !important;
+}
+
 .button-primary {
   @include button-primary;
 }
