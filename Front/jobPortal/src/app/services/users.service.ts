@@ -82,4 +82,10 @@ export class UsersService {
     const token = localStorage.getItem('token');
     return !!token; 
   }
+
+  logout(): void {
+    localStorage.removeItem('token');
+    this.userSubject.next(null);
+  }
 }
+

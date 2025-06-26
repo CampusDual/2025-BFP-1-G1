@@ -19,8 +19,8 @@ export class CreateOfferComponent implements OnInit {
   // Contadores
   titleCharCount = 0;
   descCharCount = 0;
-  maxTitleChars = 120; // Límite para el título
-  maxDescChars = 4000; // Límite para la descripción
+  maxTitleChars = 120;
+  maxDescChars = 4000;
 
   constructor(
     private usersService: UsersService,
@@ -82,7 +82,8 @@ export class CreateOfferComponent implements OnInit {
         next: (response) => {
           this.snackBar.open('Oferta publicada correctamente', 'Cerrar', {
             duration: 3000,
-            verticalPosition: 'bottom',
+            panelClass: 'successSnackbar',
+            verticalPosition: 'top',
           });
           this.offerForm.reset();
           this.titleCharCount = 0;
@@ -92,17 +93,13 @@ export class CreateOfferComponent implements OnInit {
           console.error('Error al crear la oferta: ', error);
           this.snackBar.open('Error al crear la oferta', 'Cerrar', {
             duration: 3000,
-            verticalPosition: 'bottom',
+            verticalPosition: 'top',
           });
         },
       });
     } else {
       this.offerForm.markAllAsTouched();
     }
-  }
-
-  goCatalogue(): void {
-    this.router.navigate(['/main/catalogue']);
   }
 
   goBack(): void {

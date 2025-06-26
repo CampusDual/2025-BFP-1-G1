@@ -1,21 +1,23 @@
 <div class="global-container">
-
   <div class="grid">
-
-    <div class="left-container">
-      <h1>{{ user?.name }}</h1>
+    <!-- Left Container (visible solo en desktop) -->
+    <div class="left-container" *ngIf="!isMobile">
       <button mat-button class="newOffer" (click)="moveToCreateOffer()">
         Nueva Oferta
       </button>
     </div>
 
+    <!-- Right Container (siempre visible) -->
     <div class="right-container">
       <h1>Tus ofertas publicadas</h1>
       <div class="offer-list">
-      <app-company-offer-list></app-company-offer-list>
+        <app-company-offer-list></app-company-offer-list>
       </div>
     </div>
-
   </div>
 
+  <!-- Botón flotante para móvil -->
+  <button *ngIf="isMobile" mat-fab class="mobile-add-button" (click)="moveToCreateOffer()" aria-label="Crear nueva oferta">
+    <mat-icon>add</mat-icon>
+  </button>
 </div>
