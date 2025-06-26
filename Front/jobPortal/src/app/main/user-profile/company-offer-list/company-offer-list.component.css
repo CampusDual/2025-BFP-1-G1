@@ -28,16 +28,11 @@
   position: fixed;
   z-index: 50;
   flex-wrap: wrap;
-  align-items: center;
-  gap: 15px;
-  margin-bottom: 30px;
+  align-items: start;
   padding: 15px 25px;
   background-color: #ffffff;
-  border-radius: 12px;
-  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
   width: calc(100% - 2em);
-  max-width: 1160px;
-  margin: 0 auto 30px auto;
+  text-align: start;
 }
 
 .sort-controls span:first-of-type {
@@ -51,6 +46,7 @@
 .sort-controls button {
   min-width: 90px;
   padding: 10px 18px;
+  margin: 10px;
   border-radius: 25px;
   text-transform: uppercase;
   font-weight: 500;
@@ -61,6 +57,7 @@
   border: 1px solid #e0e0e0;
   background-color: #f8f8f8;
   box-shadow: none;
+
 }
 
 .sort-controls button:hover {
