@@ -33,7 +33,7 @@
 
 .right-container {
   display: grid;
-  grid-template-rows: 15% auto;
+  grid-template-rows: 10% auto;
   height: 100%;
   width: 100%;
   max-height: 100vh;

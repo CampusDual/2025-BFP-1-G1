@@ -23,6 +23,10 @@
   align-items: flex-start;
 }
 
+.offer-content {
+  margin-top: 4em;
+}
+
 .sort-controls {
   display: block;
   position: fixed;
@@ -33,6 +37,7 @@
   background-color: #ffffff;
   width: calc(100% - 2em);
   text-align: start;
+  border-bottom: 3px solid var(--primary);
 }
 
 .sort-controls span:first-of-type {
