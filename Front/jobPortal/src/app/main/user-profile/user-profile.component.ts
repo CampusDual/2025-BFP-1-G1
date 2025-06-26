@@ -1,4 +1,5 @@
-import { Component, HostListener, OnInit } from '@angular/core';
+import { CompanyOfferListComponent } from './company-offer-list/company-offer-list.component';
+import { Component, HostListener, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { JobOffer } from 'src/app/model/jobOffer';
 import { User } from 'src/app/model/user';
@@ -13,13 +14,16 @@ import { JobOfferService } from 'src/app/services/job-offer.service';
 export class UserProfileComponent implements OnInit {
   jobOffers!: JobOffer[];
   user: User | null = null;
-  isMobile = false; // Nueva propiedad para control responsive
+  isMobile = false;
+
+  @ViewChild('CompanyOfferListComponent')
+  CompanyOfferListComponent!: CompanyOfferListComponent;
 
   constructor(
     private usersService: UsersService,
     private jobOfferService: JobOfferService,
-    private router: Router,
-  ) { }
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
     this.checkIfMobile();
@@ -27,7 +31,6 @@ export class UserProfileComponent implements OnInit {
     this.loadJobOffers();
   }
 
-  // Detecta cambios de tamaño de pantalla
   @HostListener('window:resize')
   checkIfMobile() {
     this.isMobile = window.innerWidth <= 768;

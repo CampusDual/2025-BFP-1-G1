@@ -1,59 +1,37 @@
 @import 'styles/mixins';
 @import 'styles/variables';
-
 :root {
   --primary: #E81C34;
   --primary-light: #FA6F76;
   --primary-lightest: #FBADB0;
   --primary-dark: #A71123;
   --primary-darkest: #6B0712;
-
-  --text-base: #4a4a4a;
-  --darker: #1e1e1e;
-  --soft-black: #2d2d2d;
-
+  --text-base: #4A4A4A;
+  --darker: #1E1E1E;
+  --soft-black: #2D2D2D;
   --gray-megalightest: #EBE9E9;
   --gray-lightest: #C6C0C1;
   --gray-light: #A3999A;
   --gray: #817374;
   --gray-dark: #5B5152;
   --gray-darkest: #383132;
-
   --font-base: 'Roboto', sans-serif;
 }
-
 body {
   font-family: $font-family-base;
   color: $text-base;
   margin: 0;
   padding: 0;
 }
-
 h1,
 h2,
 h3 {
   font-family: $font-family-headings;
   color: $darker;
 }
-
-// Estilos personalizados para MatTooltip
-.mat-mdc-tooltip {
-  --mdc-plain-tooltip-container-color: #D32F2F !important;
-  --mdc-plain-tooltip-supporting-text-color: #fff !important;
-  --mdc-plain-tooltip-container-width: 800px !important;
-  --mdc-plain-tooltip-container-padding: 24px 32px !important;
-  --mdc-plain-tooltip-container-border-radius: 12px !important;
-  --mdc-plain-tooltip-container-box-shadow: 0 6px 8px rgba(0, 0, 0, 0.12) !important;
-  --mdc-plain-tooltip-supporting-text-font-size: 1.6rem !important;
-  --mdc-plain-tooltip-supporting-text-line-height: 1.8 !important;
-  --mdc-plain-tooltip-supporting-text-white-space: normal !important;
-  --mdc-plain-tooltip-supporting-text-font-weight: 400 !important;
-}
-
 .button-primary {
   @include button-primary;
 }
-
 .card {
   background-color: white;
   border-radius: 6px;
@@ -61,21 +39,33 @@ h3 {
   box-shadow: $shadow-md;
   margin-bottom: 1rem;
 }
-
-
 .mat-mdc-tooltip {
   --mdc-plain-tooltip-container-color: #A71123 !important;
   --mdc-plain-tooltip-supporting-text-color: #fff !important;
-  --mdc-plain-tooltip-container-width: 800px !important;
-  --mdc-plain-tooltip-container-padding: 24px 32px !important;
+  --mdc-plain-tooltip-container-width: 50rem !important;
+  --mdc-plain-tooltip-container-padding: 16px 24px !important;
   --mdc-plain-tooltip-container-border-radius: 12px !important;
   --mdc-plain-tooltip-container-box-shadow: 0 6px 8px rgba(0, 0, 0, 0.12) !important;
-  --mdc-plain-tooltip-supporting-text-font-size: 1.6rem !important;
-  --mdc-plain-tooltip-supporting-text-line-height: 1.8 !important;
+  --mdc-plain-tooltip-supporting-text-font-size: 1rem !important;
+  --mdc-plain-tooltip-supporting-text-line-height: 1.6 !important;
   --mdc-plain-tooltip-supporting-text-white-space: normal !important;
-  --mdc-plain-tooltip-supporting-text-font-weight: 400 !important;
+  --mdc-plain-tooltip-supporting-text-font-weight: 100 !important;
 }
-
-
-
-
+.mat-mdc-tooltip, .mat-mdc-tooltip .mdc-tooltip__surface {
+  max-width: max-content !important;
+  width: max-content !important;
+  padding: auto !important;
+  font-size: 1.2rem !important;
+  line-height: 1.8 !important;
+  border-radius: 9px !important;
+}
+.successSnackbar.mat-mdc-snack-bar-container {
+  --mdc-snackbar-container-color: green!important;
+  --mdc-snackbar-supporting-text-color: white!important;
+  --mat-mdc-snack-bar-button-color: white!important;
+}
+.errorSnackbar.mat-mdc-snack-bar-container {
+  --mdc-snackbar-container-color: red!important;
+  --mdc-snackbar-supporting-text-color: white!important;
+  --mat-mdc-snack-bar-button-color: white!important;
+}

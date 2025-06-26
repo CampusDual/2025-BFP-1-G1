@@ -10,14 +10,46 @@
     <!-- Right Container (siempre visible) -->
     <div class="right-container">
       <h1>Tus ofertas publicadas</h1>
+
+      <div class="sort-controls">
+        <div class="sort-content">
+          <span>Ordenar por:</span>
+          <button mat-button (click)="this.CompanyOfferListComponent.sortOffers('releaseDate')"
+            [class.active]="this.CompanyOfferListComponent.sortBy === 'releaseDate'">
+            Fecha
+            <span *ngIf="this.CompanyOfferListComponent.sortBy === 'releaseDate'">
+              <span *ngIf="this.CompanyOfferListComponent.sortDirection === 'desc'">&#9660;</span>
+              <span *ngIf="this.CompanyOfferListComponent.sortDirection === 'asc'">&#9650;</span>
+            </span>
+          </button>
+          <button mat-button (click)="this.CompanyOfferListComponent.sortOffers('title', 'desc')"
+            [class.active]="this.CompanyOfferListComponent.sortBy === 'title'">
+            Título
+            <span *ngIf="this.CompanyOfferListComponent.sortBy === 'title'">
+              <span *ngIf="this.CompanyOfferListComponent.sortDirection === 'desc'">&#9660;</span>
+              <span *ngIf="this.CompanyOfferListComponent.sortDirection === 'asc'">&#9650;</span>
+            </span>
+          </button>
+        </div>
+      </div>
+      <div class="sort-controls">
+        <div class="search-bar">
+          <span class="icono izquierda"><mat-icon>search</mat-icon></span>
+          <input class="search-input" type="text" placeholder="Buscar ofertas por título o descripción..."
+            [(ngModel)]="this.CompanyOfferListComponent.searchTerm"
+            (input)="this.CompanyOfferListComponent.updateDisplayedOffers()" class="search-input" />
+        </div>
+      </div>
+
       <div class="offer-list">
-        <app-company-offer-list></app-company-offer-list>
+        <app-company-offer-list #CompanyOfferListComponent></app-company-offer-list>
       </div>
     </div>
   </div>
 
   <!-- Botón flotante para móvil -->
-  <button *ngIf="isMobile" mat-fab class="mobile-add-button" (click)="moveToCreateOffer()" aria-label="Crear nueva oferta">
+  <button *ngIf="isMobile" mat-fab class="mobile-add-button" (click)="moveToCreateOffer()"
+    aria-label="Crear nueva oferta">
     <mat-icon>add</mat-icon>
   </button>
 </div>
