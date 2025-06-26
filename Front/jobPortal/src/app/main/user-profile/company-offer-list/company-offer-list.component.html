@@ -1,27 +1,21 @@
 <div class="sort-controls">
-  <span>Ordenar por:</span>
-  <button
-    mat-button
-    (click)="sortOffers('releaseDate')"
-    [class.active]="sortBy === 'releaseDate'"
-  >
-    Fecha
-    <span *ngIf="sortBy === 'releaseDate'">
-      <span *ngIf="sortDirection === 'desc'">&#9660;</span>
-      <span *ngIf="sortDirection === 'asc'">&#9650;</span>
-    </span>
-  </button>
-  <button
-    mat-button
-    (click)="sortOffers('title', 'desc')"
-    [class.active]="sortBy === 'title'"
-  >
-    Título
-    <span *ngIf="sortBy === 'title'">
-      <span *ngIf="sortDirection === 'desc'">&#9660;</span>
-      <span *ngIf="sortDirection === 'asc'">&#9650;</span>
-    </span>
-  </button>
+  <div class="sort-content">
+    <span>Ordenar por:</span>
+    <button mat-button (click)="sortOffers('releaseDate')" [class.active]="sortBy === 'releaseDate'">
+      Fecha
+      <span *ngIf="sortBy === 'releaseDate'">
+        <span *ngIf="sortDirection === 'desc'">&#9660;</span>
+        <span *ngIf="sortDirection === 'asc'">&#9650;</span>
+      </span>
+    </button>
+    <button mat-button (click)="sortOffers('title', 'desc')" [class.active]="sortBy === 'title'">
+      Título
+      <span *ngIf="sortBy === 'title'">
+        <span *ngIf="sortDirection === 'desc'">&#9660;</span>
+        <span *ngIf="sortDirection === 'asc'">&#9650;</span>
+      </span>
+    </button>
+  </div>
   <!-- <button mat-button (click)="onSortChange('id')" [class.active]="sortBy === 'id'">
     Empresa
     <span *ngIf="sortBy === 'id'">
@@ -29,26 +23,22 @@
       <span *ngIf="sortDirection === 'asc'">&#9650;</span>
     </span>
   </button> -->
-
-  <!-- <div class="search-bar">
-    <input type="text" placeholder="Buscar ofertas por título o descripción..." [(ngModel)]="searchTerm"
-      (input)="onSearchChange()" class="search-input" />
-  </div>
-</div> -->
+  <span class="search-bar-content">
+    <input class=search-bar type="text" placeholder="Buscar ofertas por título o descripción..."
+      [(ngModel)]="searchTerm" (input)="updateDisplayedOffers()" class="search-input" />
+  </span>
 </div>
+
+
+
 <div class="offer-content">
-  <mat-grid-list
-    class="content"
-    [cols]="gridCols"
-    rowHeight="2.5:1"
-    gutterSize="10px"
-  >
+  <mat-grid-list class="content" [cols]="gridCols" rowHeight="2.5:1" gutterSize="10px">
     <mat-grid-tile *ngFor="let offer of jobOffers">
       <mat-card class="card">
         <mat-card-title>{{ offer.title }}</mat-card-title>
         <mat-card-subtitle>{{
           offer.releaseDate | date : "dd/MM/yyyy HH:mm"
-        }}</mat-card-subtitle>
+          }}</mat-card-subtitle>
         <mat-card-content> </mat-card-content>
       </mat-card>
     </mat-grid-tile>
