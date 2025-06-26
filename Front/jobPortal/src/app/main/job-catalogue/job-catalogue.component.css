@@ -1,8 +1,9 @@
 .content {
 margin: 1em auto;
-padding-top: 70px;
-max-width: 1300px;
-margin-bottom: 0;
+padding: 0;
+max-width: 1200px;
+
+
 }
 
 mat-grid-list {

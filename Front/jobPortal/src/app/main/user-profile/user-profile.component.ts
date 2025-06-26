@@ -22,7 +22,7 @@ export class UserProfileComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.checkIfMobile();
+    this.checkIfMobile(); // Verificar al cargar
     this.loadUserData();
     this.loadJobOffers();
   }
