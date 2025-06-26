@@ -5,9 +5,11 @@ import { UsersService } from '../services/users.service';
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
-  styleUrls: ['./header.component.css']
+  styleUrls: ['./header.component.css'],
 })
-export class HeaderComponent {
+export class HeaderComponent implements OnInit {
+  user: User | null = null;
+
   constructor(public usersService: UsersService, private router: Router) {}
 
   goToCatalogue(): void {
@@ -25,12 +27,12 @@ export class HeaderComponent {
     this.router.navigate(['/main/login']);
   }
 
-//  goToRegister(): void {
-//  this.router.navigate(['/main/register']);
-//  }
+  //  goToRegister(): void {
+  //  this.router.navigate(['/main/register']);
+  //  }
 
   logout(): void {
-    this.usersService.logout(); 
+    this.usersService.logout();
     this.router.navigate(['/main/login']);
   }
 }
