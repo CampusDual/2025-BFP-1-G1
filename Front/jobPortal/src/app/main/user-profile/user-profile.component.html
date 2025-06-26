@@ -2,7 +2,6 @@
   <div class="grid">
     <!-- Left Container (visible solo en desktop) -->
     <div class="left-container" *ngIf="!isMobile">
-      <h1>{{ user?.name }}</h1>
       <button mat-button class="newOffer" (click)="moveToCreateOffer()">
         Nueva Oferta
       </button>

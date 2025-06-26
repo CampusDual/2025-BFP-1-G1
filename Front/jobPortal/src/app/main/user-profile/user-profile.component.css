@@ -33,19 +33,6 @@
   justify-content: center;
 }
 
-.left-container h1 {
-  box-sizing: border-box;
-  margin: 0;
-  align-self: center;
-  font-size: 2.5em;
-  letter-spacing: 0.5px;
-  white-space: normal;
-  text-align: center;
-  padding: 0 5px;
-  word-break: break-word;
-  max-width: 100%;
-}
-
 .right-container {
   box-sizing: border-box;
   display: grid;
@@ -89,6 +76,7 @@
   justify-self: center;
   transition: background-color 0.3s, box-shadow 0.3s;
   width: 200px;
+  margin-top: auto;
 }
 @media (max-width: 768px) {
   .global-container {

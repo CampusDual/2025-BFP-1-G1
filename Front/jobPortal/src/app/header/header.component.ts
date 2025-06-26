@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { UsersService } from '../services/users.service';
+import { User } from '../model/user';
 
 @Component({
   selector: 'app-header',
@@ -8,12 +9,20 @@ import { UsersService } from '../services/users.service';
   styleUrls: ['./header.component.css']
 })
 export class HeaderComponent implements OnInit {
-  user: any = null;
+   user: User | null = null;
 
   constructor(public usersService: UsersService, private router: Router) {}
 
   ngOnInit(): void {
-    this.user = this.usersService.getUserValue();
+    // Suscríbete al observable user$
+    this.usersService.user$.subscribe(user => {
+      this.user = user;
+    });
+
+    // Si no hay usuario cargado pero hay token, pide el perfil
+    if (!this.user && this.usersService.isLoggedIn()) {
+      this.usersService.getUserProfile().subscribe();
+    }
   }
 
   goToCatalogue(): void {
@@ -27,7 +36,6 @@ export class HeaderComponent implements OnInit {
       this.router.navigate(['/main/login']);
     }
   }
-
   goToLogin(): void {
     this.router.navigate(['/main/login']);
   }
@@ -41,5 +49,3 @@ export class HeaderComponent implements OnInit {
     this.router.navigate(['/main/login']);
   }
 }
-
-

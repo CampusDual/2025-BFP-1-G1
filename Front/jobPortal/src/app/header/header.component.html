@@ -3,10 +3,8 @@
     <div class="logo">
       <img src="assets/img/logoCluster.png" alt="Logo Cluster TIC Galiza" (click)="goToCatalogue()">
     </div>
-
     <div class="iconContainer" *ngIf="usersService.isLoggedIn(); else guestMenu">
       <span class="company-name">{{ user?.name }}</span>
-
       <button mat-fab [matMenuTriggerFor]="userMenu">
         <mat-icon class="icon">account_circle</mat-icon>
       </button>
