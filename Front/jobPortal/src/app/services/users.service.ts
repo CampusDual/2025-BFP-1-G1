@@ -91,10 +91,10 @@ export class UsersService {
 
     try {
       const decoded: any = jwtDecode(token);
-      const now = Math.floor(Date.now() / 1000); 
+      const now = Math.floor(Date.now() / 1000);
       return decoded.exp < now;
     } catch (error) {
-      return true; 
+      return true;
     }
   }
 
