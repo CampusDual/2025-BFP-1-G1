@@ -6,7 +6,7 @@ import { JobCatalogueComponent } from './job-catalogue/job-catalogue.component';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 import { CreateOfferComponent } from './user-profile/create-offer/create-offer.component';
 import { UserProfileComponent } from './user-profile/user-profile.component';
 import { MatButtonModule } from '@angular/material/button';
@@ -14,6 +14,7 @@ import { LoginBoxComponent } from './login-box/login-box.component';
 import { UsersListComponent } from '../users-list/users-list.component';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { CompanyOfferListComponent } from './user-profile/company-offer-list/company-offer-list.component';
+import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
 @NgModule({
@@ -36,8 +37,8 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     MatButtonModule,
     MatSnackBarModule,
     MatGridListModule,
-    MatTooltipModule,
-    FormsModule,
-  ],
+    MatIconModule,
+    MatTooltipModule
+  ]
 })
-export class MainModule {}
+export class MainModule { }
