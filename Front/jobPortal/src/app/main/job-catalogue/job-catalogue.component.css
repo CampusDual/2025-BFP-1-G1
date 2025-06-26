@@ -1,6 +1,6 @@
 .content {
 margin: 1em auto;
-padding-top: 70px;
+padding-top: 80px;
 max-width: 1300px;
 margin-bottom: 0;
 }
@@ -14,6 +14,13 @@ mat-grid-list {
   width: 100%;
   box-sizing: border-box;
   max-width: 100%;
+}
+
+.grid-wrapper {
+  max-height: calc(100vh - 160px); /* 160px = header + footer */
+  overflow-y: auto;
+  padding-top: 80px;
+  padding-bottom: 80px;
 }
 
 
@@ -34,31 +41,31 @@ mat-grid-list {
   flex-direction: column;
   align-items: flex-start;
   justify-content: flex-start;
-  background-color: #EBE9E9;
+  background-color: #f8f9fa;
   border-radius: 9px;
+  border: 1px solid #ccc;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
   padding: 16px;
   box-sizing: border-box;
   text-align: left;
   isolation: isolate;
   min-width: 0;
+  
 }
 
 
 mat-card-title {
   overflow: hidden;
   text-overflow: ellipsis;
-  white-space: nowrap;           /* ← 1 línea, con truncado */
-  
-  font-size: 1.5rem;             /* tu tamaño original */
+  white-space: nowrap;        
+  font-size: 1.5rem;             
   font-family: "Montserrat", "Poppins", "Segoe UI", Arial, sans-serif;
   padding-bottom: 0.3em;
   margin-bottom: 15px;
   border-bottom: 3px solid var(--primary);
   width: 100%;
-  display: block;                /* asegurar que se renderiza como bloque */
+  display: block;
 }
-
 
 
 mat-card-subtitle {
@@ -72,6 +79,7 @@ mat-card-subtitle {
   white-space: nowrap;
   word-break: break-word;
 }
+
 
 
 
