@@ -56,7 +56,7 @@ export class CompanyOfferListComponent implements OnInit {
 
   sortOffers(field: keyof JobOffer, direction?: 'asc' | 'desc') {
     if (this.sortBy === field) {
-      this.sortDirection = this.sortDirection === 'asc' ? 'desc' : 'asc';
+      this.sortDirection = this.sortDirection ==='asc' ? 'desc' : 'asc';
     } else {
       this.sortBy = field;
       this.sortDirection = 'desc';
