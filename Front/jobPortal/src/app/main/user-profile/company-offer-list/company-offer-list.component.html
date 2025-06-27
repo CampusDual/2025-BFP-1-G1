@@ -1,38 +1,10 @@
-<!--
-<div class="sort-controls">
-  <div class="sort-content">
-    <span>Ordenar por:</span>
-    <button mat-button (click)="sortOffers('releaseDate')" [class.active]="sortBy === 'releaseDate'">
-      Fecha
-      <span *ngIf="sortBy === 'releaseDate'">
-        <span *ngIf="sortDirection === 'desc'">&#9660;</span>
-        <span *ngIf="sortDirection === 'asc'">&#9650;</span>
-      </span>
-    </button>
-    <button mat-button (click)="sortOffers('title', 'desc')" [class.active]="sortBy === 'title'">
-      Título
-      <span *ngIf="sortBy === 'title'">
-        <span *ngIf="sortDirection === 'desc'">&#9660;</span>
-        <span *ngIf="sortDirection === 'asc'">&#9650;</span>
-      </span>
-    </button>
-  </div>
-  <button mat-button (click)="onSortChange('id')" [class.active]="sortBy === 'id'">
-    Empresa
-    <span *ngIf="sortBy === 'id'">
-      <span *ngIf="sortDirection === 'desc'">&#9660;</span>
-      <span *ngIf="sortDirection === 'asc'">&#9650;</span>
-    </span>
-  </button>
-</div>
--->
 
 
 <div class="offer-content">
-  <mat-grid-list class="content" [cols]="gridCols" rowHeight="2.2:1.4" gutterSize="20px">
+  <mat-grid-list class="content" [cols]="gridCols" rowHeight="2:1.4" gutterSize="20px">
     <mat-grid-tile *ngFor="let offer of jobOffers">
       <mat-card class="card">
-        <mat-card-title>{{ offer.title }}</mat-card-title>
+        <mat-card-title #titleElement [matTooltip]="isTruncated(titleElement) ? offer.title : ''">{{ offer.title }}</mat-card-title>
         <mat-card-subtitle>{{
           offer.releaseDate | date : "dd/MM/yyyy HH:mm"
           }}</mat-card-subtitle>

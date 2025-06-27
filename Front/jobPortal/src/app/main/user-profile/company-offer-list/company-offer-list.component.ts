@@ -54,6 +54,10 @@ export class CompanyOfferListComponent implements OnInit {
       });
   }
 
+   isTruncated(element: HTMLElement): boolean {
+    return element.scrollWidth > element.clientWidth;
+  }
+
   sortOffers(field: keyof JobOffer, direction?: 'asc' | 'desc') {
     if (this.sortBy === field) {
       this.sortDirection = this.sortDirection ==='asc' ? 'desc' : 'asc';
