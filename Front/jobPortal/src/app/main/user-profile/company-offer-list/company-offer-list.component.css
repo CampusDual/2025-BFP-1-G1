@@ -11,20 +11,55 @@
 
 .card {
   width: 100%;
-  height: 9em;
+  height: 100%;
+  max-height: 220px;
+  min-height: 180px;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
   background-color: #f8f9fa;
   border-radius: 9px;
   border: 1px solid #ccc;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  padding: 20px;
-  margin: 0.2em;
-  align-items: flex-start;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+  padding: 16px;
+  box-sizing: border-box;
+  text-align: left;
+  isolation: isolate;
+  min-width: 0;
+
+}
+
+
+mat-card-title {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 1.5rem;
+  font-family: "Montserrat", "Poppins", "Segoe UI", Arial, sans-serif;
+  padding-bottom: 0.3em;
+  margin-bottom: 15px;
+  border-bottom: 3px solid var(--primary);
+  width: 100%;
+  display: block;
+}
+
+
+mat-card-subtitle {
+  font-family: "Poppins", Arial, sans-serif;
+  font-size: 1rem;
+  color: #A3999A;
+  padding-bottom: 0.5em;
+  margin-bottom: 0.2px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  word-break: break-word;
 }
 
 .offer-content {
-  margin-bottom: 8em;
+  margin-bottom: 6em;
 }
 
 
