@@ -49,20 +49,11 @@ public class User implements UserDetails {
     @Column
     private String password;
 
+    @Column
+    private int role_id;
+
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     private Set<UserRole> userRoles = new HashSet<>();
-
-    public User(){ }
-    public User(int id, String cif, String name, String telephone, String email,String address, String login, String password) {
-        this.id = id;
-        this.cif = cif;
-        this.name = name;
-        this.telephone = telephone;
-        this.email = email;
-        this.address = address;
-        this.login = login;
-        this.password = password;
-    }
 
     public Long getId() {
         return id;
@@ -118,7 +109,13 @@ public class User implements UserDetails {
         this.login = login;
     }
 
+    public int getRole_id() {
+        return role_id;
+    }
 
+    public void setRole_id(int role_id) {
+        this.role_id = role_id;
+    }
 
     public void setPassword(String password) {
         this.password = password;

@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public class UserDTO {
     private String token;
-    private Long id;        // <-- ¡Debe ser Long!
+    private Long id;
     private String username;
     private String name;
     private String email;
@@ -30,7 +30,6 @@ public class UserDTO {
 
     }
 
-    // Getters y Setters para todos los campos
     public String getToken() { return token; }
     public void setToken(String token) { this.token = token; }
     public Long getId() { return id; }

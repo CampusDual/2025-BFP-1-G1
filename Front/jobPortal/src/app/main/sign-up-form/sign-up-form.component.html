@@ -1,0 +1,64 @@
+-<!--
+<div class="container">
+  <div class="sign-up-box">
+    <div class="form-section">
+      <h2>Registro</h2>
+      <form [formGroup]="signUpForm" (ngSubmit)="signUp()">
+        <mat-form-field appearance="outline" class="formulario">
+
+          <mat-label>Nombre de usuario</mat-label>
+          <input matInput id="username" formControlName="username" placeholder="Tu usuario" required />
+          <mat-error *ngIf="username?.invalid && (username?.touched || username?.dirty)">{{
+            getFieldErrorMessage('username')}}
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="formulario">
+          <mat-label>Contraseña</mat-label>
+          <input matInput type="password" id="password" formControlName="password" placeholder="*******" required />
+          <mat-error *ngIf="password?.invalid && (password?.touched || password?.dirty)">{{
+            getFieldErrorMessage('password')}}</mat-error>
+        </mat-form-field>
+
+        <mat-label>Nombre</mat-label>
+        <input matInput id="name" formControlName="username" placeholder="Tu usuario" required />
+        <mat-error *ngIf="username?.invalid && (username?.touched || username?.dirty)">{{
+          getFieldErrorMessage('username')}}
+        </mat-error>
+        </mat-form-field>
+
+        <mat-label>Apellidos</mat-label>
+        <input matInput id="surname" formControlName="username" placeholder="Tu usuario" required />
+        <mat-error *ngIf="username?.invalid && (username?.touched || username?.dirty)">{{
+          getFieldErrorMessage('username')}}
+        </mat-error>
+        </mat-form-field>
+
+        <mat-label>Email</mat-label>
+        <input matInput id="email" formControlName="username" placeholder="Tu usuario" required />
+        <mat-error *ngIf="username?.invalid && (username?.touched || username?.dirty)">{{
+          getFieldErrorMessage('username')}}
+        </mat-error>
+        </mat-form-field>
+
+        <mat-label>Teléfono</mat-label>
+        <input matInput id="phone" formControlName="username" placeholder="Tu usuario" required />
+        <mat-error *ngIf="username?.invalid && (username?.touched || username?.dirty)">{{
+          getFieldErrorMessage('username')}}
+        </mat-error>
+        </mat-form-field>
+
+
+        <button mat-raised-button class="sign-up-button" color="primary" type="submit"
+          [disabled]="loginForm.invalid">Entrar</button>
+        <p id="error">Datos erróneos.</p>
+      </form>
+    </div>
+    <div class="image-section">
+      <div class="circle-image">
+        <img src="./assets/img/logoCluster.png" alt="Login illustration"
+          onclick="window.location.href='/main/catalogue'" />
+      </div>
+    </div>
+  </div>
+</div> -->
