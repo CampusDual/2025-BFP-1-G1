@@ -6,6 +6,8 @@ import {
   HttpErrorResponse,
 } from '@angular/common/http';
 import { User } from '../model/user';
+import { jwtDecode } from 'jwt-decode';
+
 @Injectable({
   providedIn: 'root',
 })
@@ -49,19 +51,19 @@ export class UsersService {
     return this.http
       .get<User>(`${this.urlUserProfile}/getUser`, { headers })
       .pipe(
-        map(user => {
+        map((user) => {
           this.userSubject.next(user);
           return user;
-        }),        
+        }),
         catchError(this.handleError)
       );
   }
 
-  setUser(user: User){
+  setUser(user: User) {
     this.userSubject.next(user);
   }
 
-  getUserValue(): User | null{
+  getUserValue(): User | null {
     return this.userSubject.value;
   }
 
@@ -80,7 +82,20 @@ export class UsersService {
 
   isLoggedIn(): boolean {
     const token = localStorage.getItem('token');
-    return !!token; 
+    return !!token;
+  }
+
+  isTokenExpired(): boolean {
+    const token = localStorage.getItem('token');
+    if (!token) return true;
+
+    try {
+      const decoded: any = jwtDecode(token);
+      const now = Math.floor(Date.now() / 1000);
+      return decoded.exp < now;
+    } catch (error) {
+      return true;
+    }
   }
 
   logout(): void {
@@ -88,4 +103,3 @@ export class UsersService {
     this.userSubject.next(null);
   }
 }
-
