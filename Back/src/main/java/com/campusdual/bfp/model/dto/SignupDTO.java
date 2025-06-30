@@ -33,4 +33,8 @@ public class SignupDTO {
     public long getRole_id() {
         return this.role_id;
     }
+
+    public void setRole_id(long role_id) {
+        this.role_id = role_id;
+    }
 }

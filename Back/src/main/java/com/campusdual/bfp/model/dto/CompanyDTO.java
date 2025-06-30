@@ -9,13 +9,13 @@ public class CompanyDTO {
     private String name;
     private String phone;
     private String address;
-    private User user;
+    private UserDTO user;
     private String web;
 
     public CompanyDTO() {
     }
 
-    public CompanyDTO(Long id, String cif, String name, String phone, String address, User user, String web) {
+    public CompanyDTO(Long id, String cif, String name, String phone, String address, UserDTO user, String web) {
         this.id = id;
         this.cif = cif;
         this.name = name;
@@ -65,11 +65,11 @@ public class CompanyDTO {
         this.address = address;
     }
 
-    public User getUser() {
+    public UserDTO getUser() {
         return user;
     }
 
-    public void setUser(User user) {
+    public void setUser(UserDTO user) {
         this.user = user;
     }
 

@@ -11,9 +11,7 @@ import java.util.List;
 @Mapper(uses = {UserMapper.class})
 public interface CandidateMapper {
     CandidateMapper INSTANCE = Mappers.getMapper(CandidateMapper.class);
-    @Mapping(source = "user", target = "user")
     CandidateDTO toDTO(Candidate candidate);
     List<CandidateDTO> toDTOList(List<Candidate> candidates);
-    @Mapping(source = "user", target = "user")
     Candidate toEntity(CandidateDTO candidateDTO);
 }

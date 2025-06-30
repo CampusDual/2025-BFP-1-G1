@@ -1,13 +1,13 @@
 package com.campusdual.bfp.model.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class UserDTO {
     private String token;
     private Long id;
     private String email;
     String login;
-    @JsonIgnore
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
     private int role_id;
 
@@ -61,11 +61,4 @@ public class UserDTO {
         this.password = password;
     }
 
-    public int getRole_id() {
-        return role_id;
-    }
-
-    public void setRole_id(int role_id) {
-        this.role_id = role_id;
-    }
 }

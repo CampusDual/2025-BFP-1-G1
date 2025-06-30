@@ -34,7 +34,7 @@ public class CandidateController {
         }
         
         try {
-            Candidate candidate = candidateService.registerNewCandidate(candidateDTO.getUser(), candidateDTO);
+            Candidate candidate = candidateService.registerNewCandidate(candidateDTO);
             CandidateDTO result = CandidateMapper.INSTANCE.toDTO(candidate);
             return ResponseEntity.ok(result);
         } catch (IllegalArgumentException e) {

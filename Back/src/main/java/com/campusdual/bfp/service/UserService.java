@@ -34,6 +34,7 @@ public class UserService implements UserDetailsService {
     @Autowired
     private UserRoleDao userRoleDao;
 
+
     @Override
     @Transactional(readOnly = true)
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -49,23 +50,18 @@ public class UserService implements UserDetailsService {
         User user = this.userDao.findByLogin(username);
         return user != null;
     }
-    @Transactional
-    public User registerNewUser(String login, String password, String email, long role_id) {
+    public User registerNewUser(String login, String password, String email, long roleId) {
         User user = new User();
         user.setLogin(login);
-        user.setEmail(email);
         user.setPassword(this.passwordEncoder().encode(password));
-        User savedUser = this.userDao.saveAndFlush(user);
+        user.setEmail(email);
 
-        Role role = this.roleDao.findById(role_id).orElseThrow(() -> new IllegalArgumentException("Role not found"));
-        if (role != null) {
-            UserRole userRole = new UserRole();
-            userRole.setUser(savedUser);
-            userRole.setRole(role);
-            this.userRoleDao.saveAndFlush(userRole);
-        }
+        Role role = roleDao.findById(roleId)
+                .orElseThrow(() -> new RuntimeException("Role not found with id: " + roleId));
 
-        return savedUser;
+        user.setRole(role);
+
+        return userDao.saveAndFlush(user);
     }
 
     public User getUserLogged() throws AccessDeniedException {

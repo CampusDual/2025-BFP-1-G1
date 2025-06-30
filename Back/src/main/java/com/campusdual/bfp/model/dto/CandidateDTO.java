@@ -3,6 +3,7 @@ package com.campusdual.bfp.model.dto;
 import com.campusdual.bfp.model.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 public class CandidateDTO {

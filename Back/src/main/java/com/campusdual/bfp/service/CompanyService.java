@@ -19,7 +19,7 @@ import java.nio.file.AccessDeniedException;
 @Lazy
 public class CompanyService {
 
-    private static final long  role_id = 2;
+    public static final long COMPANY_ROLE = 2;
 
     @Autowired
     private CompanyDao companyDao;
@@ -29,17 +29,17 @@ public class CompanyService {
 
 
     @Transactional
-    public Company registerNewCandidate(UserDTO userDTO, CompanyDTO companyDTO) {
+    public Company registerNewCompany(CompanyDTO companyDTO) {
 
-        if (userService.existsByLogin(userDTO.getLogin())){
+        if (userService.existsByLogin(companyDTO.getUser().getLogin())){
             throw new IllegalArgumentException("Login name already exists");
         }
 
         User user = userService.registerNewUser(
-                userDTO.getLogin(),
-                userDTO.getPassword(),
-                userDTO.getEmail(),
-                role_id);
+                companyDTO.getUser().getLogin(),
+                companyDTO.getUser().getPassword(),
+                companyDTO.getUser().getEmail(),
+                COMPANY_ROLE);
 
 
         Company company = new Company();
@@ -61,7 +61,7 @@ public class CompanyService {
     }
 
     @Transactional(readOnly = true)
-    public Company getCandidateLogged() throws AccessDeniedException {
+    public Company getCompanyLogged() throws AccessDeniedException {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
         if (auth != null && auth.isAuthenticated() && auth.getPrincipal() instanceof UserDetails) {
