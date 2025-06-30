@@ -5,6 +5,7 @@ import com.campusdual.bfp.model.User;
 import com.campusdual.bfp.model.dto.SignupDTO;
 import com.campusdual.bfp.model.dto.UserDTO;
 import com.campusdual.bfp.service.UserService;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -71,14 +72,9 @@ public class AuthController {
             UserDTO response = new UserDTO(
                     token,
                     authenticatedUser.getId(),
-                    authenticatedUser.getLogin(),
-                    authenticatedUser.getName(),
                     authenticatedUser.getEmail(),
-                    authenticatedUser.getCif(),
-                    authenticatedUser.getTelephone(),
-                    authenticatedUser.getAddress(),
-                    authenticatedUser.getLogin()
-
+                    authenticatedUser.getLogin(),
+                    authenticatedUser.getRole_id()
             );
 
             return ResponseEntity.ok(response);
@@ -94,7 +90,7 @@ public class AuthController {
             return ResponseEntity.status(HttpStatus.CONFLICT).body("User already exists.");
         }
 
-        this.userService.registerNewUser(request.getLogin(), request.getPassword());
+        this.userService.registerNewUser(request.getLogin(), request.getPassword(), request.getEmail(), request.getRole_id());
         return ResponseEntity.status(HttpStatus.CREATED).body("User successfully registered.");
     }
 }

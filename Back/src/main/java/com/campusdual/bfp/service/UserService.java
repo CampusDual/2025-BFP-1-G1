@@ -50,20 +50,22 @@ public class UserService implements UserDetailsService {
         return user != null;
     }
     @Transactional
-    public void registerNewUser(String username, String password) {
+    public User registerNewUser(String login, String password, String email, long role_id) {
         User user = new User();
-        user.setLogin(username);
-        user.setName(username);
+        user.setLogin(login);
+        user.setEmail(email);
         user.setPassword(this.passwordEncoder().encode(password));
         User savedUser = this.userDao.saveAndFlush(user);
 
-        Role role = this.roleDao.findByRoleName("ROLE_USER");
+        Role role = this.roleDao.findById(role_id).orElseThrow(() -> new IllegalArgumentException("Role not found"));
         if (role != null) {
             UserRole userRole = new UserRole();
             userRole.setUser(savedUser);
             userRole.setRole(role);
             this.userRoleDao.saveAndFlush(userRole);
         }
+
+        return savedUser;
     }
 
     public User getUserLogged() throws AccessDeniedException {
@@ -78,6 +80,14 @@ public class UserService implements UserDetailsService {
         }
 
         throw new AccessDeniedException("Authenticated principal is not a valid User instance or user not found. Access Denied.");
+    }
+
+
+
+    @Transactional
+    public boolean existsByLogin(String login) {
+        User user = this.userDao.findByLogin(login);
+        return user != null;
     }
 
     @Bean

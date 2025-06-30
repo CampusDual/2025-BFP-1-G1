@@ -1,41 +1,31 @@
 package com.campusdual.bfp.model.dto;
 
+import com.campusdual.bfp.model.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import java.util.Date;
+
 public class CandidateDTO {
-    private String token;
     private Long id;
-    private String login;
     private String name;
-    private String username;
-    private Long email;        // <-- ¡Debe ser Long!
+    private String surname;
     private String phone;
-    private String role;
-    @JsonIgnore
-    private String password;
+    private UserDTO user;
+    private Date birthDate;
 
     public CandidateDTO() {
     }
 
-    public CandidateDTO(String token, Long id, String login, String name, String username, Long email, String phone, String role, String password) {
-        this.token = token;
+    public CandidateDTO( Long id,  String name, String surname,  String phone, UserDTO user, Date birthDate) {
         this.id = id;
-        this.login = login;
         this.name = name;
-        this.username = username;
-        this.email = email;
+        this.surname = surname;
         this.phone = phone;
-        this.role = role;
-        this.password = password;
+        this.user = user;
+        this.birthDate = birthDate;
+
     }
 
-    public String getToken() {
-        return token;
-    }
-
-    public void setToken(String token) {
-        this.token = token;
-    }
 
     public Long getId() {
         return id;
@@ -43,14 +33,6 @@ public class CandidateDTO {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public String getLogin() {
-        return login;
-    }
-
-    public void setLogin(String login) {
-        this.login = login;
     }
 
     public String getName() {
@@ -61,20 +43,12 @@ public class CandidateDTO {
         this.name = name;
     }
 
-    public String getUsername() {
-        return username;
+    public String getSurname() {
+        return surname;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public Long getEmail() {
-        return email;
-    }
-
-    public void setEmail(Long email) {
-        this.email = email;
+    public void setSurname(String surname) {
+        this.surname = surname;
     }
 
     public String getPhone() {
@@ -85,19 +59,19 @@ public class CandidateDTO {
         this.phone = phone;
     }
 
-    public String getRole() {
-        return role;
+    public UserDTO getUser() {
+        return user;
     }
 
-    public void setRole(String role) {
-        this.role = role;
+    public void setUser(UserDTO user) {
+        this.user = user;
     }
 
-    public String getPassword() {
-        return password;
+    public Date getBirthDate() {
+        return birthDate;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setBirthDate(Date birthDate) {
+        this.birthDate = birthDate;
     }
 }

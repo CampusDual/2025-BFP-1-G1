@@ -1,9 +1,9 @@
 package com.campusdual.bfp.service;
 
-import com.campusdual.bfp.model.Candidate;
+import com.campusdual.bfp.model.Company;
 import com.campusdual.bfp.model.User;
-import com.campusdual.bfp.model.dao.CandidateDao;
-import com.campusdual.bfp.model.dto.CandidateDTO;
+import com.campusdual.bfp.model.dao.CompanyDao;
+import com.campusdual.bfp.model.dto.CompanyDTO;
 import com.campusdual.bfp.model.dto.UserDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -17,17 +17,20 @@ import java.nio.file.AccessDeniedException;
 
 @Service
 @Lazy
-public class CandidateService {
+public class CompanyService {
+
+    private static final long  role_id = 2;
 
     @Autowired
-    private CandidateDao candidateDao;
+    private CompanyDao companyDao;
 
     @Autowired
     private UserService userService;
 
 
     @Transactional
-    public Candidate registerNewCandidate(UserDTO userDTO, CandidateDTO candidateDTO) {
+    public Company registerNewCandidate(UserDTO userDTO, CompanyDTO companyDTO) {
+
         if (userService.existsByLogin(userDTO.getLogin())){
             throw new IllegalArgumentException("Login name already exists");
         }
@@ -36,32 +39,36 @@ public class CandidateService {
                 userDTO.getLogin(),
                 userDTO.getPassword(),
                 userDTO.getEmail(),
-                3);  // role_id fijo para candidatos
+                role_id);
 
-        Candidate candidate = new Candidate();
-        candidate.setUser(user);
-        candidate.setName(candidateDTO.getName());
-        candidate.setSurname(candidateDTO.getSurname());
-        candidate.setPhone(candidateDTO.getPhone());
 
-        return candidateDao.saveAndFlush(candidate);
+        Company company = new Company();
+        company.setUser(user);
+        company.setName(companyDTO.getName());
+        company.setCif(companyDTO.getCif());
+        company.setWeb(companyDTO.getWeb());
+        company.setAddress(companyDTO.getAddress());
+        company.setPhone(companyDTO.getPhone());
+
+        return companyDao.saveAndFlush(company);
+
     }
 
     @Transactional
     public boolean existsByName(String name) {
-        Candidate candidate = this.candidateDao.findByName(name);
-        return candidate != null;
+        Company company = this.companyDao.findByName(name);
+        return company != null;
     }
 
     @Transactional(readOnly = true)
-    public Candidate getCandidateLogged() throws AccessDeniedException {
+    public Company getCandidateLogged() throws AccessDeniedException {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
         if (auth != null && auth.isAuthenticated() && auth.getPrincipal() instanceof UserDetails) {
             String username = ((UserDetails) auth.getPrincipal()).getUsername();
-            Candidate candidate = candidateDao.findByUserLogin(username);
-            if (candidate != null) {
-                return candidate;
+            Company company = companyDao.findByUserLogin(username);
+            if (company != null) {
+                return company;
             }
         }
 

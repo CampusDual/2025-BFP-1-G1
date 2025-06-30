@@ -1,30 +1,33 @@
 package com.campusdual.bfp.model;
 
 import javax.persistence.*;
-import java.util.Date;
-
 @Entity
-@Table(name = "candidate")
-public class Candidate {
+@Table(name = "company")
+public class Company {
+
     @Id
     @GeneratedValue( strategy = GenerationType.IDENTITY )
     private long id;
 
     @Column
+    private String cif;
+
+    @Column
     private String name;
 
     @Column
-    private String surname;
-
-    @Column(name = "telephone")
     private String phone;
+
+    @Column
+    private String address;
 
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 
-    @Column(name = "birth_date")
-    private Date birthDate;
+    @Column
+    private String web;
+
 
     public long getId() {
         return id;
@@ -32,6 +35,14 @@ public class Candidate {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public String getCif() {
+        return cif;
+    }
+
+    public void setCif(String cif) {
+        this.cif = cif;
     }
 
     public String getName() {
@@ -42,20 +53,20 @@ public class Candidate {
         this.name = name;
     }
 
-    public String getSurname() {
-        return surname;
-    }
-
-    public void setSurname(String surname) {
-        this.surname = surname;
-    }
-
     public String getPhone() {
         return phone;
     }
 
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 
     public User getUser() {
@@ -66,11 +77,11 @@ public class Candidate {
         this.user = user;
     }
 
-    public Date getBirthDate() {
-        return birthDate;
+    public String getWeb() {
+        return web;
     }
 
-    public void setBirthDate(Date birthDate) {
-        this.birthDate = birthDate;
+    public void setWeb(String web) {
+        this.web = web;
     }
 }

@@ -27,20 +27,8 @@ public class User implements UserDetails {
     @GeneratedValue( strategy = GenerationType.IDENTITY )
     private long id;
 
-    @Column(name="cif")
-    private String cif;
-
-    @Column
-    private String name;
-
-    @Column
-    private String telephone;
-
     @Column
     private String email;
-
-    @Column
-    private String address;
 
     @Column
     private String login;
@@ -55,36 +43,12 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     private Set<UserRole> userRoles = new HashSet<>();
 
-    public Long getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
-    }
-
-    public String getCif() {
-        return cif;
-    }
-
-    public void setCif(String cif) {
-        this.cif = cif;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getTelephone() {
-        return telephone;
-    }
-
-    public void setTelephone(String telephone) {
-        this.telephone = telephone;
     }
 
     public String getEmail() {
@@ -95,18 +59,16 @@ public class User implements UserDetails {
         this.email = email;
     }
 
-    public String getAddress(){return this.address;}
-
-    public void setAddress(String address){
-        this.address = address;
-    }
-
     public String getLogin() {
         return login;
     }
 
     public void setLogin(String login) {
         this.login = login;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public int getRole_id() {
@@ -117,8 +79,12 @@ public class User implements UserDetails {
         this.role_id = role_id;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public Set<UserRole> getUserRoles() {
+        return userRoles;
+    }
+
+    public void setUserRoles(Set<UserRole> userRoles) {
+        this.userRoles = userRoles;
     }
 
     @Override
