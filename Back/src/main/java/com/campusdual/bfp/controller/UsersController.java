@@ -19,15 +19,16 @@ public class UsersController {
 
     @GetMapping("/getUser")
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<?> getLoggedUser() {
+    public ResponseEntity<User> getLoggedUser() {
         try {
-            User user = userService.getUserLogged();
-            return ResponseEntity.ok(user);
+            return ResponseEntity.ok(userService.getUserLogged());
         } catch (AccessDeniedException e) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Access Denied: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
-}
 
+
+
+}

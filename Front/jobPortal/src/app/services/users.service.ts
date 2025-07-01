@@ -1,3 +1,4 @@
+import { UserData } from './../model/userData';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, catchError, map, throwError } from 'rxjs';
 import {
@@ -5,7 +6,6 @@ import {
   HttpHeaders,
   HttpErrorResponse,
 } from '@angular/common/http';
-import { User } from '../model/user';
 import { jwtDecode } from 'jwt-decode';
 
 @Injectable({
@@ -14,9 +14,10 @@ import { jwtDecode } from 'jwt-decode';
 export class UsersService {
   private urlEnpoint: string = 'http://localhost:30030/auth';
   private urlUserProfile: string = 'http://localhost:30030/user';
+  private urlUserData: string = 'http://localhost:30030/userdata';
 
-  private userSubject = new BehaviorSubject<User | null>(null);
-  user$ = this.userSubject.asObservable();
+  private userDataSubject = new BehaviorSubject<UserData | null>(null);
+  userData$ = this.userDataSubject.asObservable();
 
   constructor(private http: HttpClient) {}
 
@@ -34,39 +35,9 @@ export class UsersService {
       .pipe(catchError(this.handleError));
   }
 
-  getUserProfile(): Observable<User> {
-    const token = localStorage.getItem('token');
-    if (!token) {
-      return throwError(
-        () =>
-          new Error(
-            'No se encontró el token de autenticación. Por favor, inicia sesión.'
-          )
-      );
-    }
-
-    const headers = new HttpHeaders({
-      Authorization: `Bearer ${token}`,
-    });
-    return this.http
-      .get<User>(`${this.urlUserProfile}/getUser`, { headers })
-      .pipe(
-        map((user) => {
-          this.userSubject.next(user);
-          return user;
-        }),
-        catchError(this.handleError)
-      );
+  getUserValue(): UserData | null {
+    return this.userDataSubject.value;
   }
-
-  setUser(user: User) {
-    this.userSubject.next(user);
-  }
-
-  getUserValue(): User | null {
-    return this.userSubject.value;
-  }
-
   private handleError(error: HttpErrorResponse) {
     let errorMessage = 'Ocurrió un error desconocido.';
     if (error.error instanceof ErrorEvent) {
@@ -79,16 +50,13 @@ export class UsersService {
     console.error(errorMessage);
     return throwError(() => new Error(errorMessage));
   }
-
   isLoggedIn(): boolean {
     const token = localStorage.getItem('token');
     return !!token;
   }
-
   isTokenExpired(): boolean {
     const token = localStorage.getItem('token');
     if (!token) return true;
-
     try {
       const decoded: any = jwtDecode(token);
       const now = Math.floor(Date.now() / 1000);
@@ -97,9 +65,32 @@ export class UsersService {
       return true;
     }
   }
-
   logout(): void {
     localStorage.removeItem('token');
-    this.userSubject.next(null);
+    this.userDataSubject.next(null);
+  }
+
+  getUserData(): Observable<UserData> {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      return throwError(
+        () =>
+          new Error(
+            'No se encontró el token de autentificación. Por favor, inicia sesión.'
+          )
+      );
+    }
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+    });
+    return this.http
+      .get<UserData>(`${this.urlUserData}/getuserdata`, { headers })
+      .pipe(
+        map((userData) => {
+          this.userDataSubject.next(userData);
+          return userData;
+        }),
+        catchError(this.handleError)
+      );
   }
 }

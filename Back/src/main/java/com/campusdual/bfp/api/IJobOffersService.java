@@ -1,7 +1,8 @@
 package com.campusdual.bfp.api;
 
-import com.campusdual.bfp.model.User;
+import com.campusdual.bfp.model.Company;
 import com.campusdual.bfp.model.dto.JobOffersDTO;
+import com.campusdual.bfp.model.dto.UserDataDTO;
 
 import java.util.List;
 
@@ -11,9 +12,9 @@ public interface IJobOffersService {
 
     JobOffersDTO queryJobOffer(JobOffersDTO jobOffersDTO);
     List<JobOffersDTO> queryAllJobOffer();
-    List<JobOffersDTO> queryAllJobOfferByUser(User user);
+    List<JobOffersDTO> queryAllJobOfferByCompany(UserDataDTO userDataDTO);
     long insertJobOffer(JobOffersDTO jobOffersDTO);
-    long updateJobOffer(JobOffersDTO jobOffersDTO);
-    long deleteJobOffer(JobOffersDTO jobOffersDTO);
+  /*  long updateJobOffer(JobOffersDTO jobOffersDTO);
+    long deleteJobOffer(JobOffersDTO jobOffersDTO);*/
 
 }

@@ -4,6 +4,7 @@ import com.campusdual.bfp.auth.JWTUtil;
 import com.campusdual.bfp.model.User;
 import com.campusdual.bfp.model.dto.SignupDTO;
 import com.campusdual.bfp.model.dto.UserDTO;
+import com.campusdual.bfp.service.UserDataService;
 import com.campusdual.bfp.service.UserService;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +36,9 @@ public class AuthController {
 
     @Autowired
     UserService userService;
+
+    @Autowired
+    UserDataService userDataService;
 
     @Autowired
     JWTUtil jwtUtils;
@@ -86,7 +90,7 @@ public class AuthController {
 
     @PostMapping("/signup")
     public ResponseEntity<String> registerUser(@RequestBody SignupDTO request) {
-        if (this.userService.existsByUsername(request.getLogin())) {
+        if (this.userDataService.getUserData().getUser().getLogin().equals(request.getLogin())) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body("User already exists.");
         }
 

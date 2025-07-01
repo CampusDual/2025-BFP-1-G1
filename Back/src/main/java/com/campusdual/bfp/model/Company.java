@@ -15,7 +15,7 @@ public class Company {
     @Column
     private String name;
 
-    @Column
+    @Column( name = "telephone" )
     private String phone;
 
     @Column

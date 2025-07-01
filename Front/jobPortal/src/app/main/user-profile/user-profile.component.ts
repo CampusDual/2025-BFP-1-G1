@@ -1,3 +1,4 @@
+import { UserData } from './../../model/userData';
 import { CompanyOfferListComponent } from './company-offer-list/company-offer-list.component';
 import { Component, HostListener, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
@@ -13,7 +14,7 @@ import { JobOfferService } from 'src/app/services/job-offer.service';
 })
 export class UserProfileComponent implements OnInit {
   jobOffers!: JobOffer[];
-  user: User | null = null;
+  userData: UserData | null = null;
   isMobile = false;
 
   @ViewChild('CompanyOfferListComponent')
@@ -37,8 +38,8 @@ export class UserProfileComponent implements OnInit {
   }
 
   private loadUserData(): void {
-    this.usersService.getUserProfile().subscribe({
-      next: (data) => (this.user = data),
+    this.usersService.getUserData().subscribe({
+      next: (data) => (this.userData = data),
       error: (err) => console.error('No se pudo obtener el usuario', err),
     });
   }

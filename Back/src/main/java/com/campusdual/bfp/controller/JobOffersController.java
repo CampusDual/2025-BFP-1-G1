@@ -31,8 +31,8 @@ public class JobOffersController {
     @GetMapping(value = "/getAll")
     public ResponseEntity<List<JobOffersDTO>> queryAllJobOffer() {
         return ResponseEntity.ok(jobOffersService.queryAllJobOffer());
-    }
 
+    }
     @PostMapping(value = "/create")
     public ResponseEntity<?> createJobOffer(@Valid @RequestBody JobOffersDTO jobOffersDTO) {
         try {

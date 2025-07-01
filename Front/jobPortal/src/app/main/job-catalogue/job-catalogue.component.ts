@@ -11,17 +11,16 @@ import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 export class JobCatalogueComponent implements OnInit {
   jobOffers: JobOffer[] = [];
   gridCols: number = 3;
-  sortBy: 'id' | 'title' | 'releaseDate' | 'description' | 'user' | 'email' =
+  sortBy: 'id' | 'title' | 'releaseDate' | 'description' | 'company' | 'email' =
     'releaseDate';
   sortDirection: 'asc' | 'desc' = 'desc';
   searchTerm: string = '';
   filteredJobOffers: JobOffer[] = [];
 
-
   constructor(
     private jobOfferService: JobOfferService,
     private breakpointObserver: BreakpointObserver
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.jobOfferService.getJobOffers().subscribe((offers) => {
@@ -53,7 +52,6 @@ export class JobCatalogueComponent implements OnInit {
           }
         }
       });
-
   }
   isTruncated(element: HTMLElement): boolean {
     return element.scrollWidth > element.clientWidth;
@@ -74,10 +72,10 @@ export class JobCatalogueComponent implements OnInit {
         valueA = valueA ? new Date(valueA as any).getTime() : 0;
         valueB = valueB ? new Date(valueB as any).getTime() : 0;
       }
-     if (field === 'user') {
-      valueA = a.user?.name ?? 0;
-      valueB = b.user?.name ?? 0;
-    }
+      if (field === 'company') {
+        valueA = a.company?.name ?? 0;
+        valueB = b.company?.name ?? 0;
+      }
 
       if (typeof valueA === 'string' && typeof valueB === 'string') {
         return this.sortDirection === 'asc'
@@ -92,7 +90,6 @@ export class JobCatalogueComponent implements OnInit {
       if (valueA < valueB) return this.sortDirection === 'asc' ? -1 : 1;
       if (valueA > valueB) return this.sortDirection === 'asc' ? 1 : -1;
       return 0;
-
     });
   }
 
@@ -113,5 +110,3 @@ export class JobCatalogueComponent implements OnInit {
     this.jobOffers = currentOffers;
   }
 }
-
-

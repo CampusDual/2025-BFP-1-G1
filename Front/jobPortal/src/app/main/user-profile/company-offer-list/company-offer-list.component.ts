@@ -11,7 +11,7 @@ import { JobOfferService } from 'src/app/services/job-offer.service';
 export class CompanyOfferListComponent implements OnInit {
   jobOffers: JobOffer[] = [];
   gridCols: number = 3;
-  sortBy: 'id' | 'title' | 'releaseDate' | 'description' | 'user' | 'email' =
+  sortBy: 'id' | 'title' | 'releaseDate' | 'description' | 'company' | 'email' =
     'releaseDate';
   sortDirection: 'asc' | 'desc' = 'desc';
   searchTerm: string = '';
@@ -54,13 +54,13 @@ export class CompanyOfferListComponent implements OnInit {
       });
   }
 
-   isTruncated(element: HTMLElement): boolean {
+  isTruncated(element: HTMLElement): boolean {
     return element.scrollWidth > element.clientWidth;
   }
 
   sortOffers(field: keyof JobOffer, direction?: 'asc' | 'desc') {
     if (this.sortBy === field) {
-      this.sortDirection = this.sortDirection ==='asc' ? 'desc' : 'asc';
+      this.sortDirection = this.sortDirection === 'asc' ? 'desc' : 'asc';
     } else {
       this.sortBy = field;
       this.sortDirection = 'desc';

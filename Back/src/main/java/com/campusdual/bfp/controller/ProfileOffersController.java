@@ -1,9 +1,11 @@
 package com.campusdual.bfp.controller;
 
 import com.campusdual.bfp.api.IJobOffersService;
-import com.campusdual.bfp.model.User;
+import com.campusdual.bfp.model.Company;
 import com.campusdual.bfp.model.dto.JobOffersDTO;
+import com.campusdual.bfp.model.dto.UserDataDTO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
@@ -17,6 +19,7 @@ public class ProfileOffersController {
     @Autowired
     private IJobOffersService jobOffersService;
 
+
     @GetMapping(value= "/testController")
     public String testJobOffersController() {
         return "profileOffers controller works!";
@@ -28,13 +31,18 @@ public class ProfileOffersController {
     }
 
     @GetMapping(value = "/getAll")
-    public List<JobOffersDTO> getOffersForCurrentUser() {
+    public List<JobOffersDTO> getOffersForCurrentCompany() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        User currentUser = (User) authentication.getPrincipal();
-        return jobOffersService.queryAllJobOfferByUser(currentUser);
+        Object principal = authentication.getPrincipal();
+        if(principal instanceof UserDataDTO) {
+            UserDataDTO currentCompany = (UserDataDTO) principal;
+            return jobOffersService.queryAllJobOfferByCompany(currentCompany);
+        } else {
+            throw new AccessDeniedException("Authenticated principal is not a valid User instance");
+        }
     }
 
-    @PutMapping (value="/update")
+  /*  @PutMapping (value="/update")
     public long updateJobOffer(@RequestBody JobOffersDTO jobOffersDTO){
         return jobOffersService.updateJobOffer(jobOffersDTO);
 
@@ -43,6 +51,6 @@ public class ProfileOffersController {
     @DeleteMapping (value="/delete")
     public long deleteJobOffer(@RequestBody JobOffersDTO jobOffersDTO){
         return jobOffersService.deleteJobOffer(jobOffersDTO);
-    }
+    }*/
 
 }

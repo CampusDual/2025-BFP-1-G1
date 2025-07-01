@@ -1,10 +1,11 @@
 package com.campusdual.bfp.service;
 
 import com.campusdual.bfp.api.IJobOffersService;
+import com.campusdual.bfp.model.Company;
 import com.campusdual.bfp.model.JobOffer;
-import com.campusdual.bfp.model.User;
 import com.campusdual.bfp.model.dao.JobOffersDao;
 import com.campusdual.bfp.model.dto.JobOffersDTO;
+import com.campusdual.bfp.model.dto.UserDataDTO;
 import com.campusdual.bfp.model.dto.dtomapper.JobOffersMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -28,19 +29,23 @@ public class JobOffersService implements IJobOffersService {
 
     }
 
+    // TODO mejorar la seguridad de los metodos comprobando si el usuario es el dueño de la oferta
     @Override
     public List<JobOffersDTO> queryAllJobOffer() {
-        return JobOffersMapper.INSTANCE.toDTOList(jobOffersDao.findAll());
+        List<JobOffer> list= jobOffersDao.findAll();
+        List<JobOffersDTO>listDto= JobOffersMapper.INSTANCE.toDTOList(list);;
+        return listDto;
     }
 
     @Override
-    public List<JobOffersDTO> queryAllJobOfferByUser(User user) {
-        return JobOffersMapper.INSTANCE.toDTOList(jobOffersDao.findByUser(user));
+    public List<JobOffersDTO> queryAllJobOfferByCompany(UserDataDTO userDataDTO) {
+        return JobOffersMapper.INSTANCE.toDTOList(jobOffersDao.findByCompany(userDataDTO));
     }
 
 
     @Override
     public long insertJobOffer(JobOffersDTO jobOffersDTO) {
+
         jobOffersDTO.validateDescription();
 
         if (jobOffersDTO.getDescription() != null) {
@@ -53,7 +58,8 @@ public class JobOffersService implements IJobOffersService {
         return jobOffer.getId();
     }
 
-    @Override
+  /*  TODO implementar métodos.
+  @Override
     public long updateJobOffer(JobOffersDTO jobOffersDTO) {
         return insertJobOffer(jobOffersDTO);
     }
@@ -64,5 +70,5 @@ public class JobOffersService implements IJobOffersService {
         JobOffer jobOffer = JobOffersMapper.INSTANCE.toEntity(jobOffersDTO);
         jobOffersDao.delete(jobOffer);
         return id;
-    }
+    }*/
 }
