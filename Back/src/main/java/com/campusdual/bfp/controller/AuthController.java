@@ -2,11 +2,10 @@ package com.campusdual.bfp.controller;
 
 import com.campusdual.bfp.auth.JWTUtil;
 import com.campusdual.bfp.model.User;
-import com.campusdual.bfp.model.dto.SignupDTO;
 import com.campusdual.bfp.model.dto.UserDTO;
+import com.campusdual.bfp.model.dto.UserDataDTO;
 import com.campusdual.bfp.service.UserDataService;
 import com.campusdual.bfp.service.UserService;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -89,12 +88,24 @@ public class AuthController {
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<String> registerUser(@RequestBody SignupDTO request) {
-        if (this.userDataService.getUserData().getUser().getLogin().equals(request.getLogin())) {
+    public ResponseEntity<String> registerUser(@RequestBody UserDataDTO request) {
+
+        if (this.userService.existsByLogin(request.getUser().getLogin())) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body("User already exists.");
         }
 
-        this.userService.registerNewUser(request.getLogin(), request.getPassword(), request.getEmail(), request.getRole_id());
+        if(request.getUser().getRole_id() == 3){
+            this.userService.registerNewCandidate(
+                    request.getUser().getLogin(),
+                    request.getUser().getPassword(),
+                    request.getUser().getEmail(),
+                    request.getUser().getRole_id(),
+                    request.getCandidate().getName(),
+                    request.getCandidate().getSurname(),
+                    request.getCandidate().getPhone(),
+                    request.getCandidate().getBirthDate()
+            );
+        }
         return ResponseEntity.status(HttpStatus.CREATED).body("User successfully registered.");
     }
 }

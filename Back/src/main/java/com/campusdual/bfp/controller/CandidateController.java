@@ -25,23 +25,6 @@ public class CandidateController {
         return "candidate controller works!";
     }
 
-    @PostMapping("/registerCandidate")
-    public ResponseEntity<CandidateDTO> registerCandidate(@RequestBody CandidateDTO candidateDTO) {
-        if (candidateDTO.getUser() == null || 
-            candidateDTO.getUser().getLogin() == null || 
-            candidateDTO.getUser().getPassword() == null) {
-            return ResponseEntity.badRequest().build();
-        }
-        
-        try {
-            Candidate candidate = candidateService.registerNewCandidate(candidateDTO);
-            CandidateDTO result = CandidateMapper.INSTANCE.toDTO(candidate);
-            return ResponseEntity.ok(result);
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(null);
-        }
-    }
-
     @GetMapping("/getCandidate")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<?> getLoggedCandidate() {

@@ -29,32 +29,6 @@ public class CandidateService {
 
 
     @Transactional
-    public Candidate registerNewCandidate( CandidateDTO candidateDTO) {
-        if (userService.existsByLogin(candidateDTO.getUser().getLogin())){
-            throw new IllegalArgumentException("Login name already exists");
-        }
-
-        User user = userService.registerNewUser(
-                candidateDTO.getUser().getLogin(),
-                candidateDTO.getUser().getPassword(),
-                candidateDTO.getUser().getEmail(),
-                CANDIDATE_ROLE);
-
-        if (user == null) {
-            throw new IllegalArgumentException("User id is null");
-        }
-
-        Candidate candidate = new Candidate();
-        candidate.setUser(user);
-        candidate.setName(candidateDTO.getName());
-        candidate.setSurname(candidateDTO.getSurname());
-        candidate.setPhone(candidateDTO.getPhone());
-        candidate.setBirthDate(candidateDTO.getBirthDate());
-
-        return candidateDao.saveAndFlush(candidate);
-    }
-
-    @Transactional
     public boolean existsByName(String name) {
         Candidate candidate = this.candidateDao.findByName(name);
         return candidate != null;

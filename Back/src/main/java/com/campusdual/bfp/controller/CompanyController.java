@@ -24,22 +24,6 @@ public class CompanyController {
             return "company controller works!";
         }
 
-        @PostMapping("/registerCompany")
-        public ResponseEntity<CompanyDTO> registerCompany(@RequestBody CompanyDTO companyDTO) {
-            if (companyDTO.getUser() == null ||
-                    companyDTO.getUser().getLogin() == null ||
-                    companyDTO.getUser().getPassword() == null) {
-                return ResponseEntity.badRequest().build();
-            }
-
-            try {
-                Company company = companyService.registerNewCompany(companyDTO);
-                CompanyDTO result = CompanyMapper.INSTANCE.toDTO(company);
-                return ResponseEntity.ok(result);
-            } catch (IllegalArgumentException e) {
-                return ResponseEntity.badRequest().body(null);
-            }
-        }
 
         @GetMapping("/getCompany")
         @PreAuthorize("isAuthenticated()")

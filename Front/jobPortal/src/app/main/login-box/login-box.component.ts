@@ -44,7 +44,7 @@ export class LoginBoxComponent {
           console.log('Login correcto:', response);
 
           localStorage.setItem('token', response.token);
-          this.router.navigate(['/main/userprofile', { username }]);
+          this.router.navigate(['/main/userprofile']);
         },
         error: (error) => {
           console.error('Login fallido:', error);

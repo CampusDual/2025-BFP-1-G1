@@ -1,10 +1,18 @@
 package com.campusdual.bfp.service;
+import com.campusdual.bfp.model.Candidate;
 import com.campusdual.bfp.model.Role;
 import com.campusdual.bfp.model.User;
 import com.campusdual.bfp.model.UserRole;
+import com.campusdual.bfp.model.dao.CandidateDao;
 import com.campusdual.bfp.model.dao.RoleDao;
 import com.campusdual.bfp.model.dao.UserDao;
 import com.campusdual.bfp.model.dao.UserRoleDao;
+import com.campusdual.bfp.model.dto.CandidateDTO;
+import com.campusdual.bfp.model.dto.CompanyDTO;
+import com.campusdual.bfp.model.dto.UserDTO;
+import com.campusdual.bfp.model.dto.UserDataDTO;
+import com.campusdual.bfp.model.dto.dtomapper.CandidateMapper;
+import com.campusdual.bfp.model.dto.dtomapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Lazy;
@@ -20,6 +28,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 
 import java.nio.file.AccessDeniedException;
+import java.util.Date;
 
 @Service
 @Lazy
@@ -33,6 +42,9 @@ public class UserService implements UserDetailsService {
 
     @Autowired
     private UserRoleDao userRoleDao;
+
+    @Autowired
+    private CandidateDao candidateDao;
 
 
     @Override
@@ -50,19 +62,40 @@ public class UserService implements UserDetailsService {
         User user = this.userDao.findByLogin(username);
         return user != null;
     }
-    public User registerNewUser(String login, String password, String email, long roleId) {
+
+    @Transactional
+    public UserDataDTO registerNewCandidate(String login, String password, String email, long roleId,String name, String surname, String phone, Date birthDate) {
         User user = new User();
         user.setLogin(login);
         user.setPassword(this.passwordEncoder().encode(password));
         user.setEmail(email);
+
 
         Role role = roleDao.findById(roleId)
                 .orElseThrow(() -> new RuntimeException("Role not found with id: " + roleId));
 
         user.setRole(role);
 
-        return userDao.saveAndFlush(user);
+        Candidate canditate= new Candidate();
+        canditate.setName(name);
+        canditate.setSurname(surname);
+        canditate.setPhone(phone);
+        canditate.setBirthDate(birthDate);
+        canditate.setUser(user);
+
+        userDao.saveAndFlush(user);
+        candidateDao.saveAndFlush(canditate);
+
+        UserDataDTO userDataDTO= new UserDataDTO();
+        userDataDTO.setUser(UserMapper.INSTANCE.toDTO(user));
+        userDataDTO.setCandidate(CandidateMapper.INSTANCE.toDTO(canditate));
+
+        return userDataDTO;
     }
+
+
+
+
 
     public User getUserLogged() throws AccessDeniedException {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -82,8 +115,7 @@ public class UserService implements UserDetailsService {
 
     @Transactional
     public boolean existsByLogin(String login) {
-        User user = this.userDao.findByLogin(login);
-        return user != null;
+        return userDao.findByLogin(login) != null;
     }
 
     @Bean

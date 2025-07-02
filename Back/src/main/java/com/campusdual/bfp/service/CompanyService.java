@@ -27,33 +27,6 @@ public class CompanyService {
     @Autowired
     private UserService userService;
 
-
-    @Transactional
-    public Company registerNewCompany(CompanyDTO companyDTO) {
-
-        if (userService.existsByLogin(companyDTO.getUser().getLogin())){
-            throw new IllegalArgumentException("Login name already exists");
-        }
-
-        User user = userService.registerNewUser(
-                companyDTO.getUser().getLogin(),
-                companyDTO.getUser().getPassword(),
-                companyDTO.getUser().getEmail(),
-                COMPANY_ROLE);
-
-
-        Company company = new Company();
-        company.setUser(user);
-        company.setName(companyDTO.getName());
-        company.setCif(companyDTO.getCif());
-        company.setWeb(companyDTO.getWeb());
-        company.setAddress(companyDTO.getAddress());
-        company.setPhone(companyDTO.getPhone());
-
-        return companyDao.saveAndFlush(company);
-
-    }
-
     @Transactional
     public boolean existsByName(String name) {
         Company company = this.companyDao.findByName(name);
