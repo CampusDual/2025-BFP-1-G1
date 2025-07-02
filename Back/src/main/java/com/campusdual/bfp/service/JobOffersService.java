@@ -38,8 +38,8 @@ public class JobOffersService implements IJobOffersService {
     }
 
     @Override
-    public List<JobOffersDTO> queryAllJobOfferByCompany(UserDataDTO userDataDTO) {
-        return JobOffersMapper.INSTANCE.toDTOList(jobOffersDao.findByCompany(userDataDTO));
+    public List<JobOffersDTO> queryAllJobOfferByCompanyId(long id) {
+        return JobOffersMapper.INSTANCE.toDTOList(jobOffersDao.findByCompanyId(id));
     }
 
 

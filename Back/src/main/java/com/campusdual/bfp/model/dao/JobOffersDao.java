@@ -11,7 +11,7 @@ import java.util.List;
 @Repository
 public interface JobOffersDao extends JpaRepository<JobOffer, Long> {
 
-    List<JobOffer> findByCompany(UserDataDTO userDataDTO);
+    List<JobOffer> findByCompanyId(long id);
     Company findCompanyById(long id);
 
 }

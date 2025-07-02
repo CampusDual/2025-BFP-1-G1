@@ -4,6 +4,7 @@ import com.campusdual.bfp.api.IJobOffersService;
 import com.campusdual.bfp.model.Company;
 import com.campusdual.bfp.model.dto.JobOffersDTO;
 import com.campusdual.bfp.model.dto.UserDataDTO;
+import com.campusdual.bfp.service.UserDataService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.Authentication;
@@ -19,6 +20,9 @@ public class ProfileOffersController {
     @Autowired
     private IJobOffersService jobOffersService;
 
+    @Autowired
+    private UserDataService userDataService;
+
 
     @GetMapping(value= "/testController")
     public String testJobOffersController() {
@@ -33,13 +37,9 @@ public class ProfileOffersController {
     @GetMapping(value = "/getAll")
     public List<JobOffersDTO> getOffersForCurrentCompany() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        Object principal = authentication.getPrincipal();
-        if(principal instanceof UserDataDTO) {
-            UserDataDTO currentCompany = (UserDataDTO) principal;
-            return jobOffersService.queryAllJobOfferByCompany(currentCompany);
-        } else {
-            throw new AccessDeniedException("Authenticated principal is not a valid User instance");
-        }
+        UserDataDTO currentCompany = userDataService.getUserData();
+            return jobOffersService.queryAllJobOfferByCompanyId(currentCompany.getCompany().getId());
+
     }
 
   /*  @PutMapping (value="/update")

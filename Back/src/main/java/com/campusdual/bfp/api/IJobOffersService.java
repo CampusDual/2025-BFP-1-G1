@@ -12,7 +12,7 @@ public interface IJobOffersService {
 
     JobOffersDTO queryJobOffer(JobOffersDTO jobOffersDTO);
     List<JobOffersDTO> queryAllJobOffer();
-    List<JobOffersDTO> queryAllJobOfferByCompany(UserDataDTO userDataDTO);
+    List<JobOffersDTO> queryAllJobOfferByCompanyId(long id);
     long insertJobOffer(JobOffersDTO jobOffersDTO);
   /*  long updateJobOffer(JobOffersDTO jobOffersDTO);
     long deleteJobOffer(JobOffersDTO jobOffersDTO);*/
