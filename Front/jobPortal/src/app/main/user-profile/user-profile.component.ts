@@ -3,7 +3,6 @@ import { CompanyOfferListComponent } from './company-offer-list/company-offer-li
 import { Component, HostListener, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { JobOffer } from 'src/app/model/jobOffer';
-import { User } from 'src/app/model/user';
 import { UsersService } from 'src/app/services/users.service';
 import { JobOfferService } from 'src/app/services/job-offer.service';
 
@@ -16,6 +15,7 @@ export class UserProfileComponent implements OnInit {
   jobOffers!: JobOffer[];
   userData: UserData | null = null;
   isMobile = false;
+    role: number | undefined;
 
   @ViewChild('CompanyOfferListComponent')
   CompanyOfferListComponent!: CompanyOfferListComponent;
@@ -29,6 +29,16 @@ export class UserProfileComponent implements OnInit {
   ngOnInit(): void {
     this.checkIfMobile();
     this.loadUserData();
+    this.role = this.userData?.user.role_id;
+
+              // Ahora que tenemos el rol, redirigimos
+              if (this.role === 3) {
+                this.router.navigate(['/main/candidateprofile']);
+              } else if (this.role === 2) {
+                this.router.navigate(['/main/userprofile']);
+              } else {
+                this.router.navigate(['/main/catalogue']);
+              }
     this.loadJobOffers();
   }
 

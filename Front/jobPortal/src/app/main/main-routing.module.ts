@@ -7,6 +7,7 @@ import { CreateOfferComponent } from './user-profile/create-offer/create-offer.c
 import { authGuard } from '../guards/auth.guard';
 import { noAuthGuard } from '../guards/no-auth.guard';
 import { SignUpFormComponent } from './sign-up-form/sign-up-form.component';
+import { CandidateProfileComponent } from './candidate-profile/candidate-profile.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'catalogue', pathMatch: 'full' },
@@ -27,6 +28,11 @@ const routes: Routes = [
     component: SignUpFormComponent,
     canActivate: [noAuthGuard],
   },
+  {
+    path: 'candidateprofile',
+    component: CandidateProfileComponent,
+
+  }
 ];
 
 @NgModule({

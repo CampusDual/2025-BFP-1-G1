@@ -77,7 +77,7 @@ public class AuthController {
                     authenticatedUser.getId(),
                     authenticatedUser.getEmail(),
                     authenticatedUser.getLogin(),
-                    Math.toIntExact(authenticatedUser.getRole().getId())
+                    authenticatedUser.getRole().getId()
             );
 
             return ResponseEntity.ok(response);
