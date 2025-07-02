@@ -6,6 +6,8 @@ import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { CompanyService } from 'src/app/services/company.service';
 import { Company } from 'src/app/model/company';
+import { UsersService } from 'src/app/services/users.service';
+import { UserData } from 'src/app/model/userData';
 
 @Component({
   selector: 'app-create-offer',
@@ -13,7 +15,7 @@ import { Company } from 'src/app/model/company';
   styleUrls: ['./create-offer.component.css'],
 })
 export class CreateOfferComponent implements OnInit {
-  company: Company | null = null;
+  userData: UserData | null = null;
   offerForm!: FormGroup;
 
   // Contadores
@@ -23,7 +25,7 @@ export class CreateOfferComponent implements OnInit {
   maxDescChars = 4000;
 
   constructor(
-    private companyService: CompanyService,
+    private userService: UsersService,
     private fb: FormBuilder,
     private jobOfferService: JobOfferService,
     private router: Router,
@@ -42,12 +44,12 @@ export class CreateOfferComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.companyService.company$.subscribe((company) => {
-      this.company = company;
+    this.userService.userData$.subscribe((userData) => {
+      this.userData = userData;
     });
 
-    if (!this.company) {
-      this.companyService.getCompanyProfile().subscribe();
+    if (!this.userData) {
+      this.userService.getUserData().subscribe();
     }
 
     // Actualizar contadores
@@ -69,12 +71,12 @@ export class CreateOfferComponent implements OnInit {
   }
 
   onSubmit(): void {
-    if (this.offerForm.valid && this.company) {
+    if (this.offerForm.valid && this.userData) {
       const newOffer: JobOffer = {
         title: this.offerForm.value.title,
         description: this.offerForm.value.description,
-        company: this.company,
-        email: this.company.user.email,
+        company: this.userData.company,
+        email: this.userData.user.email,
         releaseDate: new Date(),
       };
 
