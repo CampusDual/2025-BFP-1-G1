@@ -14,7 +14,7 @@ import { User } from '../model/user';
   providedIn: 'root',
 })
 export class UsersService {
-  private urlEnpoint: string = 'http://localhost:30030/auth';
+  private urlEndpoint: string = 'http://localhost:30030/auth';
   private urlUserProfile: string = 'http://localhost:30030/user';
   private urlUserData: string = 'http://localhost:30030/userdata';
 
@@ -31,7 +31,7 @@ export class UsersService {
     });
 
     return this.http
-      .post(`${this.urlEnpoint}/signin`, body, {
+      .post(`${this.urlEndpoint}/signin`, body, {
         headers,
       })
       .pipe(
@@ -66,7 +66,11 @@ export class UsersService {
       company: undefined
     };
 
-    return this.http.post(`${this.urlEnpoint}/signup`, UserData).pipe(
+    return this.http.post(`${this.urlEndpoint}/signup`, UserData, {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json'
+      })
+    }).pipe(
       map((response: any) => {
         console.log('Registro exitoso:', response);
         return response;

@@ -27,7 +27,7 @@ const routes: Routes = [
     path: 'candidateprofile',
     component: CandidateProfileComponent,
   },
-  { path: 'sign-up', component: SignUpFormComponent, canActivate: [noAuthGuard] },
+  { path: 'signupform', component: SignUpFormComponent },
 ];
 
 @NgModule({

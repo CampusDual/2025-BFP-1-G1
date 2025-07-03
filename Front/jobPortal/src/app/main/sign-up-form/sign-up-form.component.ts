@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
+import { UsersService } from 'src/app/services/users.service';
 
 
 
@@ -38,7 +39,7 @@ export class SignUpFormComponent {
 
   constructor(
     private fb: FormBuilder,
-    /*private usersService: UsersService,*/
+    private usersService: UsersService,
     private router: Router,
     private snackBar: MatSnackBar
   ) {
@@ -49,10 +50,10 @@ export class SignUpFormComponent {
       surname: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       phone: ['', Validators.required, Validators.pattern('^[0-9]+$')],
-      birthdate: ['', Validators.required],
+      birthdate: ['', Validators.required, Validators.pattern('^(19|20)\\d\\d-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$')],
     });
   }
-/*
+
   signUp() {
     const errorMessage = document.getElementById('error');
     if (this.signUpForm.valid) {
@@ -64,16 +65,14 @@ export class SignUpFormComponent {
       const phone = this.signUpForm.value.phone;
       const birthdate = this.signUpForm.value.birthdate;
 
-      this.usersService.login(username, password).subscribe({
+      this.usersService.signUpCandidate(username, password, name, surname, email, phone, birthdate).subscribe({
         next: (response) => {
-          console.log('Login correcto:', response);
-
-          localStorage.setItem('token', response.token);
-          this.router.navigate(['/main/userprofile', { username }]);
+          console.log('Registro exitoso:', response);
+          this.router.navigate(['/main/login']);
         },
         error: (error) => {
-          console.error('Login fallido:', error);
-          this.snackBar.open('Inicio de sesión incorrecto', 'Cerrar', {
+          console.error('Registro fallido:', error);
+          this.snackBar.open('Registro fallido', 'Cerrar', {
             duration: 3000,
             verticalPosition: 'top',
           });
@@ -83,16 +82,16 @@ export class SignUpFormComponent {
         },
       });
     } else {
-      this.loginForm.markAllAsTouched();
+      this.signUpForm.markAllAsTouched();
       console.warn(
-        'Formulario inválido. No se puede enviar la petición de login.'
+        'Formulario inválido. No se puede enviar la petición de registro.'
       );
 
       if (errorMessage) {
         errorMessage.style.visibility = 'visible';
       }
     }
-  }*/
+  }
   getFieldErrorMessage(controlName: string): string {
     const control = this.signUpForm.get(controlName);
 
