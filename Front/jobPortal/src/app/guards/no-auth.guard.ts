@@ -9,9 +9,20 @@ export const noAuthGuard: CanActivateFn = () => {
   if (!userService.isLoggedIn()) {
     return true;
   } else {
-    // Si userData$ es un BehaviorSubject:
-    const userData = userService.getUserValue();
-    const role = userData?.user.role_id;
+    let userData = userService.getUserValue();
+    let role = userData?.user.role_id;
+
+    // Si no hay userData, intenta obtener el role del localStorage
+    if (!userData) {
+      const storedRole = localStorage.getItem('role');
+      if (storedRole === '3') {
+        return router.createUrlTree(['/main/candidateprofile']);
+      } else if (storedRole === '2') {
+        return router.createUrlTree(['/main/userprofile']);
+      } else {
+        return router.createUrlTree(['/main/catalogue']);
+      }
+    }
 
     if (role === 3) {
       return router.createUrlTree(['/main/candidateprofile']);

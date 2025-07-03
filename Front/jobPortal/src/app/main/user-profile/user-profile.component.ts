@@ -26,32 +26,50 @@ export class UserProfileComponent implements OnInit {
     private router: Router
   ) {}
 
-  ngOnInit(): void {
-    this.checkIfMobile();
-    this.loadUserData();
-    this.role = this.userData?.user.role_id;
+ngOnInit(): void {
+  this.checkIfMobile();
+  this.loadUserData();
+  this.loadJobOffers();
+}
 
-              // Ahora que tenemos el rol, redirigimos
-              if (this.role === 3) {
-                this.router.navigate(['/main/candidateprofile']);
-              } else if (this.role === 2) {
-                this.router.navigate(['/main/userprofile']);
-              } else {
-                this.router.navigate(['/main/catalogue']);
-              }
-    this.loadJobOffers();
-  }
+private loadUserData(): void {
+  this.usersService.getUserData().subscribe({
+    next: (data) => {
+      this.userData = data;
+      this.role = this.userData?.user.role_id;
+
+      // Si no hay role, intenta obtenerlo del localStorage
+      if (!this.role) {
+        const storedRole = localStorage.getItem('role');
+        this.role = storedRole ? Number(storedRole) : undefined;
+      }
+
+      if (this.role === 3) {
+        this.router.navigate(['/main/candidateprofile']);
+      } else if (this.role === 2) {
+        // Se queda en userprofile
+      } else {
+        this.router.navigate(['/main/catalogue']);
+      }
+    },
+    error: (err) => {
+      // Si hay error, intenta usar el role del localStorage
+      const storedRole = localStorage.getItem('role');
+      if (storedRole === '3') {
+        this.router.navigate(['/main/candidateprofile']);
+      } else if (storedRole === '2') {
+        // Se queda en userprofile
+      } else {
+        this.router.navigate(['/main/catalogue']);
+      }
+      console.error('No se pudo obtener el usuario', err);
+    },
+  });
+}
 
   @HostListener('window:resize')
   checkIfMobile() {
     this.isMobile = window.innerWidth <= 768;
-  }
-
-  private loadUserData(): void {
-    this.usersService.getUserData().subscribe({
-      next: (data) => (this.userData = data),
-      error: (err) => console.error('No se pudo obtener el usuario', err),
-    });
   }
 
   private loadJobOffers(): void {

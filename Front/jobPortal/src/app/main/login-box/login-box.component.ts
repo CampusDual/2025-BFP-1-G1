@@ -43,11 +43,10 @@ export class LoginBoxComponent {
 
       this.usersService.login(username, password).subscribe({
         next: (response) => {
-          console.log('Login correcto:', response);
-          this.role = localStorage.getItem('role');
-          if (this.role === '3') {
-            this.router.navigate(['/main/candidateprofile']);
-          } else if (this.role === '2') {
+          const role = response.role_id;
+          if (role === '3' || role === 3) {
+            this.router.navigate(['/main/catalogue']);
+          } else if (role === '2' || role === 2) {
             this.router.navigate(['/main/userprofile']);
           } else {
             this.router.navigate(['/main/catalogue']);
