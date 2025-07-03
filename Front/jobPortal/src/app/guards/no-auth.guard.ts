@@ -11,8 +11,6 @@ export const noAuthGuard: CanActivateFn = () => {
   } else {
     let userData = userService.getUserValue();
     let role = userData?.user.role_id;
-
-    // Si no hay userData, intenta obtener el role del localStorage
     if (!userData) {
       const storedRole = localStorage.getItem('role');
       if (storedRole === '3') {

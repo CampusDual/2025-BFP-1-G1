@@ -37,8 +37,6 @@ private loadUserData(): void {
     next: (data) => {
       this.userData = data;
       this.role = this.userData?.user.role_id;
-
-      // Si no hay role, intenta obtenerlo del localStorage
       if (!this.role) {
         const storedRole = localStorage.getItem('role');
         this.role = storedRole ? Number(storedRole) : undefined;
@@ -47,18 +45,15 @@ private loadUserData(): void {
       if (this.role === 3) {
         this.router.navigate(['/main/candidateprofile']);
       } else if (this.role === 2) {
-        // Se queda en userprofile
       } else {
         this.router.navigate(['/main/catalogue']);
       }
     },
     error: (err) => {
-      // Si hay error, intenta usar el role del localStorage
       const storedRole = localStorage.getItem('role');
       if (storedRole === '3') {
         this.router.navigate(['/main/candidateprofile']);
       } else if (storedRole === '2') {
-        // Se queda en userprofile
       } else {
         this.router.navigate(['/main/catalogue']);
       }
