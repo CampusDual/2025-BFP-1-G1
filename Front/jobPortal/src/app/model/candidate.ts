@@ -1,7 +1,7 @@
 import { User } from './user';
 
 export class Candidate {
-  id!: number;
+  id?: number;
   name!: string;
   surname!: string;
   phone!: string;

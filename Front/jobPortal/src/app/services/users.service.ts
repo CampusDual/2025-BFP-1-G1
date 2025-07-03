@@ -1,4 +1,5 @@
-import { UserData } from './../model/userData';
+import { Candidate } from './../model/candidate';
+import { UserData } from 'src/app/model/userData';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, catchError, map, throwError } from 'rxjs';
 import {
@@ -7,6 +8,7 @@ import {
   HttpErrorResponse,
 } from '@angular/common/http';
 import { jwtDecode } from 'jwt-decode';
+import { User } from '../model/user';
 
 @Injectable({
   providedIn: 'root',
@@ -40,6 +42,37 @@ export class UsersService {
         }),
         catchError(this.handleError)
       );
+  }
+
+  signUpCandidate(login: string, password: string, name: string, surname: string, email: string, phone: string, birthdate: Date): Observable<any> {
+    const user: User = {
+      email,
+      login,
+      password,
+      role_id: 3
+    };
+
+    const candidate: Candidate = {
+      name,
+      surname,
+      phone,
+      user: user,
+      birthdate
+    };
+
+    const UserData: UserData = {
+      user: user,
+      candidate: candidate,
+      company: undefined
+    };
+
+    return this.http.post(`${this.urlEnpoint}/signup`, UserData).pipe(
+      map((response: any) => {
+        console.log('Registro exitoso:', response);
+        return response;
+      }),
+      catchError(this.handleError)
+    );
   }
 
   getUserValue(): UserData | null {
@@ -103,3 +136,4 @@ export class UsersService {
       );
   }
 }
+

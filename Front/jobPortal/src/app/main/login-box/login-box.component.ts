@@ -46,7 +46,7 @@ export class LoginBoxComponent {
           console.log('Login correcto:', response);
           this.role = localStorage.getItem('role');
           if (this.role === '3') {
-            this.router.navigate(['/main/catalogue']);
+            this.router.navigate(['/main/candidateprofile']);
           } else if (this.role === '2') {
             this.router.navigate(['/main/userprofile']);
           } else {

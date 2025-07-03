@@ -4,6 +4,6 @@ import { User } from './user';
 
 export class UserData {
   user!: User;
-  company!: Company;
-  candidate!: Candidate;
+  company?: Company;
+  candidate?: Candidate;
 }

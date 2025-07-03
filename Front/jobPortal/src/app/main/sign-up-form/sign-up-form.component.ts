@@ -1,5 +1,9 @@
 import { Component } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
+
+
 
 @Component({
   selector: 'app-sign-up-form',
@@ -8,6 +12,7 @@ import { FormGroup } from '@angular/forms';
 })
 export class SignUpFormComponent {
   signUpForm!: FormGroup;
+
   get login() {
     return this.signUpForm.get('login');
   }
@@ -27,23 +32,38 @@ export class SignUpFormComponent {
     return this.signUpForm.get('phone');
   }
 
-  /* constructor(
+  get birthdate() {
+    return this.signUpForm.get('birthdate');
+  }
+
+  constructor(
     private fb: FormBuilder,
-    private usersService: UsersService,
+    /*private usersService: UsersService,*/
     private router: Router,
     private snackBar: MatSnackBar
   ) {
     this.signUpForm = this.fb.group({
-      username: ['', Validators.required],
+      login: ['', Validators.required],
       password: ['', Validators.required],
+      name: ['', Validators.required],
+      surname: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email]],
+      phone: ['', Validators.required, Validators.pattern('^[0-9]+$')],
+      birthdate: ['', Validators.required],
     });
   }
-
+/*
   signUp() {
     const errorMessage = document.getElementById('error');
     if (this.signUpForm.valid) {
       const username = this.signUpForm.value.username;
       const password = this.signUpForm.value.password;
+      const name = this.signUpForm.value.name;
+      const surname = this.signUpForm.value.surname;
+      const email = this.signUpForm.value.email;
+      const phone = this.signUpForm.value.phone;
+      const birthdate = this.signUpForm.value.birthdate;
+
       this.usersService.login(username, password).subscribe({
         next: (response) => {
           console.log('Login correcto:', response);
@@ -72,7 +92,7 @@ export class SignUpFormComponent {
         errorMessage.style.visibility = 'visible';
       }
     }
-  }
+  }*/
   getFieldErrorMessage(controlName: string): string {
     const control = this.signUpForm.get(controlName);
 
@@ -81,5 +101,5 @@ export class SignUpFormComponent {
     }
 
     return '';
-  }*/
+  }
 }

@@ -1,3 +1,4 @@
+import { SignUpFormComponent } from './sign-up-form/sign-up-form.component';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { UserProfileComponent } from './user-profile/user-profile.component';
@@ -6,7 +7,6 @@ import { JobCatalogueComponent } from './job-catalogue/job-catalogue.component';
 import { CreateOfferComponent } from './user-profile/create-offer/create-offer.component';
 import { authGuard } from '../guards/auth.guard';
 import { noAuthGuard } from '../guards/no-auth.guard';
-import { SignUpFormComponent } from './sign-up-form/sign-up-form.component';
 import { CandidateProfileComponent } from './candidate-profile/candidate-profile.component';
 
 const routes: Routes = [
@@ -24,15 +24,10 @@ const routes: Routes = [
     canActivate: [authGuard],
   },
   {
-    path: 'signup',
-    component: SignUpFormComponent,
-    canActivate: [noAuthGuard],
-  },
-  {
     path: 'candidateprofile',
     component: CandidateProfileComponent,
-
-  }
+  },
+  { path: 'sign-up', component: SignUpFormComponent, canActivate: [noAuthGuard] },
 ];
 
 @NgModule({
