@@ -32,7 +32,14 @@ export class UsersService {
       .post(`${this.urlEnpoint}/signin`, body, {
         headers,
       })
-      .pipe(catchError(this.handleError));
+      .pipe(
+        map((response: any) => {
+          localStorage.setItem('token', response.token);
+          localStorage.setItem('role', response.role_id);
+          return response;
+        }),
+        catchError(this.handleError)
+      );
   }
 
   getUserValue(): UserData | null {
@@ -65,8 +72,10 @@ export class UsersService {
       return true;
     }
   }
+
   logout(): void {
     localStorage.removeItem('token');
+    localStorage.removeItem('role');
     this.userDataSubject.next(null);
   }
 

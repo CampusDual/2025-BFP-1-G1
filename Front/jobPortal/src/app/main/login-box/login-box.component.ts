@@ -12,8 +12,7 @@ import { UserData } from 'src/app/model/userData';
 })
 export class LoginBoxComponent {
   loginForm: FormGroup;
-  userData: UserData | null = null;
-  role: number | undefined;
+  role: string | null = null;
 
   get password() {
     return this.loginForm.get('password');
@@ -45,55 +44,41 @@ export class LoginBoxComponent {
       this.usersService.login(username, password).subscribe({
         next: (response) => {
           console.log('Login correcto:', response);
-
-          // Primero guardar el token
-          localStorage.setItem('token', response.token);
-
-          // Luego obtener los datos del usuario
-          this.usersService.getUserData().subscribe({
-            next: (data) => {
-              this.userData = data;
-              console.log('Datos del usuario obtenidos:', data);
-              this.role = this.userData?.user.role_id;
-
-              // Ahora que tenemos el rol, redirigimos
-              if (this.role === 3) {
-                this.router.navigate(['/main/candidateprofile']);
-              } else if (this.role === 2) {
-                this.router.navigate(['/main/userprofile']);
-              } else {
-                this.router.navigate(['/main/catalogue']);
-              }
-            },
-            error: (error) => {
-              console.error('No se pudo obtener el usuario', error);
-              this.snackBar.open('No se pudo obtener el usuario', 'Cerrar', {
-                duration: 3000,
-                verticalPosition: 'top',
-              });
-            },
-          });
+          this.role = localStorage.getItem('role');
+          if (this.role === '3') {
+            this.router.navigate(['/main/catalogue']);
+          } else if (this.role === '2') {
+            this.router.navigate(['/main/userprofile']);
+          } else {
+            this.router.navigate(['/main/catalogue']);
+          }
         },
         error: (error) => {
-          console.error('Login fallido:', error);
-          this.snackBar.open('Inicio de sesión incorrecto', 'Cerrar', {
+          console.error('No se pudo obtener el usuario', error);
+          this.snackBar.open('No se pudo obtener el usuario', 'Cerrar', {
             duration: 3000,
             verticalPosition: 'top',
           });
-          if (errorMessage) {
-            errorMessage.style.visibility = 'visible';
-          }
         },
       });
-    }}
-
-      getFieldErrorMessage(controlName: string): string {
-        const control = this.loginForm.get(controlName);
-
-        if (control?.hasError('required')) {
-          return 'Este campo es obligatorio';
-        }
-
-        return '';
+    } else {
+      this.snackBar.open('Inicio de sesión incorrecto', 'Cerrar', {
+        duration: 3000,
+        verticalPosition: 'top',
+      });
+      if (errorMessage) {
+        errorMessage.style.visibility = 'visible';
       }
     }
+  }
+
+  getFieldErrorMessage(controlName: string): string {
+    const control = this.loginForm.get(controlName);
+
+    if (control?.hasError('required')) {
+      return 'Este campo es obligatorio';
+    }
+
+    return '';
+  }
+}
