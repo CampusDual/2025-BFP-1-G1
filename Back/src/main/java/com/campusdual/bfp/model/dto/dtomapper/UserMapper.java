@@ -8,7 +8,24 @@ import org.mapstruct.factory.Mappers;
 @Mapper
 public interface UserMapper {
 
-UserMapper INSTANCE = Mappers.getMapper(UserMapper.class);
-UserDTO toDTO(User user);
-User toEntity(UserDTO userDTO);
+    UserMapper INSTANCE = Mappers.getMapper(UserMapper.class);
+
+    default UserDTO toDTO(User user) {
+        if (user == null) return null;
+        UserDTO dto = new UserDTO();
+        dto.setId(user.getId());
+        dto.setEmail(user.getEmail());
+        dto.setLogin(user.getLogin());
+        Long roleId = null;
+        if (user.getUserRoles() != null && !user.getUserRoles().isEmpty()) {
+            roleId = user.getUserRoles().iterator().next().getRole().getId();
+        } else if (user.getRole() != null) {
+            roleId = user.getRole().getId();
+        }
+        dto.setRole_id(roleId != null ? roleId : 0L);
+        return dto;
+    }
+
+    User toEntity(UserDTO userDTO);
 }
+
