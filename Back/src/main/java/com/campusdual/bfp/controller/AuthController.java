@@ -94,18 +94,8 @@ public class AuthController {
             return ResponseEntity.status(HttpStatus.CONFLICT).body("User already exists.");
         }
 
-        if(request.getUser().getRole_id() == 3){
-            this.userService.registerNewCandidate(
-                    request.getUser().getLogin(),
-                    request.getUser().getPassword(),
-                    request.getUser().getEmail(),
-                    request.getUser().getRole_id(),
-                    request.getCandidate().getName(),
-                    request.getCandidate().getSurname(),
-                    request.getCandidate().getPhone(),
-                    request.getCandidate().getBirthDate()
-            );
-        }
-        return ResponseEntity.status(HttpStatus.CREATED).body("User successfully registered.");
+            this.userService.registerNewCandidate(request.getUser(), request.getCandidate());
+
+        return ResponseEntity.status(HttpStatus.CREATED).body("{\"message\": \"User successfully registered.\"}");
     }
 }

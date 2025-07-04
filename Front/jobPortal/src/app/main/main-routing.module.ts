@@ -27,7 +27,7 @@ const routes: Routes = [
     path: 'candidateprofile',
     component: CandidateProfileComponent,
   },
-  { path: 'signupform', component: SignUpFormComponent },
+  { path: 'signup', component: SignUpFormComponent },
 ];
 
 @NgModule({

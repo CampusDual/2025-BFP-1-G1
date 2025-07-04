@@ -6,5 +6,5 @@ export class Candidate {
   surname!: string;
   phone!: string;
   user!: User;
-  birthdate!: Date;
+  birthdate?: Date;
 }

@@ -33,9 +33,9 @@ export class SignUpFormComponent {
     return this.signUpForm.get('phone');
   }
 
-  get birthdate() {
-    return this.signUpForm.get('birthdate');
-  }
+  // get birthdate() {
+  //   return this.signUpForm.get('birthdate');
+  // }
 
   constructor(
     private fb: FormBuilder,
@@ -48,24 +48,24 @@ export class SignUpFormComponent {
       password: ['', Validators.required],
       name: ['', Validators.required],
       surname: ['', Validators.required],
-      email: ['', [Validators.required, Validators.email]],
-      phone: ['', Validators.required, Validators.pattern('^[0-9]+$')],
-      birthdate: ['', Validators.required, Validators.pattern('^(19|20)\\d\\d-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$')],
+      email: ['', [Validators.required]],
+      phone: ['', [Validators.required]],
+      // birthdate: ['', Validators.required, Validators.pattern('^(19|20)\\d\\d-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$')],
     });
   }
 
   signUp() {
     const errorMessage = document.getElementById('error');
     if (this.signUpForm.valid) {
-      const username = this.signUpForm.value.username;
+      const login = this.signUpForm.value.login;
       const password = this.signUpForm.value.password;
       const name = this.signUpForm.value.name;
       const surname = this.signUpForm.value.surname;
       const email = this.signUpForm.value.email;
       const phone = this.signUpForm.value.phone;
-      const birthdate = this.signUpForm.value.birthdate;
+      // const birthdate = this.signUpForm.value.birthdate;
 
-      this.usersService.signUpCandidate(username, password, name, surname, email, phone, birthdate).subscribe({
+      this.usersService.signUpCandidate(login, password, name, surname, email, phone).subscribe({
         next: (response) => {
           console.log('Registro exitoso:', response);
           this.router.navigate(['/main/login']);

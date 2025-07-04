@@ -64,24 +64,20 @@ public class UserService implements UserDetailsService {
     }
 
     @Transactional
-    public UserDataDTO registerNewCandidate(String login, String password, String email, long roleId,String name, String surname, String phone, Date birthDate) {
-        User user = new User();
-        user.setLogin(login);
-        user.setPassword(this.passwordEncoder().encode(password));
-        user.setEmail(email);
+    public UserDataDTO registerNewCandidate(UserDTO userDTO, CandidateDTO candidateDTO) {
 
 
-        Role role = roleDao.findById(roleId)
-                .orElseThrow(() -> new RuntimeException("Role not found with id: " + roleId));
+        User user = UserMapper.INSTANCE.toEntity(userDTO);
+        user.setPassword(this.passwordEncoder().encode(user.getPassword()));
+
+
+
+        Role role = roleDao.findById(3L)
+                .orElseThrow(() -> new RuntimeException("Role not found with id: " + user.getRole().getId()));
 
         user.setRole(role);
 
-        Candidate canditate= new Candidate();
-        canditate.setName(name);
-        canditate.setSurname(surname);
-        canditate.setPhone(phone);
-        canditate.setBirthDate(birthDate);
-        canditate.setUser(user);
+        Candidate canditate = CandidateMapper.INSTANCE.toEntity(candidateDTO);
 
         userDao.saveAndFlush(user);
         candidateDao.saveAndFlush(canditate);

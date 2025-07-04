@@ -44,7 +44,7 @@ export class UsersService {
       );
   }
 
-  signUpCandidate(login: string, password: string, name: string, surname: string, email: string, phone: string, birthdate: Date): Observable<any> {
+  signUpCandidate(login: string, password: string, name: string, surname: string, email: string, phone: string): Observable<any> {
     const user: User = {
       email,
       login,
@@ -57,7 +57,7 @@ export class UsersService {
       surname,
       phone,
       user: user,
-      birthdate
+      birthdate: undefined
     };
 
     const UserData: UserData = {
