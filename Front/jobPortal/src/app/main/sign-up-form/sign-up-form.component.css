@@ -72,7 +72,7 @@ body,
 .form-title {
   font-size: 28px;
   color: var(--darker);
-  margin: 0 0 20px 0; /* margen abajo para separación */
+  margin: 0 0 20px 0; 
 }
 
 .form-section form {
@@ -126,10 +126,26 @@ mat-form-field input[type="password"] {
   background-color: var(--primary-dark);
 }
 
+button[mat-raised-button]:hover:not([disabled]) {
+  background-color: var(--primary-dark);
+  box-shadow: 0 4px 16px rgba(224, 60, 49, 0.13);
+}
+
+button[mat-raised-button]:disabled {
+  background-color: #e0e0e0 !important;
+  color: #757575 !important;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+
 mat-error {
   font-size: 0.85rem;
   color: var(--primary);
 }
+
+
+
 
 @media (max-width: 768px) {
   .container {

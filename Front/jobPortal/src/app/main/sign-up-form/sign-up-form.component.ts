@@ -48,8 +48,8 @@ export class SignUpFormComponent {
       password: ['', Validators.required],
       name: ['', Validators.required],
       surname: ['', Validators.required],
-      email: ['', [Validators.required]],
-      phone: ['', [Validators.required]],
+      email: ['', [Validators.required, Validators.email]],
+      phone: ['', [Validators.required, Validators.pattern('^[0-9]{9}$')]],
       // birthdate: ['', Validators.required, Validators.pattern('^(19|20)\\d\\d-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$')],
     });
   }
