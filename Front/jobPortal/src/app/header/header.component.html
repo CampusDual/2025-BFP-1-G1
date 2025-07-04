@@ -4,12 +4,17 @@
       <img src="assets/img/logoCluster.png" alt="Logo Cluster TIC Galiza" (click)="goToCatalogue()">
     </div>
     <div class="iconContainer" *ngIf="usersService.isLoggedIn(); else guestMenu">
-      <span class="company-name">{{ userData?.company?.name }}</span>
+      <span class="display-name">{{ getDisplayName() }}</span>
       <button mat-fab [matMenuTriggerFor]="userMenu">
         <mat-icon class="icon">account_circle</mat-icon>
       </button>
       <mat-menu #userMenu="matMenu">
-        <button mat-menu-item (click)="redirectToProfile()">Mi Perfil</button>
+        <button mat-menu-item (click)="redirectToProfile()">
+          {{ isCandidate() ? 'Perfil Candidato' : 'Perfil Empresa' }}
+        </button>
+        <button mat-menu-item *ngIf="isCompany()" [routerLink]="['/main/createOffer']">
+          Añadir Oferta
+        </button>
         <button mat-menu-item (click)="logout()">Cerrar sesión</button>
       </mat-menu>
     </div>
@@ -17,7 +22,7 @@
     <ng-template #guestMenu>
       <div class="guest-buttons">
         <button mat-button (click)="goToLogin()">Iniciar sesión</button>
-        <!-- <button mat-button (click)="goToRegister()">Registrarse</button> -->
+        <button mat-button (click)="goToRegister()">Registrarse</button>
       </div>
     </ng-template>
   </div>
