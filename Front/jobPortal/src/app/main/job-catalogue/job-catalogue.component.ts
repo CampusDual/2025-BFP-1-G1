@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { JobOffer } from 'src/app/model/jobOffer';
 import { JobOfferService } from 'src/app/services/job-offer.service';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
+import { ApplicationService } from 'src/app/services/application.service';
 
 @Component({
   selector: 'app-job-catalogue',
@@ -11,15 +12,16 @@ import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 export class JobCatalogueComponent implements OnInit {
   jobOffers: JobOffer[] = [];
   gridCols: number = 3;
-  sortBy: 'id' | 'title' | 'releaseDate' | 'description' | 'company' | 'email' =
-    'releaseDate';
+  sortBy: 'id' | 'title' | 'releaseDate' | 'description' | 'company' | 'email' = 'releaseDate';
   sortDirection: 'asc' | 'desc' = 'desc';
   searchTerm: string = '';
   filteredJobOffers: JobOffer[] = [];
+  appliedOfferIds: number[] = [];
 
   constructor(
     private jobOfferService: JobOfferService,
-    private breakpointObserver: BreakpointObserver
+    private breakpointObserver: BreakpointObserver,
+    private applicationService: ApplicationService
   ) {}
 
   ngOnInit(): void {
@@ -27,7 +29,14 @@ export class JobCatalogueComponent implements OnInit {
       this.jobOffers = offers;
       this.filteredJobOffers = offers;
       this.sortOffers('releaseDate', 'desc');
+      console.log('Job offers:', offers);
     });
+  
+    this.applicationService.getUserApplications().subscribe((applications: any[]) => {
+      console.log('User applications:', applications);
+      this.appliedOfferIds = applications.map((app: any) => app.offerId);
+      console.log('Applied offer IDs:', this.appliedOfferIds);
+    })
     this.breakpointObserver
       .observe([
         Breakpoints.XSmall,
@@ -36,7 +45,6 @@ export class JobCatalogueComponent implements OnInit {
         Breakpoints.Large,
         Breakpoints.XLarge,
       ])
-
       .subscribe((result) => {
         if (result.matches) {
           if (result.breakpoints[Breakpoints.XSmall]) {
@@ -108,5 +116,21 @@ export class JobCatalogueComponent implements OnInit {
   updateDisplayedOffers(): void {
     let currentOffers = this.getFilteredOffers();
     this.jobOffers = currentOffers;
+  }
+
+  aplicarAOferta(oferta: any) {
+    this.applicationService.aplicarAOferta(oferta.id).subscribe({
+      next: () => {
+        alert('¡Aplicación enviada con éxito!');
+        this.appliedOfferIds.push(oferta.id);
+      },
+      error: err => {
+        if (err.status === 409) {
+          alert('Ya has aplicado a esta oferta.');
+        } else {
+          alert('Error al aplicar a la oferta.');
+        }
+      }
+    });
   }
 }

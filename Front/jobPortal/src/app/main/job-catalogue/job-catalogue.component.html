@@ -42,6 +42,10 @@
           <mat-card-subtitle>{{ offer.email }}</mat-card-subtitle>
           <mat-card-content style="display:none;">{{offer.description}}</mat-card-content>
         </mat-card>
+        <button mat-raised-button color="primary" class="apply-button" (click)="aplicarAOferta(offer)"
+        [disabled]="appliedOfferIds.includes(offer.id!)">
+        {{ appliedOfferIds.includes(offer.id!) ? 'Ya aplicado' : 'Aplicar' }}
+      </button>
       </mat-grid-tile>
     </mat-grid-list>
   </div>
