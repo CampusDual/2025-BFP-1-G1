@@ -1,4 +1,5 @@
 package com.campusdual.bfp.service;
+
 import com.campusdual.bfp.model.Candidate;
 import com.campusdual.bfp.model.Role;
 import com.campusdual.bfp.model.User;
@@ -26,26 +27,19 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-
 import java.nio.file.AccessDeniedException;
-import java.util.Date;
 
 @Service
 @Lazy
 public class UserService implements UserDetailsService {
-
     @Autowired
     private UserDao userDao;
-
     @Autowired
     private RoleDao roleDao;
-
     @Autowired
     private UserRoleDao userRoleDao;
-
     @Autowired
     private CandidateDao candidateDao;
-
 
     @Override
     @Transactional(readOnly = true)
@@ -54,9 +48,9 @@ public class UserService implements UserDetailsService {
         if (user == null) {
             throw new UsernameNotFoundException("User not found: " + username);
         }
-
         return user;
     }
+
     @Transactional
     public boolean existsByUsername(String username) {
         User user = this.userDao.findByLogin(username);
@@ -65,37 +59,22 @@ public class UserService implements UserDetailsService {
 
     @Transactional
     public UserDataDTO registerNewCandidate(UserDTO userDTO, CandidateDTO candidateDTO) {
-
-
         User user = UserMapper.INSTANCE.toEntity(userDTO);
         user.setPassword(this.passwordEncoder().encode(user.getPassword()));
-
-
-
-        Role role = roleDao.findById(3L)
-                .orElseThrow(() -> new RuntimeException("Role not found with id: " + user.getRole().getId()));
-
+        Role role = roleDao.findById(3L).orElseThrow(() -> new RuntimeException("Role not found with id: " + user.getRole().getId()));
         user.setRole(role);
-
-        Candidate canditate = CandidateMapper.INSTANCE.toEntity(candidateDTO);
-
+        Candidate candidate = CandidateMapper.INSTANCE.toEntity(candidateDTO);
+        candidate.setUser(user);
         userDao.saveAndFlush(user);
-        candidateDao.saveAndFlush(canditate);
-
-        UserDataDTO userDataDTO= new UserDataDTO();
+        candidateDao.saveAndFlush(candidate);
+        UserDataDTO userDataDTO = new UserDataDTO();
         userDataDTO.setUser(UserMapper.INSTANCE.toDTO(user));
-        userDataDTO.setCandidate(CandidateMapper.INSTANCE.toDTO(canditate));
-
+        userDataDTO.setCandidate(CandidateMapper.INSTANCE.toDTO(candidate));
         return userDataDTO;
     }
 
-
-
-
-
     public User getUserLogged() throws AccessDeniedException {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-
         if (auth != null && auth.isAuthenticated() && auth.getPrincipal() instanceof UserDetails) {
             String username = ((UserDetails) auth.getPrincipal()).getUsername();
             User user = userDao.findByLogin(username);
@@ -103,11 +82,8 @@ public class UserService implements UserDetailsService {
                 return user;
             }
         }
-
         throw new AccessDeniedException("Authenticated principal is not a valid User instance or user not found. Access Denied.");
     }
-
-
 
     @Transactional
     public boolean existsByLogin(String login) {
