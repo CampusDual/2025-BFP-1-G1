@@ -1,0 +1,71 @@
+<div class="container">
+  <div class="sign-up-box">
+    <div class="image-section">
+      <div class="circle-image">
+        <img src="./assets/img/logoCluster.png" alt="Login illustration"
+          onclick="window.location.href='/main/catalogue'" />
+      </div>
+    </div>
+    <div class="form-section">
+      <h2 class="form-title">Registro</h2>
+      <form [formGroup]="signUpForm" (ngSubmit)="signUp()">
+        <div class="inputs1">
+          <mat-form-field appearance="outline" class="formulario">
+            <mat-label>Nombre de usuario</mat-label>
+            <input matInput id="login" formControlName="login" placeholder="Tu usuario" required />
+            <mat-error *ngIf="login?.invalid && (login?.touched || login?.dirty)">{{ getFieldErrorMessage("login")
+              }}</mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="formulario">
+            <mat-label>Nombre</mat-label>
+            <input matInput type="text" id="name" formControlName="name" placeholder="Tu nombre" required />
+            <mat-error *ngIf="name?.invalid && (name?.touched || name?.dirty)">{{ getFieldErrorMessage("name")
+              }}</mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="form-field-custom">
+            <mat-label>Email</mat-label>
+            <input matInput type="text" formControlName="email" placeholder="Tu email" />
+
+            <mat-error *ngIf="email?.invalid && (email?.touched || email?.dirty)">
+              <span *ngIf="email?.errors?.['required']">El campo es obligatorio</span>
+              <span *ngIf="email?.errors?.['email']">Formato de email inválido</span>
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="inputs2">
+          <mat-form-field appearance="outline" class="formulario">
+            <mat-label>Contraseña</mat-label>
+            <input matInput type="password" id="password" formControlName="password" placeholder="**********"
+              required />
+            <mat-error *ngIf="
+                password?.invalid && (password?.touched || password?.dirty)
+              ">{{ getFieldErrorMessage("password") }}</mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="formulario">
+            <mat-label>Apellidos</mat-label>
+            <input matInput id="surname" formControlName="surname" placeholder="Tu apellido" required />
+            <mat-error *ngIf="surname?.invalid && (surname?.touched || surname?.dirty)">{{
+              getFieldErrorMessage("surname") }}</mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="formulario">
+            <mat-label>Teléfono</mat-label>
+            <input matInput id="phone" formControlName="phone" placeholder="Tu teléfono" required />
+            <mat-error *ngIf="phone?.invalid && (phone?.touched || phone?.dirty)">
+              <span *ngIf="phone?.errors?.['required']">El campo es obligatorio</span>
+              <span *ngIf="phone?.errors?.['pattern']">Introduce 9 dígitos</span>
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <button mat-raised-button class="sign-up-button" color="primary" type="submit" [disabled]="signUpForm.invalid">
+          Entrar
+        </button>
+      </form>
+    </div>
+  </div>
+</div>

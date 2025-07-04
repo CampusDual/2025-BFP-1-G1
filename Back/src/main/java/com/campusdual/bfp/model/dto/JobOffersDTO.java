@@ -1,6 +1,5 @@
 package com.campusdual.bfp.model.dto;
 
-import com.campusdual.bfp.model.User;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
@@ -9,7 +8,7 @@ public class JobOffersDTO {
 
     private long id;
     private String email;
-    private User user;
+    private CompanyDTO company;
     private String title;
 
     @NotBlank(message = "La descripción es obligatoria")
@@ -22,11 +21,11 @@ public class JobOffersDTO {
     public JobOffersDTO() {
     }
 
-    public JobOffersDTO(long id, String email, User user, String title,
+    public JobOffersDTO(long id, String email, CompanyDTO companyDTO, String title,
                         String description, LocalDateTime releaseDate) {
         this.id = id;
         this.email = email;
-        this.user = user;
+        this.company = companyDTO;
         this.title = title;
         this.description = description;
         this.releaseDate = releaseDate;
@@ -54,12 +53,12 @@ public class JobOffersDTO {
         this.email = email;
     }
 
-    public User getUser() {
-        return user;
+    public CompanyDTO getCompany() {
+        return company;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setCompany(CompanyDTO company) {
+        this.company = company;
     }
 
     public String getTitle() {

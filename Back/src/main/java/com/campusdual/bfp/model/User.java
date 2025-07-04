@@ -5,14 +5,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
@@ -27,20 +20,8 @@ public class User implements UserDetails {
     @GeneratedValue( strategy = GenerationType.IDENTITY )
     private long id;
 
-    @Column(name="cif")
-    private String cif;
-
-    @Column
-    private String name;
-
-    @Column
-    private String telephone;
-
     @Column
     private String email;
-
-    @Column
-    private String address;
 
     @Column
     private String login;
@@ -49,51 +30,19 @@ public class User implements UserDetails {
     @Column
     private String password;
 
+    @ManyToOne
+    @JoinColumn(name = "role_id", referencedColumnName = "id")
+    private Role role;
+
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     private Set<UserRole> userRoles = new HashSet<>();
 
-    public User(){ }
-    public User(int id, String cif, String name, String telephone, String email,String address, String login, String password) {
-        this.id = id;
-        this.cif = cif;
-        this.name = name;
-        this.telephone = telephone;
-        this.email = email;
-        this.address = address;
-        this.login = login;
-        this.password = password;
-    }
-
-    public Long getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
-    }
-
-    public String getCif() {
-        return cif;
-    }
-
-    public void setCif(String cif) {
-        this.cif = cif;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getTelephone() {
-        return telephone;
-    }
-
-    public void setTelephone(String telephone) {
-        this.telephone = telephone;
     }
 
     public String getEmail() {
@@ -104,12 +53,6 @@ public class User implements UserDetails {
         this.email = email;
     }
 
-    public String getAddress(){return this.address;}
-
-    public void setAddress(String address){
-        this.address = address;
-    }
-
     public String getLogin() {
         return login;
     }
@@ -118,10 +61,24 @@ public class User implements UserDetails {
         this.login = login;
     }
 
-
-
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
+
+    public Set<UserRole> getUserRoles() {
+        return userRoles;
+    }
+
+    public void setUserRoles(Set<UserRole> userRoles) {
+        this.userRoles = userRoles;
     }
 
     @Override
@@ -165,4 +122,5 @@ public class User implements UserDetails {
     public String getPassword() {
         return password;
     }
+
 }

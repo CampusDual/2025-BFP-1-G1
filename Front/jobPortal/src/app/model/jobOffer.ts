@@ -1,13 +1,10 @@
-import { Timestamp } from "rxjs";
-import { User } from "./user";
-import { formatDate } from "@angular/common";
+import { Company } from './company';
 
-export class JobOffer{
-    id? : number;
-    email!: string;
-    user!: User;
-    title!: string;
-    description!: string;
-    releaseDate!: Date;
+export class JobOffer {
+  id?: number;
+  email!: string;
+  company?: Company;
+  title!: string;
+  description!: string;
+  releaseDate!: Date;
 }
-

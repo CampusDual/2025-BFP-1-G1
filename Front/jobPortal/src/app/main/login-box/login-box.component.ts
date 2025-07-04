@@ -3,6 +3,7 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { UserData } from 'src/app/model/userData';
 
 @Component({
   selector: 'app-login-box',
@@ -11,6 +12,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 })
 export class LoginBoxComponent {
   loginForm: FormGroup;
+  role: string | null = null;
 
   get password() {
     return this.loginForm.get('password');
@@ -41,33 +43,34 @@ export class LoginBoxComponent {
 
       this.usersService.login(username, password).subscribe({
         next: (response) => {
-          console.log('Login correcto:', response);
-
-          localStorage.setItem('token', response.token);
-          this.router.navigate(['/main/userprofile', { username }]);
+          const role = response.role_id;
+          if (role === '3' || role === 3) {
+            this.router.navigate(['/main/catalogue']);
+          } else if (role === '2' || role === 2) {
+            this.router.navigate(['/main/userprofile']);
+          } else {
+            this.router.navigate(['/main/catalogue']);
+          }
         },
         error: (error) => {
-          console.error('Login fallido:', error);
-          this.snackBar.open('Inicio de sesión incorrecto', 'Cerrar', {
+          console.error('No se pudo obtener el usuario', error);
+          this.snackBar.open('No se pudo obtener el usuario', 'Cerrar', {
             duration: 3000,
             verticalPosition: 'top',
           });
-          if (errorMessage) {
-            errorMessage.style.visibility = 'visible';
-          }
         },
       });
     } else {
-      this.loginForm.markAllAsTouched();
-      console.warn(
-        'Formulario inválido. No se puede enviar la petición de login.'
-      );
-
+      this.snackBar.open('Inicio de sesión incorrecto', 'Cerrar', {
+        duration: 3000,
+        verticalPosition: 'top',
+      });
       if (errorMessage) {
         errorMessage.style.visibility = 'visible';
       }
     }
   }
+
   getFieldErrorMessage(controlName: string): string {
     const control = this.loginForm.get(controlName);
 

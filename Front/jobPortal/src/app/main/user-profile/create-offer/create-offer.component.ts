@@ -1,11 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { JobOffer } from 'src/app/model/jobOffer';
-import { User } from 'src/app/model/user';
-import { UsersService } from 'src/app/services/users.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { JobOfferService } from 'src/app/services/job-offer.service';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { CompanyService } from 'src/app/services/company.service';
+import { Company } from 'src/app/model/company';
+import { UsersService } from 'src/app/services/users.service';
+import { UserData } from 'src/app/model/userData';
 
 @Component({
   selector: 'app-create-offer',
@@ -13,7 +15,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   styleUrls: ['./create-offer.component.css'],
 })
 export class CreateOfferComponent implements OnInit {
-  user: User | null = null;
+  userData: UserData | null = null;
   offerForm!: FormGroup;
 
   // Contadores
@@ -23,7 +25,7 @@ export class CreateOfferComponent implements OnInit {
   maxDescChars = 4000;
 
   constructor(
-    private usersService: UsersService,
+    private userService: UsersService,
     private fb: FormBuilder,
     private jobOfferService: JobOfferService,
     private router: Router,
@@ -42,12 +44,12 @@ export class CreateOfferComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.usersService.user$.subscribe((user) => {
-      this.user = user;
+    this.userService.userData$.subscribe((userData) => {
+      this.userData = userData;
     });
 
-    if (!this.user) {
-      this.usersService.getUserProfile().subscribe();
+    if (!this.userData) {
+      this.userService.getUserData().subscribe();
     }
 
     // Actualizar contadores
@@ -69,12 +71,12 @@ export class CreateOfferComponent implements OnInit {
   }
 
   onSubmit(): void {
-    if (this.offerForm.valid && this.user) {
+    if (this.offerForm.valid && this.userData) {
       const newOffer: JobOffer = {
         title: this.offerForm.value.title,
         description: this.offerForm.value.description,
-        user: this.user,
-        email: this.user.email,
+        company: this.userData.company,
+        email: this.userData.user.email,
         releaseDate: new Date(),
       };
 

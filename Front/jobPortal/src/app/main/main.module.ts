@@ -16,6 +16,8 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { CompanyOfferListComponent } from './user-profile/company-offer-list/company-offer-list.component';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { SignUpFormComponent } from './sign-up-form/sign-up-form.component';
+import { CandidateProfileComponent } from './candidate-profile/candidate-profile.component';
 
 @NgModule({
   declarations: [
@@ -25,6 +27,8 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     LoginBoxComponent,
     UsersListComponent,
     CompanyOfferListComponent,
+    SignUpFormComponent,
+    CandidateProfileComponent,
   ],
   imports: [
     CommonModule,

@@ -2,14 +2,15 @@ package com.campusdual.bfp.controller;
 
 
 import com.campusdual.bfp.model.User;
+import com.campusdual.bfp.model.dto.UserDataDTO;
 import com.campusdual.bfp.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-
 import java.nio.file.AccessDeniedException;
+
 @RestController
 @RequestMapping("/user")
 public class UsersController {
@@ -19,15 +20,15 @@ public class UsersController {
 
     @GetMapping("/getUser")
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<?> getLoggedUser() {
+    public ResponseEntity<User> getLoggedUser() {
         try {
-            User user = userService.getUserLogged();
-            return ResponseEntity.ok(user);
+            return ResponseEntity.ok(userService.getUserLogged());
         } catch (AccessDeniedException e) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Access Denied: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
-}
 
+
+}

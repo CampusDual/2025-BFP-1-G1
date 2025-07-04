@@ -2,8 +2,9 @@ package com.campusdual.bfp.controller;
 
 import com.campusdual.bfp.auth.JWTUtil;
 import com.campusdual.bfp.model.User;
-import com.campusdual.bfp.model.dto.SignupDTO;
 import com.campusdual.bfp.model.dto.UserDTO;
+import com.campusdual.bfp.model.dto.UserDataDTO;
+import com.campusdual.bfp.service.UserDataService;
 import com.campusdual.bfp.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -34,6 +35,9 @@ public class AuthController {
 
     @Autowired
     UserService userService;
+
+    @Autowired
+    UserDataService userDataService;
 
     @Autowired
     JWTUtil jwtUtils;
@@ -71,14 +75,9 @@ public class AuthController {
             UserDTO response = new UserDTO(
                     token,
                     authenticatedUser.getId(),
-                    authenticatedUser.getLogin(),
-                    authenticatedUser.getName(),
                     authenticatedUser.getEmail(),
-                    authenticatedUser.getCif(),
-                    authenticatedUser.getTelephone(),
-                    authenticatedUser.getAddress(),
-                    authenticatedUser.getLogin()
-
+                    authenticatedUser.getLogin(),
+                    authenticatedUser.getRole().getId()
             );
 
             return ResponseEntity.ok(response);
@@ -89,12 +88,14 @@ public class AuthController {
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<String> registerUser(@RequestBody SignupDTO request) {
-        if (this.userService.existsByUsername(request.getLogin())) {
+    public ResponseEntity<String> registerUser(@RequestBody UserDataDTO request) {
+
+        if (this.userService.existsByLogin(request.getUser().getLogin())) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body("User already exists.");
         }
 
-        this.userService.registerNewUser(request.getLogin(), request.getPassword());
-        return ResponseEntity.status(HttpStatus.CREATED).body("User successfully registered.");
+            this.userService.registerNewCandidate(request.getUser(), request.getCandidate());
+
+        return ResponseEntity.status(HttpStatus.CREATED).body("{\"message\": \"User successfully registered.\"}");
     }
 }

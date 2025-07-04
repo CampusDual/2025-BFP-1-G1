@@ -35,7 +35,7 @@ public class OffersManagementController {
     public long addJobOffer(@RequestBody JobOffersDTO jobOffersDTO){
         return jobOffersService.insertJobOffer(jobOffersDTO);
     }
-
+/*
     @PutMapping (value="/update")
     public long updateJobOffer(@RequestBody JobOffersDTO jobOffersDTO){
         return jobOffersService.updateJobOffer(jobOffersDTO);
@@ -46,5 +46,5 @@ public class OffersManagementController {
     public long deleteJobOffer(@RequestBody JobOffersDTO jobOffersDTO){
         return jobOffersService.deleteJobOffer(jobOffersDTO);
     }
-
+*/
 }

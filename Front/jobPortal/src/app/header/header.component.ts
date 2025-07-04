@@ -1,27 +1,24 @@
- import { Component, OnInit } from '@angular/core';
+import { UserData } from './../model/userData';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { UsersService } from '../services/users.service';
-import { User } from '../model/user';
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
-  styleUrls: ['./header.component.css']
+  styleUrls: ['./header.component.css'],
 })
 export class HeaderComponent implements OnInit {
-   user: User | null = null;
+  userData: UserData | null = null;
 
   constructor(public usersService: UsersService, private router: Router) {}
 
   ngOnInit(): void {
-    // Suscríbete al observable user$
-    this.usersService.user$.subscribe(user => {
-      this.user = user;
+    this.usersService.userData$.subscribe((userData) => {
+      this.userData = userData;
     });
-
-    // Si no hay usuario cargado pero hay token, pide el perfil
-    if (!this.user && this.usersService.isLoggedIn()) {
-      this.usersService.getUserProfile().subscribe();
+    if (!this.userData && this.usersService.isLoggedIn()) {
+      this.usersService.getUserData().subscribe();
     }
   }
 
@@ -29,23 +26,54 @@ export class HeaderComponent implements OnInit {
     this.router.navigate(['/main/catalogue']);
   }
 
+  goToRegister(): void {
+    this.router.navigate(['/main/signup']);
+  }
+
   redirectToProfile(): void {
-    if (this.usersService.isLoggedIn()) {
-      this.router.navigate(['/main/userprofile']);
-    } else {
+    if (!this.usersService.isLoggedIn()) {
       this.router.navigate(['/main/login']);
+      return;
+    }
+
+    if (this.isCandidate()) {
+      this.router.navigate(['/main/candidateprofile']);
+    } else if (this.isCompany()) {
+      this.router.navigate(['/main/userprofile']);
     }
   }
+
   goToLogin(): void {
     this.router.navigate(['/main/login']);
   }
 
-//  goToRegister(): void {
-//  this.router.navigate(['/main/register']);
-//  }
-
   logout(): void {
-    this.usersService.logout(); 
+    this.usersService.logout();
     this.router.navigate(['/main/login']);
+  }
+
+  getDisplayName(): string {
+    if (this.userData?.candidate) {
+      return `${this.userData.candidate.name} ${this.userData.candidate.surname}`;
+    } else if (this.userData?.company) {
+      return this.userData.company.name;
+    } else if (this.userData?.user) {
+      return this.userData.user.login;
+    }
+    return '';
+  }
+
+  isCandidate(): boolean {
+    return (
+      !!this.userData?.candidate ||
+      (!!this.userData?.user && this.userData.user.role_id === 3)
+    );
+  }
+
+  isCompany(): boolean {
+    return (
+      !!this.userData?.company ||
+      (!!this.userData?.user && this.userData.user.role_id === 2)
+    );
   }
 }
