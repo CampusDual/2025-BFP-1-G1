@@ -14,6 +14,8 @@ public interface IJobOffersService {
     List<JobOffersDTO> queryAllJobOffer();
     List<JobOffersDTO> queryAllJobOfferByCompanyId(long id);
     long insertJobOffer(JobOffersDTO jobOffersDTO);
+
+    List<JobOffersDTO> queryAllOffersSorted(String sortBy, String direction);
   /*  long updateJobOffer(JobOffersDTO jobOffersDTO);
     long deleteJobOffer(JobOffersDTO jobOffersDTO);*/
 

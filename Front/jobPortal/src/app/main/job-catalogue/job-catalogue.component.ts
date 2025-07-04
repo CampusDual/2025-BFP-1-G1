@@ -110,7 +110,20 @@ export class JobCatalogueComponent implements OnInit {
       this.sortDirection = 'desc';
     }
 
-    this.jobOffers.sort((a, b) => {
+    this.jobOfferService
+      .getJobOfferSorted(this.sortBy, this.sortDirection)
+      .subscribe({
+        next: (offers) => {
+          this.jobOffers = offers;
+          this.filteredJobOffers = offers;
+          console.log('Ofertas ordenadas:', offers);
+        },
+        error: (error) => {
+          console.error('Error sorting job offers:', error);
+          this.openSnackBar('Error al ordenar las ofertas de trabajo', 'error');
+        },
+      });
+    /*this.jobOffers.sort((a, b) => {
       let valueA = a[field];
       let valueB = b[field];
 
@@ -136,7 +149,7 @@ export class JobCatalogueComponent implements OnInit {
       if (valueA < valueB) return this.sortDirection === 'asc' ? -1 : 1;
       if (valueA > valueB) return this.sortDirection === 'asc' ? 1 : -1;
       return 0;
-    });
+    });*/
   }
 
   getFilteredOffers(): JobOffer[] {

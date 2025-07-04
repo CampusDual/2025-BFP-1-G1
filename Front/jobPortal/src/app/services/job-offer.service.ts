@@ -1,5 +1,5 @@
 import { Injectable, OnInit } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { catchError, map, Observable, throwError } from 'rxjs';
 import { JobOffer } from '../model/jobOffer';
 import { Company } from '../model/company';
@@ -14,6 +14,15 @@ export class JobOfferService {
 
   getJobOffers(): Observable<JobOffer[]> {
     return this.http.get<JobOffer[]>(`${this.urlJobOffers}/getAll`);
+  }
+
+  getJobOfferSorted(sortBy: string, direction: string): Observable<JobOffer[]> {
+    let params = new HttpParams()
+      .set('sortBy', sortBy)
+      .set('direction', direction);
+    return this.http.get<JobOffer[]>(this.urlJobOffers.concat('/sort'), {
+      params,
+    });
   }
 
   addJobOffers(jobOffer: JobOffer): Observable<JobOffer> {
