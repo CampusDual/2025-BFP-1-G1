@@ -9,6 +9,7 @@ import com.campusdual.bfp.model.dto.UserDataDTO;
 import com.campusdual.bfp.model.dto.dtomapper.JobOffersMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -57,6 +58,17 @@ public class JobOffersService implements IJobOffersService {
         jobOffersDao.saveAndFlush(jobOffer);
         return jobOffer.getId();
     }
+
+    public List<JobOffersDTO> queryAllOffersSorted(String sortBy, String direction) {
+        if(!List.of("title", "company", "releaseDate").contains(sortBy)) {
+            throw new IllegalArgumentException("Invalid sort field: " + sortBy);
+        }
+        Sort.Direction sortDirection = "desc".equalsIgnoreCase(direction) ? Sort.Direction.DESC : Sort.Direction.ASC;
+        Sort sort = Sort.by(sortDirection, sortBy);
+        List<JobOffer> jobOffers = jobOffersDao.findAll(sort);
+     return JobOffersMapper.INSTANCE.toDTOList(jobOffers);
+    }
+
 
   /*  TODO implementar métodos.
   @Override

@@ -50,4 +50,8 @@ public class JobOffersController {
     public ResponseEntity<String> handleValidationException(ValidationException ex) {
         return ResponseEntity.badRequest().body(ex.getMessage());
     }
+    @GetMapping(value = "/sort")
+    public ResponseEntity<List<JobOffersDTO>> queryAllOffersSorted(@RequestParam String sortBy, @RequestParam String direction) {
+        return ResponseEntity.ok(jobOffersService.queryAllOffersSorted(sortBy, direction));
+    }
 }
