@@ -12,7 +12,8 @@ import { ApplicationService } from 'src/app/services/application.service';
 export class JobCatalogueComponent implements OnInit {
   jobOffers: JobOffer[] = [];
   gridCols: number = 3;
-  sortBy: 'id' | 'title' | 'releaseDate' | 'description' | 'company' | 'email' = 'releaseDate';
+  sortBy: 'id' | 'title' | 'releaseDate' | 'description' | 'company' | 'email' =
+    'releaseDate';
   sortDirection: 'asc' | 'desc' = 'desc';
   searchTerm: string = '';
   filteredJobOffers: JobOffer[] = [];
@@ -31,12 +32,14 @@ export class JobCatalogueComponent implements OnInit {
       this.sortOffers('releaseDate', 'desc');
       console.log('Job offers:', offers);
     });
-  
-    this.applicationService.getUserApplications().subscribe((applications: any[]) => {
-      console.log('User applications:', applications);
-      this.appliedOfferIds = applications.map((app: any) => app.offerId);
-      console.log('Applied offer IDs:', this.appliedOfferIds);
-    })
+
+    this.applicationService
+      .getUserApplications()
+      .subscribe((applications: any[]) => {
+        console.log('User applications:', applications);
+        this.appliedOfferIds = applications.map((app: any) => app.offerId);
+        console.log('Applied offer IDs:', this.appliedOfferIds);
+      });
     this.breakpointObserver
       .observe([
         Breakpoints.XSmall,
@@ -118,19 +121,23 @@ export class JobCatalogueComponent implements OnInit {
     this.jobOffers = currentOffers;
   }
 
-  aplicarAOferta(oferta: any) {
-    this.applicationService.aplicarAOferta(oferta.id).subscribe({
-      next: () => {
-        alert('¡Aplicación enviada con éxito!');
-        this.appliedOfferIds.push(oferta.id);
-      },
-      error: err => {
-        if (err.status === 409) {
-          alert('Ya has aplicado a esta oferta.');
-        } else {
-          alert('Error al aplicar a la oferta.');
-        }
+aplicarAOferta(oferta: any) {
+  this.applicationService.aplicarAOferta(oferta.id).subscribe({
+    next: (res) => {
+      // Si el backend envía texto plano, que puede ser algo como:
+      // "¡Aplicación enviada con éxito!" o "Ya estás inscrito a esta oferta"
+      alert(res);
+      this.appliedOfferIds.push(oferta.id);
+    },
+    error: (err) => {
+      if (err.status === 409) {
+        alert(err.error || 'Ya estás inscrito a esta oferta');
+      } else if (err.status === 401) {
+        alert('No autorizado. Por favor, inicia sesión.');
+      } else {
+        alert('Error al aplicar a la oferta. Inténtalo de nuevo más tarde.');
       }
-    });
-  }
+    },
+  });
+}
 }

@@ -4,20 +4,28 @@ import { Observable } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class ApplicationService {
-  getUserApplications(): Observable<any[]> {
-    // Ajusta la URL si tu endpoint es diferente
-    return this.http.get<any[]>('/api/applications/user');
-  }
-  private apiUrl = '/api/applications';
+  private apiUrl = 'http://localhost:30030/applications';
 
   constructor(private http: HttpClient) {}
 
+  getUserApplications(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}`);
+  }
+
   aplicarAOferta(ofertaId: number): Observable<any> {
-    // Si usas JWT, añade el token aquí
+    const token = localStorage.getItem('token');
+    console.log('Token en aplicarAOferta:', token, 'OfertaId:', ofertaId);
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
-      // 'Authorization': `Bearer ${token}` // Descomenta si usas JWT
+      Authorization: `Bearer ${token}`,
     });
-    return this.http.post(this.apiUrl, { ofertaId }, { headers });
+    return this.http.post(
+      `${this.apiUrl}/apply?offerId=${ofertaId}`,
+      {},
+      {
+        headers,
+        responseType: 'text',
+      }
+    );
   }
 }
