@@ -13,6 +13,7 @@
   left: 0;
   width: 100%;
   z-index: 1000;
+  font-size: large;
 }
 
 .container {
@@ -83,31 +84,6 @@
   white-space: nowrap;
 }
 
-/* Menú desplegable */
-::ng-deep .mat-menu-panel {
-  background-color: var(--gray-darkest) !important;
-  color: #fff !important;
-  border-radius: 6px !important;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5) !important;
-  min-width: 200px !important;
-}
-
-::ng-deep .mat-menu-item {
-  color: #fff !important;
-  padding: 10px 16px !important;
-  display: flex !important;
-  align-items: center !important;
-  gap: 8px !important;
-}
-
-::ng-deep .mat-menu-item .mat-icon {
-  margin-right: 8px !important;
-}
-
-::ng-deep .mat-menu-item:hover {
-  background-color: var(--primary) !important;
-}
-
 /* Botones para invitados */
 .guest-buttons {
   display: flex;
@@ -130,58 +106,75 @@
 }
 
 /* Versión móvil */
-@media (max-width: 768px) {
+@media (max-width: var(--breakpoint-tablet)) {
   .header {
-    padding: 5px 15px;
-    max-height: none;
-    height: auto;
+    padding: 0 15px;
+    max-height: 55px;
   }
 
   .container {
-    padding: 5px 10px;
-    flex-wrap: wrap;
+    padding: 0 10px;
+    flex-wrap: nowrap;
+    gap: 10px;
   }
 
   .logo {
-    width: 120px;
-    height: 40px;
+    width: 130px;
+    height: auto;
     margin-right: 0;
-    order: 1;
   }
 
-  .iconContainer {
-    order: 3;
-    width: 100%;
-    justify-content: flex-end;
-    margin-top: 5px;
-    padding-top: 5px;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
+  .company-name {
+    font-size: 1.2rem;
   }
 
   .guest-buttons {
-    order: 2;
-    margin-left: auto;
-    gap: 5px;
+    gap: 8px;
   }
 
   .guest-buttons button {
-    padding: 4px 8px;
+    padding: 5px 10px;
     font-size: 0.8rem;
   }
 
-  /* Menú desplegable en móvil */
-  ::ng-deep .mat-menu-panel {
-    min-width: 180px !important;
+  .iconContainer {
+    gap: 15px;
+  }
+
+  .iconContainer .mat-mdc-fab {
+    width: 36px;
+    height: 36px;
+  }
+
+  .iconContainer .mat-mdc-fab .mat-icon {
+    font-size: 2.5em;
   }
 }
 
-@media (max-width: 480px) {
+@media (max-width: var(--breakpoint-mobile)) {
+  .header {
+    max-height: 50px;
+    padding: 0 4px;
+  }
+
+  .container {
+    padding: 0 4px;
+  }
+
   .logo {
     width: 100px;
   }
 
+  .company-name {
+    display: none;
+  }
+
+  .guest-buttons {
+    gap: 5px;
+  }
+
   .guest-buttons button {
     font-size: 0.7rem;
-    padding: 3px 6px;
+    padding: 4px 6px;
   }
 }

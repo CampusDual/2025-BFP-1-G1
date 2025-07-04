@@ -5,7 +5,7 @@
   align-items: center;
   justify-content: center;
   text-align: center;
-  width: 100vw;
+  width: 100%; /* Use 100% instead of 100vw to avoid horizontal overflow */
   height: 100vh;
   margin: 0 auto;
   padding: 4rem 0 0 0;
@@ -18,7 +18,7 @@
   grid-template-columns: 20% auto;
   width: 100%;
   height: 100%;
-  max-width: 100vw;
+  max-width: 100%; /* Use 100% instead of 100vw */
   max-height: 100vh;
   overflow: hidden;
 }
@@ -60,7 +60,7 @@
   overflow-y: auto;
   scrollbar-width: none;
   box-shadow: 0 2px 17px rgba(224, 60, 49, 0.08);
-
+  margin: 0 1em; /* Margen horizontal para separar de los bordes */
 }
 
 .newOffer[mat-button] {
@@ -204,44 +204,76 @@
   color: var(--gray-lightest);
 }
 
-@media (max-width: 768px) {
-  .global-container {
-    padding-top: 0;
-    height: auto;
-    min-height: 100vh;
-    overflow: visible;
-  }
-
+@media (max-width: var(--breakpoint-tablet)) {
   .grid {
     grid-template-columns: 1fr;
-    grid-template-rows: auto auto;
-    gap: 0;
   }
-
   .left-container {
-    padding: 15px;
-    overflow: visible;
-    height: auto;
-    position: relative;
-    grid-template-rows: auto;
-    background-color: var(--gray-lightest);
+    display: none; /* Hide the left panel on tablets */
   }
-
   .right-container {
-    grid-template-rows: auto auto;
+    grid-template-columns: 1fr; /* Single column layout for content */
+  }
+  .sort-controls {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .right-container h1, .offer-list {
+    grid-column: 1 / -1; /* Span full width */
+  }
+}
+
+@media (max-width: var(--breakpoint-mobile)) {
+  /* --- Global & Main Grid --- */
+  .global-container {
     height: auto;
+    min-height: 100vh;
+    overflow-y: auto;
+    padding: 1rem;
+    justify-content: flex-start;
+  }
+  .grid, .right-container {
+    display: block; /* Switch to a simple block layout */
+    height: auto;
+    overflow: visible;
+  }
+
+  /* --- Left & Right Containers --- */
+  .left-container {
+    display: block; /* Show the left panel again on mobile */
+    height: auto;
+    padding: 1em;
+    margin-bottom: 1rem;
+  }
+  .right-container {
     margin-top: 0;
-    position: relative;
-    background-color: var(--font-base);
+    padding: 1em;
   }
 
-  .left-container h1 {
-    font-size: 1.5em;
-    margin-bottom: 15px;
+  /* --- Content Elements --- */
+  .newOffer[mat-button] {
+    width: 90%;
+    margin: 1em auto;
+    display: block;
   }
-
+  .right-container h1 {
+    font-size: 1.5rem;
+    text-align: center;
+    margin-bottom: 1em;
+  }
+  .sort-controls {
+    flex-direction: column;
+    align-items: stretch;
+    margin-bottom: 1em;
+  }
+  .search-bar {
+    min-width: unset;
+    width: 100%;
+  }
   .offer-list {
-    max-height: 50vh;
-    margin: 10px;
+    max-height: none;
+    overflow-y: visible;
+    margin: 0; /* Se resetea el margen para que use el padding del contenedor padre */
   }
 }

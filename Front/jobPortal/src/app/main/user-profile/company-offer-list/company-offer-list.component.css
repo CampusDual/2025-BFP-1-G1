@@ -1,19 +1,15 @@
 .content {
-  background-color: var(--font-base);
-  padding: 2em;
+  padding: 1em;
   min-height: auto;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  margin: 1em;
+  margin: 0;
 }
 
 .card {
   width: 100%;
-  height: 100%;
-  max-height: 220px;
-  min-height: 180px;
   overflow: hidden;
   display: flex;
   flex-direction: column;
@@ -22,21 +18,17 @@
   background-color: #f8f9fa;
   border-radius: 9px;
   border: 1px solid #ccc;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
-  padding: 16px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 1.5rem;
   box-sizing: border-box;
   text-align: left;
-  isolation: isolate;
-  min-width: 0;
-
 }
-
 
 mat-card-title {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  font-size: 1.5rem;
+  font-size: 1.4rem;
   font-family: "Montserrat", "Poppins", "Segoe UI", Arial, sans-serif;
   padding-bottom: 0.3em;
   margin-bottom: 15px;
@@ -45,50 +37,49 @@ mat-card-title {
   display: block;
 }
 
-
 mat-card-subtitle {
   font-family: "Poppins", Arial, sans-serif;
   font-size: 1rem;
   color: #A3999A;
   padding-bottom: 0.5em;
   margin-bottom: 0.2px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  white-space: normal;
   word-break: break-word;
 }
 
 .offer-content {
-  margin-bottom: 6em;
+  margin-bottom: 1rem;
 }
 
-
-
-/* Responsive: tablet */
-@media (max-width: 900px) {
+/* Responsive */
+@media (max-width: 768px) {
   .content {
-    padding: 1em;
-    margin: 0.5em;
+    padding: 1rem;
   }
 
   .card {
-    height: auto;
-    padding: 16px;
-    font-size: 0.95em;
+    padding: 1rem;
+  }
+
+  mat-card-title {
+    font-size: 1.2rem;
+  }
+
+  mat-card-subtitle {
+    font-size: 0.9rem;
   }
 }
 
-/* Responsive: móvil */
-@media (max-width: 600px) {
+@media (max-width: 480px) {
   .content {
-    padding: 0.5em;
-    margin: 0;
+    padding: 0.5rem;
+  }
+  
+  .card {
+    padding: 0.8rem;
   }
 
-  .card {
-    width: 100%;
-    height: auto;
-    padding: 10px;
-    font-size: 0.9em;
+  mat-card-title {
+    font-size: 1.1rem;
   }
 }
