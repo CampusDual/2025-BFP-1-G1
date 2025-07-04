@@ -13,8 +13,8 @@ public class JobOffer {
     private long id;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
-    private User user;
+    @JoinColumn(name = "company_id", referencedColumnName = "id")
+    private Company company;
 
     @Column
     private String email;
@@ -44,12 +44,12 @@ public class JobOffer {
         this.email = email;
     }
 
-    public User getUser() {
-        return user;
+    public Company getCompany() {
+        return company;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setCompany(Company company) {
+        this.company = company;
     }
 
     public String getTitle() {

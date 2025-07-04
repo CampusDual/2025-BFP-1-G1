@@ -16,42 +16,8 @@ html, body {
   overflow-y: hidden; 
 }
 
-/*Responsividad*/
-.logo-container {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
-  align-items: center;
-  justify-content: center;
-}
 
-.logo-container img {
-  max-width: 120px;
-  height: auto;
-}
 
-/* HEADER Y CONTAINER RESPONSIVE */
-.header, .container {
-  width: 100vw;          /* ocupa toda la anchura de la ventana */
-  height: 100vh;         /* ocupa toda la altura de la ventana */
-  min-width: 0;
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0 16px;
-  overflow: hidden;      /* quita cualquier scroll externo */
-}
-
-/* Lista de ofertas con scroll interno */
-.offer-list {
-  max-height: calc(100vh - 120px); /* ajusta 120px según header o título arriba */
-  overflow-y: auto;                /* scroll solo en esta caja */
-  scrollbar-width: none;           /* ocultar scroll en Firefox */
-  margin: 0;
-  padding: 0 1em;
-}
 
 /* Tablet */
 @media (max-width: 900px) {

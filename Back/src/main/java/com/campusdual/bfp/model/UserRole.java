@@ -15,7 +15,7 @@ public class UserRole {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private long id;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
@@ -27,17 +27,17 @@ public class UserRole {
 
     public UserRole() { }
 
-    public UserRole(Long id, User user, Role role) {
+    public UserRole(long id, User user, Role role) {
         this.id = id;
         this.user = user;
         this.role = role;
     }
 
-    public Long getId() {
+    public long getId() {
         return this.id;
     }
 
-    public void setId(Long id) {
+    public void setId(long id) {
         this.id = id;
     }
 
