@@ -14,12 +14,9 @@ export class HeaderComponent implements OnInit {
   constructor(public usersService: UsersService, private router: Router) {}
 
   ngOnInit(): void {
-    // Subscribe to user data changes
     this.usersService.userData$.subscribe((userData) => {
       this.userData = userData;
     });
-
-    // Load user data if logged in but data not loaded
     if (!this.userData && this.usersService.isLoggedIn()) {
       this.usersService.getUserData().subscribe();
     }

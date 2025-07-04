@@ -4,12 +4,24 @@ import { Observable } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class ApplicationService {
-  private apiUrl = 'http://localhost:30030/applications';
+  private apiUrl = 'http://localhost:30030/applications'; // BASE URL CORRECTA
 
   constructor(private http: HttpClient) {}
 
   getUserApplications(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.apiUrl}`);
+    const token = localStorage.getItem('token');
+    if (!token) {
+      console.warn(
+        'No token found for getUserApplications. Request might fail.'
+      );
+    }
+
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    });
+
+    return this.http.get<any[]>(`${this.apiUrl}/user`, { headers });
   }
 
   aplicarAOferta(ofertaId: number): Observable<any> {
