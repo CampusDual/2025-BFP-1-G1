@@ -4,8 +4,6 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { UsersService } from 'src/app/services/users.service';
 
-
-
 @Component({
   selector: 'app-sign-up-form',
   templateUrl: './sign-up-form.component.html',
@@ -54,33 +52,37 @@ export class SignUpFormComponent {
     });
   }
 
+  openSnackBar(message: string, panelClass: string = '') {
+    this.snackBar.open(message, 'Cerrar', {
+      duration: 10000, // 10 segundos
+      horizontalPosition: 'center',
+      verticalPosition: 'top',
+      panelClass: [panelClass],
+    });
+  }
+
   signUp() {
     const errorMessage = document.getElementById('error');
     if (this.signUpForm.valid) {
-      const login = this.signUpForm.value.login;
-      const password = this.signUpForm.value.password;
-      const name = this.signUpForm.value.name;
-      const surname = this.signUpForm.value.surname;
-      const email = this.signUpForm.value.email;
-      const phone = this.signUpForm.value.phone;
-      // const birthdate = this.signUpForm.value.birthdate;
+      const { login, password, name, surname, email, phone } =
+        this.signUpForm.value;
 
-      this.usersService.signUpCandidate(login, password, name, surname, email, phone).subscribe({
-        next: (response) => {
-          console.log('Registro exitoso:', response);
-          this.router.navigate(['/main/login']);
-        },
-        error: (error) => {
-          console.error('Registro fallido:', error);
-          this.snackBar.open('Registro fallido', 'Cerrar', {
-            duration: 3000,
-            verticalPosition: 'top',
-          });
-          if (errorMessage) {
-            errorMessage.style.visibility = 'visible';
-          }
-        },
-      });
+      this.usersService
+        .signUpCandidate(login, password, name, surname, email, phone)
+        .subscribe({
+          next: (response) => {
+            console.log('Registro exitoso:', response);
+            this.openSnackBar('Registro exitoso!', 'successSnackbar');
+            this.router.navigate(['/main/login']);
+          },
+          error: (error) => {
+            console.error('Registro fallido:', error);
+            this.openSnackBar('Registro fallido. Inténtalo de nuevo.', 'error');
+            if (errorMessage) {
+              errorMessage.style.visibility = 'visible';
+            }
+          },
+        });
     } else {
       this.signUpForm.markAllAsTouched();
       console.warn(
@@ -90,8 +92,13 @@ export class SignUpFormComponent {
       if (errorMessage) {
         errorMessage.style.visibility = 'visible';
       }
+      this.openSnackBar(
+        'Por favor, revisa los campos del formulario.',
+        'error'
+      );
     }
   }
+
   getFieldErrorMessage(controlName: string): string {
     const control = this.signUpForm.get(controlName);
 

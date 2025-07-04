@@ -27,7 +27,7 @@ export class HeaderComponent implements OnInit {
   }
 
   goToRegister(): void {
-    this.router.navigate(['/main/signupform']);
+    this.router.navigate(['/main/signup']);
   }
 
   redirectToProfile(): void {

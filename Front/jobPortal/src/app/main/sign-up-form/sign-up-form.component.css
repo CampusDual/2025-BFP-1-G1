@@ -138,14 +138,20 @@ button[mat-raised-button]:disabled {
   box-shadow: none;
 }
 
-
 mat-error {
   font-size: 0.85rem;
   color: var(--primary);
 }
 
+.success {
+  background-color: #4CAF50 !important;
+  color: white !important;
+}
 
-
+.error {
+  background-color: #f44336 !important;
+  color: white !important;
+}
 
 @media (max-width: 768px) {
   .container {
