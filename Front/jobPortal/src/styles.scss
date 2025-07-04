@@ -65,7 +65,12 @@ h3 {
   --mat-mdc-snack-bar-button-color: white!important;
 }
 .errorSnackbar.mat-mdc-snack-bar-container {
-  --mdc-snackbar-container-color: red!important;
+  --mdc-snackbar-container-color:var(--primary)!important;
+  --mdc-snackbar-supporting-text-color: white!important;
+  --mat-mdc-snack-bar-button-color: white!important;
+}
+.error{
+  --mdc-snackbar-container-color: var(--primary)!important;
   --mdc-snackbar-supporting-text-color: white!important;
   --mat-mdc-snack-bar-button-color: white!important;
 }

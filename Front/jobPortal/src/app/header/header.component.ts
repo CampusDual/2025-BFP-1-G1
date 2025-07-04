@@ -14,13 +14,10 @@ export class HeaderComponent implements OnInit {
   constructor(public usersService: UsersService, private router: Router) {}
 
   ngOnInit(): void {
-    // Suscríbete al observable user$
     this.usersService.userData$.subscribe((userData) => {
       this.userData = userData;
     });
-
-    // Si no hay usuario cargado pero hay token, pide el perfil
-    if (!this.userData?.user && this.usersService.isLoggedIn()) {
+    if (!this.userData && this.usersService.isLoggedIn()) {
       this.usersService.getUserData().subscribe();
     }
   }
@@ -29,13 +26,23 @@ export class HeaderComponent implements OnInit {
     this.router.navigate(['/main/catalogue']);
   }
 
+  goToRegister(): void {
+    this.router.navigate(['/main/signupform']);
+  }
+
   redirectToProfile(): void {
-    if (this.usersService.isLoggedIn()) {
-      this.router.navigate(['/main/userprofile']);
-    } else {
+    if (!this.usersService.isLoggedIn()) {
       this.router.navigate(['/main/login']);
+      return;
+    }
+
+    if (this.isCandidate()) {
+      this.router.navigate(['/main/candidateprofile']);
+    } else if (this.isCompany()) {
+      this.router.navigate(['/main/userprofile']);
     }
   }
+
   goToLogin(): void {
     this.router.navigate(['/main/login']);
   }
@@ -43,5 +50,30 @@ export class HeaderComponent implements OnInit {
   logout(): void {
     this.usersService.logout();
     this.router.navigate(['/main/login']);
+  }
+
+  getDisplayName(): string {
+    if (this.userData?.candidate) {
+      return `${this.userData.candidate.name} ${this.userData.candidate.surname}`;
+    } else if (this.userData?.company) {
+      return this.userData.company.name;
+    } else if (this.userData?.user) {
+      return this.userData.user.login;
+    }
+    return '';
+  }
+
+  isCandidate(): boolean {
+    return (
+      !!this.userData?.candidate ||
+      (!!this.userData?.user && this.userData.user.role_id === 3)
+    );
+  }
+
+  isCompany(): boolean {
+    return (
+      !!this.userData?.company ||
+      (!!this.userData?.user && this.userData.user.role_id === 2)
+    );
   }
 }

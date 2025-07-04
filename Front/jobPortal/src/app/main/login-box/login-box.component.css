@@ -8,8 +8,6 @@ body {
   align-items: center;
   color: var(--text-base);
   margin: 0;
-
-
 }
 
 
@@ -26,7 +24,6 @@ body {
   justify-content: center;
 }
 
-
 .login-box {
   display: flex;
   background-color: white;
@@ -36,8 +33,6 @@ body {
   height: 100%;
   width: 80%;
   box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
-
-
 }
 
 

@@ -1,1 +1,27 @@
-<p>candidate-profile works!</p>
+<div class="candidate-profile-container">
+  <div class="candidate-header-card">
+    <div class="avatar-section">
+      <div class="avatar">
+        <mat-icon>person</mat-icon>
+      </div>
+      <div class="candidate-info">
+        <h2>{{ userData?.candidate?.name }} {{ userData?.candidate?.surname }}</h2>
+        <p class="candidate-email"><mat-icon>email</mat-icon> {{ userData?.user?.login }}</p>
+        <p class="candidate-extra" *ngIf="userData?.candidate?.phone">
+          <mat-icon>phone</mat-icon> {{ userData?.candidate?.phone }}
+        </p>
+      </div>
+    </div>
+    <!-- <button mat-raised-button color="primary" class="edit-profile-btn">Editar perfil</button> -->
+  </div>
+
+  <div class="applications-section">
+    <h1><mat-icon>assignment_turned_in</mat-icon> Tus candidaturas</h1>
+    <div class="applications-list">
+      <div class="application-card empty">
+        <mat-icon>info</mat-icon>
+        Próximamente podrás ver aquí tus candidaturas.
+      </div>
+    </div>
+  </div>
+</div>
