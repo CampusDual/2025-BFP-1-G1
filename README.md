@@ -1,62 +1,68 @@
+
 # Job Portal
 
-This project is a **Job Portal web application**. It is currently in development and allows **companies** to register and log in to publish and manage job offers.
+Este proyecto es una **aplicación web de portal de empleo**. Actualmente está en desarrollo y permite tanto a **empresas** como a **candidatos** registrarse, iniciar sesión y gestionar sus respectivas funcionalidades.
 
-> 🔒 At the moment, only company login is implemented. Candidate functionality is not yet available.  
-> 🛠️ Company account creation is done **via Postman** (API), not through the web interface.
-
----
-
-## Features (current state)
-
-- ✅ Company registration via Postman  
-- ✅ Company login from frontend  
-- ✅ Company dashboard to manage job offers  
-- 🔒 Candidate features not implemented yet  
-- 🔐 Secure authentication using Spring Security  
+> ✅ Las **empresas** pueden registrarse, iniciar sesión y gestionar sus ofertas de empleo.  
+> ✅ Los **candidatos** ya pueden registrarse desde la interfaz web, iniciar sesión e **inscribirse en ofertas**.  
+> 🛠️ La creación de cuenta de empresa aún se realiza **vía Postman** (API), no desde la interfaz web.
 
 ---
 
-## Getting Started
+## Funcionalidades (estado actual)
 
-### Prerequisites
+- ✅ Registro de empresas vía Postman  
+- ✅ Inicio de sesión de empresa desde el frontend  
+- ✅ Panel de empresa para gestionar ofertas  
+- ✅ Registro e inicio de sesión de candidatos desde la web  
+- ✅ Inscripción de candidatos en ofertas  
+- 🔐 Autenticación segura con Spring Security  
 
-Make sure you have the following installed:
+---
 
-- Java 11 or higher  
+## Primeros pasos
+
+### Requisitos
+
+Asegúrate de tener instalado lo siguiente:
+
+- Java 11 o superior  
 - Maven  
-- Node.js and npm  
+- Node.js y npm  
 - Angular CLI  
 - PostgreSQL  
-- Postman (or any REST client)
+- Postman (u otro cliente REST)
 
 ---
 
-## Launch frontend
-```
+## Ejecutar frontend
+
+```bash
 ng serve
 ```
 
-The app will be available at:
+La aplicación estará disponible en:
+
 ```
 http://localhost:4200
 ```
 
-### Reference Documentation
-For further reference, please consider the following sections:
+---
 
-* [Official Apache Maven documentation](https://maven.apache.org/guides/index.html)
-* [Spring Boot Maven Plugin Reference Guide](https://docs.spring.io/spring-boot/docs/2.7.7/maven-plugin/reference/html/)
-* [Create an OCI image](https://docs.spring.io/spring-boot/docs/2.7.7/maven-plugin/reference/html/#build-image)
-* [Spring Web](https://docs.spring.io/spring-boot/docs/2.7.7/reference/htmlsingle/#web)
-* [Spring Data JPA](https://docs.spring.io/spring-boot/docs/2.7.7/reference/htmlsingle/#data.sql.jpa-and-spring-data)
-* [Spring Session](https://docs.spring.io/spring-session/reference/)
+## Documentación de referencia
 
-### Guides
-The following guides illustrate how to use some features concretely:
+- [Documentación oficial de Maven](https://maven.apache.org/guides/index.html)  
+- [Guía del plugin Spring Boot para Maven](https://docs.spring.io/spring-boot/docs/2.7.7/maven-plugin/reference/html/)  
+- [Crear una imagen OCI](https://docs.spring.io/spring-boot/docs/2.7.7/maven-plugin/reference/html/#build-image)  
+- [Spring Web](https://docs.spring.io/spring-boot/docs/2.7.7/reference/htmlsingle/#web)  
+- [Spring Data JPA](https://docs.spring.io/spring-boot/docs/2.7.7/reference/htmlsingle/#data.sql.jpa-and-spring-data)  
+- [Spring Session](https://docs.spring.io/spring-session/reference/)
 
-* [Building a RESTful Web Service](https://spring.io/guides/gs/rest-service/)
-* [Serving Web Content with Spring MVC](https://spring.io/guides/gs/serving-web-content/)
-* [Building REST services with Spring](https://spring.io/guides/tutorials/rest/)
-* [Accessing Data with JPA](https://spring.io/guides/gs/accessing-data-jpa/)
+---
 
+## Guías prácticas
+
+- [Crear un servicio web RESTful](https://spring.io/guides/gs/rest-service/)  
+- [Servir contenido web con Spring MVC](https://spring.io/guides/gs/serving-web-content/)  
+- [Construir servicios REST con Spring](https://spring.io/guides/tutorials/rest/)  
+- [Acceder a datos con JPA](https://spring.io/guides/gs/accessing-data-jpa/)
