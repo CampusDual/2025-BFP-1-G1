@@ -13,6 +13,10 @@ export class SignUpFormComponent {
   signUpForm!: FormGroup;
   isSubmitting = false;
 
+  tooltipX = 0;
+  tooltipY = 0;
+  showTooltip = false;
+
   constructor(
     private fb: FormBuilder,
     private usersService: UsersService,
@@ -63,7 +67,8 @@ export class SignUpFormComponent {
     this.isSubmitting = true;
 
     if (this.signUpForm.valid) {
-      const { login, password, name, surname, email, phone } = this.signUpForm.value;
+      const { login, password, name, surname, email, phone } =
+        this.signUpForm.value;
 
       this.usersService
         .signUpCandidate(login, password, name, surname, email, phone)
@@ -78,9 +83,10 @@ export class SignUpFormComponent {
             console.error('Registro fallido:', error);
 
             let errorMessage = 'Error desconocido en el registro';
-            
+
             if (error.status === 0) {
-              errorMessage = 'Error de conexión. Por favor, verifica tu conexión a internet.';
+              errorMessage =
+                'Error de conexión. Por favor, verifica tu conexión a internet.';
             } else if (error.status === 409) {
               // Handle 409 Conflict (duplicate username/email)
               if (error.error) {
@@ -93,16 +99,20 @@ export class SignUpFormComponent {
 
               // Check for duplicate username/email in the error message
               const lowerCaseMessage = errorMessage.toLowerCase();
-              if (lowerCaseMessage.includes('usuario ya existe') || 
-                  lowerCaseMessage.includes('user already exists') ||
-                  lowerCaseMessage.includes('duplicate username')) {
+              if (
+                lowerCaseMessage.includes('usuario ya existe') ||
+                lowerCaseMessage.includes('user already exists') ||
+                lowerCaseMessage.includes('duplicate username')
+              ) {
                 const loginControl = this.signUpForm.get('login');
                 loginControl?.setErrors({ loginExists: true });
                 loginControl?.markAsTouched();
                 errorMessage = 'El nombre de usuario ya está en uso';
-              } else if (lowerCaseMessage.includes('email ya existe') || 
-                         lowerCaseMessage.includes('email already exists') ||
-                         lowerCaseMessage.includes('duplicate email')) {
+              } else if (
+                lowerCaseMessage.includes('email ya existe') ||
+                lowerCaseMessage.includes('email already exists') ||
+                lowerCaseMessage.includes('duplicate email')
+              ) {
                 const emailControl = this.signUpForm.get('email');
                 emailControl?.setErrors({ emailExists: true });
                 emailControl?.markAsTouched();
@@ -120,14 +130,17 @@ export class SignUpFormComponent {
             } else if (error.message) {
               errorMessage = error.message;
             }
-            
+
             this.openSnackBar(errorMessage, 'error-snackbar');
           },
         });
     } else {
       this.isSubmitting = false;
       this.signUpForm.markAllAsTouched();
-      this.openSnackBar('Por favor, complete todos los campos correctamente', 'error-snackbar');
+      this.openSnackBar(
+        'Por favor, complete todos los campos correctamente',
+        'error-snackbar'
+      );
     }
   }
 
@@ -154,5 +167,11 @@ export class SignUpFormComponent {
     }
 
     return '';
+  }
+
+  onMouseMove(event: MouseEvent): void {
+    const offset = 15;
+    this.tooltipX = event.clientX;
+    this.tooltipY = event.clientY + offset;
   }
 }

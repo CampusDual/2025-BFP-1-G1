@@ -199,19 +199,9 @@ input[type="password"]:focus {
 }
 
 
-.candidate-p {
-  margin-left: 1rem;
-}
 
 
-.register-link {
-  color: var(--primary);
-  font-family: var(--font-base);
-  text-decoration: none;
-  font-weight: bold;
-  font-size: 14px;
-  margin-top: 20px;
-}
+
 
 
 /* responsive: cuando la pantalla es menor que 768px (tablet y móvil) */
@@ -230,7 +220,7 @@ input[type="password"]:focus {
   }
 
   .image-section {
-    display: none; 
+    display: none;
   }
 
   .form-section {
@@ -294,4 +284,46 @@ input[type="password"]:focus {
     padding: 8px;
     font-size: 14px;
   }
+}
+
+.register-direction {
+  width: 100%;
+  text-align: center;
+  margin-top: 2.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--gray-light);
+  font-size: 16px;
+}
+
+.register-direction p {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 400;
+  color: var(--text-secondary);
+  margin-top: 0.4rem;
+}
+
+.register-link {
+  color: var(--primary);
+  text-decoration: none;
+  font-family: var(--font-base);
+  font-weight: 500;
+
+}
+
+.register-link:hover {
+  text-decoration: underline;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.candidate-p {
+  font-family: var(--font-base);
+  font-weight: 500;
+  margin-top: 20px;
+  text-align: center;
+}
+
+mat-label {
+  font-weight: 400;
 }

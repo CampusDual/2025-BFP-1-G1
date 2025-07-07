@@ -62,6 +62,13 @@ export class HeaderComponent implements OnInit {
     }
     return '';
   }
+  navigateToProfile() {
+    if (this.userData?.candidate) {
+      this.router.navigate(['/main/candidateprofile']);
+    } else if (this.userData?.company) {
+      this.router.navigate(['/main/userprofile']);
+    }
+  }
 
   isCandidate(): boolean {
     return (

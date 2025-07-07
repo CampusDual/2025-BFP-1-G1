@@ -13,8 +13,7 @@ import { UserData } from 'src/app/model/userData';
 export class LoginBoxComponent {
   loginForm: FormGroup;
   role: string | null = null;
-  
-  // Propiedades para el tooltip
+
   tooltipX = 0;
   tooltipY = 0;
   showTooltip = false;
@@ -91,7 +90,6 @@ export class LoginBoxComponent {
   }
 
   onMouseMove(event: MouseEvent): void {
-    // Añadir un pequeño desplazamiento para que el tooltip no esté justo debajo del cursor
     const offset = 15;
     this.tooltipX = event.clientX;
     this.tooltipY = event.clientY + offset;
