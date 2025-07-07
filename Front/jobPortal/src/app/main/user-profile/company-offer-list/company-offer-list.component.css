@@ -6,15 +6,15 @@
   flex-direction: column;
   align-items: stretch; /* Evita hueco central */
   justify-content: flex-start;
-  margin: 1em;
+  margin: 2.2em;
   gap: 0;
+  
 }
 
 .card {
   width: 100%;
   height: auto;
-  max-height: 190px; /* Reducido ligeramente */
-  min-height: 160px; /* Reducido ligeramente */
+  min-height: 160px; 
   overflow: hidden;
   display: flex;
   flex-direction: column;
@@ -33,7 +33,7 @@
 }
 
 .card + .card {
-  margin-top: 8px; /* Espacio entre tarjetas reducido */
+  margin-top: 8px; 
 }
 
 mat-card-title {
