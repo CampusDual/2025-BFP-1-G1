@@ -290,31 +290,36 @@ input[type="password"]:focus {
   width: 100%;
   text-align: center;
   margin-top: 2.5rem;
-  padding-top: 0.8rem;
+  padding-top: 1rem;
   border-top: 1px solid var(--gray-light);
   font-size: 16px;
 }
 
+.register-direction p {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 400;
+  color: var(--text-secondary);
+  margin-top: 0.4rem;
+}
+
 .register-link {
   color: var(--primary);
-  margin-left: 5px;
   text-decoration: none;
   font-family: var(--font-base);
   font-weight: 500;
-  font-size: 1.1em;
 
 }
 
 .register-link:hover {
   text-decoration: underline;
   cursor: pointer;
+  font-weight: 500;
 }
 
 .candidate-p {
   font-family: var(--font-base);
-  margin-left: 0.7rem;
   font-weight: 500;
   margin-top: 20px;
   text-align: center;
-  font-size: 22px;
 }
