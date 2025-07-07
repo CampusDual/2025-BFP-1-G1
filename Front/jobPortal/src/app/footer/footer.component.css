@@ -26,3 +26,31 @@
   object-fit: contain;
   padding-left: 1.2rem;
 }
+
+/* Media Queries para Responsividad */
+@media (max-width: var(--breakpoint-tablet)) {
+  .logo {
+    height: 50px;
+    padding-right: 1rem;
+  }
+
+  .logoCluster {
+    height: 25px;
+    padding-left: 1rem;
+  }
+}
+
+@media (max-width: var(--breakpoint-mobile)) {
+  .container {
+    padding: 5px 0;
+  }
+  .logo {
+    height: 40px;
+    padding-right: 0.8rem;
+  }
+
+  .logoCluster {
+    height: 20px;
+    padding-left: 0.8rem;
+  }
+}

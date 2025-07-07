@@ -26,9 +26,9 @@
       </form>
     </div>
     <div class="image-section">
-      <div class="circle-image">
-        <img src="./assets/img/logoCluster.png" alt="Login illustration"
-          onclick="window.location.href='/main/catalogue'" />
+      <div class="circle-image" (click)="navigateToCatalogue()" (mousemove)="onMouseMove($event)" (mouseenter)="showTooltip = true" (mouseleave)="showTooltip = false" style="cursor: pointer; position: relative;">
+        <img src="./assets/img/logoCluster.png" alt="Login illustration" />
+        <span class="custom-tooltip" [style.left.px]="tooltipX" [style.top.px]="tooltipY" [class.visible]="showTooltip">Ver catálogo</span>
       </div>
     </div>
   </div>
