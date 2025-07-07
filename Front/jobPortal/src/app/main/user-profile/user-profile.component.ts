@@ -12,10 +12,10 @@ import { JobOfferService } from 'src/app/services/job-offer.service';
   styleUrls: ['./user-profile.component.css']
 })
 export class UserProfileComponent implements OnInit {
-  jobOffers!: JobOffer[];
+  jobOffers: JobOffer[] = [];
   userData: UserData | null = null;
   isMobile = false;
-    role: number | undefined;
+  isLoading = true;
 
   @ViewChild('CompanyOfferListComponent')
   CompanyOfferListComponent!: CompanyOfferListComponent;
@@ -26,41 +26,24 @@ export class UserProfileComponent implements OnInit {
     private router: Router
   ) {}
 
-ngOnInit(): void {
-  this.checkIfMobile();
-  this.loadUserData();
-  this.loadJobOffers();
-}
+  ngOnInit(): void {
+    this.checkIfMobile();
+    this.loadUserData();
+    this.loadJobOffers();
+  }
 
-private loadUserData(): void {
-  this.usersService.getUserData().subscribe({
-    next: (data) => {
-      this.userData = data;
-      this.role = this.userData?.user.role_id;
-      if (!this.role) {
-        const storedRole = localStorage.getItem('role');
-        this.role = storedRole ? Number(storedRole) : undefined;
-      }
-
-      if (this.role === 3) {
-        this.router.navigate(['/main/candidateprofile']);
-      } else if (this.role === 2) {
-      } else {
-        this.router.navigate(['/main/catalogue']);
-      }
-    },
-    error: (err) => {
-      const storedRole = localStorage.getItem('role');
-      if (storedRole === '3') {
-        this.router.navigate(['/main/candidateprofile']);
-      } else if (storedRole === '2') {
-      } else {
-        this.router.navigate(['/main/catalogue']);
-      }
-      console.error('No se pudo obtener el usuario', err);
-    },
-  });
-}
+  private loadUserData(): void {
+    this.usersService.getUserData().subscribe({
+      next: (data) => {
+        this.userData = data;
+        this.isLoading = false;
+      },
+      error: (err) => {
+        console.error('No se pudo obtener el usuario', err);
+        this.isLoading = false;
+      },
+    });
+  }
 
   @HostListener('window:resize')
   checkIfMobile() {

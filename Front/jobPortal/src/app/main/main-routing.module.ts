@@ -26,6 +26,7 @@ const routes: Routes = [
   {
     path: 'candidateprofile',
     component: CandidateProfileComponent,
+    canActivate: [authGuard]
   },
   { path: 'signup', component: SignUpFormComponent },
 ];
