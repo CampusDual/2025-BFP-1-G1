@@ -2,8 +2,13 @@ package com.campusdual.bfp.controller;
 
 
 import com.campusdual.bfp.api.IJobOffersService;
+import com.campusdual.bfp.model.User;
 import com.campusdual.bfp.model.dto.JobOffersDTO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -32,8 +37,30 @@ public class OffersManagementController {
     }
 
     @PostMapping(value="/add")
-    public long addJobOffer(@RequestBody JobOffersDTO jobOffersDTO){
-        return jobOffersService.insertJobOffer(jobOffersDTO);
+    public ResponseEntity<?> addJobOffer(@RequestBody JobOffersDTO jobOffersDTO){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (authentication == null || !authentication.isAuthenticated()) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User not authenticated");
+        }
+
+        Object principal = authentication.getPrincipal();
+        if (!(principal instanceof User)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Principal is not a User instance");
+        }
+
+        User authenticatedUser = (User) principal;
+        if (authenticatedUser.getRole() == null || !authenticatedUser.getRole().getId().equals(2)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User Role must be Company.");
+        }
+
+        try {
+            long offerId = jobOffersService.insertJobOffer(jobOffersDTO);
+            return ResponseEntity.status(HttpStatus.CREATED).body(offerId);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Error creating job offer: " + e.getMessage());
+        }
     }
 /*
     @PutMapping (value="/update")
