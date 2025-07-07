@@ -30,23 +30,5 @@ public class UsersController {
         }
     }
 
-    @PostMapping("/register")
-    public ResponseEntity<?> register(@RequestBody UserDataDTO userDataDTO) {
-        try {
-            UserDataDTO result = userService.registerNewCandidate(
-                    userDataDTO.getUser(),
-                    userDataDTO.getCandidate()
-            );
-            return ResponseEntity.ok(result);
-        } catch (RuntimeException ex) {
-            if (ex.getMessage().contains("usuario ya existe") || ex.getMessage().contains("email ya existe")) {
-                return ResponseEntity.status(HttpStatus.CONFLICT)
-                        .body(java.util.Collections.singletonMap("message", ex.getMessage()));
-            }
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body(java.util.Collections.singletonMap("message", ex.getMessage()));
-        }
-    }
-
 
 }

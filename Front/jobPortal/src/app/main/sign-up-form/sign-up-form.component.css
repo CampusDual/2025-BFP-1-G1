@@ -4,22 +4,21 @@ body,
   height: 100%;
   width: 100%;
   margin: 0;
-  padding: 40px;
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  overflow: hidden;
-  box-sizing: border-box;
+  padding: 0;
   font-family: var(--font-base);
   background-color: var(--gray-megalightest);
   color: var(--text-base);
+}
+.container {
+  min-height: 100vh;
+  width: 100%;
+  padding: 40px 20px;
+  box-sizing: border-box;
   display: flex;
   justify-content: center;
   align-items: center;
+  overflow-y: auto;
 }
-
 .sign-up-box {
   display: flex;
   width: 80%;
@@ -31,7 +30,6 @@ body,
   overflow: hidden;
   flex-wrap: nowrap;
 }
-
 .image-section {
   flex: 1;
   padding: 30px;
@@ -44,7 +42,6 @@ body,
     var(--primary)
   );
 }
-
 .circle-image {
   width: 250px;
   height: 250px;
@@ -56,27 +53,28 @@ body,
   justify-content: center;
   box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
 }
-
 .circle-image img {
   width: 100%;
   height: auto;
   cursor: pointer;
 }
-
 .form-section {
   flex: 2;
   padding: 50px;
   display: flex;
   flex-direction: column;
   min-height: 0;
+  position: relative;
+  z-index: 1;
 }
-
 .form-title {
   font-size: 28px;
   color: var(--darker);
-  margin: 0 0 20px 0;
+  margin: 0 0 30px 0;
+  padding-top: 10px;
+  position: relative;
+  z-index: 1;
 }
-
 .form-section form {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -84,31 +82,28 @@ body,
   width: 100%;
   overflow-y: auto;
   flex-grow: 1;
-  padding-bottom: 20px;
+  padding: 20px 0;
+  margin-top: -20px;
+  padding-top: 30px;
 }
-
 .inputs1,
 .inputs2 {
   display: flex;
   flex-direction: column;
   gap: 24px;
 }
-
 .formulario {
   width: 100%;
 }
-
 mat-form-field .mat-mdc-text-field-wrapper,
 mat-form-field .mat-mdc-form-field-flex {
   min-height: 30px;
 }
-
 mat-form-field input,
 mat-form-field input[type="password"] {
   height: 1.2rem;
   box-sizing: border-box;
 }
-
 .sign-up-button {
   grid-column: 1 / -1;
   width: 60%;
@@ -122,7 +117,6 @@ mat-form-field input[type="password"] {
   cursor: pointer;
   transition: background-color 0.3s ease;
 }
-
 .login-redirect {
   width: 100%;
   text-align: center;
@@ -130,55 +124,45 @@ mat-form-field input[type="password"] {
   padding-top: 1.5rem;
   border-top: 1px solid var(--gray-light);
 }
-
 .candidate-p {
   margin: 0;
   font-size: 14px;
   color: var(--text-secondary);
 }
-
 .login-link {
   color: var(--primary);
   font-weight: 500;
   text-decoration: none;
   margin-left: 5px;
 }
-
 .login-link:hover {
   text-decoration: underline;
 }
-
 .sign-up-button:hover {
   background-color: var(--primary-dark);
 }
-
 button[mat-raised-button]:hover:not([disabled]) {
   background-color: var(--primary-dark);
   box-shadow: 0 4px 16px rgba(224, 60, 49, 0.13);
 }
-
 button[mat-raised-button]:disabled {
-  background-color: #e0e0e0 !important;
+  background-color: #E0E0E0 !important;
   color: #757575 !important;
   cursor: not-allowed;
   box-shadow: none;
 }
-
 mat-error {
   font-size: 0.85rem;
   color: var(--primary);
 }
-
 .success {
-  background-color: #4caf50 !important;
+  background-color: #4CAF50 !important;
   color: white !important;
 }
-
 .error {
-  background-color: #f44336 !important;
+  background-color: #F44336 !important;
   color: white !important;
 }
-
 @media (max-width: 992px) {
   .form-section form {
     gap: 16px 24px;
@@ -187,15 +171,13 @@ mat-error {
     padding: 30px;
   }
 }
-
 @media (max-width: 768px) {
   .container {
-    padding: 0;
+    padding: 20px 10px;
     position: static;
-    overflow-y: auto;
     height: auto;
+    min-height: 100vh;
   }
-
   .sign-up-box {
     flex-direction: column;
     width: 100%;
@@ -205,51 +187,41 @@ mat-error {
     max-height: none;
     box-shadow: none;
   }
-
   .image-section {
     padding: 20px;
     background: none;
   }
-
   .circle-image {
     width: 150px;
     height: 150px;
   }
-
   .form-section {
     padding: 20px 30px;
   }
-
   .form-section form {
     grid-template-columns: 1fr;
     gap: 16px;
   }
-
   .inputs1,
   .inputs2 {
     margin-top: 0;
     gap: 16px;
   }
-
   .sign-up-button {
     width: 100%;
     margin: 1em 0 2em 0;
   }
 }
-
 @media (max-width: 480px) {
   .image-section {
     display: none;
   }
-
   .sign-up-box {
     margin-top: 50px;
   }
-
   .form-section {
     padding: 20px;
   }
-
   .form-title {
     font-size: 24px;
   }
