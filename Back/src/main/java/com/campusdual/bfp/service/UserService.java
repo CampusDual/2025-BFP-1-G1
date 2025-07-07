@@ -1,5 +1,6 @@
 package com.campusdual.bfp.service;
 
+import com.campusdual.bfp.exception.RegistrationException;
 import com.campusdual.bfp.model.Candidate;
 import com.campusdual.bfp.model.Role;
 import com.campusdual.bfp.model.User;
@@ -60,11 +61,11 @@ public class UserService implements UserDetailsService {
     @Transactional
     public UserDataDTO registerNewCandidate(UserDTO userDTO, CandidateDTO candidateDTO) {
         if (userDao.findByLogin(userDTO.getLogin()) != null) {
-            throw new RuntimeException("Este nombre de usuario ya existe");
+            throw new RegistrationException("login", "DUPLICATE_USERNAME", "Este nombre de usuario ya existe");
         }
-        // Comprobar si el email ya existe
+        // Check if email already exists
         if (userDao.findByEmail(userDTO.getEmail()) != null) {
-            throw new RuntimeException("Este email ya existe");
+            throw new RegistrationException("email", "DUPLICATE_EMAIL", "Este email ya existe");
         }
 
         User user = UserMapper.INSTANCE.toEntity(userDTO);

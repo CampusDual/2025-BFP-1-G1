@@ -21,6 +21,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.campusdual.bfp.exception.RegistrationException;
+
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.List;
@@ -87,16 +93,51 @@ public class AuthController {
         }
     }
 
+    /**
+     * Handles user registration for both candidates and companies
+     * @param userDataDTO Contains user data and optionally candidate or company data
+     * @return ResponseEntity with the result of the registration
+     */
+    /**
+     * Handles user registration for both candidates and companies
+     * @param userDataDTO Contains user data and optionally candidate or company data
+     * @return ResponseEntity with the result of the registration
+     */
     @PostMapping("/signup")
-    public ResponseEntity<String> registerUser(@RequestBody UserDataDTO request) {
-
-        if (this.userService.existsByLogin(request.getUser().getLogin())) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body("User already exists.");
+    public ResponseEntity<?> registerUser(@RequestBody UserDataDTO userDataDTO) {
+        try {
+            UserDataDTO result;
+            
+            if (userDataDTO.getCandidate() != null) {
+                // Candidate registration
+                result = userService.registerNewCandidate(userDataDTO.getUser(), userDataDTO.getCandidate());
+            } else if (userDataDTO.getCompany() != null) {
+                // Company registration (if implemented)
+                return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED)
+                        .body(Collections.singletonMap("message", "Company registration is not implemented yet"));
+            } else {
+                // Only user registration (without candidate or company data)
+                throw new IllegalArgumentException("Either candidate or company data must be provided");
+            }
+            
+            Map<String, Object> response = new HashMap<>();
+            response.put("message", "User successfully registered.");
+            response.put("userId", result.getUser().getId());
+            return ResponseEntity.status(HttpStatus.CREATED).body(response);
+            
+        } catch (RegistrationException ex) {
+            Map<String, Object> errorResponse = new HashMap<>();
+            errorResponse.put("field", ex.getField());
+            errorResponse.put("errorCode", ex.getErrorCode());
+            errorResponse.put("message", ex.getMessage());
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(errorResponse);
+        } catch (IllegalArgumentException ex) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(Collections.singletonMap("message", ex.getMessage()));
+        } catch (Exception ex) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Collections.singletonMap("message", "An error occurred during registration: " + ex.getMessage()));
         }
-
-            this.userService.registerNewCandidate(request.getUser(), request.getCandidate());
-
-        return ResponseEntity.status(HttpStatus.CREATED).body("{\"message\": \"User successfully registered.\"}");
     }
 
     @PostMapping("/register")
