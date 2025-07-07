@@ -26,6 +26,10 @@ export const authGuard: CanActivateFn = (route, state) => {
     if (state.url.includes('candidateprofile') && role !== 3) {
       return router.createUrlTree(['/main/userprofile']);
     }
+
+    if (state.url.includes('createOffer') && role === 3) {
+      return router.createUrlTree(['/main/catalogue']);
+    }
   }
   return true;
 };
