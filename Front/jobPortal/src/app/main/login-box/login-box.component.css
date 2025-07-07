@@ -204,14 +204,7 @@ input[type="password"]:focus {
 }
 
 
-.register-link {
-  color: var(--primary);
-  font-family: var(--font-base);
-  text-decoration: none;
-  font-weight: bold;
-  font-size: 14px;
-  margin-top: 20px;
-}
+
 
 
 /* responsive: cuando la pantalla es menor que 768px (tablet y móvil) */
@@ -230,7 +223,7 @@ input[type="password"]:focus {
   }
 
   .image-section {
-    display: none; 
+    display: none;
   }
 
   .form-section {
@@ -294,4 +287,24 @@ input[type="password"]:focus {
     padding: 8px;
     font-size: 14px;
   }
+}
+
+.register-link {
+  color: var(--primary);
+  margin-left: 5px;
+  text-decoration: none;
+
+  font-family: var(--font-base);
+  font-weight: 500;
+  font-size: 1.1em;
+
+}
+
+.register-link:hover {
+  /* Corrected from .register-link.hover to .register-link:hover */
+  text-decoration: underline;
+  /* Underline on hover */
+  /* No need to repeat font-family here unless you're changing it */
+  cursor: pointer;
+  /* Add this to indicate it's clickable */
 }
