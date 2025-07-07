@@ -1,3 +1,4 @@
+import { LoadingScreenService } from './../../../services/loading-screen.service';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Component, OnInit } from '@angular/core';
 import { JobOffer } from 'src/app/model/jobOffer';
@@ -18,13 +19,16 @@ export class CompanyOfferListComponent implements OnInit {
 
   constructor(
     private jobOfferService: JobOfferService,
-    private breakpointObserver: BreakpointObserver
+    private breakpointObserver: BreakpointObserver,
+    private loadingScreenService: LoadingScreenService
   ) {}
 
   ngOnInit(): void {
+    this.loadingScreenService.show();
     this.jobOfferService.getProfileOffers().subscribe((offers) => {
       this.jobOffers = offers;
       this.sortOffers('releaseDate', 'desc');
+      this.loadingScreenService.hide();
     });
     this.breakpointObserver
       .observe([

@@ -8,6 +8,7 @@ import { UsersService } from 'src/app/services/users.service';
 import { switchMap, filter, tap } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { LoadingScreenService } from 'src/app/services/loading-screen.service';
 
 @Component({
   selector: 'app-job-catalogue',
@@ -29,14 +30,17 @@ export class JobCatalogueComponent implements OnInit {
     private breakpointObserver: BreakpointObserver,
     private applicationService: ApplicationService,
     public usersService: UsersService,
-    private _snackBar: MatSnackBar
+    private _snackBar: MatSnackBar,
+    private loadingScreenService: LoadingScreenService
   ) {}
 
   ngOnInit(): void {
+    this.loadingScreenService.show();
     this.jobOfferService.getJobOffers().subscribe((offers) => {
       this.jobOffers = offers;
       this.sortOffers('releaseDate', 'desc');
       console.log('Job offers loaded:', offers);
+      this.loadingScreenService.hide();
     });
 
     this.usersService.userData$
