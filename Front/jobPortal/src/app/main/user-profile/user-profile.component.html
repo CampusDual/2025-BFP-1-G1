@@ -2,6 +2,32 @@
   <div class="grid">
     <!-- Left Container (visible solo en desktop) -->
     <div class="left-container" *ngIf="!isMobile">
+      <div class="company-card">
+        <!-- Información de la empresa -->
+        <div class="company-info" *ngIf="userData?.company">
+          <div class="company-header">
+            <h3 class="company-name">{{ userData?.company?.name }}</h3>
+          </div>
+          <div class="info-item" *ngIf="userData?.company?.phone">
+            <mat-icon>phone</mat-icon>
+            <span>{{ userData?.company?.phone }}</span>
+          </div>
+          <div class="info-item" *ngIf="userData?.company?.web">
+            <mat-icon>language</mat-icon>
+            <a [href]="userData?.company?.web" target="_blank" class="web-link">{{ userData?.company?.web }}</a>
+          </div>
+          <div class="info-item" *ngIf="userData?.company?.cif">
+            <mat-icon>badge</mat-icon>
+            <span>{{ userData?.company?.cif }}</span>
+          </div>
+          <div class="info-item" *ngIf="userData?.company?.address">
+            <mat-icon>location_on</mat-icon>
+            <span>{{ userData?.company?.address }}</span>
+          </div>
+        </div>
+      </div>
+    
+      <!-- Botón de nueva oferta -->
       <button mat-button class="newOffer" (click)="moveToCreateOffer()">
         Nueva Oferta
       </button>
