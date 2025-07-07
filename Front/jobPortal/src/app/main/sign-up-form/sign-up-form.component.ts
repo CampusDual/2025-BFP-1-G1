@@ -94,7 +94,7 @@ export class SignUpFormComponent {
             }
 
             this.openSnackBar(
-              'Error en el registro: ' + (errorMessage || 'Por favor revise los campos'),
+              'Error en el registro. ' + (errorMessage || 'Por favor revise los campos'),
               'error-snackbar'
             );
           },
