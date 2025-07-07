@@ -59,6 +59,14 @@ public class UserService implements UserDetailsService {
 
     @Transactional
     public UserDataDTO registerNewCandidate(UserDTO userDTO, CandidateDTO candidateDTO) {
+        if (userDao.findByLogin(userDTO.getLogin()) != null) {
+            throw new RuntimeException("Este nombre de usuario ya existe");
+        }
+        // Comprobar si el email ya existe
+        if (userDao.findByEmail(userDTO.getEmail()) != null) {
+            throw new RuntimeException("Este email ya existe");
+        }
+
         User user = UserMapper.INSTANCE.toEntity(userDTO);
         user.setPassword(this.passwordEncoder().encode(user.getPassword()));
         Role role = roleDao.findById(3L).orElseThrow(() -> new RuntimeException("Role not found with id: " + user.getRole().getId()));
