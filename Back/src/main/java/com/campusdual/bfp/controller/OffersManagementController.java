@@ -50,7 +50,7 @@ public class OffersManagementController {
         }
 
         User authenticatedUser = (User) principal;
-        if (authenticatedUser.getRole() == null || !authenticatedUser.getRole().getId().equals(2)) {
+        if (authenticatedUser.getRole() == null || !(authenticatedUser.getRole().getId() == 2)) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User Role must be Company.");
         }
 
