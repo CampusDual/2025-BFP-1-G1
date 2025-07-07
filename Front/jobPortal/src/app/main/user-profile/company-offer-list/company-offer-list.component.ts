@@ -25,7 +25,7 @@ export class CompanyOfferListComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadingScreenService.show();
-    this.jobOfferService.getJobOfferSorted('releaseDate', 'desc').subscribe({
+    this.jobOfferService.getJobOffersByCompanySorted('releaseDate', 'desc').subscribe({
       next: (offers) => {
         this.jobOffers = offers;
         this.sortBy = 'releaseDate';
