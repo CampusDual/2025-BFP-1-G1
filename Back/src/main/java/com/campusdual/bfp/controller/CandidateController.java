@@ -1,9 +1,6 @@
 package com.campusdual.bfp.controller;
 
 import com.campusdual.bfp.model.Candidate;
-import com.campusdual.bfp.model.dto.CandidateDTO;
-import com.campusdual.bfp.model.dto.dtomapper.CandidateMapper;
-import com.campusdual.bfp.model.dto.dtomapper.UserMapper;
 import com.campusdual.bfp.service.CandidateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
