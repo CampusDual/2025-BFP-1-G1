@@ -4,22 +4,23 @@
   min-height: auto;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: stretch; /* Evita hueco central */
   justify-content: flex-start;
   margin: 1em;
+  gap: 0;
 }
 
 .card {
   width: 100%;
-  height: 100%;
-  max-height: 220px;
-  min-height: 180px;
+  height: auto;
+  max-height: 190px; /* Reducido ligeramente */
+  min-height: 160px; /* Reducido ligeramente */
   overflow: hidden;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   justify-content: flex-start;
-  background-color: #f8f9fa;
+  background-color: #F8F9FA;
   border-radius: 9px;
   border: 1px solid #ccc;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
@@ -28,15 +29,18 @@
   text-align: left;
   isolation: isolate;
   min-width: 0;
-
+  margin: 0;
 }
 
+.card + .card {
+  margin-top: 8px; /* Espacio entre tarjetas reducido */
+}
 
 mat-card-title {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  font-size: 1.5rem;
+  font-size: 1.3rem;
   font-family: "Montserrat", "Poppins", "Segoe UI", Arial, sans-serif;
   padding-bottom: 0.3em;
   margin-bottom: 15px;
@@ -44,7 +48,6 @@ mat-card-title {
   width: 100%;
   display: block;
 }
-
 
 mat-card-subtitle {
   font-family: "Poppins", Arial, sans-serif;
@@ -59,10 +62,8 @@ mat-card-subtitle {
 }
 
 .offer-content {
-  margin-bottom: 6em;
+  margin-bottom: 0; /* Elimina espacio innecesario al final */
 }
-
-
 
 /* Responsive: tablet */
 @media (max-width: 900px) {
@@ -78,17 +79,36 @@ mat-card-subtitle {
   }
 }
 
-/* Responsive: móvil */
-@media (max-width: 600px) {
+/* Responsive: tablet pequeño o móvil grande */
+@media (max-width: 768px) {
   .content {
-    padding: 0.5em;
-    margin: 0;
+    padding: 1rem;
   }
 
   .card {
-    width: 100%;
-    height: auto;
-    padding: 10px;
-    font-size: 0.9em;
+    padding: 1rem;
+  }
+
+  mat-card-title {
+    font-size: 1.2rem;
+  }
+
+  mat-card-subtitle {
+    font-size: 0.9rem;
+  }
+}
+
+/* Responsive: móvil */
+@media (max-width: 480px) {
+  .content {
+    padding: 0.5rem;
+  }
+
+  .card {
+    padding: 0.8rem;
+  }
+
+  mat-card-title {
+    font-size: 1.1rem;
   }
 }
