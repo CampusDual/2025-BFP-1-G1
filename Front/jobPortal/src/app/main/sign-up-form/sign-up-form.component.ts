@@ -11,6 +11,23 @@ import { UsersService } from 'src/app/services/users.service';
 })
 export class SignUpFormComponent {
   signUpForm!: FormGroup;
+  isSubmitting = false;
+
+  constructor(
+    private fb: FormBuilder,
+    private usersService: UsersService,
+    private router: Router,
+    private snackBar: MatSnackBar
+  ) {
+    this.signUpForm = this.fb.group({
+      login: ['', [Validators.required]],
+      password: ['', [Validators.required, Validators.minLength(4)]],
+      name: ['', [Validators.required]],
+      surname: ['', [Validators.required]],
+      email: ['', [Validators.required, Validators.email]],
+      phone: ['', [Validators.required, Validators.pattern('^[0-9]{9}$')]],
+    });
+  }
 
   get login() {
     return this.signUpForm.get('login');
@@ -31,30 +48,9 @@ export class SignUpFormComponent {
     return this.signUpForm.get('phone');
   }
 
-  // get birthdate() {
-  //   return this.signUpForm.get('birthdate');
-  // }
-
-  constructor(
-    private fb: FormBuilder,
-    private usersService: UsersService,
-    private router: Router,
-    private snackBar: MatSnackBar
-  ) {
-    this.signUpForm = this.fb.group({
-      login: ['', Validators.required],
-      password: ['', Validators.required],
-      name: ['', Validators.required],
-      surname: ['', Validators.required],
-      email: ['', [Validators.required, Validators.email]],
-      phone: ['', [Validators.required, Validators.pattern('^[0-9]{9}$')]],
-      // birthdate: ['', Validators.required, Validators.pattern('^(19|20)\\d\\d-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$')],
-    });
-  }
-
   openSnackBar(message: string, panelClass: string = '') {
     this.snackBar.open(message, 'Cerrar', {
-      duration: 10000, // 10 segundos
+      duration: 10000,
       horizontalPosition: 'center',
       verticalPosition: 'top',
       panelClass: [panelClass],
@@ -62,40 +58,51 @@ export class SignUpFormComponent {
   }
 
   signUp() {
-    const errorMessage = document.getElementById('error');
+    if (this.isSubmitting) return;
+
+    this.isSubmitting = true;
+
     if (this.signUpForm.valid) {
-      const { login, password, name, surname, email, phone } =
-        this.signUpForm.value;
+      const { login, password, name, surname, email, phone } = this.signUpForm.value;
 
       this.usersService
         .signUpCandidate(login, password, name, surname, email, phone)
         .subscribe({
           next: (response) => {
-            console.log('Registro exitoso:', response);
-            this.openSnackBar('Registro exitoso!', 'successSnackbar');
+            this.isSubmitting = false;
+            this.openSnackBar('Registro exitoso!', 'success-snackbar');
             this.router.navigate(['/main/login']);
           },
           error: (error) => {
+            this.isSubmitting = false;
             console.error('Registro fallido:', error);
-            this.openSnackBar('Registro fallido. Inténtalo de nuevo.', 'error');
-            if (errorMessage) {
-              errorMessage.style.visibility = 'visible';
+
+            const errorMessage = typeof error?.error === 'string'
+              ? error.error.toLowerCase()
+              : (error?.error?.message?.toLowerCase() || '');
+
+            if (errorMessage.includes('usuario ya existe') || errorMessage.includes('user already exists')) {
+              const loginControl = this.signUpForm.get('login');
+              loginControl?.setErrors({ loginExists: true });
+              loginControl?.markAsTouched();
             }
+
+            if (errorMessage.includes('email ya existe') || errorMessage.includes('email already exists')) {
+              const emailControl = this.signUpForm.get('email');
+              emailControl?.setErrors({ emailExists: true });
+              emailControl?.markAsTouched();
+            }
+
+            this.openSnackBar(
+              'Error en el registro: ' + (errorMessage || 'Por favor revise los campos'),
+              'error-snackbar'
+            );
           },
         });
     } else {
+      this.isSubmitting = false;
       this.signUpForm.markAllAsTouched();
-      console.warn(
-        'Formulario inválido. No se puede enviar la petición de registro.'
-      );
-
-      if (errorMessage) {
-        errorMessage.style.visibility = 'visible';
-      }
-      this.openSnackBar(
-        'Por favor, revisa los campos del formulario.',
-        'error'
-      );
+      this.openSnackBar('Por favor, complete todos los campos correctamente', 'error-snackbar');
     }
   }
 
@@ -104,6 +111,21 @@ export class SignUpFormComponent {
 
     if (control?.hasError('required')) {
       return 'Este campo es obligatorio';
+    }
+    if (control?.hasError('minlength')) {
+      return `Mínimo ${control.errors?.['minlength'].requiredLength} caracteres`;
+    }
+    if (controlName === 'login' && control?.hasError('loginExists')) {
+      return 'Este usuario ya está registrado';
+    }
+    if (controlName === 'email' && control?.hasError('emailExists')) {
+      return 'Este email ya está registrado';
+    }
+    if (controlName === 'email' && control?.hasError('email')) {
+      return 'Formato de mail no válido';
+    }
+    if (controlName === 'phone' && control?.hasError('pattern')) {
+      return 'Teléfono debe tener 9 dígitos';
     }
 
     return '';

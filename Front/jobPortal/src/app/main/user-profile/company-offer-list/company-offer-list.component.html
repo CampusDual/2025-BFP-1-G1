@@ -1,7 +1,7 @@
 
 
 <div class="offer-content">
-  <mat-grid-list class="content" [cols]="gridCols" rowHeight="2:1.4" gutterSize="20px">
+  <mat-grid-list class="content" [cols]="gridCols" rowHeight="2:1.0" gutterSize="20px">
     <mat-grid-tile *ngFor="let offer of jobOffers">
       <mat-card class="card">
         <mat-card-title #titleElement [matTooltip]="isTruncated(titleElement) ? offer.title : ''">{{ offer.title }}</mat-card-title>
