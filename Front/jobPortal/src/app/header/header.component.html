@@ -4,7 +4,7 @@
       <img src="assets/img/logoCluster.png" alt="Logo Cluster TIC Galiza" (click)="goToCatalogue()">
     </div>
     <div class="iconContainer" *ngIf="usersService.isLoggedIn(); else guestMenu">
-      <span class="display-name">{{ getDisplayName() }}</span>
+      <span (click)="navigateToProfile()" class="display-name">{{ getDisplayName() }}</span>
       <button mat-fab [matMenuTriggerFor]="userMenu">
         <mat-icon class="icon">account_circle</mat-icon>
       </button>

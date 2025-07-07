@@ -48,6 +48,7 @@
   margin: 0;
   padding: 0;
 }
+
 .iconContainer .mat-mdc-fab {
   background-color: var(--primary);
   color: white;
@@ -173,8 +174,13 @@
     gap: 5px;
   }
 
+
   .guest-buttons button {
     font-size: 0.7rem;
     padding: 4px 6px;
   }
+}
+
+.display-name {
+  cursor: pointer;
 }
