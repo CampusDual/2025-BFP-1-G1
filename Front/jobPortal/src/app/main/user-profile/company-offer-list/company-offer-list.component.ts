@@ -25,11 +25,15 @@ export class CompanyOfferListComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadingScreenService.show();
-    this.jobOfferService.getProfileOffers().subscribe((offers) => {
-      this.jobOffers = offers;
-      this.sortOffers('releaseDate', 'desc');
-      this.loadingScreenService.hide();
-    });
+    this.jobOfferService
+      .getJobOffersByCompanySorted('releaseDate', 'desc')
+      .subscribe((offers) => {
+        this.jobOffers = offers;
+        this.sortBy = 'releaseDate';
+        this.sortDirection = 'desc';
+        this.loadingScreenService.hide();
+      });
+
     this.breakpointObserver
       .observe([
         Breakpoints.XSmall,

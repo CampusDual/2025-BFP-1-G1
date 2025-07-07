@@ -36,12 +36,14 @@ export class JobCatalogueComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadingScreenService.show();
-    this.jobOfferService.getJobOffers().subscribe((offers) => {
-      this.jobOffers = offers;
-      this.sortOffers('releaseDate', 'desc');
-      console.log('Job offers loaded:', offers);
-      this.loadingScreenService.hide();
-    });
+    this.jobOfferService
+      .getJobOffersByCompanySorted('releaseDate', 'desc')
+      .subscribe((offers) => {
+        this.jobOffers = offers;
+        this.sortBy = 'releaseDate';
+        this.sortDirection = 'desc';
+        this.loadingScreenService.hide();
+      });
 
     this.usersService.userData$
       .pipe(
