@@ -3,13 +3,8 @@ body,
 .container {
   height: 100%;
   width: 100%;
-  font-family: var(--font-base);
-  background-color: var(--gray-megalightest);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color: var(--text-base);
   margin: 0;
+  padding: 40px;
   position: fixed;
   top: 0;
   left: 0;
@@ -17,37 +12,45 @@ body,
   bottom: 0;
   overflow: hidden;
   box-sizing: border-box;
-  padding: 40px;
+  font-family: var(--font-base);
+  background-color: var(--gray-megalightest);
+  color: var(--text-base);
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .sign-up-box {
   display: flex;
-  background-color: white;
-  border-radius: 8px;
-  overflow: hidden;
-  flex-wrap: nowrap;
   width: 80%;
   max-width: 1200px;
-  max-height: 500px;
-  margin-top: 1rem;
+  max-height: 90vh;
+  background-color: white;
+  border-radius: 8px;
   box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+  overflow: hidden;
+  flex-wrap: nowrap;
 }
 
 .image-section {
-  background: linear-gradient(to bottom right, var(--primary-light), var(--primary));
+  flex: 1;
+  padding: 30px;
   display: flex;
   align-items: center;
   justify-content: center;
-  flex: 1;
-  padding: 30px;
+  background: linear-gradient(
+    to bottom right,
+    var(--primary-light),
+    var(--primary)
+  );
 }
 
 .circle-image {
-  background-color: white;
-  border-radius: 50%;
-  padding: 20px;
   width: 250px;
   height: 250px;
+  padding: 20px;
+  background-color: white;
+  border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -65,14 +68,13 @@ body,
   padding: 50px;
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
-  height: 100%;
+  min-height: 0;
 }
 
 .form-title {
   font-size: 28px;
   color: var(--darker);
-  margin: 0 0 20px 0; 
+  margin: 0 0 20px 0;
 }
 
 .form-section form {
@@ -80,12 +82,13 @@ body,
   grid-template-columns: 1fr 1fr;
   gap: 24px 32px;
   width: 100%;
+  overflow-y: auto;
   flex-grow: 1;
+  padding-bottom: 20px;
 }
 
 .inputs1,
 .inputs2 {
-  margin-top: 1.2rem;
   display: flex;
   flex-direction: column;
   gap: 24px;
@@ -109,8 +112,7 @@ mat-form-field input[type="password"] {
 .sign-up-button {
   grid-column: 1 / -1;
   width: 60%;
-  margin-left: auto;
-  margin-right: auto;
+  margin: 0 auto;
   padding: 12px 24px;
   background-color: var(--primary);
   color: white;
@@ -119,7 +121,31 @@ mat-form-field input[type="password"] {
   border-radius: 4px;
   cursor: pointer;
   transition: background-color 0.3s ease;
-  display: block;
+}
+
+.login-redirect {
+  width: 100%;
+  text-align: center;
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--gray-light);
+}
+
+.candidate-p {
+  margin: 0;
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
+.login-link {
+  color: var(--primary);
+  font-weight: 500;
+  text-decoration: none;
+  margin-left: 5px;
+}
+
+.login-link:hover {
+  text-decoration: underline;
 }
 
 .sign-up-button:hover {
@@ -144,7 +170,7 @@ mat-error {
 }
 
 .success {
-  background-color: #4CAF50 !important;
+  background-color: #4caf50 !important;
   color: white !important;
 }
 
@@ -156,14 +182,19 @@ mat-error {
 @media (max-width: 768px) {
   .container {
     padding: 20px;
+    position: static;
+    height: auto;
+    overflow: auto;
   }
 
   .sign-up-box {
     flex-direction: column;
+    max-height: none;
+    width: 95%;
+    margin: 20px 0;
   }
 
   .image-section {
-    order: -1;
     padding: 20px;
   }
 
@@ -173,16 +204,19 @@ mat-error {
   }
 
   .form-section {
-    padding: 20px;
+    padding: 30px 20px;
   }
 
   .form-section form {
     grid-template-columns: 1fr;
+    padding-bottom: 15px;
   }
 
   .sign-up-button {
-    grid-column: 1;
     width: 100%;
-    margin: 1.5em 0 2.5em 0;
+  }
+
+  .login-link {
+    padding: 6px 16px;
   }
 }

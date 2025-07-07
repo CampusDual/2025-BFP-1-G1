@@ -22,7 +22,6 @@ export class JobCatalogueComponent implements OnInit {
     'releaseDate';
   sortDirection: 'asc' | 'desc' = 'desc';
   searchTerm: string = '';
-  filteredJobOffers: JobOffer[] = [];
   appliedOfferIds: number[] = [];
 
   constructor(
@@ -36,7 +35,6 @@ export class JobCatalogueComponent implements OnInit {
   ngOnInit(): void {
     this.jobOfferService.getJobOffers().subscribe((offers) => {
       this.jobOffers = offers;
-      this.filteredJobOffers = offers;
       this.sortOffers('releaseDate', 'desc');
       console.log('Job offers loaded:', offers);
     });
@@ -110,50 +108,32 @@ export class JobCatalogueComponent implements OnInit {
       this.sortDirection = 'desc';
     }
 
-    this.jobOffers.sort((a, b) => {
-      let valueA = a[field];
-      let valueB = b[field];
-
-      if (field === 'releaseDate') {
-        valueA = valueA ? new Date(valueA as any).getTime() : 0;
-        valueB = valueB ? new Date(valueB as any).getTime() : 0;
-      }
-      if (field === 'company') {
-        valueA = a.company?.name ?? 0;
-        valueB = b.company?.name ?? 0;
-      }
-
-      if (typeof valueA === 'string' && typeof valueB === 'string') {
-        return this.sortDirection === 'asc'
-          ? valueA.localeCompare(valueB)
-          : valueB.localeCompare(valueA);
-      }
-
-      if (valueA == null && valueB == null) return 0;
-      if (valueA == null) return 1;
-      if (valueB == null) return -1;
-
-      if (valueA < valueB) return this.sortDirection === 'asc' ? -1 : 1;
-      if (valueA > valueB) return this.sortDirection === 'asc' ? 1 : -1;
-      return 0;
-    });
+    this.jobOfferService
+      .getJobOfferSorted(this.sortBy, this.sortDirection)
+      .subscribe({
+        next: (offers) => {
+          this.jobOffers = offers;
+          console.log('Ofertas ordenadas:', offers);
+        },
+        error: (error) => {
+          console.error('Error sorting job offers:', error);
+          this.openSnackBar('Error al ordenar las ofertas de trabajo', 'error');
+        },
+      });
   }
 
-  getFilteredOffers(): JobOffer[] {
-    if (!this.searchTerm) {
-      return this.jobOffers;
-    }
+  getFilteredOffers(): void {
     const lowerCaseSearchTerm = this.searchTerm.toLowerCase();
-    return this.filteredJobOffers.filter(
-      (offer) =>
-        offer.title.toLowerCase().includes(lowerCaseSearchTerm) ||
-        offer.description.toLowerCase().includes(lowerCaseSearchTerm)
-    );
-  }
-
-  updateDisplayedOffers(): void {
-    let currentOffers = this.getFilteredOffers();
-    this.jobOffers = currentOffers;
+    this.jobOfferService.getJobOffersFiltered(lowerCaseSearchTerm).subscribe({
+      next: (offers) => {
+        this.jobOffers = offers;
+        console.log('Ofertas filtradas:', offers);
+      },
+      error: (error) => {
+        console.error('Error filtering job offers:', error);
+        this.openSnackBar('Error al filtrar ofertas de trabajo', 'error');
+      },
+    });
   }
 
   aplicarAOferta(oferta: any) {

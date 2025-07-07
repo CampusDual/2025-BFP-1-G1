@@ -37,7 +37,7 @@
           <span class="icono izquierda"><mat-icon>search</mat-icon></span>
           <input class="search-input" type="text" placeholder="Buscar ofertas por título o descripción..."
             [(ngModel)]="this.CompanyOfferListComponent.searchTerm"
-            (input)="this.CompanyOfferListComponent.updateDisplayedOffers()" class="search-input" />
+            (input)="this.CompanyOfferListComponent.getFilteredOffers()" class="search-input" />
         </div>
       </div>
 
