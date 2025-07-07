@@ -45,7 +45,7 @@
           <mat-card-actions *ngIf="!isCompany()">
             <button mat-raised-button color="primary" class="apply-button" (click)="aplicarAOferta(offer)"
               [disabled]="appliedOfferIds.includes(offer.id!)">
-              {{ appliedOfferIds.includes(offer.id!) ? 'Inscrito' : 'Inscribir' }}
+              {{ appliedOfferIds.includes(offer.id!) ? 'Inscrito' : 'Inscribirse' }}
             </button>
           </mat-card-actions>
         </mat-card>
