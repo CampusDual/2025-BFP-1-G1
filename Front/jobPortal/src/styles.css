@@ -1,6 +1,11 @@
 @import 'variables';
 @import 'mixins';
 
+:root {
+  --breakpoint-tablet: 900px;
+  --breakpoint-mobile: 600px;
+}
+
 *,
 *::before,
 *::after {
@@ -13,34 +18,64 @@ html, body {
   margin: 0;
   padding: 0;
   overflow-x: hidden;
-  overflow-y: hidden; 
+  overflow-y: auto;
+  /* Add padding for fixed header and footer */
+  padding-top: 60px; /* Corresponds to header height */
+  padding-bottom: 60px; /* Corresponds to footer height */
+}
+
+/* Global styles for Angular Material Menu */
+.mat-menu-panel {
+  background-color: var(--gray-darkest);
+  color: #fff;
+  border-radius: 6px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+  min-width: 200px;
+}
+
+.mat-menu-item {
+  color: #fff;
+  padding: 10px 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.mat-menu-item .mat-icon {
+  margin-right: 8px;
+}
+
+.mat-menu-item:hover {
+  background-color: var(--primary);
 }
 
 
-
-
 /* Tablet */
-@media (max-width: 900px) {
+@media (max-width: var(--breakpoint-tablet)) {
+  body {
+    padding-top: 55px;
+    padding-bottom: 50px;
+  }
+
   .logo-container img {
     max-width: 90px;
   }
   .header, .container {
     padding: 0 8px;
   }
+  .mat-menu-panel {
+    min-width: 180px;
+  }
 }
 
 /* Móvil */
-@media (max-width: 600px) {
+@media (max-width: var(--breakpoint-mobile)) {
+  body {
+    padding-top: 50px;
+    padding-bottom: 40px;
+  }
+
   .logo-container img {
     max-width: 60px;
-  }
-  .header, .container {
-    flex-direction: row !important;
-    justify-content: space-between !important;
-    align-items: center !important;
-    width: 100% !important;
-    min-width: 0 !important;
-    box-sizing: border-box !important;
-    padding: 0 4px !important;
   }
 }
