@@ -77,26 +77,51 @@ export class SignUpFormComponent {
             this.isSubmitting = false;
             console.error('Registro fallido:', error);
 
-            const errorMessage = typeof error?.error === 'string'
-              ? error.error.toLowerCase()
-              : (error?.error?.message?.toLowerCase() || '');
+            let errorMessage = 'Error desconocido en el registro';
+            
+            if (error.status === 0) {
+              errorMessage = 'Error de conexión. Por favor, verifica tu conexión a internet.';
+            } else if (error.status === 409) {
+              // Handle 409 Conflict (duplicate username/email)
+              if (error.error) {
+                if (typeof error.error === 'string') {
+                  errorMessage = error.error;
+                } else if (error.error.message) {
+                  errorMessage = error.error.message;
+                }
+              }
 
-            if (errorMessage.includes('usuario ya existe') || errorMessage.includes('user already exists')) {
-              const loginControl = this.signUpForm.get('login');
-              loginControl?.setErrors({ loginExists: true });
-              loginControl?.markAsTouched();
+              // Check for duplicate username/email in the error message
+              const lowerCaseMessage = errorMessage.toLowerCase();
+              if (lowerCaseMessage.includes('usuario ya existe') || 
+                  lowerCaseMessage.includes('user already exists') ||
+                  lowerCaseMessage.includes('duplicate username')) {
+                const loginControl = this.signUpForm.get('login');
+                loginControl?.setErrors({ loginExists: true });
+                loginControl?.markAsTouched();
+                errorMessage = 'El nombre de usuario ya está en uso';
+              } else if (lowerCaseMessage.includes('email ya existe') || 
+                         lowerCaseMessage.includes('email already exists') ||
+                         lowerCaseMessage.includes('duplicate email')) {
+                const emailControl = this.signUpForm.get('email');
+                emailControl?.setErrors({ emailExists: true });
+                emailControl?.markAsTouched();
+                errorMessage = 'El correo electrónico ya está en uso';
+              }
+            } else if (error.status === 400) {
+              // Handle 400 Bad Request
+              if (error.error && error.error.message) {
+                errorMessage = error.error.message;
+              } else {
+                errorMessage = 'Datos de registro inválidos';
+              }
+            } else if (error.status === 401) {
+              errorMessage = 'No autorizado. Por favor, inténtalo de nuevo.';
+            } else if (error.message) {
+              errorMessage = error.message;
             }
-
-            if (errorMessage.includes('email ya existe') || errorMessage.includes('email already exists')) {
-              const emailControl = this.signUpForm.get('email');
-              emailControl?.setErrors({ emailExists: true });
-              emailControl?.markAsTouched();
-            }
-
-            this.openSnackBar(
-              'Error en el registro. ' + (errorMessage || 'Por favor revise los campos'),
-              'error-snackbar'
-            );
+            
+            this.openSnackBar(errorMessage, 'error-snackbar');
           },
         });
     } else {
