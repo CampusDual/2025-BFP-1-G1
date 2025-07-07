@@ -19,16 +19,21 @@
         <button mat-raised-button class="publish-button" color="primary" type="submit"
           [disabled]="loginForm.invalid">Entrar</button>
         <p id="error">Usuario o contraseña erróneos.</p>
-        <p class="candidate-p">¿Eres <b>candidato</b> y no tienes cuenta? <a routerLink="/main/signup"
-            class="register-link"> Regístrate
-            aquí</a>
-        </p>
+        <div class="register-direction">
+          <p class="candidate-p">¿Eres <b>candidato</b> y no tienes cuenta? <a routerLink="/main/signup"
+              class="register-link"> Regístrate
+              aquí</a>
+          </p>
+        </div>
       </form>
     </div>
     <div class="image-section">
-      <div class="circle-image" (click)="navigateToCatalogue()" (mousemove)="onMouseMove($event)" (mouseenter)="showTooltip = true" (mouseleave)="showTooltip = false" style="cursor: pointer; position: relative;">
+      <div class="circle-image" (click)="navigateToCatalogue()" (mousemove)="onMouseMove($event)"
+        (mouseenter)="showTooltip = true" (mouseleave)="showTooltip = false"
+        style="cursor: pointer; position: relative;">
         <img src="./assets/img/logoCluster.png" alt="Login illustration" />
-        <span class="custom-tooltip" [style.left.px]="tooltipX" [style.top.px]="tooltipY" [class.visible]="showTooltip">Ver catálogo</span>
+        <span class="custom-tooltip" [style.left.px]="tooltipX" [style.top.px]="tooltipY"
+          [class.visible]="showTooltip">Ver catálogo</span>
       </div>
     </div>
   </div>
