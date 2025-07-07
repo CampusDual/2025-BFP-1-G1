@@ -1,5 +1,5 @@
 import { Injectable, OnInit } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { catchError, map, Observable, throwError } from 'rxjs';
 import { JobOffer } from '../model/jobOffer';
 import { Company } from '../model/company';
@@ -14,6 +14,71 @@ export class JobOfferService {
 
   getJobOffers(): Observable<JobOffer[]> {
     return this.http.get<JobOffer[]>(`${this.urlJobOffers}/getAll`);
+  }
+
+  getJobOfferSorted(sortBy: string, direction: string): Observable<JobOffer[]> {
+    let params = new HttpParams()
+      .set('sortBy', sortBy)
+      .set('direction', direction);
+    return this.http.get<JobOffer[]>(this.urlJobOffers.concat('/sort'), {
+      params,
+    });
+  }
+
+  getJobOffersFiltered(filterBy: string): Observable<JobOffer[]> {
+    let params = new HttpParams().set('filterBy', filterBy);
+    return this.http.get<JobOffer[]>(this.urlJobOffers.concat('/filter'), {
+      params,
+    });
+  }
+  getJobOffersByCompanyFiltered(filterBy: string): Observable<JobOffer[]> {
+    const params = new HttpParams().set('filterBy', filterBy);
+    const token = localStorage.getItem('token');
+    if (!token) {
+      return throwError(
+        () =>
+          new Error(
+            'No se encontró el token de autenticación. Por favor, inicia sesión.'
+          )
+      );
+    }
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+    });
+    return this.http.get<JobOffer[]>(
+      this.urlProfileOffers.concat('/getAllFilter'),
+      { headers, params }
+    );
+  }
+
+  getJobOffersByCompanySorted(
+    sortBy: string,
+    direction: string
+  ): Observable<JobOffer[]> {
+    const params = new HttpParams()
+      .set('sortBy', sortBy)
+      .set('direction', direction);
+    const token = localStorage.getItem('token');
+    if (!token) {
+      return throwError(
+        () =>
+          new Error(
+            'No se encontró el token de autenticación. Por favor, inicia sesión.'
+          )
+      );
+    }
+
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+    });
+
+    return this.http.get<JobOffer[]>(
+      this.urlProfileOffers.concat('/getAllSorted'),
+      {
+        headers,
+        params,
+      }
+    );
   }
 
   addJobOffers(jobOffer: JobOffer): Observable<JobOffer> {

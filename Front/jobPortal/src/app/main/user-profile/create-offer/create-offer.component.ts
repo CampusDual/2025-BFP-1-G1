@@ -4,8 +4,6 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { JobOfferService } from 'src/app/services/job-offer.service';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { CompanyService } from 'src/app/services/company.service';
-import { Company } from 'src/app/model/company';
 import { UsersService } from 'src/app/services/users.service';
 import { UserData } from 'src/app/model/userData';
 
@@ -102,6 +100,7 @@ export class CreateOfferComponent implements OnInit {
     } else {
       this.offerForm.markAllAsTouched();
     }
+    this.router.navigate(['/main/userprofile']);
   }
 
   goCatalogue(): void {

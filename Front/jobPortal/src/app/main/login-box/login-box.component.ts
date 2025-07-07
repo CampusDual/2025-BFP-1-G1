@@ -13,6 +13,11 @@ import { UserData } from 'src/app/model/userData';
 export class LoginBoxComponent {
   loginForm: FormGroup;
   role: string | null = null;
+  
+  // Propiedades para el tooltip
+  tooltipX = 0;
+  tooltipY = 0;
+  showTooltip = false;
 
   get password() {
     return this.loginForm.get('password');
@@ -45,11 +50,11 @@ export class LoginBoxComponent {
         next: (response) => {
           const role = response.role_id;
           if (role === '3' || role === 3) {
-            this.router.navigate(['/main/catalogue']);
+            this.navigateToCatalogue();
           } else if (role === '2' || role === 2) {
             this.router.navigate(['/main/userprofile']);
           } else {
-            this.router.navigate(['/main/catalogue']);
+            this.navigateToCatalogue();
           }
         },
         error: (error) => {
@@ -79,5 +84,16 @@ export class LoginBoxComponent {
     }
 
     return '';
+  }
+
+  navigateToCatalogue(): void {
+    this.router.navigate(['/main/catalogue']);
+  }
+
+  onMouseMove(event: MouseEvent): void {
+    // Añadir un pequeño desplazamiento para que el tooltip no esté justo debajo del cursor
+    const offset = 15;
+    this.tooltipX = event.clientX;
+    this.tooltipY = event.clientY + offset;
   }
 }

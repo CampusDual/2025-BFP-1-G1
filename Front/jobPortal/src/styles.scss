@@ -40,16 +40,13 @@ h3 {
   margin-bottom: 1rem;
 }
 .mat-mdc-tooltip {
-  --mdc-plain-tooltip-container-color: #a71123 !important;
+  --mdc-plain-tooltip-container-color: var(--gray-darkest) !important;
   --mdc-plain-tooltip-supporting-text-color: #fff !important;
-  --mdc-plain-tooltip-container-width: 50rem !important;
-  --mdc-plain-tooltip-container-padding: 16px 24px !important;
-  --mdc-plain-tooltip-container-border-radius: 12px !important;
-  --mdc-plain-tooltip-container-box-shadow: 0 6px 8px rgba(0, 0, 0, 0.12) !important;
-  --mdc-plain-tooltip-supporting-text-font-size: 1rem !important;
-  --mdc-plain-tooltip-supporting-text-line-height: 1.6 !important;
-  --mdc-plain-tooltip-supporting-text-white-space: normal !important;
-  --mdc-plain-tooltip-supporting-text-font-weight: 100 !important;
+  --mdc-plain-tooltip-container-padding: 8px 12px !important;
+  --mdc-plain-tooltip-container-border-radius: 8px !important;
+  --mdc-plain-tooltip-container-box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25) !important;
+  --mdc-plain-tooltip-supporting-text-font-size: 14px !important;
+  --mdc-plain-tooltip-supporting-text-font-family: var(--font-base) !important;
 }
 .mat-mdc-tooltip,
 .mat-mdc-tooltip .mdc-tooltip__surface {

@@ -1,6 +1,8 @@
 <div class="container">
   <app-header class="sticky" *ngIf="!isLogin"></app-header>
-  <div class="main-content-area"> <router-outlet></router-outlet>
+  <div class="main-content-area">
+    <app-loading-screen></app-loading-screen>
+    <router-outlet></router-outlet>
   </div>
   <app-footer *ngIf="!isLogin"></app-footer>
 </div>

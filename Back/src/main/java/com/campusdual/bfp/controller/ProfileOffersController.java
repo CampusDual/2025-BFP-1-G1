@@ -41,7 +41,19 @@ public class ProfileOffersController {
             return jobOffersService.queryAllJobOfferByCompanyId(currentCompany.getCompany().getId());
 
     }
+    @GetMapping(value = "/getAllFilter")
+    public List<JobOffersDTO> getOffersForCurrentCompanyFilter(@RequestParam String filterBy) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UserDataDTO currentCompany = userDataService.getUserData();
+        return jobOffersService.queryAllOffersFilterByCompany(filterBy, currentCompany.getCompany().getId());
+    }
 
+    @GetMapping(value = "/getAllSorted")
+    public List<JobOffersDTO> getOffersForCurrentCompanySorted(@RequestParam String sortBy, @RequestParam String direction) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UserDataDTO currentCompany = userDataService.getUserData();
+        return jobOffersService.queryAllJobOfferByCompanyIdSorted(currentCompany.getCompany().getId(), sortBy, direction);
+    }
   /*  @PutMapping (value="/update")
     public long updateJobOffer(@RequestBody JobOffersDTO jobOffersDTO){
         return jobOffersService.updateJobOffer(jobOffersDTO);
