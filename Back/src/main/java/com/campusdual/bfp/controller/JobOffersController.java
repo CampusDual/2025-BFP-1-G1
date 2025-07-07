@@ -54,4 +54,11 @@ public class JobOffersController {
     public ResponseEntity<List<JobOffersDTO>> queryAllOffersSorted(@RequestParam String sortBy, @RequestParam String direction) {
         return ResponseEntity.ok(jobOffersService.queryAllOffersSorted(sortBy, direction));
     }
+
+
+    @GetMapping(value = "/filter")
+    public ResponseEntity<List<JobOffersDTO>> queryAllOffersFilter(@RequestParam String filterBy) {
+      return ResponseEntity.ok(jobOffersService.queryAllOffersFilter(filterBy));
+    }
+
 }

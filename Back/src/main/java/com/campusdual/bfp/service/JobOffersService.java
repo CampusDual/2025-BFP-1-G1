@@ -30,7 +30,6 @@ public class JobOffersService implements IJobOffersService {
 
     }
 
-    // TODO mejorar la seguridad de los metodos comprobando si el usuario es el dueño de la oferta
     @Override
     public List<JobOffersDTO> queryAllJobOffer() {
         List<JobOffer> list= jobOffersDao.findAll();
@@ -42,6 +41,18 @@ public class JobOffersService implements IJobOffersService {
     public List<JobOffersDTO> queryAllJobOfferByCompanyId(long id) {
         return JobOffersMapper.INSTANCE.toDTOList(jobOffersDao.findByCompanyId(id));
     }
+
+    @Override
+    public List<JobOffersDTO> queryAllJobOfferByCompanyIdSorted(long id, String sortBy, String direction) {
+        if(!List.of("title", "company", "releaseDate").contains(sortBy)) {
+            throw new IllegalArgumentException("Invalid sort field: " + sortBy);
+        }
+        Sort.Direction sortDirection = "desc".equalsIgnoreCase(direction) ? Sort.Direction.DESC : Sort.Direction.ASC;
+        Sort sort = Sort.by(sortDirection, sortBy);
+        List<JobOffer> jobOffers = jobOffersDao.findByCompanyId(id,sort);
+        return JobOffersMapper.INSTANCE.toDTOList(jobOffers);
+    }
+
 
 
     @Override
@@ -59,6 +70,8 @@ public class JobOffersService implements IJobOffersService {
         return jobOffer.getId();
     }
 
+
+
     public List<JobOffersDTO> queryAllOffersSorted(String sortBy, String direction) {
         if(!List.of("title", "company", "releaseDate").contains(sortBy)) {
             throw new IllegalArgumentException("Invalid sort field: " + sortBy);
@@ -67,6 +80,22 @@ public class JobOffersService implements IJobOffersService {
         Sort sort = Sort.by(sortDirection, sortBy);
         List<JobOffer> jobOffers = jobOffersDao.findAll(sort);
      return JobOffersMapper.INSTANCE.toDTOList(jobOffers);
+    }
+
+    @Override
+    public List<JobOffersDTO> queryAllOffersFilterByCompany(String filterBy, Long id) {
+        if(filterBy ==null || filterBy.trim().isEmpty()) {
+            return queryAllJobOffer();
+        }
+        return JobOffersMapper.INSTANCE.toDTOList(jobOffersDao.filterOffersByCompany(filterBy,id));
+    }
+
+
+    public List<JobOffersDTO> queryAllOffersFilter(String filterBy) {
+        if(filterBy ==null || filterBy.trim().isEmpty()) {
+            return queryAllJobOffer();
+        }
+     return JobOffersMapper.INSTANCE.toDTOList(jobOffersDao.filterOffers(filterBy));
     }
 
 

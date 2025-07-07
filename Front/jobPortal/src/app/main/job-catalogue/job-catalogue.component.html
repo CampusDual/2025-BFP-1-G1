@@ -29,7 +29,7 @@
     <div class="search-bar">
       <span class="icono izquierda"><mat-icon>search</mat-icon></span>
       <input class="search-input" type="text" placeholder="Buscar ofertas por título o descripción..."
-        [(ngModel)]="searchTerm" (input)="updateDisplayedOffers()" class="search-input" />
+        [(ngModel)]="searchTerm" (input)="getFilteredOffers()" class="search-input" />
     </div>
   </div>
   <div class="grid-wrapper">

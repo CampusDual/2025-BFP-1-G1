@@ -25,6 +25,62 @@ export class JobOfferService {
     });
   }
 
+  getJobOffersFiltered(filterBy: string): Observable<JobOffer[]> {
+    let params = new HttpParams().set('filterBy', filterBy);
+    return this.http.get<JobOffer[]>(this.urlJobOffers.concat('/filter'), {
+      params,
+    });
+  }
+  getJobOffersByCompanyFiltered(filterBy: string): Observable<JobOffer[]> {
+    const params = new HttpParams().set('filterBy', filterBy);
+    const token = localStorage.getItem('token');
+    if (!token) {
+      return throwError(
+        () =>
+          new Error(
+            'No se encontró el token de autenticación. Por favor, inicia sesión.'
+          )
+      );
+    }
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+    });
+    return this.http.get<JobOffer[]>(
+      this.urlProfileOffers.concat('/getAllFilter'),
+      { headers, params }
+    );
+  }
+
+  getJobOffersByCompanySorted(
+    sortBy: string,
+    direction: string
+  ): Observable<JobOffer[]> {
+    const params = new HttpParams()
+      .set('sortBy', sortBy)
+      .set('direction', direction);
+    const token = localStorage.getItem('token');
+    if (!token) {
+      return throwError(
+        () =>
+          new Error(
+            'No se encontró el token de autenticación. Por favor, inicia sesión.'
+          )
+      );
+    }
+
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+    });
+
+    return this.http.get<JobOffer[]>(
+      this.urlProfileOffers.concat('/getAllSorted'),
+      {
+        headers,
+        params,
+      }
+    );
+  }
+
   addJobOffers(jobOffer: JobOffer): Observable<JobOffer> {
     const token = localStorage.getItem('token');
     const httpHeaders = new HttpHeaders({
