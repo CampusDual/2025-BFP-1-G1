@@ -25,14 +25,18 @@ export class CompanyOfferListComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadingScreenService.show();
-    this.jobOfferService
-      .getJobOffersByCompanySorted('releaseDate', 'desc')
-      .subscribe((offers) => {
+    this.jobOfferService.getJobOfferSorted('releaseDate', 'desc').subscribe({
+      next: (offers) => {
         this.jobOffers = offers;
         this.sortBy = 'releaseDate';
         this.sortDirection = 'desc';
         this.loadingScreenService.hide();
-      });
+      },
+      error: (err) => {
+        console.error('Error al cargar ofertas:', err);
+        this.loadingScreenService.hide();
+      },
+    });
 
     this.breakpointObserver
       .observe([
