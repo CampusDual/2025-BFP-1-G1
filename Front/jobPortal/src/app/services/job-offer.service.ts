@@ -1,6 +1,6 @@
-import { Injectable, OnInit } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { catchError, map, Observable, throwError } from 'rxjs';
+import { catchError, map, Observable, Subject, throwError } from 'rxjs';
 import { JobOffer } from '../model/jobOffer';
 import { Company } from '../model/company';
 
@@ -10,7 +10,16 @@ export class JobOfferService {
   private urlOffersManagement = 'http://localhost:30030/offersManagement';
   private urlProfileOffers = 'http://localhost:30030/profileOffers';
   company: Company | null = null;
+
+  // Subject para emitir eventos cuando las ofertas cambian
+  private offersChangedSubject = new Subject<void>();
+
   constructor(private http: HttpClient) {}
+
+  // Observable público para que los componentes se subscriban
+  getOffersChangedObservable(): Observable<void> {
+    return this.offersChangedSubject.asObservable();
+  }
 
   getJobOffers(): Observable<JobOffer[]> {
     return this.http.get<JobOffer[]>(`${this.urlJobOffers}/getAll`);
@@ -31,6 +40,7 @@ export class JobOfferService {
       params,
     });
   }
+
   getJobOffersByCompanyFiltered(filterBy: string): Observable<JobOffer[]> {
     const params = new HttpParams().set('filterBy', filterBy);
     const token = localStorage.getItem('token');
@@ -94,6 +104,8 @@ export class JobOfferService {
       .pipe(
         map((response) => {
           let jobOffer = response as JobOffer;
+          // Emitir evento para notificar que las ofertas cambiaron
+          this.offersChangedSubject.next();
           return jobOffer;
         }),
         catchError((e) => {
