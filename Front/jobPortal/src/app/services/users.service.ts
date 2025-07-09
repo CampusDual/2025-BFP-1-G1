@@ -44,12 +44,19 @@ export class UsersService {
       );
   }
 
-  signUpCandidate(login: string, password: string, name: string, surname: string, email: string, phone: string): Observable<any> {
+  signUpCandidate(
+    login: string,
+    password: string,
+    name: string,
+    surname: string,
+    email: string,
+    phone: string
+  ): Observable<any> {
     const user: User = {
       email,
       login,
       password,
-      role_id: 3 // Candidate role
+      role_id: 3, // Candidate role
     };
 
     const candidate: Candidate = {
@@ -57,26 +64,28 @@ export class UsersService {
       surname,
       phone,
       user: user,
-      birthdate: undefined
+      birthdate: undefined,
     };
 
     const userData: UserData = {
       user: user,
       candidate: candidate,
-      company: undefined
+      company: undefined,
     };
 
-    return this.http.post(`${this.urlEndpoint}/signup`, userData, {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json'
+    return this.http
+      .post(`${this.urlEndpoint}/signup`, userData, {
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json',
+        }),
       })
-    }).pipe(
-      map((response: any) => {
-        console.log('Registration successful:', response);
-        return response;
-      }),
-      catchError(this.handleError)
-    );
+      .pipe(
+        map((response: any) => {
+          console.log('Registration successful:', response);
+          return response;
+        }),
+        catchError(this.handleError)
+      );
   }
 
   getUserValue(): UserData | null {
@@ -84,10 +93,11 @@ export class UsersService {
   }
   private handleError(error: HttpErrorResponse) {
     let errorMessage = 'Ocurrió un error desconocido.';
-    
+
     if (error.status === 0) {
       // A client-side or network error occurred
-      errorMessage = 'Error de conexión. Por favor, verifica tu conexión a internet.';
+      errorMessage =
+        'Error de conexión. Por favor, verifica tu conexión a internet.';
     } else if (error.error instanceof ErrorEvent) {
       // Client-side error
       errorMessage = `Error del cliente: ${error.error.message}`;
@@ -110,7 +120,7 @@ export class UsersService {
     } else {
       errorMessage = `Error del servidor: ${error.status} - ${error.statusText}`;
     }
-    
+
     console.error('Error en la petición:', error);
     return throwError(() => new Error(errorMessage));
   }
@@ -160,4 +170,3 @@ export class UsersService {
       );
   }
 }
-

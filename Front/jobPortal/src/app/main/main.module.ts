@@ -22,8 +22,18 @@ import { AdminProfileComponent } from './admin-profile/admin-profile.component';
 import { MatTableModule } from '@angular/material/table';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BrowserModule } from '@angular/platform-browser';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { TokenInterceptor } from './token-interceptor';
 
 @NgModule({
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: TokenInterceptor,
+      multi: true,
+    },
+  ],
+
   declarations: [
     JobCatalogueComponent,
     CreateOfferComponent,
@@ -50,8 +60,6 @@ import { BrowserModule } from '@angular/platform-browser';
     MatTooltipModule,
     FormsModule,
     MatTableModule,
-    BrowserModule,
-    BrowserAnimationsModule,
   ],
 })
 export class MainModule {}
