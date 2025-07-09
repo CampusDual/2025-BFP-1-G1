@@ -1,6 +1,5 @@
 import { Candidate } from './../model/candidate';
 import { UserData } from 'src/app/model/userData';
-import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, catchError, map, throwError } from 'rxjs';
 import {
   HttpClient,
@@ -9,6 +8,8 @@ import {
 } from '@angular/common/http';
 import { jwtDecode } from 'jwt-decode';
 import { User } from '../model/user';
+import { Company } from '../model/company';
+import { Injectable } from '@angular/core';
 
 @Injectable({
   providedIn: 'root',
@@ -17,6 +18,7 @@ export class UsersService {
   private urlEndpoint: string = 'http://localhost:30030/auth';
   private urlUserProfile: string = 'http://localhost:30030/user';
   private urlUserData: string = 'http://localhost:30030/userdata';
+  private urlCompanyProfile: string = 'http://localhost:30030/company';
 
   private userDataSubject = new BehaviorSubject<UserData | null>(null);
   userData$ = this.userDataSubject.asObservable();
@@ -56,7 +58,7 @@ export class UsersService {
       email,
       login,
       password,
-      role_id: 3, // Candidate role
+      role_id: 3,
     };
 
     const candidate: Candidate = {
@@ -91,25 +93,20 @@ export class UsersService {
   getUserValue(): UserData | null {
     return this.userDataSubject.value;
   }
-  private handleError(error: HttpErrorResponse) {
-    let errorMessage = 'Ocurrió un error desconocido.';
 
-    if (error.status === 0) {
-      // A client-side or network error occurred
+  handleError = (error: HttpErrorResponse): Observable<never> => {
+    let errorMessage = 'Ocurrió un error desconocido.';
+    if (error.status === 401) {
+      errorMessage = 'No autorizado. Por favor, inicia sesión nuevamente.';
+      this.logout();
+    } else if (error.status === 0) {
       errorMessage =
         'Error de conexión. Por favor, verifica tu conexión a internet.';
     } else if (error.error instanceof ErrorEvent) {
-      // Client-side error
       errorMessage = `Error del cliente: ${error.error.message}`;
-    } else if (error.status === 401) {
-      // Unauthorized - likely trying to access protected route without auth
-      errorMessage = 'No autorizado. Por favor, inicia sesión nuevamente.';
-      this.logout();
     } else if (error.status === 409) {
-      // Conflict - duplicate username/email
-      return throwError(() => error); // Pass through the error for the component to handle
+      return throwError(() => error);
     } else if (error.error) {
-      // Server-side error with response
       if (typeof error.error === 'string') {
         errorMessage = error.error;
       } else if (error.error.message) {
@@ -123,7 +120,8 @@ export class UsersService {
 
     console.error('Error en la petición:', error);
     return throwError(() => new Error(errorMessage));
-  }
+  };
+
   isLoggedIn(): boolean {
     const token = localStorage.getItem('token');
     return !!token;
@@ -165,6 +163,53 @@ export class UsersService {
         map((userData) => {
           this.userDataSubject.next(userData);
           return userData;
+        }),
+        catchError(this.handleError)
+      );
+  }
+
+  insertNewCompany(
+    login: string,
+    password: string,
+    name: string,
+    cif: string,
+    email: string,
+    phone: string,
+    web: string,
+    address: string
+  ): Observable<any> {
+    const user: User = {
+      email,
+      login,
+      password,
+      role_id: 2,
+    };
+
+    const company: Company = {
+      cif,
+      name,
+      phone,
+      address,
+      user: user,
+      web,
+    };
+
+    const userData: UserData = {
+      user: user,
+      candidate: undefined,
+      company: company,
+    };
+
+    return this.http
+      .post(`${this.urlCompanyProfile}/newCompany`, userData, {
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json',
+        }),
+      })
+      .pipe(
+        map((response: any) => {
+          console.log('Registration successful:', response);
+          return response;
         }),
         catchError(this.handleError)
       );

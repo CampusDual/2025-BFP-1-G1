@@ -1,0 +1,18 @@
+.admin-profile {
+  max-width: 950px;
+  margin: 90px auto 2rem auto;
+  padding: 2rem 1.5rem;
+  background: #e0f61c;
+  border-radius: 18px;
+  box-shadow: 0 2px 16px rgba(0, 0, 0, 0.07);
+  overflow: hidden;
+  border: 1.5px solid var(--gray-lightest, #C6C0C1);
+}
+
+.company-table-header {
+  background-color: violet;
+}
+
+.company-table {
+  background-color: aqua;
+}

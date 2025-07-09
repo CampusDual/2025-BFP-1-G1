@@ -24,6 +24,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BrowserModule } from '@angular/platform-browser';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { TokenInterceptor } from './token-interceptor';
+import { CompanySignupComponent } from './company-signup/company-signup.component';
 
 @NgModule({
   providers: [
@@ -44,6 +45,7 @@ import { TokenInterceptor } from './token-interceptor';
     SignUpFormComponent,
     CandidateProfileComponent,
     AdminProfileComponent,
+    CompanySignupComponent,
   ],
   imports: [
     CommonModule,

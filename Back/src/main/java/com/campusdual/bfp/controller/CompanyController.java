@@ -3,6 +3,7 @@ package com.campusdual.bfp.controller;
 import com.campusdual.bfp.model.Company;
 import com.campusdual.bfp.model.dto.CandidateDTO;
 import com.campusdual.bfp.model.dto.CompanyDTO;
+import com.campusdual.bfp.model.dto.UserDTO;
 import com.campusdual.bfp.model.dto.dtomapper.CompanyMapper;
 import com.campusdual.bfp.service.CompanyService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,6 +44,15 @@ public class CompanyController {
         public ResponseEntity<?> getAllCompanies() {
             try {
                 return ResponseEntity.ok(companyService.queryAllCompanies());
+            } catch (Exception e) {
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred: " + e.getMessage());
+            }
+        }
+
+        @GetMapping("/newCompany")
+        public ResponseEntity<?> newCompany(@RequestBody CompanyDTO companyDTO, UserDTO userDTO) {
+            try {
+                return ResponseEntity.ok(companyService.insertNewCompany(companyDTO, userDTO));
             } catch (Exception e) {
                 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred: " + e.getMessage());
             }

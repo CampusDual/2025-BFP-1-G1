@@ -1,15 +1,15 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { UsersService } from 'src/app/services/users.service';
 
 @Component({
-  selector: 'app-sign-up-form',
-  templateUrl: './sign-up-form.component.html',
-  styleUrls: ['./sign-up-form.component.css'],
+  selector: 'app-company-signup',
+  templateUrl: './company-signup.component.html',
+  styleUrls: ['./company-signup.component.css'],
 })
-export class SignUpFormComponent {
+export class CompanySignupComponent {
   signUpForm!: FormGroup;
   isSubmitting = false;
 
@@ -25,9 +25,17 @@ export class SignUpFormComponent {
   ) {
     this.signUpForm = this.fb.group({
       login: ['', [Validators.required]],
-      password: ['', [Validators.required, Validators.minLength(4)]],
+      password: ['', [Validators.required, Validators.minLength(8)]],
       name: ['', [Validators.required]],
-      surname: ['', [Validators.required]],
+      cif: [
+        '',
+        [
+          Validators.required,
+          Validators.pattern(/^[ABCDEFGHJKLMNPQRSUVW]\d{7}[0-9A-J]$/),
+        ],
+      ],
+      address: ['', [Validators.required]],
+      web: ['', [Validators.required, Validators.pattern('https?://.+')]],
       email: ['', [Validators.required, Validators.email]],
       phone: ['', [Validators.required, Validators.pattern('^[0-9]{9}$')]],
     });
@@ -42,8 +50,8 @@ export class SignUpFormComponent {
   get name() {
     return this.signUpForm.get('name');
   }
-  get surname() {
-    return this.signUpForm.get('surname');
+  get web() {
+    return this.signUpForm.get('web');
   }
   get email() {
     return this.signUpForm.get('email');
@@ -51,7 +59,12 @@ export class SignUpFormComponent {
   get phone() {
     return this.signUpForm.get('phone');
   }
-
+  get cif() {
+    return this.signUpForm.get('cif');
+  }
+  get address() {
+    return this.signUpForm.get('address');
+  }
   openSnackBar(message: string, panelClass: string = '') {
     this.snackBar.open(message, 'Cerrar', {
       duration: 10000,
@@ -61,22 +74,31 @@ export class SignUpFormComponent {
     });
   }
 
-  signUp() {
+  companySignUp() {
     if (this.isSubmitting) return;
 
     this.isSubmitting = true;
 
     if (this.signUpForm.valid) {
-      const { login, password, name, surname, email, phone } =
+      const { login, password, name, web, email, phone, address, cif } =
         this.signUpForm.value;
 
       this.usersService
-        .signUpCandidate(login, password, name, surname, email, phone)
+        .insertNewCompany(
+          login,
+          password,
+          name,
+          cif,
+          email,
+          phone,
+          web,
+          address
+        )
         .subscribe({
           next: (response) => {
             this.isSubmitting = false;
             this.openSnackBar('Registro exitoso!', 'success-snackbar');
-            this.router.navigate(['/main/login']);
+            this.router.navigate(['/main/adminprofile']);
           },
           error: (error) => {
             this.isSubmitting = false;

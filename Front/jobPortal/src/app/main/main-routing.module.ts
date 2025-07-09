@@ -9,6 +9,7 @@ import { authGuard } from '../guards/auth.guard';
 import { noAuthGuard } from '../guards/no-auth.guard';
 import { CandidateProfileComponent } from './candidate-profile/candidate-profile.component';
 import { AdminProfileComponent } from './admin-profile/admin-profile.component';
+import { CompanySignupComponent } from './company-signup/company-signup.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'catalogue', pathMatch: 'full' },
@@ -35,6 +36,11 @@ const routes: Routes = [
     canActivate: [authGuard],
   },
   { path: 'signup', component: SignUpFormComponent },
+  {
+    path: 'companysignup',
+    component: CompanySignupComponent,
+    canActivate: [authGuard],
+  },
 ];
 
 @NgModule({

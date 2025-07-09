@@ -18,9 +18,6 @@ export class AdminProfileComponent {
 
   companies: Company[] = [];
 
-  //displayedColumns: string[] = ['id', 'name', 'email', 'cif', 'address'];
-  //dataSource: Company[] = [];
-
   constructor(
     private usersService: UsersService,
     private companyService: CompanyService,
@@ -30,6 +27,7 @@ export class AdminProfileComponent {
   ngOnInit(): void {
     this.checkIfMobile();
     this.loadUserData();
+    this.loadAllCompanies();
   }
 
   private loadUserData(): void {
@@ -57,5 +55,8 @@ export class AdminProfileComponent {
   @HostListener('window:resize')
   checkIfMobile() {
     this.isMobile = window.innerWidth <= 768;
+  }
+  navigateToFormNewCompany() {
+    this.router.navigate(['/main/companysignup']);
   }
 }

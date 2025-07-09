@@ -1,11 +1,16 @@
 package com.campusdual.bfp.service;
 
 import com.campusdual.bfp.model.Company;
+import com.campusdual.bfp.model.JobOffer;
 import com.campusdual.bfp.model.User;
 import com.campusdual.bfp.model.dao.CompanyDao;
+import com.campusdual.bfp.model.dao.UserDao;
 import com.campusdual.bfp.model.dto.CompanyDTO;
+import com.campusdual.bfp.model.dto.JobOffersDTO;
 import com.campusdual.bfp.model.dto.UserDTO;
 import com.campusdual.bfp.model.dto.dtomapper.CompanyMapper;
+import com.campusdual.bfp.model.dto.dtomapper.JobOffersMapper;
+import com.campusdual.bfp.model.dto.dtomapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.core.Authentication;
@@ -25,6 +30,9 @@ public class CompanyService {
 
     @Autowired
     private CompanyDao companyDao;
+
+    @Autowired
+    private UserDao userDao;
 
     @Autowired
     private UserService userService;
@@ -54,6 +62,13 @@ public class CompanyService {
     public List<CompanyDTO> queryAllCompanies() {
         return CompanyMapper.INSTANCE.toDTOList(this.companyDao.findAll()); }
 
-
+ @Transactional
+    public long insertNewCompany(CompanyDTO companyDTO, UserDTO userDTO) {
+        Company company = CompanyMapper.INSTANCE.toEntity(companyDTO);
+        companyDao.saveAndFlush(company);
+        User user = UserMapper.INSTANCE.toEntity(userDTO);
+        userDao.saveAndFlush(user);
+        return company.getId();
+    }
 
 }
