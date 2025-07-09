@@ -18,6 +18,9 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { SignUpFormComponent } from './sign-up-form/sign-up-form.component';
 import { CandidateProfileComponent } from './candidate-profile/candidate-profile.component';
+import {MatDividerModule} from '@angular/material/divider';
+import {MatSelectModule} from '@angular/material/select';
+
 
 @NgModule({
   declarations: [
@@ -44,6 +47,9 @@ import { CandidateProfileComponent } from './candidate-profile/candidate-profile
     MatIconModule,
     MatTooltipModule,
     FormsModule,
+    MatDividerModule,
+    MatSelectModule,
+
   ],
 })
 export class MainModule {}

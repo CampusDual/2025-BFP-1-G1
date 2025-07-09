@@ -1,43 +1,90 @@
 <div class="container">
-  <div class="form">
-    <h2>Crear Oferta</h2>
-    <form [formGroup]="offerForm" (ngSubmit)="onSubmit()">
-      <mat-form-field appearance="outline" class="formulario">
-        <mat-label>Oferta</mat-label>
-        <input matInput id="title" placeholder="Título de oferta" formControlName="title" required
-          (input)="titleCharCount = title?.value?.length || 0">
+  <form class="form" [formGroup]="offerForm" (ngSubmit)="onSubmit()">
+    <h2>{{ isEditing ? 'Editar Oferta' : 'Nueva Oferta' }}</h2>
 
-        <!-- Contador para el título -->
-        <mat-hint align="end" [class.char-limit]="titleCharCount > maxTitleChars">
-          {{ titleCharCount }}/{{ maxTitleChars }}
-        </mat-hint>
+    <mat-form-field appearance="outline">
+      <mat-label>Título de la oferta</mat-label>
+      <input matInput formControlName="title" required />
+    </mat-form-field>
 
-        <mat-error *ngIf="title?.invalid && (title?.touched || title?.dirty)">
-          {{ getFieldErrorMessage('title') }}
-        </mat-error>
-      </mat-form-field><br>
+    <mat-form-field appearance="outline">
+      <mat-label>Descripción</mat-label>
+      <textarea matInput formControlName="description" rows="4"></textarea>
+    </mat-form-field>
 
-      <mat-form-field appearance="outline" class="formulario">
-        <mat-label>Descripción</mat-label>
-        <textarea matInput id="description" placeholder="Descripción" formControlName="description" rows="10" required
-          (input)="descCharCount = description?.value?.length || 0"></textarea>
+    <mat-form-field appearance="outline">
+      <mat-label>Localización</mat-label>
+      <input matInput formControlName="localizacion" />
+    </mat-form-field>
 
-        <!-- Contador para la descripción -->
-        <mat-hint align="end" [class.char-limit]="descCharCount > maxDescChars">
-          {{ descCharCount }}/{{ maxDescChars }}
-        </mat-hint>
+    <mat-form-field appearance="outline">
+      <mat-label>Modalidad de trabajo</mat-label>
+      <mat-select formControlName="modalidadTrabajo">
+        <mat-option *ngFor="let modalidad of modalidadesTrabajo" [value]="modalidad">
+          {{ modalidad }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
 
-        <mat-error *ngIf="description?.invalid && (description?.touched || description?.dirty)">
-          {{ getFieldErrorMessage('description') }}
-        </mat-error>
-      </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Requisitos</mat-label>
+      <textarea matInput formControlName="requisitos" rows="3"></textarea>
+    </mat-form-field>
 
-      <div class="button-container">
-        <button mat-raised-button class="publish-button" color="primary" type="submit" [disabled]="offerForm.invalid">
-          Publicar
-        </button>
-        <button mat-button type="button" class="back" (click)="goBack()">Volver</button>
-      </div>
-    </form>
-  </div>
+    <mat-form-field appearance="outline">
+      <mat-label>Deseables</mat-label>
+      <textarea matInput formControlName="deseables" rows="2"></textarea>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Beneficios</mat-label>
+      <textarea matInput formControlName="beneficios" rows="2"></textarea>
+    </mat-form-field>
+
+    <mat-divider></mat-divider>
+
+    <h4>Información de la Empresa</h4>
+    <div class="company-info">
+      <img
+        *ngIf="offerForm.get('company')?.value?.logo"
+        [src]="offerForm.get('company')?.value?.logo"
+        alt="Logo empresa"
+      />
+      <p><strong>{{ offerForm.get('company')?.value?.name }}</strong></p>
+      <p>{{ offerForm.get('company')?.value?.web }}</p>
+    </div>
+
+    <div class="button-container">
+      <button
+        mat-raised-button
+        class="publish-button"
+        color="primary"
+        *ngIf="!isEditing"
+        type="submit"
+      >
+        Crear
+      </button>
+
+      <button
+        mat-raised-button
+        class="publish-button"
+        color="accent"
+        *ngIf="isEditing"
+        type="button"
+        (click)="updateCurrentItem()"
+      >
+        Guardar Cambios
+      </button>
+
+      <button
+        mat-button
+        class="catalogueButton"
+        color="warn"
+        type="button"
+        (click)="isEditing ? cancelEditing() : onCancel()"
+      >
+        Cancelar
+      </button>
+    </div>
+  </form>
 </div>

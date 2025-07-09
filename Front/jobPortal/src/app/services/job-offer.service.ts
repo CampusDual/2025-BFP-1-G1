@@ -135,4 +135,30 @@ export class JobOfferService {
       headers,
     });
   }
+
+  updateJobOffer(jobOffer: JobOffer): Observable<JobOffer> {
+    const token = localStorage.getItem('token');
+    const httpHeaders = new HttpHeaders({
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    });
+    return this.http
+      .put<JobOffer>(
+        this.urlOffersManagement.concat('/update'),
+        jobOffer,
+        { headers: httpHeaders }
+      )
+      .pipe(
+        map((response) => {
+          let jobOffer = response as JobOffer;
+          // Emitir evento para notificar que las ofertas cambiaron
+          this.offersChangedSubject.next();
+          return jobOffer;
+        }),
+        catchError((e) => {
+          console.error(e.error.status + ':' + e.error.error);
+          return throwError(() => e);
+        })
+      );
+  }
 }

@@ -1,7 +1,9 @@
 package com.campusdual.bfp.model;
 
+import com.campusdual.bfp.Enumerados.EnumModalidadTrabajo;
+import org.hibernate.annotations.Type;
+
 import javax.persistence.*;
-import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 
 
@@ -28,6 +30,29 @@ public class JobOffer {
 
     @Column(name = "release_date")
     private ZonedDateTime releaseDate;
+
+    @Column
+    private String localizacion;
+
+    @Column(name = "modalidad", columnDefinition = "modalidad_trabajo")
+    @Type(type = "com.campusdual.bfp.util.PostgresEnumType")
+    private EnumModalidadTrabajo modalidad;
+
+    @Transient
+    public void setModalidadFromValue(String value) {
+        this.modalidad = EnumModalidadTrabajo.fromValue(value);
+    }
+
+
+    @Column
+    private String requisitos;
+
+    @Column
+    private String deseables;
+
+    @Column
+    private String beneficios;
+
 
     public long getId() {
         return id;
@@ -75,5 +100,46 @@ public class JobOffer {
 
     public void setReleaseDate(ZonedDateTime releaseDate) {
         this.releaseDate = releaseDate;
+    }
+
+    public String getLocalizacion() {
+        return localizacion;
+    }
+
+    public void setLocalizacion(String localizacion) {
+        this.localizacion = localizacion;
+    }
+
+    public EnumModalidadTrabajo getModalidad() {
+        return modalidad;
+    }
+
+    public void setModalidad(EnumModalidadTrabajo modalidad) {
+        this.modalidad = modalidad;
+    }
+
+
+    public String getRequisitos() {
+        return requisitos;
+    }
+
+    public void setRequisitos(String requisitos) {
+        this.requisitos = requisitos;
+    }
+
+    public String getDeseables() {
+        return deseables;
+    }
+
+    public void setDeseables(String deseables) {
+        this.deseables = deseables;
+    }
+
+    public String getBeneficios() {
+        return beneficios;
+    }
+
+    public void setBeneficios(String beneficios) {
+        this.beneficios = beneficios;
     }
 }

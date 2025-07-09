@@ -12,8 +12,8 @@ import { JobOfferService } from 'src/app/services/job-offer.service';
 export class CompanyOfferListComponent implements OnInit {
   jobOffers: JobOffer[] = [];
   gridCols: number = 3;
-  sortBy: 'id' | 'title' | 'releaseDate' | 'description' | 'company' | 'email' =
-    'releaseDate';
+  sortBy: 'id' | 'title' | 'releaseDate' | 'description' | 'company'
+  | 'email' | 'localizacion' | 'modalidadTrabajo' | 'requisitos' | 'deseables' | 'beneficios' = 'releaseDate';
   sortDirection: 'asc' | 'desc' = 'desc';
   searchTerm: string = '';
 

@@ -1,5 +1,8 @@
 package com.campusdual.bfp.model.dto;
 
+import com.campusdual.bfp.Enumerados.EnumModalidadTrabajo;
+
+import javax.persistence.Column;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
@@ -18,18 +21,38 @@ public class JobOffersDTO {
 
     private ZonedDateTime releaseDate;
 
+
+    private String localizacion;
+
+
+    private EnumModalidadTrabajo modalidad;
+
+
+
+    private String requisitos;
+
+
+    private String deseables;
+
+
+    private String beneficios;
+
     // Constructores
     public JobOffersDTO() {
     }
 
-    public JobOffersDTO(long id, String email, CompanyDTO companyDTO, String title,
-                        String description, ZonedDateTime releaseDate) {
+    public JobOffersDTO(long id, String email, CompanyDTO company, String title, String description, ZonedDateTime releaseDate, String localizacion, EnumModalidadTrabajo modalidad, String requisitos, String deseables, String beneficios) {
         this.id = id;
         this.email = email;
-        this.company = companyDTO;
+        this.company = company;
         this.title = title;
         this.description = description;
         this.releaseDate = releaseDate;
+        this.localizacion = localizacion;
+        this.modalidad = modalidad;
+        this.requisitos = requisitos;
+        this.deseables = deseables;
+        this.beneficios = beneficios;
     }
 
     // Método de validación
@@ -85,5 +108,46 @@ public class JobOffersDTO {
 
     public void setReleaseDate(ZonedDateTime releaseDate) {
         this.releaseDate = releaseDate;
+    }
+
+    public String getLocalizacion() {
+        return localizacion;
+    }
+
+    public void setLocalizacion(String localizacion) {
+        this.localizacion = localizacion;
+    }
+
+    public EnumModalidadTrabajo getModalidad() {
+        return modalidad;
+    }
+
+    public void setModalidad(EnumModalidadTrabajo modalidad) {
+        this.modalidad = modalidad;
+    }
+
+
+    public String getRequisitos() {
+        return requisitos;
+    }
+
+    public void setRequisitos(String requisitos) {
+        this.requisitos = requisitos;
+    }
+
+    public String getDeseables() {
+        return deseables;
+    }
+
+    public void setDeseables(String deseables) {
+        this.deseables = deseables;
+    }
+
+    public String getBeneficios() {
+        return beneficios;
+    }
+
+    public void setBeneficios(String beneficios) {
+        this.beneficios = beneficios;
     }
 }

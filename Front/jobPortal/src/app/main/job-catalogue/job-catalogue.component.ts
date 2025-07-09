@@ -19,8 +19,8 @@ export class JobCatalogueComponent implements OnInit, OnDestroy {
   userData: UserData | null = null;
   jobOffers: JobOffer[] = [];
   gridCols: number = 3;
-  sortBy: 'id' | 'title' | 'releaseDate' | 'description' | 'company' | 'email' =
-    'releaseDate';
+  sortBy: 'id' | 'title' | 'releaseDate' | 'description' | 'company'
+  | 'email' | 'localizacion' | 'modalidadTrabajo' | 'requisitos' | 'deseables' | 'beneficios' = 'releaseDate';
   sortDirection: 'asc' | 'desc' = 'desc';
   searchTerm: string = '';
   appliedOfferIds: number[] = [];

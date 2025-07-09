@@ -8,4 +8,5 @@ export class Company {
   address!: string;
   user!: User;
   web!: string;
+  logo?: string;
 }

@@ -28,6 +28,9 @@ public class Company {
     @Column
     private String web;
 
+    @Column
+    private String logo;
+
 
     public long getId() {
         return id;
@@ -83,5 +86,13 @@ public class Company {
 
     public void setWeb(String web) {
         this.web = web;
+    }
+
+    public String getLogo() {
+        return logo;
+    }
+
+    public void setLogo(String logo) {
+        this.logo = logo;
     }
 }
