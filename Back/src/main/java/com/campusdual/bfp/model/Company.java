@@ -1,12 +1,15 @@
 package com.campusdual.bfp.model;
 
 import javax.persistence.*;
+
+
 @Entity
-@Table(name = "company")
+
+@Table(name = "companies")
 public class Company {
 
     @Id
-    @GeneratedValue( strategy = GenerationType.IDENTITY )
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     @Column
@@ -21,13 +24,12 @@ public class Company {
     @Column
     private String address;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
-    private User user;
-
     @Column
     private String web;
 
+    @OneToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    private User user;
 
     public long getId() {
         return id;
@@ -69,19 +71,19 @@ public class Company {
         this.address = address;
     }
 
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
     public String getWeb() {
         return web;
     }
 
     public void setWeb(String web) {
         this.web = web;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }
