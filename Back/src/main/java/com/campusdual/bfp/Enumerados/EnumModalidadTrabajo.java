@@ -5,9 +5,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 public enum EnumModalidadTrabajo {
-    PRESENCIAL("presencial"),
-    HIBRIDO("hibrido"),
-    REMOTO("remoto");
+    presencial("presencial"),
+    hibrido("hibrido"),
+    remoto("remoto");
 
     private static final Map<String, EnumModalidadTrabajo> lookup = new HashMap<>();
     

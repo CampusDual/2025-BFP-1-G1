@@ -3,6 +3,8 @@ package com.campusdual.bfp.model.dto.dtomapper;
 import com.campusdual.bfp.model.JobOffer;
 import com.campusdual.bfp.model.dto.JobOffersDTO;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.Mappings;
 import org.mapstruct.factory.Mappers;
 
 import java.util.List;
@@ -12,7 +14,16 @@ public interface JobOffersMapper {
 
     JobOffersMapper INSTANCE = Mappers.getMapper(JobOffersMapper.class);
 
+    @Mappings({
+        @Mapping(target = "modalidadString", source = "modalidad.value"),
+        @Mapping(target = "modalidad", ignore = true)
+    })
     JobOffersDTO toDTO(JobOffer jobOffer);
-    List<JobOffersDTO> toDTOList(List<JobOffer> jobOffer);
+
+    @Mappings({
+        @Mapping(target = "modalidad", source = "modalidadString")
+    })
     JobOffer toEntity(JobOffersDTO jobOfferDTO);
+
+    List<JobOffersDTO> toDTOList(List<JobOffer> jobOffer);
 }

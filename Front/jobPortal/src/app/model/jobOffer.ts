@@ -1,9 +1,9 @@
 import { Company } from './company';
 
 export enum EnumModalidadTrabajo {
-  Presencial = 'Presencial',
-  Remoto = 'Remoto',
-  Hibrido = 'Hibrido'
+  Presencial = 'presencial',
+  Remoto = 'remoto',
+  Hibrido = 'hibrido'
 }
 
 export class JobOffer {
@@ -14,7 +14,7 @@ export class JobOffer {
   description!: string;
   releaseDate!: Date;
   localizacion!: string;
-  modalidadTrabajo!: EnumModalidadTrabajo;
+  modalidad!: EnumModalidadTrabajo;
   requisitos!: string;
   deseables?: string;
   beneficios!: string;

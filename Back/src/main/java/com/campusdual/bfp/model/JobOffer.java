@@ -38,9 +38,12 @@ public class JobOffer {
     @Type(type = "com.campusdual.bfp.util.PostgresEnumType")
     private EnumModalidadTrabajo modalidad;
 
-    @Transient
-    public void setModalidadFromValue(String value) {
-        this.modalidad = EnumModalidadTrabajo.fromValue(value);
+    public EnumModalidadTrabajo getModalidad() {
+        return modalidad;
+    }
+
+    public void setModalidad(EnumModalidadTrabajo modalidad) {
+        this.modalidad = modalidad;
     }
 
 

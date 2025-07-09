@@ -57,6 +57,9 @@ public class JobOffersService implements IJobOffersService {
 
     @Override
     public long insertJobOffer(JobOffersDTO jobOffersDTO) {
+        if (jobOffersDTO.getModalidad() == null) {
+            throw new IllegalArgumentException("La modalidad es un campo requerido");
+        }
 
         jobOffersDTO.validateDescription();
 

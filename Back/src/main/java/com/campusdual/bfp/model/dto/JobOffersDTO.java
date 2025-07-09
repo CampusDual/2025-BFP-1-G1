@@ -118,12 +118,22 @@ public class JobOffersDTO {
         this.localizacion = localizacion;
     }
 
+    public String getModalidadString() {
+        return modalidadString;
+    }
+
+    public void setModalidadString(String modalidadString) {
+        this.modalidadString = modalidadString;
+        this.modalidad = EnumModalidadTrabajo.fromValue(modalidadString);
+    }
+
     public EnumModalidadTrabajo getModalidad() {
         return modalidad;
     }
 
     public void setModalidad(EnumModalidadTrabajo modalidad) {
         this.modalidad = modalidad;
+        this.modalidadString = modalidad.getValue();
     }
 
 

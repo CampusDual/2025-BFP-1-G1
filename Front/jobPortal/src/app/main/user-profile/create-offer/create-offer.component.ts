@@ -17,8 +17,8 @@ export class CreateOfferComponent implements OnInit {
 
   offerForm!: FormGroup;
   userData: UserData | null = null;
-  modalidadesTrabajo = ['Presencial', 'Remoto', 'Hibrido'];
-  isEditing = false;
+  modalidad = ['presencial', 'remoto', 'hibrido'];
+
 
   constructor(
     private userService: UsersService,
@@ -31,7 +31,7 @@ export class CreateOfferComponent implements OnInit {
       title: ['', [Validators.required, Validators.maxLength(120)]],
       description: ['', [Validators.required, Validators.maxLength(4000)]],
       localizacion: [''],
-      modalidadTrabajo: ['', Validators.required],
+      modalidad: ['', Validators.required],
       requisitos: [''],
       deseables: [''],
       beneficios: [''],
@@ -50,10 +50,6 @@ export class CreateOfferComponent implements OnInit {
           email: data.user.email,
         });
       }
-
-      if (this.jobToEdit) {
-        this.startEditing(this.jobToEdit);
-      }
     });
 
     if (!this.userData) {
@@ -61,49 +57,6 @@ export class CreateOfferComponent implements OnInit {
     }
   }
 
-  startEditing(offer: JobOffer): void {
-    this.isEditing = true;
-    this.offerForm.patchValue({
-      ...offer,
-      releaseDate: new Date(offer.releaseDate),
-    });
-  }
-
-  cancelEditing(): void {
-    this.isEditing = false;
-    this.offerForm.reset();
-    this.router.navigate(['/main/userprofile']);
-  }
-
-  updateCurrentItem(): void {
-    if (this.offerForm.valid && this.jobToEdit) {
-      const updatedOffer: JobOffer = {
-        ...this.jobToEdit,
-        ...this.offerForm.value,
-        releaseDate: new Date(this.offerForm.value.releaseDate),
-      };
-
-      this.jobOfferService.updateJobOffer(updatedOffer).subscribe({
-        next: () => {
-          this.snackBar.open('Oferta actualizada correctamente', 'Cerrar', {
-            duration: 3000,
-            panelClass: 'successSnackbar',
-            verticalPosition: 'top',
-          });
-          this.isEditing = false;
-          this.router.navigate(['/main/userprofile']);
-        },
-        error: () => {
-          this.snackBar.open('Error al actualizar la oferta', 'Cerrar', {
-            duration: 3000,
-            verticalPosition: 'top',
-          });
-        },
-      });
-    } else {
-      this.offerForm.markAllAsTouched();
-    }
-  }
 
   onSubmit(): void {
     if (this.offerForm.valid) {

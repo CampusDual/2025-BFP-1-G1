@@ -20,7 +20,7 @@ export class JobCatalogueComponent implements OnInit, OnDestroy {
   jobOffers: JobOffer[] = [];
   gridCols: number = 3;
   sortBy: 'id' | 'title' | 'releaseDate' | 'description' | 'company'
-  | 'email' | 'localizacion' | 'modalidadTrabajo' | 'requisitos' | 'deseables' | 'beneficios' = 'releaseDate';
+  | 'email' | 'localizacion' | 'modalidad' | 'requisitos' | 'deseables' | 'beneficios' = 'releaseDate';
   sortDirection: 'asc' | 'desc' = 'desc';
   searchTerm: string = '';
   appliedOfferIds: number[] = [];
