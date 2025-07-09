@@ -8,6 +8,7 @@ import { CreateOfferComponent } from './user-profile/create-offer/create-offer.c
 import { authGuard } from '../guards/auth.guard';
 import { noAuthGuard } from '../guards/no-auth.guard';
 import { CandidateProfileComponent } from './candidate-profile/candidate-profile.component';
+import { AdminProfileComponent } from './admin-profile/admin-profile.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'catalogue', pathMatch: 'full' },
@@ -26,7 +27,12 @@ const routes: Routes = [
   {
     path: 'candidateprofile',
     component: CandidateProfileComponent,
-    canActivate: [authGuard]
+    canActivate: [authGuard],
+  },
+  {
+    path: 'adminprofile',
+    component: AdminProfileComponent,
+    canActivate: [authGuard],
   },
   { path: 'signup', component: SignUpFormComponent },
 ];

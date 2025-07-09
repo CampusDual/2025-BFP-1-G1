@@ -18,6 +18,10 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { SignUpFormComponent } from './sign-up-form/sign-up-form.component';
 import { CandidateProfileComponent } from './candidate-profile/candidate-profile.component';
+import { AdminProfileComponent } from './admin-profile/admin-profile.component';
+import { MatTableModule } from '@angular/material/table';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { BrowserModule } from '@angular/platform-browser';
 
 @NgModule({
   declarations: [
@@ -29,6 +33,7 @@ import { CandidateProfileComponent } from './candidate-profile/candidate-profile
     CompanyOfferListComponent,
     SignUpFormComponent,
     CandidateProfileComponent,
+    AdminProfileComponent,
   ],
   imports: [
     CommonModule,
@@ -44,6 +49,9 @@ import { CandidateProfileComponent } from './candidate-profile/candidate-profile
     MatIconModule,
     MatTooltipModule,
     FormsModule,
+    MatTableModule,
+    BrowserModule,
+    BrowserAnimationsModule,
   ],
 })
 export class MainModule {}

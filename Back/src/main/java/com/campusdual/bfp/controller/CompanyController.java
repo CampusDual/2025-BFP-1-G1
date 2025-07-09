@@ -19,6 +19,7 @@ public class CompanyController {
         @Autowired
         private CompanyService companyService;
 
+
         @GetMapping("/testController")
         public String testCompanyController() {
             return "company controller works!";
@@ -37,6 +38,17 @@ public class CompanyController {
                 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred: " + e.getMessage());
             }
         }
+
+        @GetMapping("/getAllCompanies")
+        public ResponseEntity<?> getAllCompanies() {
+            try {
+                return ResponseEntity.ok(companyService.queryAllCompanies());
+            } catch (Exception e) {
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred: " + e.getMessage());
+            }
+        }
+
+
     }
 
 

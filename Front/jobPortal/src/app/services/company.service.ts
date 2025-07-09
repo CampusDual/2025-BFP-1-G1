@@ -33,4 +33,13 @@ export class CompanyService implements OnInit {
       headers,
     });
   }
+  getAllCompanies(): Observable<Company[]> {
+    const headers = new HttpHeaders({});
+    return this.http.get<Company[]>(
+      `${this.urlCompanyProfile}/getAllCompanies`,
+      {
+        headers,
+      }
+    );
+  }
 }
