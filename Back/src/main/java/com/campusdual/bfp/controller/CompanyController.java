@@ -49,8 +49,8 @@ public class CompanyController {
             }
         }
 
-        @GetMapping("/newCompany")
-        public ResponseEntity<?> newCompany(@RequestBody CompanyDTO companyDTO, UserDTO userDTO) {
+    @PostMapping("/newCompany")
+    public ResponseEntity<?> newCompany(@RequestBody CompanyDTO companyDTO, UserDTO userDTO) {
             try {
                 return ResponseEntity.ok(companyService.insertNewCompany(companyDTO, userDTO));
             } catch (Exception e) {

@@ -178,13 +178,18 @@ export class UsersService {
     web: string,
     address: string
   ): Observable<any> {
+    if (!this.isLoggedIn() || this.getRole() !== 'admin') {
+      return throwError(
+        () => new Error('No tienes permiso para crear una nueva empresa')
+      );
+    }
+
     const user: User = {
       email,
       login,
       password,
       role_id: 2,
     };
-
     const company: Company = {
       cif,
       name,
@@ -193,7 +198,6 @@ export class UsersService {
       user: user,
       web,
     };
-
     const userData: UserData = {
       user: user,
       candidate: undefined,
@@ -213,5 +217,9 @@ export class UsersService {
         }),
         catchError(this.handleError)
       );
+  }
+  getRole(): string | null {
+    const role = localStorage.getItem('role');
+    return role;
   }
 }
