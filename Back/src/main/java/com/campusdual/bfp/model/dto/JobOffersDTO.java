@@ -28,7 +28,6 @@ public class JobOffersDTO {
     private EnumModalidadTrabajo modalidad;
 
 
-
     private String requisitos;
 
 
@@ -61,6 +60,7 @@ public class JobOffersDTO {
             throw new IllegalArgumentException("La descripción excede los 4000 caracteres permitidos");
         }
     }
+
     public long getId() {
         return id;
     }
@@ -118,14 +118,6 @@ public class JobOffersDTO {
         this.localizacion = localizacion;
     }
 
-    public String getModalidadString() {
-        return modalidadString;
-    }
-
-    public void setModalidadString(String modalidadString) {
-        this.modalidadString = modalidadString;
-        this.modalidad = EnumModalidadTrabajo.fromValue(modalidadString);
-    }
 
     public EnumModalidadTrabajo getModalidad() {
         return modalidad;
@@ -133,7 +125,6 @@ public class JobOffersDTO {
 
     public void setModalidad(EnumModalidadTrabajo modalidad) {
         this.modalidad = modalidad;
-        this.modalidadString = modalidad.getValue();
     }
 
 

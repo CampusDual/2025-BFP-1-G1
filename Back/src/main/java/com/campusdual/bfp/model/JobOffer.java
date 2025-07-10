@@ -34,17 +34,9 @@ public class JobOffer {
     @Column
     private String localizacion;
 
-    @Column(name = "modalidad", columnDefinition = "modalidad_trabajo")
+    @Column(name = "modalidad", columnDefinition = "EnumModalidad")
     @Type(type = "com.campusdual.bfp.util.PostgresEnumType")
     private EnumModalidadTrabajo modalidad;
-
-    public EnumModalidadTrabajo getModalidad() {
-        return modalidad;
-    }
-
-    public void setModalidad(EnumModalidadTrabajo modalidad) {
-        this.modalidad = modalidad;
-    }
 
 
     @Column

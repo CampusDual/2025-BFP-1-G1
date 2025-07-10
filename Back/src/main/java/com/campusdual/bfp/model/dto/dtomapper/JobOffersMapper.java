@@ -15,15 +15,15 @@ public interface JobOffersMapper {
     JobOffersMapper INSTANCE = Mappers.getMapper(JobOffersMapper.class);
 
     @Mappings({
-        @Mapping(target = "modalidadString", source = "modalidad.value"),
-        @Mapping(target = "modalidad", ignore = true)
+        @Mapping(target = "modalidad", source = "modalidad")
     })
     JobOffersDTO toDTO(JobOffer jobOffer);
 
     @Mappings({
-        @Mapping(target = "modalidad", source = "modalidadString")
+        @Mapping(target = "modalidad", source = "modalidad")
     })
     JobOffer toEntity(JobOffersDTO jobOfferDTO);
 
     List<JobOffersDTO> toDTOList(List<JobOffer> jobOffer);
 }
+

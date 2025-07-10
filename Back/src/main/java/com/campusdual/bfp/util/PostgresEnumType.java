@@ -42,7 +42,7 @@ public class PostgresEnumType implements UserType {
         if (value == null) {
             st.setNull(index, Types.OTHER);
         } else {
-            st.setString(index, ((EnumModalidadTrabajo) value).name().toLowerCase());
+            st.setObject(index, ((EnumModalidadTrabajo) value).name(), Types.OTHER);
         }
     }
 

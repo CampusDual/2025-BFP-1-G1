@@ -5,20 +5,20 @@ import java.util.HashMap;
 import java.util.Map;
 
 public enum EnumModalidadTrabajo {
-    presencial("presencial"),
-    hibrido("hibrido"),
-    remoto("remoto");
+    PRESENCIAL("PRESENCIAL"),
+    HIBRIDO("HIBRIDO"),
+    REMOTO("REMOTO");
 
     private static final Map<String, EnumModalidadTrabajo> lookup = new HashMap<>();
     
     static {
         for (EnumModalidadTrabajo e : EnumSet.allOf(EnumModalidadTrabajo.class)) {
-            lookup.put(e.getValue().toLowerCase(), e);
+            lookup.put(e.getValue().toUpperCase(), e);
         }
     }
 
     public static EnumModalidadTrabajo fromValue(String value) {
-        return lookup.get(value.toLowerCase());
+        return lookup.get(value.toUpperCase());
     }
 
     private final String value;
