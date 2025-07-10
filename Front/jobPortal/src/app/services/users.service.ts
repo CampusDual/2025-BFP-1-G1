@@ -10,7 +10,6 @@ import { jwtDecode } from 'jwt-decode';
 import { User } from '../model/user';
 import { Company } from '../model/company';
 import { Injectable } from '@angular/core';
-
 @Injectable({
   providedIn: 'root',
 })
@@ -19,19 +18,15 @@ export class UsersService {
   private urlUserProfile: string = 'http://localhost:30030/user';
   private urlUserData: string = 'http://localhost:30030/userdata';
   private urlCompanyProfile: string = 'http://localhost:30030/company';
-
   private userDataSubject = new BehaviorSubject<UserData | null>(null);
   userData$ = this.userDataSubject.asObservable();
-
   constructor(private http: HttpClient) {}
-
   login(username: string, password: string): Observable<any> {
     const body = { username, password };
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       Authorization: 'Basic ' + btoa(`${username}:${password}`),
     });
-
     return this.http
       .post(`${this.urlEndpoint}/signin`, body, {
         headers,
@@ -45,7 +40,6 @@ export class UsersService {
         catchError(this.handleError)
       );
   }
-
   signUpCandidate(
     login: string,
     password: string,
@@ -60,7 +54,6 @@ export class UsersService {
       password,
       role_id: 3,
     };
-
     const candidate: Candidate = {
       name,
       surname,
@@ -68,14 +61,12 @@ export class UsersService {
       user: user,
       birthdate: undefined,
     };
-
     const userData: UserData = {
       user: user,
       candidate: candidate,
       company: undefined,
       admin: undefined,
     };
-
     return this.http
       .post(`${this.urlEndpoint}/signup`, userData, {
         headers: new HttpHeaders({
@@ -90,11 +81,9 @@ export class UsersService {
         catchError(this.handleError)
       );
   }
-
   getUserValue(): UserData | null {
     return this.userDataSubject.value;
   }
-
   handleError = (error: HttpErrorResponse): Observable<never> => {
     let errorMessage = 'Ocurrió un error desconocido.';
     if (error.status === 401) {
@@ -118,11 +107,9 @@ export class UsersService {
     } else {
       errorMessage = `Error del servidor: ${error.status} - ${error.statusText}`;
     }
-
     console.error('Error en la petición:', error);
     return throwError(() => new Error(errorMessage));
   };
-
   isLoggedIn(): boolean {
     const token = localStorage.getItem('token');
     return !!token;
@@ -138,13 +125,11 @@ export class UsersService {
       return true;
     }
   }
-
   logout(): void {
     localStorage.removeItem('token');
     localStorage.removeItem('role');
     this.userDataSubject.next(null);
   }
-
   getUserData(): Observable<UserData> {
     const token = localStorage.getItem('token');
     if (!token) {
@@ -168,53 +153,60 @@ export class UsersService {
         catchError(this.handleError)
       );
   }
-
-  insertNewCompany(
-    login: string,
-    password: string,
-    name: string,
-    cif: string,
-    email: string,
-    phone: string,
-    web: string,
-    address: string
-  ): Observable<any> {
-    // Se ha eliminado la comprobación de permisos para permitir el registro público.
-    const user: User = {
-      email,
-      login,
-      password,
-      role_id: 2,
-    };
-    const company: Company = {
-      cif,
-      name,
-      phone,
-      address,
-      user: user,
-      web,
-    };
-    const userData: UserData = {
-      user: user,
-      candidate: undefined,
-      company: company,
-      admin: undefined,
-    };
-
-    return this.http
-      .post(`${this.urlCompanyProfile}/newCompany`, userData, {
-        headers: new HttpHeaders({
-          'Content-Type': 'application/json',
-        }),
-      })
-      .pipe(
-        map((response: any) => {
-          console.log('Registration successful:', response);
-          return response;
-        }),
-        catchError(this.handleError)
-      );
+ insertNewCompany(
+  login: string,
+  password: string,
+  name: string,
+  cif: string,
+  email: string,
+  phone: string,
+  web: string,
+  address: string
+): Observable<any> {
+  if (!this.isLoggedIn() || Number(this.getRole()) !== 1) { 
+    return throwError(
+      () => new Error('No tienes permiso para crear una nueva empresa')
+    );
   }
+
+  const token = localStorage.getItem('token'); 
+
+  const user: User = {
+    email,
+    login,
+    password,
+    role_id: 2,
+  };
+  const company: Company = {
+    cif,
+    name,
+    phone,
+    address,
+    user: user,
+    web,
+  };
+  const userData: UserData = {
+    user: user,
+    candidate: undefined,
+    company: company,
+    admin: undefined,
+  };
+
+  const headers = new HttpHeaders({
+    'Content-Type': 'application/json',
+    'Authorization': `Bearer ${token}`,
+  });
+
+  return this.http
+    .post(`${this.urlCompanyProfile}/newCompany`, userData, { headers }) 
+    .pipe(
+      map((response: any) => {
+        console.log('Registration successful:', response);
+        return response;
+      }),
+      catchError(this.handleError)
+    );
+}
   getRole(): string | null {
     const role = localStorage.getItem('role');
     return role;

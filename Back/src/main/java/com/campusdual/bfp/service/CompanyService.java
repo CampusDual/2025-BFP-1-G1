@@ -19,6 +19,7 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -42,6 +43,9 @@ public class CompanyService {
 
     @Autowired
     private RoleDao roleDao;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Transactional
     public boolean existsByName(String name) {
@@ -72,6 +76,7 @@ public class CompanyService {
     @Transactional
     public long insertNewCompany(UserDataDTO userDataDTO) {
         User user = UserMapper.INSTANCE.toEntity(userDataDTO.getUser());
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         Role companyRole = roleDao.findById(COMPANY_ROLE)
                 .orElseThrow(() -> new RuntimeException("Role not found: " + COMPANY_ROLE));
         user.setRole(companyRole);
