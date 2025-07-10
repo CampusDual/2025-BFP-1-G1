@@ -59,11 +59,22 @@ public class CompanyController {
             }
         }
     @DeleteMapping("/delete/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("authentication.principal.role.id == 1")
     public ResponseEntity<?> deleteCompany(@PathVariable long id) {
         try {
             companyService.deleteCompany(id);
             return ResponseEntity.ok("Company with id " + id + " deleted successfully.");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred: " + e.getMessage());
+        }
+    }
+
+    @GetMapping("/{id}/job-offers-count")
+    @PreAuthorize("authentication.principal.role.id == 1")
+    public ResponseEntity<?> getJobOffersCount(@PathVariable long id) {
+        try {
+            long count = companyService.countJobOffersByCompany(id);
+            return ResponseEntity.ok(count);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred: " + e.getMessage());
         }

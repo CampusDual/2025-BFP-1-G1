@@ -3,8 +3,8 @@ import { Component, HostListener } from '@angular/core';
 import { Router } from '@angular/router';
 import { UserData } from 'src/app/model/userData';
 import { UsersService } from 'src/app/services/users.service';
-import { MatTableModule } from '@angular/material/table';
 import { Company } from 'src/app/model/company';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-admin-profile',
@@ -21,7 +21,8 @@ export class AdminProfileComponent {
   constructor(
     private usersService: UsersService,
     private companyService: CompanyService,
-    private router: Router
+    private router: Router,
+    private snackbar: MatSnackBar
   ) {}
 
   ngOnInit(): void {
@@ -59,31 +60,51 @@ export class AdminProfileComponent {
   navigateToFormNewCompany() {
     this.router.navigate(['/main/companysignup']);
   }
-  deleteCompany(companyId: number): void {
-    if (!companyId) {
-      console.error('ID de la empresa no válido');
-      return;
-    }
-    const confirmation = confirm(
-      '¿Estás seguro de que quieres eliminar esta empresa? Esta acción no se puede deshacer.'
-    );
-
-    if (confirmation) {
-      this.usersService.deleteCompany(companyId).subscribe({
-        next: (response) => {
-          console.log('Empresa eliminada con éxito', response);
-          this.companies = this.companies.filter(
-            (company) => company.id !== companyId
+  openSnackbar(message: string, panelClass: string = '') {
+    this.snackbar.open(message, 'Cerrar', {
+      duration: 3000,
+      horizontalPosition: 'center',
+      verticalPosition: 'top',
+      panelClass: [panelClass],
+    });
+  }
+  onDeleteCompany(companyId: number): void {
+    this.usersService.getJobOffersCount(companyId).subscribe({
+      next: (count) => {
+        if (count > 0) {
+          this.openSnackbar(
+            `No se puede eliminar la empresa porque tiene ${count} oferta(s) de trabajo asociada(s).`,
+            'error-snackbar'
           );
-        },
-        error: (err) => {
-          console.error('Error al eliminar la empresa:', err);
-          alert(
-            err.message || 'Ocurrió un error al intentar eliminar la empresa.'
-          );
-        },
-      });
-    }
+        } else {
+          if (
+            confirm(
+              'Esta empresa no tiene ofertas de trabajo. ¿Estás seguro de que quieres eliminarla?'
+            )
+          ) {
+            this.usersService.deleteCompany(companyId).subscribe({
+              next: () => {
+                this.openSnackbar('Empresa eliminada correctamente.');
+              },
+              error: (err) => {
+                console.error('Error al eliminar la empresa:', err);
+                this.openSnackbar(
+                  'Ocurrió un error al eliminar la empresa.',
+                  'error-snackbar'
+                );
+              },
+            });
+          }
+        }
+      },
+      error: (err) => {
+        console.error('Error al comprobar las ofertas:', err);
+        this.openSnackbar(
+          'Ocurrió un error al comprobar si la empresa tenía ofertas.',
+          'error-snackbar'
+        );
+      },
+    });
   }
 
   isAdmin(): boolean {

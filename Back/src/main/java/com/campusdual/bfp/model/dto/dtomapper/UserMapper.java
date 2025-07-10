@@ -17,8 +17,8 @@ public interface UserMapper {
         dto.setEmail(user.getEmail());
         dto.setLogin(user.getLogin());
         Long roleId = null;
-        if (user.getUserRoles() != null && !user.getUserRoles().isEmpty()) {
-            roleId = user.getUserRoles().iterator().next().getRole().getId();
+        if (user.getRole().getId() != null && user.getRole().getId() != 0) {
+            roleId = user.getRole().getId();
         } else if (user.getRole() != null) {
             roleId = user.getRole().getId();
         }

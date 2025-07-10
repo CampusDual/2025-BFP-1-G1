@@ -211,7 +211,26 @@ export class UsersService {
     const role = localStorage.getItem('role');
     return role;
   }
+  getJobOffersCount(companyId: number): Observable<number> {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      return throwError(
+        () => new Error('No se encontró el token de autentificación.')
+      );
+    }
 
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    });
+
+    // Llamamos al nuevo endpoint
+    const url = `${this.urlCompanyProfile}/${companyId}/job-offers-count`;
+
+    return this.http
+      .get<number>(url, { headers })
+      .pipe(catchError(this.handleError));
+  }
   deleteCompany(companyId: number): Observable<any> {
     if (!this.isLoggedIn() || Number(this.getRole()) !== 1) {
       return throwError(

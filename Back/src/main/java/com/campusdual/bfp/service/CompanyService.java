@@ -5,6 +5,7 @@ import com.campusdual.bfp.model.JobOffer;
 import com.campusdual.bfp.model.Role;
 import com.campusdual.bfp.model.User;
 import com.campusdual.bfp.model.dao.CompanyDao;
+import com.campusdual.bfp.model.dao.JobOffersDao;
 import com.campusdual.bfp.model.dao.RoleDao;
 import com.campusdual.bfp.model.dao.UserDao;
 import com.campusdual.bfp.model.dto.CompanyDTO;
@@ -34,6 +35,9 @@ public class CompanyService {
 
     @Autowired
     private CompanyDao companyDao;
+
+    @Autowired
+    private JobOffersDao jobOffersDao;
 
     @Autowired
     private UserDao userDao;
@@ -87,6 +91,12 @@ public class CompanyService {
 
 
         return company.getId();
+    }
+    @Transactional(readOnly = true)
+    public long countJobOffersByCompany(long companyId) {
+        Company company = companyDao.findById(companyId)
+                .orElseThrow(() -> new RuntimeException("Company not found with id: " + companyId));
+        return jobOffersDao.countByCompany(company);
     }
 
     @Transactional
