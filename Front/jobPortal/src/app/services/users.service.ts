@@ -73,6 +73,7 @@ export class UsersService {
       user: user,
       candidate: candidate,
       company: undefined,
+      admin: undefined,
     };
 
     return this.http
@@ -202,6 +203,7 @@ export class UsersService {
       user: user,
       candidate: undefined,
       company: company,
+      admin: undefined,
     };
 
     return this.http
