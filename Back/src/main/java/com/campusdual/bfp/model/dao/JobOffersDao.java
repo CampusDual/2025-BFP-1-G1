@@ -25,6 +25,6 @@ public interface JobOffersDao extends JpaRepository<JobOffer, Long> {
 
     Company findCompanyById(long id);
 
-    long countByCompany(Company company);
+    long countByCompany(Company company)
 
 }
