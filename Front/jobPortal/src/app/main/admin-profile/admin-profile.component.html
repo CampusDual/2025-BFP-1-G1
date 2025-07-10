@@ -8,7 +8,8 @@
   <div class="content-section">
     <div class="section-title-button">
       <h2>Listado de Empresas</h2>
-      <button class="add-item-button" (click)="navigateToFormNewCompany()">Añadir empresa</button>
+      <button class="add-item-button" *ngIf="isAdmin()" [routerLink]="['/main/adminprofile/newcompany']" (click)="
+        navigateToFormNewCompany()">Añadir empresa</button>
     </div>
 
     <table class="data-list-table" *ngIf="companies.length > 0">

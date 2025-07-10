@@ -59,4 +59,10 @@ export class AdminProfileComponent {
   navigateToFormNewCompany() {
     this.router.navigate(['/main/companysignup']);
   }
+  isAdmin(): boolean {
+    return (
+      !!this.userData?.company ||
+      (!!this.userData?.user && this.userData.user.role_id === 1)
+    );
+  }
 }

@@ -179,12 +179,7 @@ export class UsersService {
     web: string,
     address: string
   ): Observable<any> {
-    if (!this.isLoggedIn() || this.getRole() !== 'admin') {
-      return throwError(
-        () => new Error('No tienes permiso para crear una nueva empresa')
-      );
-    }
-
+    // Se ha eliminado la comprobación de permisos para permitir el registro público.
     const user: User = {
       email,
       login,
