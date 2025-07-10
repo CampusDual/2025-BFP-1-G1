@@ -89,4 +89,18 @@ public class CompanyService {
         return company.getId();
     }
 
+    @Transactional
+    public void deleteCompany(long companyId) {
+        Company company = companyDao.findById(companyId)
+                .orElseThrow(() -> new RuntimeException("Company not found with id: " + companyId));
+
+        User user = company.getUser();
+
+        companyDao.delete(company);
+
+        if (user != null) {
+            userDao.delete(user);
+        }
+    }
+
 }

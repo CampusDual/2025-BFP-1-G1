@@ -58,7 +58,16 @@ public class CompanyController {
                 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred: " + e.getMessage());
             }
         }
-
+    @DeleteMapping("/delete/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<?> deleteCompany(@PathVariable long id) {
+        try {
+            companyService.deleteCompany(id);
+            return ResponseEntity.ok("Company with id " + id + " deleted successfully.");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred: " + e.getMessage());
+        }
+    }
 
     }
 

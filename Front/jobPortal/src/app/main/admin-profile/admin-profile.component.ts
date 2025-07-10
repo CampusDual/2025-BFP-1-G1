@@ -59,6 +59,33 @@ export class AdminProfileComponent {
   navigateToFormNewCompany() {
     this.router.navigate(['/main/companysignup']);
   }
+  deleteCompany(companyId: number): void {
+    if (!companyId) {
+      console.error('ID de la empresa no válido');
+      return;
+    }
+    const confirmation = confirm(
+      '¿Estás seguro de que quieres eliminar esta empresa? Esta acción no se puede deshacer.'
+    );
+
+    if (confirmation) {
+      this.usersService.deleteCompany(companyId).subscribe({
+        next: (response) => {
+          console.log('Empresa eliminada con éxito', response);
+          this.companies = this.companies.filter(
+            (company) => company.id !== companyId
+          );
+        },
+        error: (err) => {
+          console.error('Error al eliminar la empresa:', err);
+          alert(
+            err.message || 'Ocurrió un error al intentar eliminar la empresa.'
+          );
+        },
+      });
+    }
+  }
+
   isAdmin(): boolean {
     return (
       !!this.userData?.company ||

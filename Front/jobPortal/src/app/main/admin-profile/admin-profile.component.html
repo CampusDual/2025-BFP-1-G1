@@ -15,22 +15,26 @@
     <table class="data-list-table" *ngIf="companies.length > 0">
       <thead>
         <tr>
-          <th>ID</th>
           <th>Nombre</th>
           <th>CIF</th>
           <th>Teléfono</th>
           <th>Dirección</th>
           <th>Web</th>
+          <th>Borrar</th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let company of companies">
-          <td>{{ company.id }}</td>
           <td>{{ company.name }}</td>
           <td>{{ company.cif }}</td>
           <td>{{ company.phone }}</td>
           <td>{{ company.address }}</td>
           <td>{{ company.web }}</td>
+          <td>
+            <button mat-icon-button (click)="deleteCompany(company.id!)">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </td>
         </tr>
       </tbody>
     </table>

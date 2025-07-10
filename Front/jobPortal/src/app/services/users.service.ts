@@ -153,62 +153,92 @@ export class UsersService {
         catchError(this.handleError)
       );
   }
- insertNewCompany(
-  login: string,
-  password: string,
-  name: string,
-  cif: string,
-  email: string,
-  phone: string,
-  web: string,
-  address: string
-): Observable<any> {
-  if (!this.isLoggedIn() || Number(this.getRole()) !== 1) { 
-    return throwError(
-      () => new Error('No tienes permiso para crear una nueva empresa')
-    );
+  insertNewCompany(
+    login: string,
+    password: string,
+    name: string,
+    cif: string,
+    email: string,
+    phone: string,
+    web: string,
+    address: string
+  ): Observable<any> {
+    if (!this.isLoggedIn() || Number(this.getRole()) !== 1) {
+      return throwError(
+        () => new Error('No tienes permiso para crear una nueva empresa')
+      );
+    }
+
+    const token = localStorage.getItem('token');
+
+    const user: User = {
+      email,
+      login,
+      password,
+      role_id: 2,
+    };
+    const company: Company = {
+      cif,
+      name,
+      phone,
+      address,
+      user: user,
+      web,
+    };
+    const userData: UserData = {
+      user: user,
+      candidate: undefined,
+      company: company,
+      admin: undefined,
+    };
+
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    });
+
+    return this.http
+      .post(`${this.urlCompanyProfile}/newCompany`, userData, { headers })
+      .pipe(
+        map((response: any) => {
+          console.log('Registration successful:', response);
+          return response;
+        }),
+        catchError(this.handleError)
+      );
+  }
+  getRole(): string | null {
+    const role = localStorage.getItem('role');
+    return role;
   }
 
-  const token = localStorage.getItem('token'); 
+  deleteCompany(companyId: number): Observable<any> {
+    if (!this.isLoggedIn() || Number(this.getRole()) !== 1) {
+      return throwError(
+        () => new Error('No tienes permiso para eliminar una empresa')
+      );
+    }
 
-  const user: User = {
-    email,
-    login,
-    password,
-    role_id: 2,
-  };
-  const company: Company = {
-    cif,
-    name,
-    phone,
-    address,
-    user: user,
-    web,
-  };
-  const userData: UserData = {
-    user: user,
-    candidate: undefined,
-    company: company,
-    admin: undefined,
-  };
+    const token = localStorage.getItem('token');
+    if (!token) {
+      return throwError(
+        () => new Error('No se encontró el token de autentificación.')
+      );
+    }
 
-  const headers = new HttpHeaders({
-    'Content-Type': 'application/json',
-    'Authorization': `Bearer ${token}`,
-  });
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    });
 
-  return this.http
-    .post(`${this.urlCompanyProfile}/newCompany`, userData, { headers }) 
-    .pipe(
+    const url = `${this.urlCompanyProfile}/delete/${companyId}`;
+
+    return this.http.delete(url, { headers }).pipe(
       map((response: any) => {
-        console.log('Registration successful:', response);
+        console.log('Company deleted successfully:', response);
         return response;
       }),
       catchError(this.handleError)
     );
-}
-  getRole(): string | null {
-    const role = localStorage.getItem('role');
-    return role;
   }
 }
