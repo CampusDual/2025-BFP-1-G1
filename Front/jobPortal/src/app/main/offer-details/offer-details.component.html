@@ -1,0 +1,93 @@
+<div class="offer-form-container">
+    <!-- cabecera -->
+    <div class="header-container">
+        <!-- izquierda: datos empresa -->
+        <div class="company-info">
+            <div class="logo-container">
+                <img *ngIf="offer.company?.logo" [src]="offer.company?.logo" alt="Logo empresa" class="company-logo" />
+                <div *ngIf="!offer.company?.logo" class="logo-placeholder">
+                    <mat-icon>business</mat-icon>
+                </div>
+            </div>
+            <div class="company-details">
+                <div class="company-name">
+                    {{ offer.company?.name || 'Nombre de la empresa' }}
+                </div>
+                <a *ngIf="offer.company?.web" [href]="offer.company?.web" target="_blank" class="company-website">
+                    <mat-icon>language</mat-icon>
+                    {{ offer.company?.web || 'Sitio web no disponible' }}
+                </a>
+                <div class="company-email">
+                    <mat-icon>email</mat-icon>
+                    {{ offer.company?.user?.email || 'Email no disponible' }}
+                </div>
+            </div>
+        </div>
+
+        <!-- derecha: título + localización + modalidad -->
+        <div class="title-container">
+            <div class="title-meta">
+                <div class="title-field">
+                    <h2>{{ offer.title }}</h2>
+                </div>
+
+                <div class="offer-meta">
+                    <div class="location-field">
+                        <mat-icon>location_on</mat-icon> {{ offer.localizacion || 'Localización no disponible' }}
+                    </div>
+                    <div class="mode-field">
+                        <mat-icon>business_center</mat-icon> {{ offer.modalidad | titlecase }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- contenido principal: 3 columnas -->
+    <div class="main-content">
+        <!-- columna 1: descripción -->
+        <div class="form-section description-section">
+            <div class="section-title">
+                <mat-icon>description</mat-icon> Descripción
+            </div>
+            <p class="full-width">{{ offer.description }}</p>
+        </div>
+
+        <!-- columna 2: requisitos -->
+        <div class="form-section requirements-section">
+            <div class="required">
+                <div class="section-title">
+                    <mat-icon>check_circle</mat-icon> Requisitos requeridos
+                </div>
+                <p class="full-width">{{ offer.requisitos }}</p>
+            </div>
+
+            <div class="desirables">
+                <div class="section-title">
+                    <mat-icon>check_circle_outline</mat-icon> Requisitos deseables
+                </div>
+                <p class="full-width">{{ offer.deseables || 'Ninguno especificado' }}</p>
+            </div>
+        </div>
+
+        <!-- columna 3: beneficios -->
+        <div class="form-section benefits-section">
+            <div class="section-title">
+                <mat-icon>card_giftcard</mat-icon> Beneficios
+            </div>
+            <p class="full-width">{{ offer.beneficios }}</p>
+        </div>
+    </div>
+
+    <div class="button-container">
+        <button mat-button class="catalogueButton" (click)="goBack()">
+            <mat-icon>arrow_back</mat-icon> Volver al catálogo
+        </button>
+    <ng-container *ngIf="!isCompany()">
+        <button mat-raised-button color="primary" class="apply-button" (click)="aplicarAOferta(offer)"
+            [disabled]="appliedOfferIds.includes(offer.id!)">
+            {{ appliedOfferIds.includes(offer.id!) ? 'Inscrito' : 'Inscribirse' }}
+        </button>
+    </ng-container>
+    </div>
+</div>

@@ -25,15 +25,16 @@ public class JobOffersService implements IJobOffersService {
 
     @Override
     public JobOffersDTO queryJobOffer(JobOffersDTO jobOffersDTO) {
-       JobOffer jobOffer = JobOffersMapper.INSTANCE.toEntity(jobOffersDTO);
-       return JobOffersMapper.INSTANCE.toDTO(jobOffersDao.getReferenceById(jobOffer.getId()));
+        JobOffer jobOffer = JobOffersMapper.INSTANCE.toEntity(jobOffersDTO);
+        return JobOffersMapper.INSTANCE.toDTO(jobOffersDao.getReferenceById(jobOffer.getId()));
 
     }
 
     @Override
     public List<JobOffersDTO> queryAllJobOffer() {
-        List<JobOffer> list= jobOffersDao.findAll();
-        List<JobOffersDTO>listDto= JobOffersMapper.INSTANCE.toDTOList(list);;
+        List<JobOffer> list = jobOffersDao.findAll();
+        List<JobOffersDTO> listDto = JobOffersMapper.INSTANCE.toDTOList(list);
+        ;
         return listDto;
     }
 
@@ -44,15 +45,14 @@ public class JobOffersService implements IJobOffersService {
 
     @Override
     public List<JobOffersDTO> queryAllJobOfferByCompanyIdSorted(long id, String sortBy, String direction) {
-        if(!List.of("title", "company", "releaseDate").contains(sortBy)) {
+        if (!List.of("title", "company", "releaseDate").contains(sortBy)) {
             throw new IllegalArgumentException("Invalid sort field: " + sortBy);
         }
         Sort.Direction sortDirection = "desc".equalsIgnoreCase(direction) ? Sort.Direction.DESC : Sort.Direction.ASC;
         Sort sort = Sort.by(sortDirection, sortBy);
-        List<JobOffer> jobOffers = jobOffersDao.findByCompanyId(id,sort);
+        List<JobOffer> jobOffers = jobOffersDao.findByCompanyId(id, sort);
         return JobOffersMapper.INSTANCE.toDTOList(jobOffers);
     }
-
 
 
     @Override
@@ -75,31 +75,35 @@ public class JobOffersService implements IJobOffersService {
     }
 
 
-
     public List<JobOffersDTO> queryAllOffersSorted(String sortBy, String direction) {
-        if(!List.of("title", "company", "releaseDate").contains(sortBy)) {
+        if (!List.of("title", "company", "releaseDate").contains(sortBy)) {
             throw new IllegalArgumentException("Invalid sort field: " + sortBy);
         }
         Sort.Direction sortDirection = "desc".equalsIgnoreCase(direction) ? Sort.Direction.DESC : Sort.Direction.ASC;
         Sort sort = Sort.by(sortDirection, sortBy);
         List<JobOffer> jobOffers = jobOffersDao.findAll(sort);
-     return JobOffersMapper.INSTANCE.toDTOList(jobOffers);
+        return JobOffersMapper.INSTANCE.toDTOList(jobOffers);
     }
 
     @Override
     public List<JobOffersDTO> queryAllOffersFilterByCompany(String filterBy, Long id) {
-        if(filterBy ==null || filterBy.trim().isEmpty()) {
+        if (filterBy == null || filterBy.trim().isEmpty()) {
             return queryAllJobOffer();
         }
-        return JobOffersMapper.INSTANCE.toDTOList(jobOffersDao.filterOffersByCompany(filterBy,id));
+        return JobOffersMapper.INSTANCE.toDTOList(jobOffersDao.filterOffersByCompany(filterBy, id));
     }
 
 
     public List<JobOffersDTO> queryAllOffersFilter(String filterBy) {
-        if(filterBy ==null || filterBy.trim().isEmpty()) {
+        if (filterBy == null || filterBy.trim().isEmpty()) {
             return queryAllJobOffer();
         }
-     return JobOffersMapper.INSTANCE.toDTOList(jobOffersDao.filterOffers(filterBy));
+        return JobOffersMapper.INSTANCE.toDTOList(jobOffersDao.filterOffers(filterBy));
+    }
+
+    @Override
+    public JobOffersDTO queryJobOfferById(long id) {
+        return jobOffersDao.findById(id).map(JobOffersMapper.INSTANCE::toDTO).orElse(null);
     }
 
 
@@ -116,4 +120,5 @@ public class JobOffersService implements IJobOffersService {
         jobOffersDao.delete(jobOffer);
         return id;
     }*/
+
 }

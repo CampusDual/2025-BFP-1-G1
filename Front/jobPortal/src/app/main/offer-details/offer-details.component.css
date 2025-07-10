@@ -1,0 +1,222 @@
+.offer-form-container {
+  width: 80%;
+  max-width: 1400px;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+  padding: 15px;
+  font-family: var(--font-base);
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+  color: var(--text-base);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 2px solid var(--primary);
+  padding-bottom: 15px;
+  margin-bottom: 25px;
+  flex-wrap: wrap;
+}
+
+.company-info {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  min-width: 280px;
+}
+
+.logo-container {
+  width: 70px;
+  height: 70px;
+  border-radius: 10px;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.company-logo {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+.logo-placeholder mat-icon {
+  font-size: 50px;
+  color: var(--primary-dark);
+}
+
+.company-details {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.company-name {
+  font-weight: 700;
+  font-size: 1.25rem;
+  color: var(--primary);
+}
+
+.company-website,
+.company-email {
+  display: flex;
+  align-items: center;
+  font-size: 0.9rem;
+  color: var(--text-base);
+  gap: 5px;
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+.company-website:hover {
+  color: var(--primary-dark);
+}
+
+.title-container {
+  flex: 1 1 350px;
+  max-width: 600px;
+}
+
+.title-meta h2 {
+  margin: 0;
+  font-size: 2rem;
+  color: var(--darker);
+}
+
+.offer-meta {
+  display: flex;
+  gap: 20px;
+  margin-top: 8px;
+  color: var(--primary);
+  font-weight: 600;
+}
+
+.offer-meta mat-icon {
+  vertical-align: middle;
+  color: var(--primary-dark);
+}
+
+.main-content {
+  display: flex;
+  gap: 20px;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.form-section {
+  flex: 1 1 300px;
+  background-color: var(--gray-megalightest);
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.05);
+}
+
+.section-title {
+  font-weight: 700;
+  font-size: 1.1rem;
+  margin-bottom: 10px;
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.full-width {
+  white-space: pre-wrap;
+  line-height: 1.5;
+  color: var(--text-base);
+}
+
+.button-container {
+  margin-top: 30px;
+  text-align: center;
+}
+
+.catalogueButton {
+  background-color: var(--primary);
+  color: white;
+  font-weight: 600;
+  padding: 10px 20px;
+  border-radius: 7px;
+  transition: background-color 0.3s ease;
+}
+
+.catalogueButton:hover {
+  background-color: var(--primary-dark);
+}
+
+.catalogueButton mat-icon {
+  vertical-align: middle;
+  margin-right: 6px;
+}
+
+  .apply-button {
+    padding: 10px 20px;
+    background-color: var(--primary);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease,
+    box-shadow 0.3s ease;
+    margin-top: 1rem;
+    margin-left: 0;
+    box-shadow: 0 2px 10px var(--apply-button-shadow);
+    width: 80%;
+    max-width: 200px;
+  }
+
+.apply-button[disabled],
+.mat-raised-button[disabled] {
+  background-color: var(--apply-button-bg) !important;
+  opacity: var(--apply-button-disabled-opacity) !important;
+  color: var(--apply-button-disabled-color) !important;
+  cursor: not-allowed !important;
+  pointer-events: none !important;
+  box-shadow: 0 2px 5px var(--apply-button-disabled-shadow) !important;
+  transform: none !important;
+  transition: none !important;
+}
+
+.apply-button[disabled]:hover,
+.mat-raised-button[disabled]:hover {
+  background-color: var(--apply-button-bg) !important;
+  opacity: var(--apply-button-disabled-opacity) !important;
+  transform: none !important;
+  box-shadow: 0 2px 5px var(--apply-button-disabled-shadow) !important;
+  cursor: not-allowed !important;
+}
+
+
+/* Responsive para móviles */
+@media (max-width: 900px) {
+  .main-content {
+    flex-direction: column;
+  }
+
+  .form-section {
+    flex: 1 1 100%;
+    margin-bottom: 20px;
+  }
+
+  .header-container {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+  }
+
+  .title-container {
+    max-width: 100%;
+  }
+}

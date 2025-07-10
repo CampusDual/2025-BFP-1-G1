@@ -20,6 +20,7 @@ import { SignUpFormComponent } from './sign-up-form/sign-up-form.component';
 import { CandidateProfileComponent } from './candidate-profile/candidate-profile.component';
 import {MatDividerModule} from '@angular/material/divider';
 import {MatSelectModule} from '@angular/material/select';
+import { OfferDetailsComponent } from './offer-details/offer-details.component';
 
 
 @NgModule({
@@ -32,6 +33,7 @@ import {MatSelectModule} from '@angular/material/select';
     CompanyOfferListComponent,
     SignUpFormComponent,
     CandidateProfileComponent,
+    OfferDetailsComponent,
   ],
   imports: [
     CommonModule,

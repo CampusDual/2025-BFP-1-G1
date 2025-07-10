@@ -43,11 +43,24 @@
           <mat-card-subtitle>{{ offer.email }}</mat-card-subtitle>
           <mat-card-content style="display:none;">{{ offer.description }}</mat-card-content>
           <mat-card-actions>
-            <span class="fecha-relativa"> <mat-icon class="reloj">access_time</mat-icon> {{ getRelativeDate(offer.releaseDate) }}</span>
+            <span class="fecha-relativa"> <mat-icon class="reloj">access_time</mat-icon> {{
+              getRelativeDate(offer.releaseDate) }}</span>
             <ng-container *ngIf="!isCompany()">
               <button mat-raised-button color="primary" class="apply-button" (click)="aplicarAOferta(offer)"
                 [disabled]="appliedOfferIds.includes(offer.id!)">
                 {{ appliedOfferIds.includes(offer.id!) ? 'Inscrito' : 'Inscribirse' }}
+              </button>
+            </ng-container>
+            <ng-container *ngIf="isCompany()">
+              <button mat-raised-button color="primary" class="edit-button"
+                [routerLink]="['/main/editOffer', offer.id]">
+                Editar
+              </button>
+            </ng-container>
+            <ng-container>
+              <button mat-raised-button color="primary" class="details-button"
+              (click)="goToOfferDetails(offer.id!)">
+                Ver detalles
               </button>
             </ng-container>
           </mat-card-actions>

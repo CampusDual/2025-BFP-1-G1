@@ -143,11 +143,9 @@ export class JobOfferService {
       Authorization: `Bearer ${token}`,
     });
     return this.http
-      .put<JobOffer>(
-        this.urlOffersManagement.concat('/update'),
-        jobOffer,
-        { headers: httpHeaders }
-      )
+      .put<JobOffer>(this.urlOffersManagement.concat('/update'), jobOffer, {
+        headers: httpHeaders,
+      })
       .pipe(
         map((response) => {
           let jobOffer = response as JobOffer;
@@ -160,5 +158,9 @@ export class JobOfferService {
           return throwError(() => e);
         })
       );
+  }
+
+  getJobOfferById(id: number): Observable<JobOffer> {
+    return this.http.get<JobOffer>(`${this.urlJobOffers}/get/${id}`);
   }
 }

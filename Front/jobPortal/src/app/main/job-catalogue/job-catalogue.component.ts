@@ -9,6 +9,7 @@ import { switchMap, filter, tap } from 'rxjs/operators';
 import { of, Subscription } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { LoadingScreenService } from 'src/app/services/loading-screen.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-job-catalogue',
@@ -19,8 +20,18 @@ export class JobCatalogueComponent implements OnInit, OnDestroy {
   userData: UserData | null = null;
   jobOffers: JobOffer[] = [];
   gridCols: number = 3;
-  sortBy: 'id' | 'title' | 'releaseDate' | 'description' | 'company'
-  | 'email' | 'localizacion' | 'modalidad' | 'requisitos' | 'deseables' | 'beneficios' = 'releaseDate';
+  sortBy:
+    | 'id'
+    | 'title'
+    | 'releaseDate'
+    | 'description'
+    | 'company'
+    | 'email'
+    | 'localizacion'
+    | 'modalidad'
+    | 'requisitos'
+    | 'deseables'
+    | 'beneficios' = 'releaseDate';
   sortDirection: 'asc' | 'desc' = 'desc';
   searchTerm: string = '';
   appliedOfferIds: number[] = [];
@@ -33,7 +44,8 @@ export class JobCatalogueComponent implements OnInit, OnDestroy {
     private applicationService: ApplicationService,
     public usersService: UsersService,
     private _snackBar: MatSnackBar,
-    private loadingScreenService: LoadingScreenService
+    private loadingScreenService: LoadingScreenService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -250,5 +262,10 @@ export class JobCatalogueComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.offersChangedSubscription?.unsubscribe();
+  }
+
+  goToOfferDetails(id: number) {
+    console.log('Navegando a detalles de oferta con id:', id);
+    this.router.navigate(['/main/offerDetails', id]);
   }
 }
