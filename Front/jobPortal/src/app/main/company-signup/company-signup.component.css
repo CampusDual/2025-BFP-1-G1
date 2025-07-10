@@ -13,7 +13,7 @@ body,
 .container {
   min-height: 100vh;
   width: 100%;
-  padding: 40px 20px;
+  padding: 24px 20px;
   box-sizing: border-box;
   display: flex;
   justify-content: center;
@@ -24,6 +24,7 @@ body,
 .sign-up-box {
   display: flex;
   width: 80%;
+  height: 80%;
   max-width: 1200px;
   max-height: 90vh;
   background-color: white;
@@ -59,7 +60,6 @@ body,
 .circle-image img {
   width: 100%;
   height: auto;
-  cursor: pointer;
 }
 
 .form-section {
@@ -75,8 +75,8 @@ body,
 .form-title {
   font-size: 28px;
   color: var(--darker);
-  margin: 0 0 30px 0;
-  padding-top: 10px;
+  margin: 0 0 10px 0;
+  padding-top: 5px;
   position: relative;
   z-index: 1;
 }
@@ -125,7 +125,6 @@ mat-form-field input[type="password"] {
   font-weight: bold;
   border: none;
   border-radius: 4px;
-  cursor: pointer;
   transition: background-color 0.3s ease;
 }
 
@@ -282,4 +281,48 @@ mat-error {
 .custom-tooltip.visible {
   opacity: 1;
   transform: translateY(0);
+}
+
+.form-section form {
+  /* Ultra-reduced row-gap for desktop/larger screens */
+  gap: 2px 32px;
+  /* Adjusted from 5px to 2px for vertical spacing */
+  width: 100%;
+  overflow-y: auto;
+  flex-grow: 1;
+  padding: 20px 0;
+  margin-top: -20px;
+  padding-top: 30px;
+}
+
+.inputs1,
+.inputs2 {
+  /* Ultra-reduced gap between individual fields within columns */
+  gap: 2px;
+  /* Adjusted from 5px to 2px */
+}
+
+/* --- Media Queries Adjustments for Smaller Screens --- */
+@media (max-width: 992px) {
+  .form-section form {
+    /* Ultra-reduced row-gap for tablet/smaller desktop views */
+    gap: 1px 24px;
+    /* Adjusted from 4px to 1px for vertical spacing */
+  }
+}
+
+@media (max-width: 768px) {
+  .form-section form {
+    grid-template-columns: 1fr;
+    /* Ultra-reduced gap for mobile views (single column layout) */
+    gap: 1px;
+    /* Adjusted from 4px to 1px */
+  }
+
+  .inputs1,
+  .inputs2 {
+    /* Ultra-reduced gap for mobile views */
+    gap: 1px;
+    /* Adjusted from 4px to 1px */
+  }
 }

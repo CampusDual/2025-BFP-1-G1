@@ -59,6 +59,8 @@ export class HeaderComponent implements OnInit {
       return `${this.userData.candidate.name} ${this.userData.candidate.surname}`;
     } else if (this.userData?.company) {
       return this.userData.company.name;
+    } else if (this.userData?.admin) {
+      return this.userData.user.login;
     } else if (this.userData?.user) {
       return this.userData.user.login;
     }

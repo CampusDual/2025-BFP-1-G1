@@ -86,13 +86,6 @@ export class AdminProfileComponent {
               next: () => {
                 this.openSnackbar('Empresa eliminada correctamente.');
               },
-              error: (err) => {
-                console.error('Error al eliminar la empresa:', err);
-                this.openSnackbar(
-                  'Ocurrió un error al eliminar la empresa.',
-                  'error-snackbar'
-                );
-              },
             });
           }
         }
