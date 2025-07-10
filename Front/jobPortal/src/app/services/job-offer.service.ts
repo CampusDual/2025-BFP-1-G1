@@ -11,12 +11,9 @@ export class JobOfferService {
   private urlProfileOffers = 'http://localhost:30030/profileOffers';
   company: Company | null = null;
 
-  // Subject para emitir eventos cuando las ofertas cambian
   private offersChangedSubject = new Subject<void>();
 
   constructor(private http: HttpClient) {}
-
-  // Observable público para que los componentes se subscriban
   getOffersChangedObservable(): Observable<void> {
     return this.offersChangedSubject.asObservable();
   }

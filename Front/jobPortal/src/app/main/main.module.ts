@@ -21,6 +21,7 @@ import { CandidateProfileComponent } from './candidate-profile/candidate-profile
 import {MatDividerModule} from '@angular/material/divider';
 import {MatSelectModule} from '@angular/material/select';
 import { OfferDetailsComponent } from './offer-details/offer-details.component';
+import { EditOfferComponent } from './edit-offer/edit-offer.component';
 
 
 @NgModule({
@@ -34,6 +35,7 @@ import { OfferDetailsComponent } from './offer-details/offer-details.component';
     SignUpFormComponent,
     CandidateProfileComponent,
     OfferDetailsComponent,
+    EditOfferComponent,
   ],
   imports: [
     CommonModule,

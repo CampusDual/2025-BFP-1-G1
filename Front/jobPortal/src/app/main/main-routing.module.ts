@@ -9,6 +9,7 @@ import { authGuard } from '../guards/auth.guard';
 import { noAuthGuard } from '../guards/no-auth.guard';
 import { CandidateProfileComponent } from './candidate-profile/candidate-profile.component';
 import { OfferDetailsComponent } from './offer-details/offer-details.component';
+import { EditOfferComponent } from './edit-offer/edit-offer.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'catalogue', pathMatch: 'full' },
@@ -27,12 +28,18 @@ const routes: Routes = [
   {
     path: 'candidateprofile',
     component: CandidateProfileComponent,
-    canActivate: [authGuard]
+    canActivate: [authGuard],
   },
   { path: 'signup', component: SignUpFormComponent },
   {
     path: 'offerDetails/:id',
     component: OfferDetailsComponent,
+  },
+
+  {
+    path: 'editOffer/:id',
+    component: EditOfferComponent,
+    canActivate: [authGuard],
   },
 ];
 
