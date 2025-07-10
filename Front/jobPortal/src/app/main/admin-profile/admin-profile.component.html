@@ -1,17 +1,8 @@
-<div class="profile-container">
-  <div class="profile-header-card">
-    <div class="header-content">
-      <h1>Perfil de Administrador</h1>
-    </div>
-  </div>
-
-  <div class="content-section">
-    <div class="section-title-button">
-      <h2>Listado de Empresas</h2>
-      <button class="add-item-button" (click)="navigateToFormNewCompany()">Añadir empresa</button>
-    </div>
-
-    <table class="data-list-table" *ngIf="companies.length > 0">
+<div class="admin-profile">
+  <button (click)="navigateToFormNewCompany()">Añadir empresa</button>
+  <h2>Listado de Empresas</h2>
+  <table *ngIf="companies.length > 0">
+    <div class="company-table-header">
       <thead>
         <tr>
           <th>ID</th>
@@ -22,6 +13,8 @@
           <th>Web</th>
         </tr>
       </thead>
+    </div>
+    <div class="company-table">
       <tbody>
         <tr *ngFor="let company of companies">
           <td>{{ company.id }}</td>
@@ -32,7 +25,7 @@
           <td>{{ company.web }}</td>
         </tr>
       </tbody>
-    </table>
-    <p class="empty-list-message" *ngIf="companies.length === 0">No hay empresas registradas.</p>
-  </div>
+    </div>
+  </table>
+  <p *ngIf="companies.length === 0">No hay empresas registradas.</p>
 </div>

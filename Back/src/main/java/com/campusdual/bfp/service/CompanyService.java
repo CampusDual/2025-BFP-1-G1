@@ -8,7 +8,6 @@ import com.campusdual.bfp.model.dao.UserDao;
 import com.campusdual.bfp.model.dto.CompanyDTO;
 import com.campusdual.bfp.model.dto.JobOffersDTO;
 import com.campusdual.bfp.model.dto.UserDTO;
-import com.campusdual.bfp.model.dto.UserDataDTO;
 import com.campusdual.bfp.model.dto.dtomapper.CompanyMapper;
 import com.campusdual.bfp.model.dto.dtomapper.JobOffersMapper;
 import com.campusdual.bfp.model.dto.dtomapper.UserMapper;
@@ -17,7 +16,6 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -38,9 +36,6 @@ public class CompanyService {
 
     @Autowired
     private UserService userService;
-
-    @Autowired
-    private PasswordEncoder passwordEncoder;
 
     @Transactional
     public boolean existsByName(String name) {
@@ -67,17 +62,12 @@ public class CompanyService {
     public List<CompanyDTO> queryAllCompanies() {
         return CompanyMapper.INSTANCE.toDTOList(this.companyDao.findAll()); }
 
-    @Transactional
-    public int insertNewCompany(UserDataDTO userDataDTO) {
-        User user = UserMapper.INSTANCE.toEntity(userDataDTO.getUser());
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        user.setRole(COMPANY_ROLE);
-        userDao.saveAndFlush(user);
-
-        Company company = CompanyMapper.INSTANCE.toEntity(userDataDTO.getCompany());
-        company.setUser(user);
+ @Transactional
+    public long insertNewCompany(CompanyDTO companyDTO, UserDTO userDTO) {
+        Company company = CompanyMapper.INSTANCE.toEntity(companyDTO);
         companyDao.saveAndFlush(company);
-
+        User user = UserMapper.INSTANCE.toEntity(userDTO);
+        userDao.saveAndFlush(user);
         return company.getId();
     }
 
