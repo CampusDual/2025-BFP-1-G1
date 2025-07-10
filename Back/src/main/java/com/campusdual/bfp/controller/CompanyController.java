@@ -4,6 +4,7 @@ import com.campusdual.bfp.model.Company;
 import com.campusdual.bfp.model.dto.CandidateDTO;
 import com.campusdual.bfp.model.dto.CompanyDTO;
 import com.campusdual.bfp.model.dto.UserDTO;
+import com.campusdual.bfp.model.dto.UserDataDTO;
 import com.campusdual.bfp.model.dto.dtomapper.CompanyMapper;
 import com.campusdual.bfp.service.CompanyService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,9 +51,9 @@ public class CompanyController {
         }
 
     @PostMapping("/newCompany")
-    public ResponseEntity<?> newCompany(@RequestBody CompanyDTO companyDTO, UserDTO userDTO) {
+    public ResponseEntity<?> newCompany(@RequestBody UserDataDTO userDataDTO) {
             try {
-                return ResponseEntity.ok(companyService.insertNewCompany(companyDTO, userDTO));
+                return ResponseEntity.ok(companyService.insertNewCompany(userDataDTO));
             } catch (Exception e) {
                 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred: " + e.getMessage());
             }

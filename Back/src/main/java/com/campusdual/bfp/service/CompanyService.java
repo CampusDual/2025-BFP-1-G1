@@ -2,12 +2,15 @@ package com.campusdual.bfp.service;
 
 import com.campusdual.bfp.model.Company;
 import com.campusdual.bfp.model.JobOffer;
+import com.campusdual.bfp.model.Role;
 import com.campusdual.bfp.model.User;
 import com.campusdual.bfp.model.dao.CompanyDao;
+import com.campusdual.bfp.model.dao.RoleDao;
 import com.campusdual.bfp.model.dao.UserDao;
 import com.campusdual.bfp.model.dto.CompanyDTO;
 import com.campusdual.bfp.model.dto.JobOffersDTO;
 import com.campusdual.bfp.model.dto.UserDTO;
+import com.campusdual.bfp.model.dto.UserDataDTO;
 import com.campusdual.bfp.model.dto.dtomapper.CompanyMapper;
 import com.campusdual.bfp.model.dto.dtomapper.JobOffersMapper;
 import com.campusdual.bfp.model.dto.dtomapper.UserMapper;
@@ -37,6 +40,9 @@ public class CompanyService {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private RoleDao roleDao;
+
     @Transactional
     public boolean existsByName(String name) {
         Company company = this.companyDao.findByName(name);
@@ -60,14 +66,21 @@ public class CompanyService {
 
     @Transactional(readOnly = true)
     public List<CompanyDTO> queryAllCompanies() {
-        return CompanyMapper.INSTANCE.toDTOList(this.companyDao.findAll()); }
+        return CompanyMapper.INSTANCE.toDTOList(this.companyDao.findAll());
+    }
 
- @Transactional
-    public long insertNewCompany(CompanyDTO companyDTO, UserDTO userDTO) {
-        Company company = CompanyMapper.INSTANCE.toEntity(companyDTO);
-        companyDao.saveAndFlush(company);
-        User user = UserMapper.INSTANCE.toEntity(userDTO);
+    @Transactional
+    public long insertNewCompany(UserDataDTO userDataDTO) {
+        User user = UserMapper.INSTANCE.toEntity(userDataDTO.getUser());
+        Role companyRole = roleDao.findById(COMPANY_ROLE)
+                .orElseThrow(() -> new RuntimeException("Role not found: " + COMPANY_ROLE));
+        user.setRole(companyRole);
         userDao.saveAndFlush(user);
+        Company company = CompanyMapper.INSTANCE.toEntity(userDataDTO.getCompany());
+        company.setUser(user);
+        companyDao.saveAndFlush(company);
+
+
         return company.getId();
     }
 
