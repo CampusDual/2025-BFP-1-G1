@@ -11,11 +11,12 @@ public class CompanyDTO {
     private String address;
     private UserDTO user;
     private String web;
+    private String logo;
 
     public CompanyDTO() {
     }
 
-    public CompanyDTO(Long id, String cif, String name, String phone, String address, UserDTO user, String web) {
+    public CompanyDTO(Long id, String cif, String name, String phone, String address, UserDTO user, String web, String logo) {
         this.id = id;
         this.cif = cif;
         this.name = name;
@@ -23,6 +24,7 @@ public class CompanyDTO {
         this.address = address;
         this.user = user;
         this.web = web;
+        this.logo = logo;
     }
 
     public Long getId() {
@@ -79,5 +81,13 @@ public class CompanyDTO {
 
     public void setWeb(String web) {
         this.web = web;
+    }
+
+    public String getLogo() {
+        return logo;
+    }
+
+    public void setLogo(String logo) {
+        this.logo = logo;
     }
 }

@@ -18,6 +18,11 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { SignUpFormComponent } from './sign-up-form/sign-up-form.component';
 import { CandidateProfileComponent } from './candidate-profile/candidate-profile.component';
+import {MatDividerModule} from '@angular/material/divider';
+import {MatSelectModule} from '@angular/material/select';
+import { OfferDetailsComponent } from './offer-details/offer-details.component';
+import { EditOfferComponent } from './edit-offer/edit-offer.component';
+
 
 @NgModule({
   declarations: [
@@ -29,6 +34,8 @@ import { CandidateProfileComponent } from './candidate-profile/candidate-profile
     CompanyOfferListComponent,
     SignUpFormComponent,
     CandidateProfileComponent,
+    OfferDetailsComponent,
+    EditOfferComponent,
   ],
   imports: [
     CommonModule,
@@ -44,6 +51,9 @@ import { CandidateProfileComponent } from './candidate-profile/candidate-profile
     MatIconModule,
     MatTooltipModule,
     FormsModule,
+    MatDividerModule,
+    MatSelectModule,
+
   ],
 })
 export class MainModule {}
