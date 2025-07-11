@@ -22,6 +22,8 @@ public interface IJobOffersService {
     List<JobOffersDTO> queryAllOffersFilterByCompany(String filterBy, Long id);
 
     JobOffersDTO queryJobOfferById(long id);
+
+    long updateJobOffer(JobOffersDTO jobOffersDTO);
   /*  long updateJobOffer(JobOffersDTO jobOffersDTO);
     long deleteJobOffer(JobOffersDTO jobOffersDTO);*/
 

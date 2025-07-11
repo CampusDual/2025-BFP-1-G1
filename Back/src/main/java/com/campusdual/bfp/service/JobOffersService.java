@@ -1,11 +1,9 @@
 package com.campusdual.bfp.service;
 
 import com.campusdual.bfp.api.IJobOffersService;
-import com.campusdual.bfp.model.Company;
 import com.campusdual.bfp.model.JobOffer;
 import com.campusdual.bfp.model.dao.JobOffersDao;
 import com.campusdual.bfp.model.dto.JobOffersDTO;
-import com.campusdual.bfp.model.dto.UserDataDTO;
 import com.campusdual.bfp.model.dto.dtomapper.JobOffersMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -27,14 +25,12 @@ public class JobOffersService implements IJobOffersService {
     public JobOffersDTO queryJobOffer(JobOffersDTO jobOffersDTO) {
         JobOffer jobOffer = JobOffersMapper.INSTANCE.toEntity(jobOffersDTO);
         return JobOffersMapper.INSTANCE.toDTO(jobOffersDao.getReferenceById(jobOffer.getId()));
-
     }
 
     @Override
     public List<JobOffersDTO> queryAllJobOffer() {
         List<JobOffer> list = jobOffersDao.findAll();
         List<JobOffersDTO> listDto = JobOffersMapper.INSTANCE.toDTOList(list);
-        ;
         return listDto;
     }
 
@@ -107,11 +103,51 @@ public class JobOffersService implements IJobOffersService {
     }
 
 
-  /*  TODO implementar métodos.
-  @Override
+    @Override
     public long updateJobOffer(JobOffersDTO jobOffersDTO) {
-        return insertJobOffer(jobOffersDTO);
+
+        if (jobOffersDTO.getId() <= 0) {
+            throw new IllegalArgumentException("Invalid job offer ID: " + jobOffersDTO.getId());
+        }
+
+        JobOffer existingOffer = jobOffersDao.findById(jobOffersDTO.getId())
+            .orElseThrow(() -> new RuntimeException("Job offer not found with id: " + jobOffersDTO.getId()));
+
+        // Update only the allowed fields
+        if (jobOffersDTO.getTitle() != null) {
+            existingOffer.setTitle(jobOffersDTO.getTitle());
+        }
+        if (jobOffersDTO.getDescription() != null) {
+            existingOffer.setDescription(
+                jobOffersDTO.getDescription().substring(0, Math.min(jobOffersDTO.getDescription().length(), 4000))
+            );
+        }
+        if (jobOffersDTO.getEmail() != null) {
+            existingOffer.setEmail(jobOffersDTO.getEmail());
+        }
+        if (jobOffersDTO.getLocalizacion() != null) {
+            existingOffer.setLocalizacion(jobOffersDTO.getLocalizacion());
+        }
+        if (jobOffersDTO.getModalidad() != null) {
+            existingOffer.setModalidad(jobOffersDTO.getModalidad());
+        }
+        if (jobOffersDTO.getRequisitos() != null) {
+            existingOffer.setRequisitos(jobOffersDTO.getRequisitos());
+        }
+        if (jobOffersDTO.getDeseables() != null) {
+            existingOffer.setDeseables(jobOffersDTO.getDeseables());
+        }
+        if (jobOffersDTO.getBeneficios() != null) {
+            existingOffer.setBeneficios(jobOffersDTO.getBeneficios());
+        }
+
+        // Save the updated entity
+        jobOffersDao.saveAndFlush(existingOffer);
+        return existingOffer.getId();
     }
+
+    /*  TODO implementar métodos.
+
 
     @Override
     public long deleteJobOffer(JobOffersDTO jobOffersDTO) {
@@ -120,5 +156,4 @@ public class JobOffersService implements IJobOffersService {
         jobOffersDao.delete(jobOffer);
         return id;
     }*/
-
 }

@@ -2,10 +2,10 @@ package com.campusdual.bfp.model.dto;
 
 import com.campusdual.bfp.Enumerados.EnumModalidadTrabajo;
 
-import javax.persistence.Column;
+
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
-import java.time.LocalDateTime;
+
 import java.time.ZonedDateTime;
 
 public class JobOffersDTO {

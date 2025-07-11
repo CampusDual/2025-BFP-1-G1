@@ -4,6 +4,8 @@ package com.campusdual.bfp.controller;
 import com.campusdual.bfp.api.IJobOffersService;
 import com.campusdual.bfp.model.User;
 import com.campusdual.bfp.model.dto.JobOffersDTO;
+import com.campusdual.bfp.model.dto.UserDataDTO;
+import com.campusdual.bfp.service.UserDataService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +21,9 @@ public class OffersManagementController {
 
     @Autowired
     private IJobOffersService jobOffersService;
+    
+    @Autowired
+    private UserDataService userDataService;
 
     @GetMapping(value= "/testController")
     public String testJobOffersController() {
@@ -62,12 +67,41 @@ public class OffersManagementController {
                     .body("Error creating job offer: " + e.getMessage());
         }
     }
-/*
-    @PutMapping (value="/update")
-    public long updateJobOffer(@RequestBody JobOffersDTO jobOffersDTO){
-        return jobOffersService.updateJobOffer(jobOffersDTO);
 
+    @PutMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public long updateJobOffer(@PathVariable long id, @RequestBody JobOffersDTO jobOffersDTO) {
+
+        if (id != jobOffersDTO.getId()) {
+            throw new IllegalArgumentException("El ID del path no coincide con el del cuerpo");
+        }
+
+
+        UserDataDTO userData = userDataService.getUserData();
+        
+
+        if (userData.getCompany() == null) {
+            throw new SecurityException("El usuario no tiene una compañía asociada");
+        }
+        
+
+        JobOffersDTO existingOffer = jobOffersService.queryJobOfferById(id);
+        if (existingOffer == null) {
+            throw new RuntimeException("No se encontró la oferta con ID: " + id);
+        }
+        
+
+        if (existingOffer.getCompany() == null || 
+            existingOffer.getCompany().getId() != userData.getCompany().getId()) {
+            throw new SecurityException("No tienes permiso para modificar esta oferta");
+        }
+        
+
+        return jobOffersService.updateJobOffer(jobOffersDTO);
     }
+
+/*
+
 
     @DeleteMapping (value="/delete")
     public long deleteJobOffer(@RequestBody JobOffersDTO jobOffersDTO){
