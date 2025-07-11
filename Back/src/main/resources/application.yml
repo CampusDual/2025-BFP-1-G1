@@ -20,6 +20,10 @@ spring:
         format_sql: false
         dialect: org.hibernate.dialect.PostgreSQLDialect
 
+  jackson:
+    mapper:
+      accept-case-insensitive-enums: true
+
 logging:
   level:
     org:

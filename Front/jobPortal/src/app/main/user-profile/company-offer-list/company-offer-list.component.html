@@ -1,22 +1,38 @@
-
-
-<div class="offer-content">
-  <mat-grid-list class="content" [cols]="gridCols" rowHeight="2:1.0" gutterSize="20px">
+<div class="offer-list-container">
+  <mat-grid-list [cols]="gridCols" [rowHeight]="'300px'" gutterSize="8px">
     <mat-grid-tile *ngFor="let offer of jobOffers">
-      <mat-card class="card">
-        <mat-card-title #titleElement [matTooltip]="isTruncated(titleElement) ? offer.title : ''">{{ offer.title }}</mat-card-title>
-        <mat-card-subtitle>{{
-          offer.releaseDate | date : "dd/MM/yyyy HH:mm"
-          }}</mat-card-subtitle>
-        <mat-card-content> </mat-card-content>
-      </mat-card>
-    </mat-grid-tile>
-    <mat-grid-tile *ngIf="jobOffers.length === 0">
-      <mat-card class="card-empty">
-        <mat-card-title>No hay ofertas disponibles</mat-card-title>
-        <mat-card-content>
-          <p>Parece que no se han encontrado ofertas de trabajo.</p>
-        </mat-card-content>
+      <mat-card class="offer-card">
+        <mat-card-title class="offer-title" [matTooltip]="offer.title">
+          {{ offer.title }}
+        </mat-card-title>
+        
+        <div class="company-info">
+          <mat-card-subtitle class="company-name">{{ offer.company?.name }}</mat-card-subtitle>
+          <mat-card-subtitle class="offer-date">
+            <mat-icon class="clock-icon">access_time</mat-icon>
+            {{ getRelativeDate(offer.releaseDate) }}
+          </mat-card-subtitle>
+          <mat-card-subtitle class="offer-email">{{ offer.email }}</mat-card-subtitle>
+        </div>
+        
+        <div class="offer-description">
+          <mat-card-content>
+            {{ offer.description }}
+          </mat-card-content>
+        </div>
+        
+        <mat-card-actions class="offer-actions">
+          <button mat-raised-button color="primary" class="edit-button"
+                  *ngIf="offer.id !== undefined"
+                  [routerLink]="['/main/editOffer', offer.id]">
+            Editar
+          </button>
+          <button mat-raised-button color="accent" class="details-button"
+                  *ngIf="offer.id !== undefined"
+                  (click)="goToOfferDetails(offer.id)">
+            Ver detalles
+          </button>
+        </mat-card-actions>
       </mat-card>
     </mat-grid-tile>
   </mat-grid-list>
