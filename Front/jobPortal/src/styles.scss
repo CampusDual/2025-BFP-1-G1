@@ -22,6 +22,7 @@ body {
   color: $text-base;
   margin: 0;
   padding: 0;
+  scrollbar-width: none;
 }
 h1,
 h2,
@@ -78,9 +79,8 @@ h3 {
   --mdc-snackbar-supporting-text-color: white !important;
   --mat-mdc-snack-bar-button-color: white !important;
 }
-.success{
+.success {
   --mdc-snackbar-container-color: green !important;
   --mdc-snackbar-supporting-text-color: white !important;
   --mat-mdc-snack-bar-button-color: white !important;
 }
-

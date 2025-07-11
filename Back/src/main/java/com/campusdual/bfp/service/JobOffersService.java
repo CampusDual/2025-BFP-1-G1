@@ -131,6 +131,9 @@ public class JobOffersService implements IJobOffersService {
         if (jobOffersDTO.getModalidad() != null) {
             existingOffer.setModalidad(jobOffersDTO.getModalidad());
         }
+        if (jobOffersDTO.getReleaseDate() != null) {
+            existingOffer.setReleaseDate(jobOffersDTO.getReleaseDate());
+        }
         if (jobOffersDTO.getRequisitos() != null) {
             existingOffer.setRequisitos(jobOffersDTO.getRequisitos());
         }

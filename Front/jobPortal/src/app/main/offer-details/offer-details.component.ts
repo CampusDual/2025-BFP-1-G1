@@ -99,7 +99,7 @@ export class OfferDetailsComponent implements OnInit {
 
   editOffer(): void {
     if (this.offer?.id) {
-      this.router.navigate(['/company/offer-edit', this.offer.id]);
+      this.router.navigate(['main/editOffer', this.offer.id]);
     }
   }
   openSnackBar(message: string, panelClass: string = '') {

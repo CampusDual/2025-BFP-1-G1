@@ -14,6 +14,7 @@ export class EditOfferComponent implements OnInit {
   offerForm: FormGroup;
   offerId: number = 0;
   isSubmitting = false;
+  jobOfferId!: number;
 
   constructor(
     private route: ActivatedRoute,
@@ -50,7 +51,6 @@ export class EditOfferComponent implements OnInit {
   loadOfferData(): void {
     this.jobOfferService.getJobOfferById(this.offerId).subscribe({
       next: (offer) => {
-        // Mapeo exacto con los nombres del formulario
         this.offerForm.patchValue({
           title: offer.title,
           description: offer.description,
@@ -68,7 +68,7 @@ export class EditOfferComponent implements OnInit {
       },
       error: (err) => {
         this.showError('Error al cargar la oferta');
-        this.router.navigate(['/main/job-offers']);
+        this.router.navigate(['/main/jobOffers']);
       }
     });
   }
@@ -81,10 +81,10 @@ export class EditOfferComponent implements OnInit {
         id: this.offerId
       };
 
-      this.jobOfferService.updateJobOffer(updatedOffer).subscribe({
+      this.jobOfferService.updateJobOffer(this.offerId, updatedOffer).subscribe({
         next: () => {
           this.showSuccess('Oferta actualizada correctamente');
-          this.router.navigate(['/main/job-offers']);
+          this.router.navigate(['/main/jobOffers']);
         },
         error: (err) => {
           this.showError('Error al actualizar la oferta');
@@ -95,7 +95,7 @@ export class EditOfferComponent implements OnInit {
   }
 
   onCancel(): void {
-    this.router.navigate(['/main/job-offers']);
+    this.router.navigate(['/main/jobOffers']);
   }
 
   private showSuccess(message: string): void {

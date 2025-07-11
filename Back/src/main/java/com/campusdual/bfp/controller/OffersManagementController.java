@@ -75,16 +75,10 @@ public class OffersManagementController {
         if (id != jobOffersDTO.getId()) {
             throw new IllegalArgumentException("El ID del path no coincide con el del cuerpo");
         }
-
-
         UserDataDTO userData = userDataService.getUserData();
-        
-
         if (userData.getCompany() == null) {
             throw new SecurityException("El usuario no tiene una compañía asociada");
         }
-        
-
         JobOffersDTO existingOffer = jobOffersService.queryJobOfferById(id);
         if (existingOffer == null) {
             throw new RuntimeException("No se encontró la oferta con ID: " + id);

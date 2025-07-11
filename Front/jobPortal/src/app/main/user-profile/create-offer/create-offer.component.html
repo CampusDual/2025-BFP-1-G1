@@ -39,9 +39,10 @@
 
         <div class="offer-meta">
           <mat-form-field appearance="outline" class="location-field">
-            <mat-label>Localización </mat-label>
-            <input matInput formControlName="localizacion" placeholder="Ciudad, país" />
-            <mat-error *ngIf="offerForm.get('localizacion')?.touched && offerForm.get('localizacion')?.hasError('required')">
+            <mat-label>Localización</mat-label>
+            <input matInput formControlName="localizacion" placeholder="Ciudad, país" required />
+            <mat-error
+              *ngIf="offerForm.get('localizacion')?.touched && offerForm.get('localizacion')?.hasError('required')">
               La localización es obligatoria
             </mat-error>
           </mat-form-field>
@@ -84,7 +85,7 @@
     <div class="form-section requirements-section">
       <div class="required">
         <div class="section-title">
-          <mat-icon>check_circle</mat-icon> Requisitos requeridos
+          <mat-icon>check_circle</mat-icon> Requisitos requeridos<span class="required-asterisk">*</span>
         </div>
         <textarea matInput formControlName="requisitos" placeholder="Requisitos obligatorios" class="full-width"
           required></textarea>
@@ -105,7 +106,7 @@
     <!-- columna 3: beneficios -->
     <div class="form-section benefits-section">
       <div class="section-title">
-        <mat-icon>card_giftcard</mat-icon> Beneficios
+        <mat-icon>card_giftcard</mat-icon> Beneficios <span class="required-asterisk">*</span>
       </div>
       <textarea matInput formControlName="beneficios" placeholder="Beneficios de la oferta" class="full-width"
         required></textarea>
