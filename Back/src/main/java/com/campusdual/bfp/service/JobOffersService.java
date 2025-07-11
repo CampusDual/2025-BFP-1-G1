@@ -104,7 +104,7 @@ public class JobOffersService implements IJobOffersService {
 
 
     @Override
-    public long updateJobOffer(JobOffersDTO jobOffersDTO) {
+    public JobOffersDTO updateJobOffer(JobOffersDTO jobOffersDTO) {
 
         if (jobOffersDTO.getId() <= 0) {
             throw new IllegalArgumentException("Invalid job offer ID: " + jobOffersDTO.getId());
@@ -113,7 +113,7 @@ public class JobOffersService implements IJobOffersService {
         JobOffer existingOffer = jobOffersDao.findById(jobOffersDTO.getId())
             .orElseThrow(() -> new RuntimeException("Job offer not found with id: " + jobOffersDTO.getId()));
 
-        // Update only the allowed fields
+
         if (jobOffersDTO.getTitle() != null) {
             existingOffer.setTitle(jobOffersDTO.getTitle());
         }
@@ -146,7 +146,7 @@ public class JobOffersService implements IJobOffersService {
 
         // Save the updated entity
         jobOffersDao.saveAndFlush(existingOffer);
-        return existingOffer.getId();
+        return JobOffersMapper.INSTANCE.toDTO(existingOffer);
     }
 
     /*  TODO implementar métodos.

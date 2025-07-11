@@ -70,11 +70,12 @@ public class OffersManagementController {
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public long updateJobOffer(@PathVariable long id, @RequestBody JobOffersDTO jobOffersDTO) {
+    public ResponseEntity<JobOffersDTO> updateJobOffer(@PathVariable long id, @RequestBody JobOffersDTO jobOffersDTO) {
 
         if (id != jobOffersDTO.getId()) {
             throw new IllegalArgumentException("El ID del path no coincide con el del cuerpo");
         }
+
         UserDataDTO userData = userDataService.getUserData();
         if (userData.getCompany() == null) {
             throw new SecurityException("El usuario no tiene una compañía asociada");
@@ -91,7 +92,7 @@ public class OffersManagementController {
         }
         
 
-        return jobOffersService.updateJobOffer(jobOffersDTO);
+        return ResponseEntity.ok(jobOffersService.updateJobOffer(jobOffersDTO));
     }
 
 /*
