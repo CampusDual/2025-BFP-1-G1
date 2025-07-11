@@ -7,6 +7,7 @@ import { ApplicationService } from 'src/app/services/application.service';
 import { JobOfferService } from 'src/app/services/job-offer.service';
 import { UsersService } from 'src/app/services/users.service';
 import { filter, tap } from 'rxjs';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-offer-details',
@@ -24,7 +25,8 @@ export class OfferDetailsComponent implements OnInit {
     private jobService: JobOfferService,
     private applicationService: ApplicationService,
     private usersService: UsersService,
-    public _snackBar: MatSnackBar
+    public _snackBar: MatSnackBar,
+    private location: Location
   ) {}
 
   ngOnInit(): void {
@@ -71,7 +73,7 @@ export class OfferDetailsComponent implements OnInit {
   }
 
   goBack(): void {
-    this.router.navigate(['main/catalogue']);
+    this.location.back();
   }
 
   isCompany(): boolean {
@@ -88,6 +90,18 @@ export class OfferDetailsComponent implements OnInit {
     );
   }
 
+  isOfferOwner(): boolean {
+    if (!this.userData?.user?.id || !this.offer?.company?.user?.id) {
+      return false;
+    }
+    return this.userData.user.id === this.offer.company.user.id;
+  }
+
+  editOffer(): void {
+    if (this.offer?.id) {
+      this.router.navigate(['/company/offer-edit', this.offer.id]);
+    }
+  }
   openSnackBar(message: string, panelClass: string = '') {
     this._snackBar.open(message, 'Cerrar', {
       duration: 10000,
@@ -102,7 +116,7 @@ export class OfferDetailsComponent implements OnInit {
       next: (res) => {
         this.openSnackBar(res, 'success');
         this.appliedOfferIds.push(oferta.id);
-        this.appliedOfferIds = [...this.appliedOfferIds]; // Forzar actualización
+        this.appliedOfferIds = [...this.appliedOfferIds];
       },
       error: (err) => {
         let errorMessage =

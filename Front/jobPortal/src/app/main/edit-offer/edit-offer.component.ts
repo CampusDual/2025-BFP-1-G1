@@ -121,7 +121,5 @@ export class EditOfferComponent implements OnInit {
   get beneficios() { return this.offerForm.get('beneficios'); }
   get company() { return this.offerForm.get('company'); }
 
-  editOffer(offerId: number): void {
-  this.router.navigate(['/main/edit-offer', offerId]);
-}
+
 }

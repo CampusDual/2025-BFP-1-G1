@@ -2,7 +2,8 @@
   padding: 16px;
   height: calc(100vh - 120px);
   overflow-y: auto;
-  background-color: var(--font-base); /* Fondo general */
+  background-color: var(--font-base); 
+  margin-bottom: 8rem;
 }
 
 mat-grid-list {
@@ -12,36 +13,37 @@ mat-grid-list {
 
 .offer-card {
   width: 100%;
-  height: 100%;
+  height: 260px;
   display: flex;
   flex-direction: column;
   padding: 16px;
   box-sizing: border-box;
   position: relative;
-  background-color: #f8f9fa; /* Color original de fondo */
-  border: 1px solid #ccc; /* Borde original */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4); /* Sombra original */
-  border-radius: 9px; /* Bordes redondeados originales */
+  background-color: #f8f9fa; 
+  border: 1px solid #ccc;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4); 
+  border-radius: 9px; 
 }
 
 .offer-title {
-  font-size: 1.2rem;
-  font-weight: 600;
+  font-size: 1.4rem;
   margin-bottom: 12px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  border-bottom: 3px solid var(--primary); /* Borde inferior original */
-  padding-bottom: 0.3em; /* Espaciado original */
-  font-family: "Montserrat", "Poppins", "Segoe UI", Arial, sans-serif; /* Fuente original */
+  border-bottom: 3px solid var(--primary); 
+  padding-bottom: 0.3em; 
+  font-family: "Montserrat", "Poppins", "Segoe UI", Arial, sans-serif;
+  text-align: left;
 }
 
 .company-info {
   display: grid;
   grid-template-columns: 1fr auto;
   grid-template-rows: auto auto;
-  gap: 4px;
-  margin-bottom: 12px;
+  gap: 2px;
+  margin-bottom: 5px;
+  text-align: left;
 }
 
 .company-name {
@@ -51,8 +53,8 @@ mat-grid-list {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  color: #a3999a; /* Color original de subtítulo */
-  font-family: "Poppins", Arial, sans-serif; /* Fuente original */
+  color: #a3999a; 
+  font-family: "Poppins", Arial, sans-serif;
 }
 
 .offer-date {
@@ -61,8 +63,8 @@ mat-grid-list {
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  color: #a3999a; /* Color original */
-  font-family: "Poppins", Arial, sans-serif; /* Fuente original */
+  color: #a3999a; 
+  font-family: "Poppins", Arial, sans-serif; 
 }
 
 .offer-email {
@@ -71,14 +73,14 @@ mat-grid-list {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  color: #a3999a; /* Color original */
-  font-family: "Poppins", Arial, sans-serif; /* Fuente original */
+  color: #a3999a; 
+  font-family: "Poppins", Arial, sans-serif; 
 }
 
 .clock-icon {
   font-size: 16px;
   margin-right: 4px;
-  color: inherit; /* Hereda el color del texto padre */
+  color: inherit; 
 }
 
 .offer-description {
@@ -86,6 +88,7 @@ mat-grid-list {
   min-height: 0;
   overflow: hidden;
   margin-top: 0;
+  
 }
 
 .offer-description mat-card-content {
@@ -99,14 +102,15 @@ mat-grid-list {
   word-break: break-word;
   margin: 0;
   padding: 8px 0;
-  color: #333; /* Color de texto original para descripción */
+  color: #333;
+  text-align: left;
 }
 
 .offer-actions {
   display: flex;
-  justify-content: flex-end;
+  justify-content: center;
   padding: 0;
-  margin-top: auto; /* Original: empuja los botones hacia abajo */
+  margin-top: auto; 
 }
 
 .offer-actions button {
@@ -114,26 +118,24 @@ mat-grid-list {
   min-width: 120px;
 }
 
-/* Estilos originales para botones */
 .edit-button {
-  background-color: var(--primary); /* Color primario */
+  background-color: var(--primary);
   color: white;
 }
 
 .details-button {
-  background-color: #3f51b5; /* Color accent original */
+  background-color: #383132;
   color: white;
 }
 
 .empty-card {
   text-align: center;
   padding: 24px;
-  background-color: #f8f9fa; /* Mismo fondo que las tarjetas normales */
+  background-color: #f8f9fa; 
   border: 1px solid #ccc;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
 }
 
-/* Responsive Design - Manteniendo tus ajustes originales */
 @media (max-width: 768px) {
   .offer-list-container {
     padding: 8px;

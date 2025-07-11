@@ -1,6 +1,7 @@
 import { LoadingScreenService } from './../../../services/loading-screen.service';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Component, OnInit } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { JobOffer } from 'src/app/model/jobOffer';
 import { JobOfferService } from 'src/app/services/job-offer.service';
@@ -32,7 +33,8 @@ export class CompanyOfferListComponent implements OnInit {
     private jobOfferService: JobOfferService,
     private breakpointObserver: BreakpointObserver,
     private loadingScreenService: LoadingScreenService,
-    private router: Router
+    private router: Router,
+    private snackBar: MatSnackBar
   ) {}
 
   ngOnInit(): void {
@@ -118,28 +120,25 @@ export class CompanyOfferListComponent implements OnInit {
       });
   }
 
-goToOfferDetails(id: number): void {
-  try {
-    if (id === undefined || id === null) {
-      throw new Error('ID de oferta no definido');
-    }
-    
-    if (isNaN(Number(id))) {
-      throw new Error('ID de oferta no es un número válido');
-    }
-    
-    this.router.navigate(['/main/offerDetails', id]).then(success => {
-      if (!success) {
-        console.error('Error en navegación: Ruta no encontrada');
+  goToOfferDetails(id: number): void {
+    try {
+      if (id === undefined || id === null) {
+        throw new Error('ID de oferta no definido');
       }
-    });
-    
-  } catch (error) {
-    console.error('Error al navegar a detalles:', error);
-    // Opcional: Mostrar mensaje al usuario
-    // this.snackBar.open('Error al abrir detalles', 'Cerrar');
+
+      if (isNaN(Number(id))) {
+        throw new Error('ID de oferta no es un número válido');
+      }
+
+      this.router.navigate(['/main/offerDetails', id]).then((success) => {
+        if (!success) {
+          console.error('Error en navegación: Ruta no encontrada');
+        }
+      });
+    } catch (error) {
+      this.snackBar.open('Error al abrir detalles', 'Cerrar');
+    }
   }
-}
 
   getRelativeDate(dateInput: string | Date): string {
     if (!dateInput) return '';
