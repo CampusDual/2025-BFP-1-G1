@@ -3,6 +3,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { UsersService } from 'src/app/services/users.service';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-company-signup',
@@ -21,7 +22,8 @@ export class CompanySignupComponent {
     private fb: FormBuilder,
     private usersService: UsersService,
     private router: Router,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private location: Location,
   ) {
     this.signUpForm = this.fb.group({
       login: ['', [Validators.required]],
@@ -65,6 +67,7 @@ export class CompanySignupComponent {
   get address() {
     return this.signUpForm.get('address');
   }
+
   openSnackBar(message: string, panelClass: string = '') {
     this.snackBar.open(message, 'Cerrar', {
       duration: 10000,
@@ -97,7 +100,7 @@ export class CompanySignupComponent {
         .subscribe({
           next: (response) => {
             this.isSubmitting = false;
-            this.openSnackBar('Registro exitoso!', 'success-snackbar');
+            this.openSnackBar('Registro exitoso!', 'successSnackbar');
             this.router.navigate(['/main/adminprofile']);
           },
           error: (error) => {
@@ -124,20 +127,35 @@ export class CompanySignupComponent {
                 lowerCaseMessage.includes('user already exists') ||
                 lowerCaseMessage.includes('duplicate username')
               ) {
-                const loginControl = this.signUpForm.get('login');
+                const loginControl = this.login;
                 loginControl?.setErrors({ loginExists: true });
                 loginControl?.markAsTouched();
                 errorMessage = 'El nombre de usuario ya está en uso';
-              } else if (
+              }
+
+              if (
                 lowerCaseMessage.includes('email ya existe') ||
                 lowerCaseMessage.includes('email already exists') ||
                 lowerCaseMessage.includes('duplicate email')
               ) {
-                const emailControl = this.signUpForm.get('email');
+                const emailControl = this.email;
                 emailControl?.setErrors({ emailExists: true });
                 emailControl?.markAsTouched();
                 errorMessage = 'El correo electrónico ya está en uso';
               }
+
+              if (
+                lowerCaseMessage.includes('cif ya existe') ||
+                lowerCaseMessage.includes('cif already exists') ||
+                lowerCaseMessage.includes('duplicate cif')
+              ) {
+                const cifControl = this.cif;
+                const currentErrors = cifControl?.errors || {};
+                cifControl?.setErrors({ ...currentErrors, cifExists: true });
+                cifControl?.markAsTouched();
+                errorMessage = 'El CIF ya está registrado';
+              }
+
             } else if (error.status === 400) {
               if (error.error && error.error.message) {
                 errorMessage = error.error.message;
@@ -150,7 +168,7 @@ export class CompanySignupComponent {
               errorMessage = error.message;
             }
 
-            this.openSnackBar(errorMessage, 'error-snackbar');
+            this.openSnackBar(errorMessage, 'errorSnackbar');
           },
         });
     } else {
@@ -158,7 +176,7 @@ export class CompanySignupComponent {
       this.signUpForm.markAllAsTouched();
       this.openSnackBar(
         'Por favor, complete todos los campos correctamente',
-        'error-snackbar'
+        'errorSnackbar'
       );
     }
   }
@@ -175,14 +193,23 @@ export class CompanySignupComponent {
     if (controlName === 'login' && control?.hasError('loginExists')) {
       return 'Este usuario ya está registrado';
     }
+    if (controlName === 'cif' && control?.hasError('cifExists')) {
+      return 'Este CIF ya está registrado';
+    }
+    if (controlName === 'cif' && control?.hasError('pattern')) {
+      return 'Formato de CIF no válido';
+    }
     if (controlName === 'email' && control?.hasError('emailExists')) {
       return 'Este email ya está registrado';
     }
     if (controlName === 'email' && control?.hasError('email')) {
-      return 'Formato de mail no válido';
+      return 'Formato de email no válido';
     }
     if (controlName === 'phone' && control?.hasError('pattern')) {
       return 'Teléfono debe tener 9 dígitos';
+    }
+    if (controlName === 'web' && control?.hasError('pattern')) {
+      return 'Formato de web no válido (ejemplo: https://...)';
     }
 
     return '';
@@ -192,5 +219,9 @@ export class CompanySignupComponent {
     const offset = 15;
     this.tooltipX = event.clientX;
     this.tooltipY = event.clientY + offset;
+  }
+
+  goBack():void{
+    this.location.back();
   }
 }

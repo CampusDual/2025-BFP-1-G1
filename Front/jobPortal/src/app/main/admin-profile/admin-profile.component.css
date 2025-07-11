@@ -1,5 +1,5 @@
 .profile-container {
-  max-width: 70rem;
+  max-width: 90%;
   margin: 90px auto 2rem auto;
   padding: 0;
   background: white;
@@ -32,7 +32,15 @@
   color: var(--primary);
 }
 
-.content-section {}
+.company-name, .company-address{
+  width: 10rem;
+}
+
+/* th{
+align-items: center;
+text-align: center;
+} */
+
 
 .section-title-button {
   display: flex;
@@ -133,4 +141,21 @@
 
 .data-list-table {
   margin-bottom: 5rem;
+}
+
+.add-company-button {
+  padding: 10px 20px;
+  background-color: var(--primary);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+  margin-top: 1rem;
+  margin-left: 0;
+  box-shadow: 0 2px 10px var(--apply-button-shadow);
+  width: 80%;
+  max-width: 200px;
 }

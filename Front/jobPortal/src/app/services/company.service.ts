@@ -56,4 +56,13 @@ export class CompanyService implements OnInit {
       }
     );
   }
+  updateCompany(id:number, company: Company): Observable<Company>{
+    const token = localStorage.getItem('token');
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+    });
+    return this.http.put<Company>(`${this.urlCompanyProfile}/update/${id}`, company, {
+      headers,
+    });
+  }
 }

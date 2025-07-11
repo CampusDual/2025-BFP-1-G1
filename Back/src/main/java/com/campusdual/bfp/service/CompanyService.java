@@ -79,6 +79,15 @@ public class CompanyService {
 
     @Transactional
     public long insertNewCompany(UserDataDTO userDataDTO) {
+        if (userDao.findByLogin(userDataDTO.getUser().getLogin()) != null) {
+            throw new RuntimeException("usuario ya existe");
+        }
+        if (userDao.findByEmail(userDataDTO.getUser().getEmail()) != null) {
+            throw new RuntimeException("email ya existe");
+        }
+        if (companyDao.findByCif(userDataDTO.getCompany().getCif()) != null) {
+            throw new RuntimeException("cif ya existe");
+        }
         User user = UserMapper.INSTANCE.toEntity(userDataDTO.getUser());
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         Role companyRole = roleDao.findById(COMPANY_ROLE)
@@ -111,6 +120,41 @@ public class CompanyService {
         if (user != null) {
             userDao.delete(user);
         }
+    }
+
+    @Transactional
+    public Company updateCompany(CompanyDTO companyDTO) {
+
+      if (companyDTO.getId()<=0){
+          throw new IllegalArgumentException("Invalid company id: " + companyDTO.getId());
+      }
+      Company existingCompany = companyDao.findById(companyDTO.getId())
+              .orElseThrow(() -> new RuntimeException("Company not found with id: " + companyDTO.getId()));
+
+      if(companyDTO.getName()!= null){
+           existingCompany.setName(companyDTO.getName());
+     }
+      if(companyDTO.getUser() != null && companyDTO.getUser().getLogin()!=null){
+           existingCompany.getUser().setLogin(companyDTO.getUser().getLogin());
+       }
+      if(companyDTO.getCif()!=null){
+          existingCompany.setCif(companyDTO.getCif());
+        }
+      if(companyDTO.getPhone()!=null){
+          existingCompany.setPhone(companyDTO.getPhone());
+        }
+      if(companyDTO.getAddress()!=null){
+          existingCompany.setAddress(companyDTO.getAddress());
+        }
+      if(companyDTO.getWeb()!=null){
+           existingCompany.setWeb(companyDTO.getWeb());
+         }
+      if(companyDTO.getUser() != null && companyDTO.getUser().getEmail()!=null){
+           existingCompany.getUser().setEmail(companyDTO.getUser().getEmail());
+         }
+
+      companyDao.save(existingCompany);
+      return existingCompany;
     }
 
 }

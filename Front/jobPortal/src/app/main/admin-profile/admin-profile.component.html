@@ -8,28 +8,102 @@
   <div class="content-section">
     <div class="section-title-button">
       <h2>Listado de Empresas</h2>
-      <button class="add-item-button" *ngIf="isAdmin()" [routerLink]="['/main/adminprofile/newcompany']" (click)="
-        navigateToFormNewCompany()">Añadir empresa</button>
+      <button *ngIf="isAdmin()" mat-raised-button color="primary" class="add-company-button"
+        [routerLink]="['/main/companysignup']">
+        Añadir empresa
+      </button>
     </div>
 
     <table class="data-list-table" *ngIf="companies.length > 0">
       <thead>
         <tr>
           <th>Nombre</th>
+          <th>Usuario</th>
           <th>CIF</th>
           <th>Teléfono</th>
-          <th>Dirección</th>
+          <th>Email</th>
+          <th>Localidad</th>
           <th>Web</th>
+          <th>Editar</th>
           <th>Borrar</th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let company of companies">
-          <td>{{ company.name }}</td>
-          <td>{{ company.cif }}</td>
-          <td>{{ company.phone }}</td>
-          <td>{{ company.address }}</td>
-          <td>{{ company.web }}</td>
+          <!-- Nombre -->
+          <td>
+            <ng-container *ngIf="editMode[company.id]; else viewName">
+              <input [(ngModel)]="company.name" />
+            </ng-container>
+            <ng-template #viewName>{{ company.name }}</ng-template>
+          </td>
+
+          <!-- Usuario -->
+          <td>
+            <ng-container *ngIf="editMode[company.id]; else viewLogin">
+              <input [(ngModel)]="company.user.login" />
+            </ng-container>
+            <ng-template #viewLogin>{{ company.user.login }}</ng-template>
+          </td>
+
+          <!-- CIF -->
+          <td>
+            <ng-container *ngIf="editMode[company.id]; else viewCif">
+              <input [(ngModel)]="company.cif" />
+            </ng-container>
+            <ng-template #viewCif>{{ company.cif }}</ng-template>
+          </td>
+
+          <!-- Teléfono -->
+          <td>
+            <ng-container *ngIf="editMode[company.id]; else viewPhone">
+              <input [(ngModel)]="company.phone" />
+            </ng-container>
+            <ng-template #viewPhone>{{ company.phone }}</ng-template>
+          </td>
+
+          <!-- Email -->
+          <td>
+            <ng-container *ngIf="editMode[company.id]; else viewEmail">
+              <input [(ngModel)]="company.user.email" />
+            </ng-container>
+            <ng-template #viewEmail>{{ company.user.email }}</ng-template>
+          </td>
+
+          <!-- Localidad -->
+          <td>
+            <ng-container *ngIf="editMode[company.id]; else viewAddress">
+              <input [(ngModel)]="company.address" />
+            </ng-container>
+            <ng-template #viewAddress>{{ company.address }}</ng-template>
+          </td>
+
+          <!-- Web -->
+          <td>
+            <ng-container *ngIf="editMode[company.id]; else viewWeb">
+              <input [(ngModel)]="company.web" />
+            </ng-container>
+            <ng-template #viewWeb>{{ company.web }}</ng-template>
+          </td>
+
+          <!-- Editar -->
+          <td>
+            <ng-container *ngIf="editMode[company.id]; else editButton">
+              <button mat-icon-button color="primary" (click)="saveChanges(company)">
+                <mat-icon>save</mat-icon>
+              </button>
+              <button mat-icon-button color="warn" (click)="cancelEdition(company.id)">
+                <mat-icon>cancel</mat-icon>
+              </button>
+            </ng-container>
+            <ng-template #editButton>
+              <button mat-icon-button (click)="startEdition(company.id)">
+                <mat-icon>edit</mat-icon>
+              </button>
+            </ng-template>
+          </td>
+
+          <!-- Borrar -->
           <td>
             <button mat-icon-button (click)="onDeleteCompany(company.id!)">
               <mat-icon>delete</mat-icon>
@@ -38,6 +112,7 @@
         </tr>
       </tbody>
     </table>
+
     <p class="empty-list-message" *ngIf="companies.length === 0">No hay empresas registradas.</p>
   </div>
 </div>
