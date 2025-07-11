@@ -74,7 +74,6 @@ public class ApplicationController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("ID de candidato no disponible.");
         }
 
-
         List<Application> userApplications = applicationService.getApplicationsByCandidateId(candidateId);
 
         List<Map<String, Long>> offerIds = userApplications.stream()

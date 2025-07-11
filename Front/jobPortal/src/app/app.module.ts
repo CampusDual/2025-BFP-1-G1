@@ -11,8 +11,9 @@ import { HttpClientModule } from '@angular/common/http';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
-import { LoadingScreenComponent } from './loading-screen/loading-screen.component'
-import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';;
+import { LoadingScreenComponent } from './loading-screen/loading-screen.component';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatPaginatorModule } from '@angular/material/paginator';
 
 
 @NgModule({
@@ -33,6 +34,7 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';;
     MatIconModule,
     MatMenuModule,
     MatProgressSpinnerModule,
+    MatPaginatorModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

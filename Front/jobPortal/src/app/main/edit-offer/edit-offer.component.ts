@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { JobOfferService } from '../../services/job-offer.service';
 import { JobOffer } from '../../model/jobOffer';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-edit-offer',
@@ -21,7 +22,8 @@ export class EditOfferComponent implements OnInit {
     private router: Router,
     private jobOfferService: JobOfferService,
     private fb: FormBuilder,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private location: Location
   ) {
     this.offerForm = this.createForm();
   }
@@ -95,7 +97,7 @@ export class EditOfferComponent implements OnInit {
   }
 
   onCancel(): void {
-    this.router.navigate(['/main/jobOffers']);
+    this.location.back();
   }
 
   private showSuccess(message: string): void {
