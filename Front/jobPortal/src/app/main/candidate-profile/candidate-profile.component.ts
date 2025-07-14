@@ -1,13 +1,9 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { finalize, takeUntil, Subject } from 'rxjs';
-
-// Models
 import { UserData } from 'src/app/model/userData';
 import { Application } from 'src/app/model/application';
 import { JobOffer } from 'src/app/model/jobOffer';
-
-// Services
 import { UsersService } from 'src/app/services/users.service';
 import { ApplicationService } from 'src/app/services/application.service';
 import { JobOfferService } from 'src/app/services/job-offer.service';
@@ -15,19 +11,15 @@ import { JobOfferService } from 'src/app/services/job-offer.service';
 @Component({
   selector: 'app-candidate-profile',
   templateUrl: './candidate-profile.component.html',
-  styleUrls: ['./candidate-profile.component.css']
+  styleUrls: ['./candidate-profile.component.css'],
 })
 export class CandidateProfileComponent implements OnInit, OnDestroy {
   // User data and applications
   userData: UserData | null = null;
   applications: Application[] = [];
   offerDetails: { [key: number]: JobOffer } = {};
-  
-  // UI State
   isLoading = true;
   error: string | null = null;
-  
-  // Private
   private destroy$ = new Subject<void>();
 
   constructor(
@@ -37,7 +29,6 @@ export class CandidateProfileComponent implements OnInit, OnDestroy {
     private router: Router
   ) {}
 
-  // Lifecycle hooks
   ngOnInit(): void {
     this.loadUserData();
   }
@@ -47,17 +38,19 @@ export class CandidateProfileComponent implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
-  // Private methods
   private loadUserData(): void {
     this.setLoading(true);
-    
-    this.usersService.getUserData().pipe(
-      finalize(() => this.setLoading(false)),
-      takeUntil(this.destroy$)
-    ).subscribe({
-      next: (data) => this.handleUserDataSuccess(data),
-      error: (err) => this.handleUserDataError(err)
-    });
+
+    this.usersService
+      .getUserData()
+      .pipe(
+        finalize(() => this.setLoading(false)),
+        takeUntil(this.destroy$)
+      )
+      .subscribe({
+        next: (data) => this.handleUserDataSuccess(data),
+        error: (err) => this.handleUserDataError(err),
+      });
   }
 
   private loadApplications(): void {
@@ -65,10 +58,11 @@ export class CandidateProfileComponent implements OnInit, OnDestroy {
       this.handleError('No se pudo identificar al candidato');
       return;
     }
-    
+
     this.setLoading(true);
-    
-    this.applicationService.getUserApplications()
+
+    this.applicationService
+      .getUserApplications()
       .pipe(
         finalize(() => this.setLoading(false)),
         takeUntil(this.destroy$)
@@ -78,46 +72,47 @@ export class CandidateProfileComponent implements OnInit, OnDestroy {
           console.log('Applications response:', response);
           this.handleApplicationsSuccess(response);
         },
-        error: (err) => this.handleApplicationsError(err)
+        error: (err) => this.handleApplicationsError(err),
       });
   }
 
   private loadOfferDetails(): void {
     if (!this.applications?.length) return;
 
-    this.applications.forEach(app => {
+    this.applications.forEach((app) => {
       const offerId = app.offerId;
       if (!offerId || this.offerDetails[offerId]) return;
-      
-      this.jobOfferService.getJobOfferById(offerId).pipe(
-        takeUntil(this.destroy$)
-      ).subscribe({
-        next: (offer) => {
-          if (offer) {
-            this.offerDetails[offerId] = offer;
-          }
-        },
-        error: (err) => console.error(`Error loading offer ${offerId}:`, err)
-      });
+
+      this.jobOfferService
+        .getJobOfferById(offerId)
+        .pipe(takeUntil(this.destroy$))
+        .subscribe({
+          next: (offer) => {
+            if (offer) {
+              this.offerDetails[offerId] = offer;
+            }
+          },
+          error: (err) => console.error(`Error loading offer ${offerId}:`, err),
+        });
     });
   }
 
   private handleUserDataSuccess(data: UserData): void {
     this.userData = data;
-    
+
     if (!data?.candidate) {
       this.error = 'No tienes permisos para ver esta página. Redirigiendo...';
       setTimeout(() => this.router.navigate(['/main/catalogue']), 2000);
       return;
     }
-    
+
     this.loadApplications();
   }
 
   private handleUserDataError(error: any): void {
     console.error('Error loading user data:', error);
     this.handleError('Error al cargar los datos del usuario');
-    
+
     if (error.status === 401) {
       this.router.navigate(['/auth/login']);
     }
@@ -128,12 +123,13 @@ export class CandidateProfileComponent implements OnInit, OnDestroy {
       console.error('Empty response from server');
       return;
     }
-    
-    // Handle both array and object responses
-    this.applications = Array.isArray(response) ? response : (response.content || []);
-    
+
+    this.applications = Array.isArray(response)
+      ? response
+      : response.content || [];
+
     console.log('Applications loaded:', this.applications);
-    
+
     if (this.applications.length > 0) {
       this.loadOfferDetails();
     }
@@ -141,7 +137,7 @@ export class CandidateProfileComponent implements OnInit, OnDestroy {
 
   private handleApplicationsError(error: any): void {
     console.error('Error loading applications:', error);
-    
+
     let message = 'Error al cargar las candidaturas';
     if (error.status === 401) {
       message = 'La sesión ha expirado';
@@ -151,7 +147,7 @@ export class CandidateProfileComponent implements OnInit, OnDestroy {
     } else if (error.status === 404) {
       message = 'No se encontraron candidaturas';
     }
-    
+
     this.handleError(message);
   }
 
