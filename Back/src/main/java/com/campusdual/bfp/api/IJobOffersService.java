@@ -1,9 +1,6 @@
 package com.campusdual.bfp.api;
 
-import com.campusdual.bfp.model.Company;
 import com.campusdual.bfp.model.dto.JobOffersDTO;
-import com.campusdual.bfp.model.dto.UserDataDTO;
-import org.springframework.data.domain.Sort;
 
 import java.util.List;
 
@@ -20,6 +17,12 @@ public interface IJobOffersService {
     List<JobOffersDTO> queryAllOffersSorted(String sortBy, String direction);
 
     List<JobOffersDTO> queryAllOffersFilterByCompany(String filterBy, Long id);
+
+    JobOffersDTO queryJobOfferById(long id);
+
+    JobOffersDTO updateJobOffer(JobOffersDTO jobOffersDTO);
+
+
   /*  long updateJobOffer(JobOffersDTO jobOffersDTO);
     long deleteJobOffer(JobOffersDTO jobOffersDTO);*/
 

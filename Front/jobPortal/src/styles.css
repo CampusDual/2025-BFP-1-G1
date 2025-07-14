@@ -10,6 +10,7 @@
 *::before,
 *::after {
   box-sizing: border-box;
+  scrollbar-width: none;
 }
 
 html, body {
@@ -43,6 +44,45 @@ html, body {
 
 .mat-menu-item .mat-icon {
   margin-right: 8px;
+}
+
+/* Standardized Button Styles */
+button.mat-button,
+button.mat-raised-button,
+button.mat-flat-button,
+button.mat-stroked-button {
+  font-family: var(--font-base);
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  transition: all 0.2s ease;
+  border-radius: 4px;
+}
+
+/* Primary Buttons */
+button.mat-raised-button[color="primary"],
+button.mat-flat-button[color="primary"],
+button.mat-stroked-button[color="primary"] {
+  background-color: var(--primary);
+  color: white;
+}
+
+button.mat-raised-button[color="primary"]:hover,
+button.mat-flat-button[color="primary"]:hover,
+button.mat-stroked-button[color="primary"]:hover {
+  background-color: var(--primary-dark);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Basic Buttons */
+button.mat-button:not([color]),
+button.mat-button-base:not([color]) {
+  color: var(--primary);
+}
+
+button.mat-button:not([color]):hover,
+button.mat-button-base:not([color]):hover {
+  background-color: rgba(var(--primary-rgb), 0.1);
 }
 
 .mat-menu-item:hover {

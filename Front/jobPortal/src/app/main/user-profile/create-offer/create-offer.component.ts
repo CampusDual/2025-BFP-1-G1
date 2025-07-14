@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import { JobOffer } from 'src/app/model/jobOffer';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { JobOffer } from 'src/app/model/jobOffer';
 import { JobOfferService } from 'src/app/services/job-offer.service';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -13,14 +13,12 @@ import { UserData } from 'src/app/model/userData';
   styleUrls: ['./create-offer.component.css'],
 })
 export class CreateOfferComponent implements OnInit {
-  userData: UserData | null = null;
-  offerForm!: FormGroup;
+  @Input() jobToEdit: JobOffer | null = null;
 
-  // Contadores
-  titleCharCount = 0;
-  descCharCount = 0;
-  maxTitleChars = 120;
-  maxDescChars = 4000;
+  offerForm!: FormGroup;
+  userData: UserData | null = null;
+  modalidad = ['presencial', 'remoto', 'hibrido'];
+
 
   constructor(
     private userService: UsersService,
@@ -30,67 +28,52 @@ export class CreateOfferComponent implements OnInit {
     private snackBar: MatSnackBar
   ) {
     this.offerForm = this.fb.group({
-      title: [
-        '',
-        [Validators.required, Validators.maxLength(this.maxTitleChars)],
-      ],
-      description: [
-        '',
-        [Validators.required, Validators.maxLength(this.maxDescChars)],
-      ],
+      title: ['', [Validators.required, Validators.maxLength(120)]],
+      description: ['', [Validators.required, Validators.maxLength(4000)]],
+      localizacion: [''],
+      modalidad: ['', Validators.required],
+      requisitos: [''],
+      deseables: [''],
+      beneficios: [''],
+      releaseDate: [new Date()],
+      company: [null, Validators.required],
+      email: [''],
     });
   }
 
   ngOnInit(): void {
-    this.userService.userData$.subscribe((userData) => {
-      this.userData = userData;
+    this.userService.userData$.subscribe((data) => {
+      this.userData = data;
+      if (data?.company) {
+        this.offerForm.patchValue({
+          company: data.company,
+          email: data.user.email,
+        });
+      }
     });
 
     if (!this.userData) {
       this.userService.getUserData().subscribe();
     }
-
-    // Actualizar contadores
-    this.offerForm.get('title')?.valueChanges.subscribe((val) => {
-      this.titleCharCount = val?.length || 0;
-    });
-
-    this.offerForm.get('description')?.valueChanges.subscribe((val) => {
-      this.descCharCount = val?.length || 0;
-    });
   }
 
-  get title() {
-    return this.offerForm.get('title');
-  }
-
-  get description() {
-    return this.offerForm.get('description');
-  }
 
   onSubmit(): void {
-    if (this.offerForm.valid && this.userData) {
-      const newOffer: JobOffer = {
-        title: this.offerForm.value.title,
-        description: this.offerForm.value.description,
-        company: this.userData.company,
-        email: this.userData.user.email,
-        releaseDate: new Date(),
-      };
+    if (this.offerForm.valid) {
+      const newOffer: JobOffer = this.offerForm.value;
+      newOffer.releaseDate = new Date(newOffer.releaseDate);
 
       this.jobOfferService.addJobOffers(newOffer).subscribe({
-        next: (response) => {
+        next: () => {
           this.snackBar.open('Oferta publicada correctamente', 'Cerrar', {
             duration: 3000,
             panelClass: 'successSnackbar',
             verticalPosition: 'top',
           });
           this.offerForm.reset();
-          this.titleCharCount = 0;
-          this.descCharCount = 0;
+          this.router.navigate(['/main/userprofile']);
         },
-        error: (error) => {
-          console.error('Error al crear la oferta: ', error);
+        error: () => {
           this.snackBar.open('Error al crear la oferta', 'Cerrar', {
             duration: 3000,
             verticalPosition: 'top',
@@ -100,27 +83,9 @@ export class CreateOfferComponent implements OnInit {
     } else {
       this.offerForm.markAllAsTouched();
     }
+  }
+
+  onCancel(): void {
     this.router.navigate(['/main/userprofile']);
-  }
-
-  goCatalogue(): void {
-    this.router.navigate(['/main/catalogue']);
-  }
-
-  goBack(): void {
-    this.router.navigate(['/main/userprofile']);
-  }
-
-  getFieldErrorMessage(controlName: string): string {
-    const control = this.offerForm.get(controlName);
-    if (control?.hasError('required')) {
-      return 'Este campo es obligatorio';
-    }
-    if (control?.hasError('maxlength')) {
-      return controlName === 'title'
-        ? `Título demasiado largo (máx. ${this.maxTitleChars} caracteres)`
-        : `Descripción demasiado larga (máx. ${this.maxDescChars} caracteres)`;
-    }
-    return '';
   }
 }

@@ -47,4 +47,14 @@ public class JobOffersController {
         return ResponseEntity.ok(jobOffersService.queryAllOffersFilter(filterBy));
     }
 
+    @GetMapping(value = "/get/{id}")
+    public ResponseEntity<JobOffersDTO> getJobOfferById(@PathVariable int id) {
+        JobOffersDTO offer = jobOffersService.queryJobOfferById(id);
+        if (offer != null) {
+            return ResponseEntity.ok(offer);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
 }

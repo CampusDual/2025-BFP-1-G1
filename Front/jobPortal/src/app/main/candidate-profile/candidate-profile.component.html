@@ -2,7 +2,7 @@
   <div class="candidate-header-card">
     <div class="avatar-section">
       <div class="avatar">
-        <mat-icon class="avatar-icon" >person</mat-icon>
+        <mat-icon class="avatar-icon">person</mat-icon>
       </div>
       <div class="candidate-info">
         <h2>{{ userData?.candidate?.name }} {{ userData?.candidate?.surname }}</h2>
@@ -12,15 +12,65 @@
         </p>
       </div>
     </div>
-    <!-- <button mat-raised-button color="primary" class="edit-profile-btn">Editar perfil</button> -->
   </div>
 
-  <div class="applications-section">
-    <h1><mat-icon>assignment_turned_in</mat-icon> Tus candidaturas</h1>
-    <div class="applications-list">
-      <div class="application-card empty">
-        <mat-icon>info</mat-icon>
-        Próximamente podrás ver aquí tus candidaturas.
+  <div class="section applications-section">
+    <h2>Mis Candidaturas</h2>
+
+    <!-- Loading State -->
+    <div *ngIf="isLoading" class="loading-container">
+      <mat-spinner diameter="50"></mat-spinner>
+      <p>Cargando candidaturas...</p>
+    </div>
+
+    <!-- Error State -->
+    <div *ngIf="!isLoading && error" class="error-message">
+      <mat-icon>error_outline</mat-icon>
+      <p>{{ error }}</p>
+    </div>
+
+    <!-- Empty State -->
+    <div *ngIf="!isLoading && !error && applications.length === 0" class="empty-state">
+      <mat-icon class="empty-icon">assignment</mat-icon>
+      <h3>No tienes candidaturas aún</h3>
+      <p>¡Encuentra ofertas que se ajusten a tu perfil y postúlate!</p>
+      <button mat-raised-button color="primary" [routerLink]="['/main/catalogue']">
+        <mat-icon>search</mat-icon>
+        Ver ofertas
+      </button>
+    </div>
+
+    <!-- Applications List -->
+    <div *ngIf="!isLoading && !error && applications.length > 0" class="applications-grid">
+      <div *ngFor="let app of applications" class="application-card">
+        <div class="application-header">
+          <h3 *ngIf="offerDetails[app.offerId]?.title">
+            {{ offerDetails[app.offerId].title }}
+          </h3>
+          <h3 *ngIf="!offerDetails[app.offerId]?.title">
+            Oferta #{{ app.offerId }}
+          </h3>
+          <span class="status-badge">Inscrito</span>
+        </div>
+
+        <div class="application-details">
+          <p *ngIf="offerDetails[app.offerId]?.company?.name">
+            <strong>Empresa:</strong> {{ offerDetails[app.offerId].company?.name }}
+          </p>
+          <p *ngIf="offerDetails[app.offerId]?.localizacion">
+            <strong>Ubicación:</strong> {{ offerDetails[app.offerId].localizacion }}
+          </p>
+          <p *ngIf="offerDetails[app.offerId]?.modalidad">
+            <strong>Modalidad:</strong> {{ offerDetails[app.offerId].modalidad }}
+          </p>
+        </div>
+
+        <div class="application-actions">
+          <button mat-button color="primary" [routerLink]="['/main/offerDetails', app.offerId]">
+            <mat-icon>visibility</mat-icon>
+            Ver oferta
+          </button>
+        </div>
       </div>
     </div>
   </div>

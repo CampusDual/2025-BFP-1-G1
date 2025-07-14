@@ -1,29 +1,42 @@
 import { UserData } from 'src/app/model/userData';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { JobOffer } from 'src/app/model/jobOffer';
 import { JobOfferService } from 'src/app/services/job-offer.service';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { ApplicationService } from 'src/app/services/application.service';
 import { UsersService } from 'src/app/services/users.service';
 import { switchMap, filter, tap } from 'rxjs/operators';
-import { of } from 'rxjs';
+import { of, Subscription } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { LoadingScreenService } from 'src/app/services/loading-screen.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-job-catalogue',
   templateUrl: './job-catalogue.component.html',
   styleUrls: ['./job-catalogue.component.css'],
 })
-export class JobCatalogueComponent implements OnInit {
+export class JobCatalogueComponent implements OnInit, OnDestroy {
   userData: UserData | null = null;
   jobOffers: JobOffer[] = [];
   gridCols: number = 3;
-  sortBy: 'id' | 'title' | 'releaseDate' | 'description' | 'company' | 'email' =
-    'releaseDate';
+  sortBy:
+    | 'id'
+    | 'title'
+    | 'releaseDate'
+    | 'description'
+    | 'company'
+    | 'email'
+    | 'localizacion'
+    | 'modalidad'
+    | 'requisitos'
+    | 'deseables'
+    | 'beneficios' = 'releaseDate';
   sortDirection: 'asc' | 'desc' = 'desc';
   searchTerm: string = '';
   appliedOfferIds: number[] = [];
+
+  private offersChangedSubscription?: Subscription;
 
   constructor(
     private jobOfferService: JobOfferService,
@@ -31,11 +44,14 @@ export class JobCatalogueComponent implements OnInit {
     private applicationService: ApplicationService,
     public usersService: UsersService,
     private _snackBar: MatSnackBar,
-    private loadingScreenService: LoadingScreenService
+    private loadingScreenService: LoadingScreenService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
     this.loadingScreenService.show();
+
+    // Carga inicial con orden
     this.jobOfferService.getJobOfferSorted('releaseDate', 'desc').subscribe({
       next: (offers) => {
         this.jobOffers = offers;
@@ -49,6 +65,14 @@ export class JobCatalogueComponent implements OnInit {
       },
     });
 
+    // Suscripción para recargar ofertas automáticamente cuando cambien
+    this.offersChangedSubscription = this.jobOfferService
+      .getOffersChangedObservable()
+      .subscribe(() => {
+        this.loadOffers();
+      });
+
+    // Obtener datos de usuario y aplicaciones si es candidato
     this.usersService.userData$
       .pipe(
         tap((data) => {
@@ -70,18 +94,22 @@ export class JobCatalogueComponent implements OnInit {
           }
         })
       )
-      .subscribe(
-        (applications: any[]) => {
-          console.log('Successfully fetched user applications:', applications);
-          this.appliedOfferIds = applications.map((app: any) => app.offerId);
+      .subscribe((response: any) => {
+        try {
+          const apps = Array.isArray(response) ? response : (response?.applications || []);
+          console.log('Successfully fetched user applications:', apps);
+          this.appliedOfferIds = apps.map((app: any) => app.offerId);
           console.log('Applied offer IDs after fetch:', this.appliedOfferIds);
-        },
-        (error) => {
-          console.error('Error fetching user applications:', error);
+        } catch (error) {
+          console.error('Error processing user applications:', error);
           this.appliedOfferIds = [];
         }
-      );
+      }, (error) => {
+        console.error('Error fetching user applications:', error);
+        this.appliedOfferIds = [];
+      });
 
+    // Observador de breakpoints para responsive
     this.breakpointObserver
       .observe([
         Breakpoints.XSmall,
@@ -107,9 +135,24 @@ export class JobCatalogueComponent implements OnInit {
       });
   }
 
+  // Método para recargar ofertas
+  loadOffers(): void {
+    this.jobOfferService
+      .getJobOfferSorted(this.sortBy, this.sortDirection)
+      .subscribe({
+        next: (offers) => {
+          this.jobOffers = offers;
+        },
+        error: (err) => {
+          console.error('Error al recargar ofertas:', err);
+        },
+      });
+  }
+
   isTruncated(element: HTMLElement): boolean {
     return element.scrollWidth > element.clientWidth;
   }
+
   sortOffers(field: keyof JobOffer, direction?: 'asc' | 'desc') {
     if (this.sortBy === field) {
       this.sortDirection = this.sortDirection === 'asc' ? 'desc' : 'asc';
@@ -193,5 +236,39 @@ export class JobCatalogueComponent implements OnInit {
       verticalPosition: 'top',
       panelClass: [panelClass],
     });
+  }
+
+  getRelativeDate(dateInput: string | Date): string {
+    if (!dateInput) return '';
+    const date = new Date(dateInput);
+    const now = new Date();
+    const diffMs = now.getTime() - date.getTime();
+
+    const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+
+    if (diffDays > 7) {
+      return date.toLocaleDateString();
+    } else if (diffDays >= 1) {
+      return `Hace ${diffDays} día${diffDays > 1 ? 's' : ''}`;
+    } else {
+      const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
+      if (diffHours >= 1) {
+        return `Hace ${diffHours} hora${diffHours > 1 ? 's' : ''}`;
+      }
+      const diffMinutes = Math.floor(diffMs / (1000 * 60));
+      if (diffMinutes >= 1) {
+        return `Hace ${diffMinutes} minuto${diffMinutes > 1 ? 's' : ''}`;
+      }
+      return 'Hace unos segundos';
+    }
+  }
+
+  ngOnDestroy(): void {
+    this.offersChangedSubscription?.unsubscribe();
+  }
+
+  goToOfferDetails(id: number) {
+    console.log('Navegando a detalles de oferta con id:', id);
+    this.router.navigate(['/main/offerDetails', id]);
   }
 }

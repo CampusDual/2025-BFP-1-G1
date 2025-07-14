@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-
 @Service
 public class ApplicationService {
 
@@ -23,7 +22,6 @@ public class ApplicationService {
     }
 
     public List<Application> getApplicationsByCandidateId(Long candidateId) {
-        // Necesitarás un método correspondiente en tu ApplicationDao (JPA Repository)
         return applicationDao.findByIdCandidate(candidateId);
     }
 }

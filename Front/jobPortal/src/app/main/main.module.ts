@@ -25,6 +25,13 @@ import { BrowserModule } from '@angular/platform-browser';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { TokenInterceptor } from './token-interceptor';
 import { CompanySignupComponent } from './company-signup/company-signup.component';
+import {MatDividerModule} from '@angular/material/divider';
+import {MatSelectModule} from '@angular/material/select';
+import { OfferDetailsComponent } from './offer-details/offer-details.component';
+import { EditOfferComponent } from './edit-offer/edit-offer.component';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+
 
 @NgModule({
   providers: [
@@ -46,6 +53,8 @@ import { CompanySignupComponent } from './company-signup/company-signup.componen
     CandidateProfileComponent,
     AdminProfileComponent,
     CompanySignupComponent,
+    OfferDetailsComponent,
+    EditOfferComponent,
   ],
   imports: [
     CommonModule,
@@ -58,10 +67,14 @@ import { CompanySignupComponent } from './company-signup/company-signup.componen
     MatButtonModule,
     MatSnackBarModule,
     MatGridListModule,
+    MatProgressSpinnerModule,
     MatIconModule,
     MatTooltipModule,
     FormsModule,
     MatTableModule,
+    MatDividerModule,
+    MatSelectModule,
+    MatSlideToggleModule,
   ],
 })
 export class MainModule {}
