@@ -1,10 +1,13 @@
 <div class="offer-form-container">
     <!-- cabecera -->
     <div class="header-container">
-        <!-- Edit button for company -->
-        <button *ngIf="isCompany() && isOfferOwner()" mat-icon-button class="edit-button" (click)="editOffer()">
-            <mat-icon>edit</mat-icon>
-        </button>
+        <!-- Edit button for company and status badge -->
+        <div class="header-actions">
+            <button *ngIf="isCompany() && isOfferOwner()" mat-icon-button class="edit-button" (click)="editOffer()">
+                <mat-icon>edit</mat-icon>
+            </button>
+            <span *ngIf="!isCompany() && appliedOfferIds.includes(offer.id!)" class="status-badge">Inscrito</span>
+        </div>
         
         <!-- izquierda: datos empresa -->
         <div class="company-info">
@@ -87,14 +90,15 @@
     </div>
 
     <div class="button-container">
-        <button mat-button class="backButton" (click)="goBack()">
-            <mat-icon>arrow_back</mat-icon> Volver
-        </button>
-        <ng-container *ngIf="!isCompany()">
-            <button mat-raised-button color="primary" class="apply-button" (click)="aplicarAOferta(offer)"
-                [disabled]="appliedOfferIds.includes(offer.id!)">
-                {{ appliedOfferIds.includes(offer.id!) ? 'Inscrito' : 'Inscribirse' }}
+        <div class="button-group">
+            <button mat-button class="backButton" (click)="goBack()">
+                <mat-icon>arrow_back</mat-icon> Volver
             </button>
-        </ng-container>
+            <ng-container *ngIf="!isCompany() && !appliedOfferIds.includes(offer.id!)">
+                <button mat-raised-button color="primary" class="apply-button" (click)="aplicarAOferta(offer)">
+                    Inscribirse
+                </button>
+            </ng-container>
+        </div>
     </div>
 </div>
