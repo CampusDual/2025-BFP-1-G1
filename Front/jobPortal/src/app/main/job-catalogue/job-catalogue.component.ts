@@ -94,20 +94,25 @@ export class JobCatalogueComponent implements OnInit, OnDestroy {
           }
         })
       )
-      .subscribe((response: any) => {
-        try {
-          const apps = Array.isArray(response) ? response : (response?.applications || []);
-          console.log('Successfully fetched user applications:', apps);
-          this.appliedOfferIds = apps.map((app: any) => app.offerId);
-          console.log('Applied offer IDs after fetch:', this.appliedOfferIds);
-        } catch (error) {
-          console.error('Error processing user applications:', error);
+      .subscribe(
+        (response: any) => {
+          try {
+            const apps = Array.isArray(response)
+              ? response
+              : response?.applications || [];
+            console.log('Successfully fetched user applications:', apps);
+            this.appliedOfferIds = apps.map((app: any) => app.offerId);
+            console.log('Applied offer IDs after fetch:', this.appliedOfferIds);
+          } catch (error) {
+            console.error('Error processing user applications:', error);
+            this.appliedOfferIds = [];
+          }
+        },
+        (error) => {
+          console.error('Error fetching user applications:', error);
           this.appliedOfferIds = [];
         }
-      }, (error) => {
-        console.error('Error fetching user applications:', error);
-        this.appliedOfferIds = [];
-      });
+      );
 
     // Observador de breakpoints para responsive
     this.breakpointObserver
@@ -226,6 +231,13 @@ export class JobCatalogueComponent implements OnInit, OnDestroy {
     return (
       !!this.userData?.company ||
       (!!this.userData?.user && this.userData.user.role_id === 2)
+    );
+  }
+
+  isAdmin(): boolean {
+    return (
+      !!this.userData?.admin ||
+      (!!this.userData?.user && this.userData.user.role_id === 1)
     );
   }
 

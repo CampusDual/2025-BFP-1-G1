@@ -2,10 +2,9 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class LoadingScreenService {
-
   private loadingSubject = new BehaviorSubject<boolean>(false);
   loading$ = this.loadingSubject.asObservable();
 
@@ -19,7 +18,9 @@ export class LoadingScreenService {
 
   hide() {
     const now = Date.now();
-    const elapsed = this.loadingStartTime ? now - this.loadingStartTime : this.minDuration;
+    const elapsed = this.loadingStartTime
+      ? now - this.loadingStartTime
+      : this.minDuration;
     const remaining = this.minDuration - elapsed;
 
     if (remaining > 0) {
@@ -32,6 +33,23 @@ export class LoadingScreenService {
       this.loadingStartTime = null;
     }
   }
+  hideQuick() {
+    const now = Date.now();
+    const elapsed = this.loadingStartTime
+      ? now - this.loadingStartTime
+      : this.minDuration;
+    const remaining = 0 - elapsed;
 
-  constructor() { }
+    if (remaining > 0) {
+      setTimeout(() => {
+        this.loadingSubject.next(false);
+        this.loadingStartTime = null;
+      }, remaining);
+    } else {
+      this.loadingSubject.next(false);
+      this.loadingStartTime = null;
+    }
+  }
+
+  constructor() {}
 }

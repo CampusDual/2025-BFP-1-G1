@@ -53,7 +53,7 @@
           </div>
           <div class="button-container">
             <mat-card-actions>
-              <ng-container *ngIf="!isCompany()">
+              <ng-container *ngIf="!isCompany() && !isAdmin()">
                 <button mat-raised-button color="primary" class="apply-button" (click)="aplicarAOferta(offer)"
                   [disabled]="appliedOfferIds.includes(offer.id!)">
                   {{ appliedOfferIds.includes(offer.id!) ? 'Inscrito' : 'Inscribirse' }}
