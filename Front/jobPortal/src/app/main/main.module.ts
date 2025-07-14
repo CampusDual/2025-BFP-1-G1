@@ -22,6 +22,9 @@ import {MatDividerModule} from '@angular/material/divider';
 import {MatSelectModule} from '@angular/material/select';
 import { OfferDetailsComponent } from './offer-details/offer-details.component';
 import { EditOfferComponent } from './edit-offer/edit-offer.component';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
 
 @NgModule({
@@ -48,12 +51,14 @@ import { EditOfferComponent } from './edit-offer/edit-offer.component';
     MatButtonModule,
     MatSnackBarModule,
     MatGridListModule,
+    MatProgressSpinnerModule,
     MatIconModule,
     MatTooltipModule,
     FormsModule,
     MatDividerModule,
     MatSelectModule,
-
+    MatPaginatorModule,
+    MatSlideToggleModule,
   ],
 })
 export class MainModule {}

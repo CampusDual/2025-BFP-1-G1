@@ -94,17 +94,20 @@ export class JobCatalogueComponent implements OnInit, OnDestroy {
           }
         })
       )
-      .subscribe(
-        (applications: any[]) => {
-          console.log('Successfully fetched user applications:', applications);
-          this.appliedOfferIds = applications.map((app: any) => app.offerId);
+      .subscribe((response: any) => {
+        try {
+          const apps = Array.isArray(response) ? response : (response?.applications || []);
+          console.log('Successfully fetched user applications:', apps);
+          this.appliedOfferIds = apps.map((app: any) => app.offerId);
           console.log('Applied offer IDs after fetch:', this.appliedOfferIds);
-        },
-        (error) => {
-          console.error('Error fetching user applications:', error);
+        } catch (error) {
+          console.error('Error processing user applications:', error);
           this.appliedOfferIds = [];
         }
-      );
+      }, (error) => {
+        console.error('Error fetching user applications:', error);
+        this.appliedOfferIds = [];
+      });
 
     // Observador de breakpoints para responsive
     this.breakpointObserver
