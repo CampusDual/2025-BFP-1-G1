@@ -79,27 +79,129 @@ public class CompanyService {
 
     @Transactional
     public long insertNewCompany(UserDataDTO userDataDTO) {
-        if (userDao.findByLogin(userDataDTO.getUser().getLogin()) != null) {
-            throw new RuntimeException("usuario ya existe");
+        System.out.println("=== INICIO insertNewCompany ===");
+        System.out.println("UserDataDTO recibido: " + (userDataDTO != null ? "No nulo" : "NULO"));
+        
+        try {
+            // Log detallado del objeto recibido
+            if (userDataDTO != null) {
+                System.out.println("User: " + (userDataDTO.getUser() != null ? "No nulo" : "NULO"));
+                if (userDataDTO.getUser() != null) {
+                    System.out.println("  - Login: " + userDataDTO.getUser().getLogin());
+                    System.out.println("  - Email: " + userDataDTO.getUser().getEmail());
+                }
+                System.out.println("Company: " + (userDataDTO.getCompany() != null ? "No nulo" : "NULO"));
+                if (userDataDTO.getCompany() != null) {
+                    System.out.println("  - CIF: " + userDataDTO.getCompany().getCif());
+                    System.out.println("  - Nombre: " + userDataDTO.getCompany().getName());
+                }
+            }
+            // Validar datos de entrada
+            if (userDataDTO == null) {
+                throw new RuntimeException("UserDataDTO no puede ser nulo");
+            }
+            if (userDataDTO.getUser() == null) {
+                throw new RuntimeException("UserDTO no puede ser nulo");
+            }
+            if (userDataDTO.getCompany() == null) {
+                throw new RuntimeException("CompanyDTO no puede ser nulo");
+            }
+            
+            // Validar usuario existente
+            String login = userDataDTO.getUser().getLogin();
+            System.out.println("Validando usuario: " + login);
+            if (userDao.findByLogin(login) != null) {
+                System.err.println("Error: El usuario ya existe: " + login);
+                throw new RuntimeException("usuario ya existe");
+            }
+            
+            // Validar email existente
+            String email = userDataDTO.getUser().getEmail();
+            System.out.println("Validando email: " + email);
+            if (userDao.findByEmail(email) != null) {
+                System.err.println("Error: El email ya existe: " + email);
+                throw new RuntimeException("email ya existe");
+            }
+            
+            // Validar CIF existente
+            String cif = userDataDTO.getCompany().getCif();
+            System.out.println("Validando CIF: " + cif);
+            if (companyDao.findByCif(cif) != null) {
+                System.err.println("Error: El CIF ya existe: " + cif);
+                throw new RuntimeException("cif ya existe");
+            }
+            
+            // Crear y guardar usuario
+            System.out.println("Creando usuario...");
+            User user;
+            try {
+                // Verificar y mostrar los datos del usuario
+                System.out.println("Datos del usuario recibidos:");
+                System.out.println("Login: " + userDataDTO.getUser().getLogin());
+                System.out.println("Email: " + userDataDTO.getUser().getEmail());
+                
+                // Mapear el usuario
+                user = UserMapper.INSTANCE.toEntity(userDataDTO.getUser());
+                if (user == null) {
+                    throw new RuntimeException("Error al mapear UserDTO a entidad User - El objeto User resultante es nulo");
+                }
+                user.setPassword(passwordEncoder.encode(user.getPassword()));
+                
+                System.out.println("Buscando rol de compañía (ID: " + COMPANY_ROLE + ")");
+                Role companyRole = roleDao.findById(COMPANY_ROLE)
+                        .orElseThrow(() -> {
+                            String errorMsg = "Role no encontrado: " + COMPANY_ROLE;
+                            System.err.println(errorMsg);
+                            return new RuntimeException(errorMsg);
+                        });
+                
+                user.setRole(companyRole);
+                System.out.println("Guardando usuario en la base de datos...");
+                user = userDao.saveAndFlush(user);
+                System.out.println("Usuario guardado con ID: " + user.getId());
+                
+                // Crear y guardar compañía
+                System.out.println("\n=== Creando compañía ===");
+                System.out.println("Datos de la compañía recibidos:");
+                System.out.println("CIF: " + userDataDTO.getCompany().getCif());
+                System.out.println("Nombre: " + userDataDTO.getCompany().getName());
+                System.out.println("Teléfono: " + userDataDTO.getCompany().getPhone());
+                System.out.println("Dirección: " + userDataDTO.getCompany().getAddress());
+                System.out.println("Web: " + userDataDTO.getCompany().getWeb());
+                
+                    // Crear una nueva instancia de Company manualmente para evitar problemas con el mapeo
+                    CompanyDTO companyDTO = userDataDTO.getCompany();
+                    if (companyDTO == null) {
+                        throw new RuntimeException("Los datos de la compañía no pueden ser nulos");
+                    }
+                    
+                    Company company = new Company();
+                    company.setCif(companyDTO.getCif());
+                    company.setName(companyDTO.getName());
+                    company.setPhone(companyDTO.getPhone());
+                    company.setAddress(companyDTO.getAddress());
+                    company.setWeb(companyDTO.getWeb());
+                    // El ID se generará automáticamente al guardar en la base de datos
+                    
+                    company.setUser(user);
+                    
+                    System.out.println("Guardando compañía en la base de datos...");
+                    company = companyDao.saveAndFlush(company);
+                    System.out.println("Compañía guardada con ID: " + company.getId());
+                    
+                    System.out.println("=== FIN insertNewCompany (éxito) ===");
+                    return company.getId();
+                    
+                } catch (Exception e) {
+                    System.err.println("Error durante la creación de la compañía: " + e.getMessage());
+                    e.printStackTrace();
+                    throw new RuntimeException("Error al crear la compañía: " + (e.getMessage() != null ? e.getMessage() : "Error desconocido"), e);
+                }
+        } catch (Exception e) {
+            System.err.println("Error en insertNewCompany: " + e.getMessage());
+            e.printStackTrace();
+            throw e;
         }
-        if (userDao.findByEmail(userDataDTO.getUser().getEmail()) != null) {
-            throw new RuntimeException("email ya existe");
-        }
-        if (companyDao.findByCif(userDataDTO.getCompany().getCif()) != null) {
-            throw new RuntimeException("cif ya existe");
-        }
-        User user = UserMapper.INSTANCE.toEntity(userDataDTO.getUser());
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        Role companyRole = roleDao.findById(COMPANY_ROLE)
-                .orElseThrow(() -> new RuntimeException("Role not found: " + COMPANY_ROLE));
-        user.setRole(companyRole);
-        userDao.saveAndFlush(user);
-        Company company = CompanyMapper.INSTANCE.toEntity(userDataDTO.getCompany());
-        company.setUser(user);
-        companyDao.saveAndFlush(company);
-
-
-        return company.getId();
     }
     @Transactional(readOnly = true)
     public long countJobOffersByCompany(long companyId) {

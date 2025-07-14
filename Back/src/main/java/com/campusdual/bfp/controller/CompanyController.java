@@ -57,14 +57,50 @@ public class CompanyController {
     @PostMapping("/newCompany")
     public ResponseEntity<?> newCompany(@RequestBody UserDataDTO userDataDTO) {
         try {
-            return ResponseEntity.ok(companyService.insertNewCompany(userDataDTO));
-        } catch (RuntimeException e) {
-            if (e.getMessage().contains("ya existe")) {
-                return ResponseEntity.status(HttpStatus.CONFLICT).body(
-                        java.util.Collections.singletonMap("message", e.getMessage())
-                );
+            System.out.println("=== INICIO newCompany ===");
+            System.out.println("Datos recibidos - Usuario: " + (userDataDTO != null && userDataDTO.getUser() != null ? userDataDTO.getUser().getLogin() : "null"));
+            System.out.println("Datos recibidos - Email: " + (userDataDTO != null && userDataDTO.getUser() != null ? userDataDTO.getUser().getEmail() : "null"));
+            System.out.println("Datos recibidos - CIF: " + (userDataDTO != null && userDataDTO.getCompany() != null ? userDataDTO.getCompany().getCif() : "null"));
+            
+            if (userDataDTO == null) {
+                throw new IllegalArgumentException("Los datos de la compañía no pueden ser nulos");
             }
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred: " + e.getMessage());
+            if (userDataDTO.getUser() == null) {
+                throw new IllegalArgumentException("Los datos del usuario son obligatorios");
+            }
+            if (userDataDTO.getCompany() == null) {
+                throw new IllegalArgumentException("Los datos de la compañía son obligatorios");
+            }
+            
+            Long companyId = companyService.insertNewCompany(userDataDTO);
+            System.out.println("Compañía creada exitosamente con ID: " + companyId);
+            System.out.println("=== FIN newCompany (éxito) ===");
+            return ResponseEntity.ok(companyId);
+            
+        } catch (Exception e) {
+            System.err.println("=== ERROR en newCompany ===");
+            System.err.println("Tipo de error: " + e.getClass().getName());
+            System.err.println("Mensaje de error: " + e.getMessage());
+            e.printStackTrace();
+            System.err.println("==========================");
+            
+            String errorMessage = "Error al crear la compañía: ";
+            if (e.getMessage() != null) {
+                if (e.getMessage().contains("ya existe")) {
+                    return ResponseEntity.status(HttpStatus.CONFLICT).body(
+                            java.util.Collections.singletonMap("message", e.getMessage())
+                    );
+                } else if (e instanceof IllegalArgumentException) {
+                    errorMessage += e.getMessage();
+                } else {
+                    errorMessage += e.getMessage();
+                }
+            } else {
+                errorMessage += "Error desconocido";
+            }
+            
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(java.util.Collections.singletonMap("message", errorMessage));
         }
     }
 
