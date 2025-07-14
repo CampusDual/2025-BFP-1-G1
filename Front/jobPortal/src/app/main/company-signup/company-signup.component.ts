@@ -1,15 +1,16 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { UsersService } from 'src/app/services/users.service';
+import { Location } from '@angular/common';
 
 @Component({
-  selector: 'app-sign-up-form',
-  templateUrl: './sign-up-form.component.html',
-  styleUrls: ['./sign-up-form.component.css'],
+  selector: 'app-company-signup',
+  templateUrl: './company-signup.component.html',
+  styleUrls: ['./company-signup.component.css'],
 })
-export class SignUpFormComponent {
+export class CompanySignupComponent {
   signUpForm!: FormGroup;
   isSubmitting = false;
 
@@ -21,13 +22,22 @@ export class SignUpFormComponent {
     private fb: FormBuilder,
     private usersService: UsersService,
     private router: Router,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private location: Location,
   ) {
     this.signUpForm = this.fb.group({
       login: ['', [Validators.required]],
-      password: ['', [Validators.required, Validators.minLength(4)]],
+      password: ['', [Validators.required, Validators.minLength(8)]],
       name: ['', [Validators.required]],
-      surname: ['', [Validators.required]],
+      cif: [
+        '',
+        [
+          Validators.required,
+          Validators.pattern(/^[ABCDEFGHJKLMNPQRSUVW]\d{7}[0-9A-J]$/),
+        ],
+      ],
+      address: ['', [Validators.required]],
+      web: ['', [Validators.required, Validators.pattern('https?://.+')]],
       email: ['', [Validators.required, Validators.email]],
       phone: ['', [Validators.required, Validators.pattern('^[0-9]{9}$')]],
     });
@@ -42,14 +52,20 @@ export class SignUpFormComponent {
   get name() {
     return this.signUpForm.get('name');
   }
-  get surname() {
-    return this.signUpForm.get('surname');
+  get web() {
+    return this.signUpForm.get('web');
   }
   get email() {
     return this.signUpForm.get('email');
   }
   get phone() {
     return this.signUpForm.get('phone');
+  }
+  get cif() {
+    return this.signUpForm.get('cif');
+  }
+  get address() {
+    return this.signUpForm.get('address');
   }
 
   openSnackBar(message: string, panelClass: string = '') {
@@ -61,22 +77,31 @@ export class SignUpFormComponent {
     });
   }
 
-  signUp() {
+  companySignUp() {
     if (this.isSubmitting) return;
 
     this.isSubmitting = true;
 
     if (this.signUpForm.valid) {
-      const { login, password, name, surname, email, phone } =
+      const { login, password, name, web, email, phone, address, cif } =
         this.signUpForm.value;
 
       this.usersService
-        .signUpCandidate(login, password, name, surname, email, phone)
+        .insertNewCompany(
+          login,
+          password,
+          name,
+          cif,
+          email,
+          phone,
+          web,
+          address
+        )
         .subscribe({
           next: (response) => {
             this.isSubmitting = false;
-            this.openSnackBar('Registro exitoso!', 'success-snackbar');
-            this.router.navigate(['/main/login']);
+            this.openSnackBar('Registro exitoso!', 'successSnackbar');
+            this.router.navigate(['/main/adminprofile']);
           },
           error: (error) => {
             this.isSubmitting = false;
@@ -102,20 +127,35 @@ export class SignUpFormComponent {
                 lowerCaseMessage.includes('user already exists') ||
                 lowerCaseMessage.includes('duplicate username')
               ) {
-                const loginControl = this.signUpForm.get('login');
+                const loginControl = this.login;
                 loginControl?.setErrors({ loginExists: true });
                 loginControl?.markAsTouched();
                 errorMessage = 'El nombre de usuario ya está en uso';
-              } else if (
+              }
+
+              if (
                 lowerCaseMessage.includes('email ya existe') ||
                 lowerCaseMessage.includes('email already exists') ||
                 lowerCaseMessage.includes('duplicate email')
               ) {
-                const emailControl = this.signUpForm.get('email');
+                const emailControl = this.email;
                 emailControl?.setErrors({ emailExists: true });
                 emailControl?.markAsTouched();
                 errorMessage = 'El correo electrónico ya está en uso';
               }
+
+              if (
+                lowerCaseMessage.includes('cif ya existe') ||
+                lowerCaseMessage.includes('cif already exists') ||
+                lowerCaseMessage.includes('duplicate cif')
+              ) {
+                const cifControl = this.cif;
+                const currentErrors = cifControl?.errors || {};
+                cifControl?.setErrors({ ...currentErrors, cifExists: true });
+                cifControl?.markAsTouched();
+                errorMessage = 'El CIF ya está registrado';
+              }
+
             } else if (error.status === 400) {
               if (error.error && error.error.message) {
                 errorMessage = error.error.message;
@@ -128,7 +168,7 @@ export class SignUpFormComponent {
               errorMessage = error.message;
             }
 
-            this.openSnackBar(errorMessage, 'error-snackbar');
+            this.openSnackBar(errorMessage, 'errorSnackbar');
           },
         });
     } else {
@@ -136,7 +176,7 @@ export class SignUpFormComponent {
       this.signUpForm.markAllAsTouched();
       this.openSnackBar(
         'Por favor, complete todos los campos correctamente',
-        'error-snackbar'
+        'errorSnackbar'
       );
     }
   }
@@ -153,14 +193,23 @@ export class SignUpFormComponent {
     if (controlName === 'login' && control?.hasError('loginExists')) {
       return 'Este usuario ya está registrado';
     }
+    if (controlName === 'cif' && control?.hasError('cifExists')) {
+      return 'Este CIF ya está registrado';
+    }
+    if (controlName === 'cif' && control?.hasError('pattern')) {
+      return 'Formato de CIF no válido';
+    }
     if (controlName === 'email' && control?.hasError('emailExists')) {
       return 'Este email ya está registrado';
     }
     if (controlName === 'email' && control?.hasError('email')) {
-      return 'Formato de mail no válido';
+      return 'Formato de email no válido';
     }
     if (controlName === 'phone' && control?.hasError('pattern')) {
       return 'Teléfono debe tener 9 dígitos';
+    }
+    if (controlName === 'web' && control?.hasError('pattern')) {
+      return 'Formato de web no válido (ejemplo: https://...)';
     }
 
     return '';
@@ -170,5 +219,9 @@ export class SignUpFormComponent {
     const offset = 15;
     this.tooltipX = event.clientX;
     this.tooltipY = event.clientY + offset;
+  }
+
+  goBack():void{
+    this.location.back();
   }
 }

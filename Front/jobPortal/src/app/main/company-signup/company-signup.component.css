@@ -13,7 +13,7 @@ body,
 .container {
   min-height: 100vh;
   width: 100%;
-  padding: 40px 20px;
+  padding: 24px 20px;
   box-sizing: border-box;
   display: flex;
   justify-content: center;
@@ -24,8 +24,9 @@ body,
 .sign-up-box {
   display: flex;
   width: 80%;
+  height: auto;
   max-width: 1200px;
-  max-height: 90vh;
+  max-height: none;
   background-color: white;
   border-radius: 8px;
   box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
@@ -39,6 +40,9 @@ body,
   display: flex;
   align-items: center;
   justify-content: center;
+  background: linear-gradient(to bottom right,
+      var(--primary-light),
+      var(--primary));
 }
 
 .circle-image {
@@ -60,7 +64,7 @@ body,
 
 .form-section {
   flex: 2;
-  padding: 30px;
+  padding: 50px;
   display: flex;
   flex-direction: column;
   min-height: 0;
@@ -69,10 +73,10 @@ body,
 }
 
 .form-title {
-  font-size: 22px;
+  font-size: 28px;
   color: var(--darker);
-  margin: 0 0 30px 0;
-  padding-top: 10px;
+  margin: 0 0 10px 0;
+  padding-top: 5px;
   position: relative;
   z-index: 1;
 }
@@ -82,9 +86,9 @@ body,
   grid-template-columns: 1fr 1fr;
   gap: 2px 32px;
   width: 100%;
-  overflow-y: auto;
-  flex-grow: 1;
-  padding: 10px 0;
+  overflow-y: visible;
+  flex-grow: 0;
+  padding: 20px 0;
   margin-top: -20px;
   padding-top: 30px;
 }
@@ -93,7 +97,7 @@ body,
 .inputs2 {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 2px;
 }
 
 .formulario {
@@ -102,7 +106,7 @@ body,
 
 mat-form-field .mat-mdc-text-field-wrapper,
 mat-form-field .mat-mdc-form-field-flex {
-  min-height: 20px;
+  min-height: 30px;
 }
 
 mat-form-field input,
@@ -111,47 +115,47 @@ mat-form-field input[type="password"] {
   box-sizing: border-box;
 }
 
-.sign-up-button {
+.buttons {
   grid-column: 1 / -1;
+  /* Make buttons span both columns */
+  display: flex;
+  justify-content: center;
+  /* Center the buttons horizontally */
+  gap: 16px;
+  margin-top: 1em;
+  width: 100%;
+}
+
+.action-button {
+  /* Renamed from sign-up-button and backButton for consistency */
   width: 60%;
-  margin: 0 auto;
+  max-width: 200px;
+  /* To prevent buttons from becoming too wide on larger screens */
   padding: 12px 24px;
   background-color: var(--primary);
   color: white;
   font-weight: bold;
   border: none;
   border-radius: 4px;
-  cursor: pointer;
   transition: background-color 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
 }
 
-.login-redirect {
-  width: 100%;
-  text-align: center;
-  margin-top: 1.5rem;
-  padding-top: 1.5rem;
-  border-top: 1px solid var(--gray-light);
+.action-button mat-icon {
+  font-size: 20px;
+  width: 20px;
+  height: 20px;
 }
 
-.candidate-p {
-  margin: 0;
-  font-size: 14px;
-  color: var(--text-secondary);
-}
-
-.login-link {
-  color: var(--primary);
-  font-weight: 500;
-  text-decoration: none;
-  margin-left: 5px;
-}
-
-.login-link:hover {
-  text-decoration: underline;
-}
-
-.sign-up-button:hover {
+.action-button:hover {
   background-color: var(--primary-dark);
+}
+
+.mat-mdc-button:not(:disabled) {
+  color: white;
 }
 
 button[mat-raised-button]:hover:not([disabled]) {
@@ -183,7 +187,7 @@ mat-error {
 
 @media (max-width: 992px) {
   .form-section form {
-    gap: 16px 24px;
+    gap: 1px 24px;
   }
 
   .form-section {
@@ -205,7 +209,6 @@ mat-error {
     max-width: 100%;
     border-radius: 0;
     margin-top: 60px;
-    /* Space for the header */
     max-height: none;
     box-shadow: none;
   }
@@ -226,18 +229,30 @@ mat-error {
 
   .form-section form {
     grid-template-columns: 1fr;
-    gap: 16px;
+    gap: 1px;
   }
 
   .inputs1,
   .inputs2 {
     margin-top: 0;
-    gap: 16px;
+    gap: 1px;
   }
 
-  .sign-up-button {
+  .action-button {
     width: 100%;
-    margin: 1em 0 2em 0;
+    /* Make buttons take full width on mobile */
+    margin: 1em 0 0 0;
+    max-width: none;
+    /* Remove max-width on mobile */
+  }
+
+  .buttons {
+    flex-direction: column;
+    /* Stack buttons vertically on small screens */
+    align-items: center;
+    /* Center stacked buttons */
+    margin-bottom: 2em;
+    /* Add some space at the bottom */
   }
 }
 

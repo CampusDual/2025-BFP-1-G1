@@ -18,16 +18,30 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { SignUpFormComponent } from './sign-up-form/sign-up-form.component';
 import { CandidateProfileComponent } from './candidate-profile/candidate-profile.component';
+import { AdminProfileComponent } from './admin-profile/admin-profile.component';
+import { MatTableModule } from '@angular/material/table';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { BrowserModule } from '@angular/platform-browser';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { TokenInterceptor } from './token-interceptor';
+import { CompanySignupComponent } from './company-signup/company-signup.component';
 import {MatDividerModule} from '@angular/material/divider';
 import {MatSelectModule} from '@angular/material/select';
 import { OfferDetailsComponent } from './offer-details/offer-details.component';
 import { EditOfferComponent } from './edit-offer/edit-offer.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
 
 @NgModule({
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: TokenInterceptor,
+      multi: true,
+    },
+  ],
+
   declarations: [
     JobCatalogueComponent,
     CreateOfferComponent,
@@ -37,6 +51,8 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
     CompanyOfferListComponent,
     SignUpFormComponent,
     CandidateProfileComponent,
+    AdminProfileComponent,
+    CompanySignupComponent,
     OfferDetailsComponent,
     EditOfferComponent,
   ],
@@ -55,9 +71,9 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
     MatIconModule,
     MatTooltipModule,
     FormsModule,
+    MatTableModule,
     MatDividerModule,
     MatSelectModule,
-    MatPaginatorModule,
     MatSlideToggleModule,
   ],
 })
