@@ -1,7 +1,7 @@
 import { User } from './user';
 
 export class Company {
-  id!: number;
+  id?: number;
   cif!: string;
   name!: string;
   phone!: string;

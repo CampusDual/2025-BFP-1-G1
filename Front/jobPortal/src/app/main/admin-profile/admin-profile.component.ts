@@ -80,7 +80,6 @@ export class AdminProfileComponent {
 
   onDeleteCompany(companyId: number): void {
     this.usersService.getJobOffersCount(companyId).subscribe({
-
       next: (count) => {
         if (count > 0) {
           this.openSnackbar(
@@ -100,7 +99,10 @@ export class AdminProfileComponent {
             if (result) {
               this.usersService.deleteCompany(companyId).subscribe({
                 next: () => {
-                  this.openSnackbar('Empresa eliminada correctamente.', 'successSnackbar');
+                  this.openSnackbar(
+                    'Empresa eliminada correctamente.',
+                    'successSnackbar'
+                  );
                   this.companies = this.companies.filter(
                     (company) => company.id !== companyId
                   );
@@ -108,7 +110,10 @@ export class AdminProfileComponent {
                 },
                 error: (err) => {
                   console.error('Error al eliminar la empresa:', err);
-                  this.openSnackbar('Error al eliminar la empresa.', 'errorSnackbar');
+                  this.openSnackbar(
+                    'Error al eliminar la empresa.',
+                    'errorSnackbar'
+                  );
                 },
               });
             }
@@ -142,15 +147,18 @@ export class AdminProfileComponent {
   }
 
   saveChanges(company: Company): void {
-    this.companyService.updateCompany(company.id, company).subscribe({
+    this.companyService.updateCompany(company.id!, company).subscribe({
       next: () => {
-        this.editMode[company.id] = false;
+        this.editMode[company.id!] = false;
         this.loadAllCompanies();
-        this.openSnackbar('Empresa actualizada correctamente.', 'successSnackbar');
+        this.openSnackbar(
+          'Empresa actualizada correctamente.',
+          'successSnackbar'
+        );
       },
       error: (err) => {
         this.openSnackbar('Error al actualizar la empresa.', 'errorSnackbar');
-      }
+      },
     });
   }
 }
