@@ -9,13 +9,13 @@
           <span *ngIf="sortDirection === 'asc'">&#9650;</span>
         </span>
       </button>
-      <button mat-button (click)="sortOffers('title', 'desc')" [class.active]="sortBy === 'title'">
+      <!-- <button mat-button (click)="sortOffers('title', 'desc')" [class.active]="sortBy === 'title'">
         Título
         <span *ngIf="sortBy === 'title'">
           <span *ngIf="sortDirection === 'desc'">&#9660;</span>
           <span *ngIf="sortDirection === 'asc'">&#9650;</span>
         </span>
-      </button>
+      </button>-->
       <button mat-button (click)="sortOffers('company', 'desc')" [class.active]="sortBy === 'company'">
         Empresa
         <span *ngIf="sortBy === 'company'">
@@ -53,7 +53,7 @@
           </div>
           <div class="button-container">
             <mat-card-actions>
-              <ng-container *ngIf="!isCompany()">
+              <ng-container *ngIf="!isCompany() && !isAdmin()">
                 <button mat-raised-button color="primary" class="apply-button" (click)="aplicarAOferta(offer)"
                   [disabled]="appliedOfferIds.includes(offer.id!)">
                   {{ appliedOfferIds.includes(offer.id!) ? 'Inscrito' : 'Inscribirse' }}

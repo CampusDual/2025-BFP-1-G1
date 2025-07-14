@@ -44,7 +44,7 @@ public class UserService implements UserDetailsService {
 
     @Override
     @Transactional(readOnly = true)
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public User loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = this.userDao.findByLogin(username);
         if (user == null) {
             throw new UsernameNotFoundException("User not found: " + username);

@@ -8,9 +8,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 @Table(name = "users")
@@ -33,9 +31,6 @@ public class User implements UserDetails {
     @ManyToOne
     @JoinColumn(name = "role_id", referencedColumnName = "id")
     private Role role;
-
-    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
-    private Set<UserRole> userRoles = new HashSet<>();
 
     public long getId() {
         return id;
@@ -73,23 +68,11 @@ public class User implements UserDetails {
         this.role = role;
     }
 
-    public Set<UserRole> getUserRoles() {
-        return userRoles;
-    }
-
-    public void setUserRoles(Set<UserRole> userRoles) {
-        this.userRoles = userRoles;
-    }
-
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<GrantedAuthority> authorities = new ArrayList<>();
-        if (userRoles != null) {
-            for (UserRole userRole : userRoles) {
-                if (userRole.getRole() != null) {
-                    authorities.add(new SimpleGrantedAuthority(userRole.getRole().getRoleName()));
-                }
-            }
+        if (this.role != null) {
+            authorities.add(new SimpleGrantedAuthority(this.role.getRoleName()));
         }
         return authorities;
     }

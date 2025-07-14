@@ -52,6 +52,8 @@ export class LoginBoxComponent {
             this.navigateToCatalogue();
           } else if (role === '2' || role === 2) {
             this.router.navigate(['/main/userprofile']);
+          } else if (role === '1' || role === 1) {
+            this.router.navigate(['/main/adminprofile']);
           } else {
             this.navigateToCatalogue();
           }
