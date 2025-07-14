@@ -2,7 +2,7 @@
   padding: 16px;
   height: calc(100vh - 120px);
   overflow-y: auto;
-  background-color: var(--font-base); 
+  background-color: var(--font-base);
   margin-bottom: 8rem;
 }
 
@@ -19,10 +19,10 @@ mat-grid-list {
   padding: 16px;
   box-sizing: border-box;
   position: relative;
-  background-color: #f8f9fa; 
+  background-color: #f8f9fa;
   border: 1px solid #ccc;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4); 
-  border-radius: 9px; 
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+  border-radius: 9px;
 }
 
 .offer-title {
@@ -31,8 +31,8 @@ mat-grid-list {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  border-bottom: 3px solid var(--primary); 
-  padding-bottom: 0.3em; 
+  border-bottom: 3px solid var(--primary);
+  padding-bottom: 0.3em;
   font-family: "Montserrat", "Poppins", "Segoe UI", Arial, sans-serif;
   text-align: left;
 }
@@ -53,7 +53,7 @@ mat-grid-list {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  color: #a3999a; 
+  color: #a3999a;
   font-family: "Poppins", Arial, sans-serif;
 }
 
@@ -63,8 +63,8 @@ mat-grid-list {
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  color: #a3999a; 
-  font-family: "Poppins", Arial, sans-serif; 
+  color: #a3999a;
+  font-family: "Poppins", Arial, sans-serif;
 }
 
 .offer-email {
@@ -73,14 +73,14 @@ mat-grid-list {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  color: #a3999a; 
-  font-family: "Poppins", Arial, sans-serif; 
+  color: #a3999a;
+  font-family: "Poppins", Arial, sans-serif;
 }
 
 .clock-icon {
   font-size: 16px;
   margin-right: 4px;
-  color: inherit; 
+  color: inherit;
 }
 
 .offer-description {
@@ -88,7 +88,7 @@ mat-grid-list {
   min-height: 0;
   overflow: hidden;
   margin-top: 0;
-  
+
 }
 
 .offer-description mat-card-content {
@@ -172,7 +172,7 @@ mat-grid-list {
     flex-direction: column;
     gap: 8px;
   }
-  
+
   .offer-actions button {
     width: 100%;
     margin: 0;
@@ -182,7 +182,7 @@ mat-grid-list {
 .empty-card {
   text-align: center;
   padding: 24px;
-  background-color: #f8f9fa; 
+  background-color: #f8f9fa;
   border: 1px solid #ccc;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
 }
@@ -192,17 +192,17 @@ mat-grid-list {
     padding: 8px;
     height: calc(100vh - 100px);
   }
-  
+
   .offer-card {
     padding: 16px;
     height: auto;
     min-height: 300px;
   }
-  
+
   .offer-title {
     font-size: 1.2rem;
   }
-  
+
   .offer-actions {
     padding-top: 12px;
   }

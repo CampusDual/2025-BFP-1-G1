@@ -5,7 +5,12 @@
         <mat-card-title class="offer-title" [matTooltip]="offer.title">
           {{ offer.title }}
         </mat-card-title>
-        
+        <mat-card-actions>
+          <mat-slide-toggle [(ngModel)]="offer.isActive" (change)="onToggleOfferStatus(offer.id!, offer.isActive!)">
+            Activa
+          </mat-slide-toggle>
+        </mat-card-actions>
+
         <div class="company-info">
           <mat-card-subtitle class="company-name">{{ offer.company?.name }}</mat-card-subtitle>
           <mat-card-subtitle class="offer-date">
@@ -14,22 +19,20 @@
           </mat-card-subtitle>
           <mat-card-subtitle class="offer-email">{{ offer.email }}</mat-card-subtitle>
         </div>
-        
+
         <div class="offer-description">
           <mat-card-content>
             {{ offer.description }}
           </mat-card-content>
         </div>
-        
+
         <mat-card-actions class="offer-actions">
-          <button mat-raised-button color="primary" class="edit-button"
-                  *ngIf="offer.id !== undefined"
-                  [routerLink]="['/main/editOffer', offer.id]">
+          <button mat-raised-button color="primary" class="edit-button" *ngIf="offer.id !== undefined"
+            [routerLink]="['/main/editOffer', offer.id]">
             Editar
           </button>
-          <button mat-raised-button color="accent" class="details-button"
-                  *ngIf="offer.id !== undefined"
-                  (click)="goToOfferDetails(offer.id)">
+          <button mat-raised-button color="accent" class="details-button" *ngIf="offer.id !== undefined"
+            (click)="goToOfferDetails(offer.id)">
             Ver detalles
           </button>
         </mat-card-actions>

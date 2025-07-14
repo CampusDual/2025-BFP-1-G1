@@ -1,17 +1,19 @@
 import { LoadingScreenService } from './../../../services/loading-screen.service';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core'; // Añadir OnDestroy
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { JobOffer } from 'src/app/model/jobOffer';
 import { JobOfferService } from 'src/app/services/job-offer.service';
+import { Subscription } from 'rxjs'; // Importar Subscription
 
 @Component({
   selector: 'app-company-offer-list',
   templateUrl: './company-offer-list.component.html',
   styleUrls: ['./company-offer-list.component.css'],
 })
-export class CompanyOfferListComponent implements OnInit {
+export class CompanyOfferListComponent implements OnInit, OnDestroy {
+  // Implementar OnDestroy
   jobOffers: JobOffer[] = [];
   gridCols: number = 3;
   sortBy:
@@ -23,12 +25,14 @@ export class CompanyOfferListComponent implements OnInit {
     | 'email'
     | 'localizacion'
     | 'modalidad'
+    | 'isActive'
     | 'requisitos'
     | 'deseables'
     | 'beneficios' = 'releaseDate';
   sortDirection: 'asc' | 'desc' = 'desc';
   searchTerm: string = '';
 
+  private offersChangedSubscription?: Subscription;
   constructor(
     private jobOfferService: JobOfferService,
     private breakpointObserver: BreakpointObserver,
@@ -39,20 +43,7 @@ export class CompanyOfferListComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadingScreenService.show();
-    this.jobOfferService
-      .getJobOffersByCompanySorted('releaseDate', 'desc')
-      .subscribe({
-        next: (offers) => {
-          this.jobOffers = offers;
-          this.sortBy = 'releaseDate';
-          this.sortDirection = 'desc';
-          this.loadingScreenService.hide();
-        },
-        error: (err) => {
-          console.error('Error al cargar ofertas:', err);
-          this.loadingScreenService.hide();
-        },
-      });
+    this.loadCompanyOffers(); // Usar un método para cargar ofertas iniciales
 
     this.breakpointObserver
       .observe([
@@ -62,7 +53,6 @@ export class CompanyOfferListComponent implements OnInit {
         Breakpoints.Large,
         Breakpoints.XLarge,
       ])
-
       .subscribe((result) => {
         if (result.matches) {
           if (result.breakpoints[Breakpoints.XSmall]) {
@@ -77,6 +67,37 @@ export class CompanyOfferListComponent implements OnInit {
             this.gridCols = 4;
           }
         }
+      });
+
+    // Suscripción para recargar ofertas cuando cambien (ej. al activar/desactivar)
+    this.offersChangedSubscription = this.jobOfferService
+      .getOffersChangedObservable()
+      .subscribe(() => {
+        this.loadCompanyOffers(); // Recargar las ofertas cuando haya un cambio
+      });
+  }
+
+  ngOnDestroy(): void {
+    // Desuscribirse para evitar fugas de memoria
+    this.offersChangedSubscription?.unsubscribe();
+  }
+
+  // Método para cargar las ofertas de la compañía
+  loadCompanyOffers(): void {
+    this.jobOfferService
+      .getJobOffersByCompanySorted(this.sortBy, this.sortDirection)
+      .subscribe({
+        next: (offers) => {
+          this.jobOffers = offers;
+          this.loadingScreenService.hide();
+        },
+        error: (err) => {
+          console.error('Error al cargar ofertas de la compañía:', err);
+          this.snackBar.open('Error al cargar ofertas', 'Cerrar', {
+            duration: 3000,
+          });
+          this.loadingScreenService.hide();
+        },
       });
   }
 
@@ -101,6 +122,9 @@ export class CompanyOfferListComponent implements OnInit {
         },
         error: (error) => {
           console.error('Error sorting job offers:', error);
+          this.snackBar.open('Error al ordenar ofertas de trabajo', 'Cerrar', {
+            duration: 3000,
+          });
         },
       });
   }
@@ -116,6 +140,9 @@ export class CompanyOfferListComponent implements OnInit {
         },
         error: (error) => {
           console.error('Error filtering job offers:', error);
+          this.snackBar.open('Error al filtrar ofertas de trabajo', 'Cerrar', {
+            duration: 3000,
+          });
         },
       });
   }
@@ -136,7 +163,9 @@ export class CompanyOfferListComponent implements OnInit {
         }
       });
     } catch (error) {
-      this.snackBar.open('Error al abrir detalles', 'Cerrar');
+      this.snackBar.open('Error al abrir detalles', 'Cerrar', {
+        duration: 3000,
+      });
     }
   }
 
@@ -163,5 +192,33 @@ export class CompanyOfferListComponent implements OnInit {
       }
       return 'Hace unos segundos';
     }
+  }
+
+  onToggleOfferStatus(offerId: number, currentStatus: boolean): void {
+    const newStatus = !currentStatus;
+
+    this.jobOfferService.updateJobOfferStatus(offerId, newStatus).subscribe({
+      next: (updatedOffer) => {
+        const index = this.jobOffers.findIndex((o) => o.id === updatedOffer.id);
+        if (index !== -1) {
+          this.jobOffers[index].isActive = updatedOffer.isActive;
+        }
+        this.snackBar.open(
+          `Oferta ${updatedOffer.title} ${
+            newStatus ? 'activada' : 'desactivada'
+          } con éxito.`,
+          'Cerrar',
+          { duration: 3000, panelClass: ['success-snackbar'] }
+        );
+      },
+      error: (error) => {
+        console.error('Error al cambiar el estado de la oferta:', error);
+        this.snackBar.open(
+          'Error al cambiar el estado de la oferta. Inténtalo de nuevo.',
+          'Cerrar',
+          { duration: 5000, panelClass: ['error-snackbar'] }
+        );
+      },
+    });
   }
 }

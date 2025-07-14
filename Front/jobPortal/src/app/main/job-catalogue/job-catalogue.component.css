@@ -181,7 +181,69 @@ mat-grid-list {
   text-align: left;
   isolation: isolate;
   min-width: 0;
+  transition: all 0.3s ease-in-out;
+  /* Añadir transición para suavidad */
 }
+
+/* ESTILOS PARA OFERTAS INACTIVAS */
+.card.inactive-offer {
+  opacity: 0.6;
+  /* Hacerla más transparente */
+  background-color: #f0f0f0;
+  /* Fondo ligeramente más gris */
+  border-color: #aaa;
+  /* Borde más oscuro */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  /* Sombra más sutil */
+  pointer-events: none;
+  /* Deshabilitar clics en la tarjeta si lo deseas */
+  position: relative;
+  /* Para el badge */
+  overflow: hidden;
+  /* Asegurar que el badge se recorte si es muy grande */
+}
+
+.card.inactive-offer::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(255, 255, 255, 0.5);
+  /* Capa semi-transparente sobre la tarjeta */
+  z-index: 1;
+  /* Asegurar que esté sobre el contenido pero debajo del badge si lo pones */
+}
+
+.card.inactive-offer * {
+  color: #888 !important;
+  /* Volver todo el texto gris, forzado */
+}
+
+.card.inactive-offer mat-card-title,
+.card.inactive-offer mat-card-subtitle {
+  border-bottom-color: #bbb !important;
+  /* Cambiar el color del borde del título */
+}
+
+/* Estilo para el badge "INACTIVA" */
+.inactive-badge {
+  background-color: #f44336;
+  /* Rojo */
+  color: white;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 0.7em;
+  font-weight: bold;
+  position: absolute;
+  /* Posicionamiento absoluto */
+  top: 10px;
+  right: 10px;
+  z-index: 2;
+  /* Asegurar que esté por encima de la capa semitransparente */
+}
+
 
 mat-card-title {
   overflow: hidden;
@@ -198,9 +260,9 @@ mat-card-title {
 
 .company-info {
   display: grid;
-  grid-template-columns: 1fr auto; 
-  grid-template-rows: auto auto; 
-  gap: 4px 16px; 
+  grid-template-columns: 1fr auto;
+  grid-template-rows: auto auto;
+  gap: 4px 16px;
   width: 100%;
   margin-bottom: 0;
 }
@@ -218,13 +280,13 @@ mat-card-title {
   grid-column: 2;
   grid-row: 1;
   display: flex;
-  align-items: center; 
-  justify-content: flex-end; 
+  align-items: center;
+  justify-content: flex-end;
   white-space: nowrap;
 }
 
 .email {
-  grid-column: 1 / span 2; 
+  grid-column: 1 / span 2;
   grid-row: 2;
   white-space: nowrap;
   overflow: hidden;
@@ -232,7 +294,7 @@ mat-card-title {
 }
 
 .reloj {
-  margin-right: 4px; 
+  margin-right: 4px;
   font-size: 17px;
   width: 17px;
   height: 17px;
@@ -283,7 +345,7 @@ mat-card-subtitle {
 }
 
 .descripntion-info {
-  flex: 1; 
+  flex: 1;
   min-height: 0;
   overflow: hidden;
   margin-top: 0;
@@ -311,11 +373,12 @@ mat-card-subtitle {
 .mat-raised-button[disabled] {
   background-color: var(--apply-button-bg);
   opacity: var(--apply-button-disabled-opacity);
-  color: var(--apply-button-disabled-color);
+  color: var(--apply-button-disabled-disabled-color);
+  /* Asegurarse de que el color sea gris */
   cursor: not-allowed;
   pointer-events: none;
   box-shadow: 0 2px 5px var(--apply-button-disabled-shadow);
-  transform:none;
+  transform: none;
   transition: none;
 }
 
@@ -344,8 +407,8 @@ mat-card-subtitle {
 }
 
 /* =============
-   ESTILOS MÓVIL
-   =============*/
+     ESTILOS MÓVIL
+     =============*/
 
 @media (max-width: 767px) {
   .global-container {

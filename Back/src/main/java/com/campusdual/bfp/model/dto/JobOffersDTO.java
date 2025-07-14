@@ -14,6 +14,7 @@ public class JobOffersDTO {
     private String email;
     private CompanyDTO company;
     private String title;
+    private boolean isActive = true;
 
     @NotBlank(message = "La descripción es obligatoria")
     @Size(max = 4000, message = "La descripción no puede exceder los 4000 caracteres")
@@ -36,7 +37,6 @@ public class JobOffersDTO {
 
     private String beneficios;
 
-    // Constructores
     public JobOffersDTO() {
     }
 
@@ -54,11 +54,18 @@ public class JobOffersDTO {
         this.beneficios = beneficios;
     }
 
-    // Método de validación
     public void validateDescription() {
         if (this.description != null && this.description.length() > 4000) {
             throw new IllegalArgumentException("La descripción excede los 4000 caracteres permitidos");
         }
+    }
+
+    public boolean isActive() {
+        return isActive;
+    }
+
+    public void setActive(boolean active) {
+        isActive = active;
     }
 
     public long getId() {

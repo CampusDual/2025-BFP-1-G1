@@ -48,6 +48,16 @@ public class JobOffer {
     @Column
     private String beneficios;
 
+    @Column(name = "is_active")
+    private Boolean isActive = true;
+
+    public Boolean getActive() {
+        return isActive;
+    }
+
+    public void setActive(Boolean active) {
+        isActive = active;
+    }
 
     public long getId() {
         return id;

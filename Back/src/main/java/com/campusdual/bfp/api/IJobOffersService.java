@@ -6,8 +6,6 @@ import java.util.List;
 
 public interface IJobOffersService {
 
-    //CRUD Operations
-
     JobOffersDTO queryJobOffer(JobOffersDTO jobOffersDTO);
     List<JobOffersDTO> queryAllJobOffer();
     List<JobOffersDTO> queryAllJobOfferByCompanyId(long id);
@@ -22,8 +20,8 @@ public interface IJobOffersService {
 
     JobOffersDTO updateJobOffer(JobOffersDTO jobOffersDTO);
 
+    JobOffersDTO updateJobOfferActiveStatus(Long id, Boolean isActive);
 
-  /*  long updateJobOffer(JobOffersDTO jobOffersDTO);
-    long deleteJobOffer(JobOffersDTO jobOffersDTO);*/
+
 
 }

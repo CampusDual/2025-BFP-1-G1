@@ -28,6 +28,7 @@ export class JobCatalogueComponent implements OnInit, OnDestroy {
     | 'company'
     | 'email'
     | 'localizacion'
+    | 'isActive'
     | 'modalidad'
     | 'requisitos'
     | 'deseables'
