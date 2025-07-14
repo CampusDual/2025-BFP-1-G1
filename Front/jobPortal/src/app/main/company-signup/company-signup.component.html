@@ -81,13 +81,13 @@
 
         </div>
         <div class="buttons">
-        <button mat-button class="backButton" (click)="goBack()">
-          <mat-icon>arrow_back</mat-icon> Volver
-        </button>
-        <button mat-raised-button class="sign-up-button" color="primary" type="submit" [disabled]="signUpForm.invalid">
-          <span *ngIf="!isSubmitting">Registrarse</span>
-          <span *ngIf="isSubmitting">Registrando...</span>
-        </button>
+          <button mat-raised-button class="action-button" color="primary" type="button" (click)="goBack()">
+            <mat-icon>arrow_back</mat-icon> Volver
+          </button>
+          <button mat-raised-button class="action-button" color="primary" type="submit" [disabled]="signUpForm.invalid">
+            <span *ngIf="!isSubmitting">Registrarse</span>
+            <span *ngIf="isSubmitting">Registrando...</span>
+          </button>
         </div>
       </form>
 

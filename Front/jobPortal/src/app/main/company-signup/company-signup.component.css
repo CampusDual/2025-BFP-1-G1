@@ -84,7 +84,7 @@ body,
 .form-section form {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 24px 32px;
+  gap: 2px 32px;
   width: 100%;
   overflow-y: visible;
   flex-grow: 0;
@@ -97,7 +97,7 @@ body,
 .inputs2 {
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: 2px;
 }
 
 .formulario {
@@ -115,34 +115,22 @@ mat-form-field input[type="password"] {
   box-sizing: border-box;
 }
 
-
-.backButton {
-  background-color: var(--primary);
-  color: white;
-  font-weight: 600;
-  padding: 10px 20px;
-  border-radius: 7px;
-  transition: background-color 0.3s ease;
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  margin-top: 10px;
-}
-.backButton:hover {
-  background-color: var(--primary-dark);
-}
-.backButton mat-icon {
-  font-size: 20px;
-  width: 20px;
-  height: 20px;
-}
-.mat-mdc-button:not(:disabled){
-  color: white;
-}
-.sign-up-button {
+.buttons {
   grid-column: 1 / -1;
+  /* Make buttons span both columns */
+  display: flex;
+  justify-content: center;
+  /* Center the buttons horizontally */
+  gap: 16px;
+  margin-top: 1em;
+  width: 100%;
+}
+
+.action-button {
+  /* Renamed from sign-up-button and backButton for consistency */
   width: 60%;
-  margin: 2rem auto 0 auto;
+  max-width: 200px;
+  /* To prevent buttons from becoming too wide on larger screens */
   padding: 12px 24px;
   background-color: var(--primary);
   color: white;
@@ -150,36 +138,24 @@ mat-form-field input[type="password"] {
   border: none;
   border-radius: 4px;
   transition: background-color 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
 }
 
-
-.login-redirect {
-  width: 100%;
-  text-align: center;
-  margin-top: 1.5rem;
-  padding-top: 1.5rem;
-  border-top: 1px solid var(--gray-light);
+.action-button mat-icon {
+  font-size: 20px;
+  width: 20px;
+  height: 20px;
 }
 
-.candidate-p {
-  margin: 0;
-  font-size: 14px;
-  color: var(--text-secondary);
-}
-
-.login-link {
-  color: var(--primary);
-  font-weight: 500;
-  text-decoration: none;
-  margin-left: 5px;
-}
-
-.login-link:hover {
-  text-decoration: underline;
-}
-
-.sign-up-button:hover {
+.action-button:hover {
   background-color: var(--primary-dark);
+}
+
+.mat-mdc-button:not(:disabled) {
+  color: white;
 }
 
 button[mat-raised-button]:hover:not([disabled]) {
@@ -193,14 +169,6 @@ button[mat-raised-button]:disabled {
   cursor: not-allowed;
   box-shadow: none;
 }
-
-.buttons {
-  display: flex;
-  width: 100%;
-  gap: 16px;
-  margin-top: 1em;
-}
-
 
 mat-error {
   font-size: 0.85rem;
@@ -219,7 +187,7 @@ mat-error {
 
 @media (max-width: 992px) {
   .form-section form {
-    gap: 16px 24px;
+    gap: 1px 24px;
   }
 
   .form-section {
@@ -241,7 +209,6 @@ mat-error {
     max-width: 100%;
     border-radius: 0;
     margin-top: 60px;
-    /* Space for the header */
     max-height: none;
     box-shadow: none;
   }
@@ -262,18 +229,30 @@ mat-error {
 
   .form-section form {
     grid-template-columns: 1fr;
-    gap: 16px;
+    gap: 1px;
   }
 
   .inputs1,
   .inputs2 {
     margin-top: 0;
-    gap: 16px;
+    gap: 1px;
   }
 
-  .sign-up-button {
+  .action-button {
     width: 100%;
-    margin: 1em 0 2em 0;
+    /* Make buttons take full width on mobile */
+    margin: 1em 0 0 0;
+    max-width: none;
+    /* Remove max-width on mobile */
+  }
+
+  .buttons {
+    flex-direction: column;
+    /* Stack buttons vertically on small screens */
+    align-items: center;
+    /* Center stacked buttons */
+    margin-bottom: 2em;
+    /* Add some space at the bottom */
   }
 }
 
@@ -314,48 +293,4 @@ mat-error {
 .custom-tooltip.visible {
   opacity: 1;
   transform: translateY(0);
-}
-
-.form-section form {
-  /* Ultra-reduced row-gap for desktop/larger screens */
-  gap: 2px 32px;
-  /* Adjusted from 5px to 2px for vertical spacing */
-  width: 100%;
-  overflow-y: auto;
-  flex-grow: 1;
-  padding: 20px 0;
-  margin-top: -20px;
-  padding-top: 30px;
-}
-
-.inputs1,
-.inputs2 {
-  /* Ultra-reduced gap between individual fields within columns */
-  gap: 2px;
-  /* Adjusted from 5px to 2px */
-}
-
-/* --- Media Queries Adjustments for Smaller Screens --- */
-@media (max-width: 992px) {
-  .form-section form {
-    /* Ultra-reduced row-gap for tablet/smaller desktop views */
-    gap: 1px 24px;
-    /* Adjusted from 4px to 1px for vertical spacing */
-  }
-}
-
-@media (max-width: 768px) {
-  .form-section form {
-    grid-template-columns: 1fr;
-    /* Ultra-reduced gap for mobile views (single column layout) */
-    gap: 1px;
-    /* Adjusted from 4px to 1px */
-  }
-
-  .inputs1,
-  .inputs2 {
-    /* Ultra-reduced gap for mobile views */
-    gap: 1px;
-    /* Adjusted from 4px to 1px */
-  }
 }
