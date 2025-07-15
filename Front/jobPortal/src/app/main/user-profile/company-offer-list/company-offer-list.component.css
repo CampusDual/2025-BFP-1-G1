@@ -208,7 +208,6 @@ mat-grid-list {
   }
 }
 
-/* Ajuste específico para el grid en móviles */
 @media (max-width: 600px) {
   mat-grid-list {
     grid-template-columns: 1fr !important;

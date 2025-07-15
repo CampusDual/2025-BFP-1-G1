@@ -28,11 +28,11 @@ export class JobCatalogueComponent implements OnInit, OnDestroy {
     | 'company'
     | 'email'
     | 'localizacion'
-    | 'isActive'
     | 'modalidad'
     | 'requisitos'
     | 'deseables'
-    | 'beneficios' = 'releaseDate';
+    | 'beneficios'
+    | 'active' = 'releaseDate';
   sortDirection: 'asc' | 'desc' = 'desc';
   searchTerm: string = '';
   appliedOfferIds: number[] = [];
@@ -52,10 +52,9 @@ export class JobCatalogueComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.loadingScreenService.show();
 
-    // Carga inicial con orden
     this.jobOfferService.getJobOfferSorted('releaseDate', 'desc').subscribe({
       next: (offers) => {
-        this.jobOffers = offers;
+        this.jobOffers = offers.filter((offer) => offer.active);
         this.sortBy = 'releaseDate';
         this.sortDirection = 'desc';
         this.loadingScreenService.hide();
@@ -66,14 +65,12 @@ export class JobCatalogueComponent implements OnInit, OnDestroy {
       },
     });
 
-    // Suscripción para recargar ofertas automáticamente cuando cambien
     this.offersChangedSubscription = this.jobOfferService
       .getOffersChangedObservable()
       .subscribe(() => {
         this.loadOffers();
       });
 
-    // Obtener datos de usuario y aplicaciones si es candidato
     this.usersService.userData$
       .pipe(
         tap((data) => {
@@ -115,7 +112,6 @@ export class JobCatalogueComponent implements OnInit, OnDestroy {
         }
       );
 
-    // Observador de breakpoints para responsive
     this.breakpointObserver
       .observe([
         Breakpoints.XSmall,
@@ -141,13 +137,12 @@ export class JobCatalogueComponent implements OnInit, OnDestroy {
       });
   }
 
-  // Método para recargar ofertas
   loadOffers(): void {
     this.jobOfferService
       .getJobOfferSorted(this.sortBy, this.sortDirection)
       .subscribe({
         next: (offers) => {
-          this.jobOffers = offers;
+          this.jobOffers = offers.filter((offer) => offer.active);
         },
         error: (err) => {
           console.error('Error al recargar ofertas:', err);
@@ -171,8 +166,8 @@ export class JobCatalogueComponent implements OnInit, OnDestroy {
       .getJobOfferSorted(this.sortBy, this.sortDirection)
       .subscribe({
         next: (offers) => {
-          this.jobOffers = offers;
-          console.log('Ofertas ordenadas:', offers);
+          this.jobOffers = offers.filter((offer) => offer.active);
+          console.log('Ofertas ordenadas y filtradas:', this.jobOffers);
         },
         error: (error) => {
           console.error('Error sorting job offers:', error);
@@ -185,8 +180,11 @@ export class JobCatalogueComponent implements OnInit, OnDestroy {
     const lowerCaseSearchTerm = this.searchTerm.toLowerCase();
     this.jobOfferService.getJobOffersFiltered(lowerCaseSearchTerm).subscribe({
       next: (offers) => {
-        this.jobOffers = offers;
-        console.log('Ofertas filtradas:', offers);
+        this.jobOffers = offers.filter((offer) => offer.active);
+        console.log(
+          'Ofertas filtradas por búsqueda y activas:',
+          this.jobOffers
+        );
       },
       error: (error) => {
         console.error('Error filtering job offers:', error);

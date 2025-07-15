@@ -49,14 +49,15 @@ public class JobOffer {
     private String beneficios;
 
     @Column(name = "is_active")
-    private Boolean isActive = true;
+    private Boolean active = false;
 
-    public Boolean getActive() {
-        return isActive;
+    public Boolean getIsActive() {
+        return active;
     }
 
-    public void setActive(Boolean active) {
-        isActive = active;
+
+    public void setIsActive(Boolean isActive) {
+        this.active = isActive;
     }
 
     public long getId() {

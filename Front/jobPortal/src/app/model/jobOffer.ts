@@ -18,5 +18,5 @@ export class JobOffer {
   requisitos!: string;
   deseables?: string;
   beneficios!: string;
-  isActive?: boolean;
+  active!: boolean;
 }

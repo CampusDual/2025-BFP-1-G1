@@ -24,7 +24,7 @@ public interface JobOffersDao extends JpaRepository<JobOffer, Long> {
     List<JobOffer> filterOffersByCompany(@Param("text") String text, @Param("id") long id);
 
     Company findCompanyById(long id);
-    List<JobOffer> findByIsActiveTrue();
+    List<JobOffer> findByActiveTrue();
 
     long countByCompany(Company company);
 

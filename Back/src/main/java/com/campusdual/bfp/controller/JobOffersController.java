@@ -2,6 +2,8 @@ package com.campusdual.bfp.controller;
 
 import com.campusdual.bfp.api.IJobOffersService;
 import com.campusdual.bfp.model.dto.JobOffersDTO;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -52,6 +54,7 @@ public class JobOffersController {
         }
     }
 
+    private static final Logger logger = LoggerFactory.getLogger(JobOffersController.class);
 
     @PutMapping("/{id}/status")
     public ResponseEntity<JobOffersDTO> updateJobOfferStatus(
@@ -59,11 +62,14 @@ public class JobOffersController {
             @RequestParam("active") Boolean active) {
         try {
             JobOffersDTO updatedOffer = jobOffersService.updateJobOfferActiveStatus(id, active);
+            logger.info("DTO devuelto por el servicio ANTES de ser enviado al frontend: {}", updatedOffer);
+
             return new ResponseEntity<>(updatedOffer, HttpStatus.OK);
         } catch (EntityNotFoundException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } catch (Exception e) {
             System.err.println("Error al actualizar el estado de la oferta " + id + ": " + e.getMessage());
+
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }

@@ -1,11 +1,11 @@
 import { LoadingScreenService } from './../../../services/loading-screen.service';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
-import { Component, OnInit, OnDestroy } from '@angular/core'; // Añadir OnDestroy
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { JobOffer } from 'src/app/model/jobOffer';
 import { JobOfferService } from 'src/app/services/job-offer.service';
-import { Subscription } from 'rxjs'; // Importar Subscription
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-company-offer-list',
@@ -13,7 +13,6 @@ import { Subscription } from 'rxjs'; // Importar Subscription
   styleUrls: ['./company-offer-list.component.css'],
 })
 export class CompanyOfferListComponent implements OnInit, OnDestroy {
-  // Implementar OnDestroy
   jobOffers: JobOffer[] = [];
   gridCols: number = 3;
   sortBy:
@@ -25,14 +24,15 @@ export class CompanyOfferListComponent implements OnInit, OnDestroy {
     | 'email'
     | 'localizacion'
     | 'modalidad'
-    | 'isActive'
     | 'requisitos'
     | 'deseables'
+    | 'active'
     | 'beneficios' = 'releaseDate';
   sortDirection: 'asc' | 'desc' = 'desc';
   searchTerm: string = '';
 
   private offersChangedSubscription?: Subscription;
+
   constructor(
     private jobOfferService: JobOfferService,
     private breakpointObserver: BreakpointObserver,
@@ -43,7 +43,7 @@ export class CompanyOfferListComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.loadingScreenService.show();
-    this.loadCompanyOffers(); // Usar un método para cargar ofertas iniciales
+    this.loadCompanyOffers();
 
     this.breakpointObserver
       .observe([
@@ -69,26 +69,24 @@ export class CompanyOfferListComponent implements OnInit, OnDestroy {
         }
       });
 
-    // Suscripción para recargar ofertas cuando cambien (ej. al activar/desactivar)
     this.offersChangedSubscription = this.jobOfferService
       .getOffersChangedObservable()
       .subscribe(() => {
-        this.loadCompanyOffers(); // Recargar las ofertas cuando haya un cambio
+        this.loadCompanyOffers();
       });
   }
 
   ngOnDestroy(): void {
-    // Desuscribirse para evitar fugas de memoria
     this.offersChangedSubscription?.unsubscribe();
   }
 
-  // Método para cargar las ofertas de la compañía
   loadCompanyOffers(): void {
     this.jobOfferService
       .getJobOffersByCompanySorted(this.sortBy, this.sortDirection)
       .subscribe({
         next: (offers) => {
           this.jobOffers = offers;
+          console.log('Ofertas de la compañía:', offers);
           this.loadingScreenService.hide();
         },
         error: (err) => {
@@ -194,30 +192,111 @@ export class CompanyOfferListComponent implements OnInit, OnDestroy {
     }
   }
 
-  onToggleOfferStatus(offerId: number, currentStatus: boolean): void {
-    const newStatus = !currentStatus;
+  onToggleOfferStatus(offer: JobOffer): void {
+    console.log('----------------------------------------------------');
+    console.log('INICIO: onToggleOfferStatus ejecutado.');
+    console.log('Oferta recibida:', { ...offer });
 
-    this.jobOfferService.updateJobOfferStatus(offerId, newStatus).subscribe({
+    if (offer.id === undefined) {
+      console.error('ERROR: ID de oferta es undefined. No se puede proceder.');
+      this.snackBar.open('ID de oferta no válido.', 'Cerrar', {
+        duration: 3000,
+      });
+      return;
+    }
+
+    const originalActiveStatus = offer.active;
+    const newStatus = !originalActiveStatus;
+    console.log(
+      `Estado original (originalActiveStatus): ${originalActiveStatus}`
+    );
+    console.log(`Nuevo estado calculado (newStatus): ${newStatus}`);
+
+    const offerIndex = this.jobOffers.findIndex((o) => o.id === offer.id);
+    console.log(`Buscando oferta con ID ${offer.id} en el array jobOffers.`);
+    console.log(`Índice encontrado: ${offerIndex}`);
+
+    if (offerIndex !== -1) {
+      console.log('Aplicando actualización optimista en la UI...');
+      console.log(
+        `jobOffers[${offerIndex}].active ANTES de optimista: ${this.jobOffers[offerIndex].active}`
+      );
+      this.jobOffers[offerIndex].active = newStatus;
+      console.log(
+        `jobOffers[${offerIndex}].active DESPUÉS de optimista: ${this.jobOffers[offerIndex].active}`
+      );
+    } else {
+      console.warn(
+        'ADVERTENCIA: Oferta no encontrada en el array local jobOffers. La UI no se actualizará optimísticamente ni se revertirá en caso de error.'
+      );
+    }
+
+    this.jobOfferService.updateJobOfferStatus(offer.id, newStatus).subscribe({
       next: (updatedOffer) => {
-        const index = this.jobOffers.findIndex((o) => o.id === updatedOffer.id);
-        if (index !== -1) {
-          this.jobOffers[index].isActive = updatedOffer.isActive;
+        console.log('Petición al backend exitosa (SUBSCRIBE - next).');
+        console.log(
+          'Respuesta completa del backend (updatedOffer):',
+          updatedOffer
+        );
+
+        if (offerIndex !== -1) {
+          console.log(
+            `Confirmando estado de jobOffers[${offerIndex}].active con el valor del backend.`
+          );
+          console.log(`Valor del backend para active: ${updatedOffer.active}`);
+          this.jobOffers[offerIndex].active = updatedOffer.active;
+          console.log(
+            `jobOffers[${offerIndex}].active DESPUÉS de confirmación backend: ${this.jobOffers[offerIndex].active}`
+          );
+        } else {
+          console.warn(
+            'ADVERTENCIA: Oferta no encontrada en el array local después de la respuesta exitosa del backend. No se pudo confirmar el estado.'
+          );
         }
+
         this.snackBar.open(
-          `Oferta ${updatedOffer.title} ${
-            newStatus ? 'activada' : 'desactivada'
+          `Oferta "${updatedOffer.title}" ${
+            updatedOffer.active ? 'activada' : 'desactivada'
           } con éxito.`,
           'Cerrar',
           { duration: 3000, panelClass: ['success-snackbar'] }
         );
+        console.log('SnackBar de éxito mostrado.');
+        this.loadingScreenService.hide();
+        console.log('Spinner ocultado.');
+        console.log('FIN: onToggleOfferStatus (ÉXITO).');
+        console.log('----------------------------------------------------');
       },
       error: (error) => {
-        console.error('Error al cambiar el estado de la oferta:', error);
+        console.error('Petición al backend FALLIDA (SUBSCRIBE - error).');
+        console.error('Error completo:', error);
+
+        this.loadingScreenService.hide();
+        console.log('Spinner ocultado.');
+
         this.snackBar.open(
-          'Error al cambiar el estado de la oferta. Inténtalo de nuevo.',
+          'Error al cambiar el estado de la oferta. Revirtiendo cambio.',
           'Cerrar',
           { duration: 5000, panelClass: ['error-snackbar'] }
         );
+        console.log('SnackBar de error mostrado.');
+
+        if (offerIndex !== -1) {
+          console.log('Revirtiendo estado de la UI al original...');
+          console.log(
+            `jobOffers[${offerIndex}].active ANTES de revertir: ${this.jobOffers[offerIndex].active}`
+          );
+          this.jobOffers[offerIndex].active = originalActiveStatus;
+          console.log(
+            `jobOffers[${offerIndex}].active DESPUÉS de revertir: ${this.jobOffers[offerIndex].active}`
+          );
+        } else {
+          console.warn(
+            'ADVERTENCIA: Oferta no encontrada en el array local en el manejo de errores. No se pudo revertir el estado.'
+          );
+        }
+        console.log('FIN: onToggleOfferStatus (ERROR).');
+        console.log('----------------------------------------------------');
       },
     });
   }

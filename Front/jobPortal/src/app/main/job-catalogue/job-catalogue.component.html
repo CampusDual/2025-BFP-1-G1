@@ -28,10 +28,10 @@
   <div class="grid-wrapper">
     <mat-grid-list class="content" [cols]="gridCols" rowHeight="300px" gutterSize="24px">
       <mat-grid-tile *ngFor="let offer of jobOffers">
-        <mat-card class="card" [class.inactive-offer]="!offer.isActive">
+        <mat-card class="card" [class.inactive-offer]="!offer.active">
           <mat-card-title #titleElement [matTooltip]="isTruncated(titleElement) ? offer.title : ''">
             {{ offer.title }}
-            <span *ngIf="!offer.isActive" class="inactive-badge">INACTIVA</span>
+            <span *ngIf="!offer.active" class="inactive-badge">INACTIVA</span>
           </mat-card-title>
           <div class="company-info">
             <mat-card-subtitle class="empresa">{{ offer.company?.name }}</mat-card-subtitle>

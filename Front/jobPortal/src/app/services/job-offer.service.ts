@@ -14,6 +14,7 @@ export class JobOfferService {
   private offersChangedSubject = new Subject<void>();
 
   constructor(private http: HttpClient) {}
+
   getOffersChangedObservable(): Observable<void> {
     return this.offersChangedSubject.asObservable();
   }
@@ -101,7 +102,6 @@ export class JobOfferService {
       .pipe(
         map((response) => {
           let jobOffer = response as JobOffer;
-          // Emitir evento para notificar que las ofertas cambiaron
           this.offersChangedSubject.next();
           return jobOffer;
         }),
