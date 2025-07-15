@@ -15,6 +15,14 @@ public class Application {
     @Column(name = "id_offer", nullable = false)
     private Long idOffer;
 
+    @ManyToOne
+    @JoinColumn(name = "id_candidate", insertable = false, updatable = false)
+    private Candidate candidate;
+
+    @ManyToOne
+    @JoinColumn(name = "id_offer", insertable = false, updatable = false)
+    private JobOffer jobOffer;
+
     public Application() {}
 
     public Application(Long idCandidate, Long idOffer) {
