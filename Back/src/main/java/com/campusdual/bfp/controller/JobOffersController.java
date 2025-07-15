@@ -1,6 +1,7 @@
 package com.campusdual.bfp.controller;
 
 import com.campusdual.bfp.api.IJobOffersService;
+import com.campusdual.bfp.model.dto.CandidateDTO;
 import com.campusdual.bfp.model.dto.JobOffersDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -85,7 +86,14 @@ public class JobOffersController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND); // O un 500 si es otro error
         }
     }
-
+@PostMapping(value = "/getcandidatesbyjoboffer")
+public ResponseEntity<List<CandidateDTO>> getCandidatesByJobOffer(@RequestBody JobOffersDTO jobOffersDTO) {
+    try {
+        return ResponseEntity.ok(jobOffersService.getCandidatesByJobOffer(jobOffersDTO));
+    }catch (IllegalArgumentException e) {
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
+}
     @PostMapping(value = "/add")
     public ResponseEntity<Long> insertJobOffer(@RequestBody JobOffersDTO jobOffersDTO) {
         try {
@@ -100,6 +108,7 @@ public class JobOffersController {
     }
 
     /*
+
     @DeleteMapping(value = "/delete")
     public ResponseEntity<Long> deleteJobOffer(@RequestBody JobOffersDTO jobOffersDTO) {
         try {

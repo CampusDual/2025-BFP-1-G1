@@ -1,7 +1,9 @@
 package com.campusdual.bfp.model.dao;
 
+import com.campusdual.bfp.model.Candidate;
 import com.campusdual.bfp.model.Company;
 import com.campusdual.bfp.model.JobOffer;
+import com.campusdual.bfp.model.dto.JobOffersDTO;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -26,6 +28,8 @@ public interface JobOffersDao extends JpaRepository<JobOffer, Long> {
     Company findCompanyById(long id);
     List<JobOffer> findByActiveTrue();
 
+    @Query("SELECT c FROM Candidate c, Application a WHERE c.id = a.idCandidate AND a.idOffer = :#{#jobOffersDTO.id}")
+    List<Candidate> getCandidatesByJobOffer(JobOffersDTO jobOffersDTO);
     long countByCompany(Company company);
 
 }

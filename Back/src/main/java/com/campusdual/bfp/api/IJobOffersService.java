@@ -1,5 +1,6 @@
 package com.campusdual.bfp.api;
 
+import com.campusdual.bfp.model.dto.CandidateDTO;
 import com.campusdual.bfp.model.dto.JobOffersDTO;
 
 import java.util.List;
@@ -21,7 +22,7 @@ public interface IJobOffersService {
     JobOffersDTO updateJobOffer(JobOffersDTO jobOffersDTO);
 
     JobOffersDTO updateJobOfferActiveStatus(Long id, Boolean isActive);
-
+    List<CandidateDTO> getCandidatesByJobOffer(JobOffersDTO jobOffersDTO);
 
 
 }
