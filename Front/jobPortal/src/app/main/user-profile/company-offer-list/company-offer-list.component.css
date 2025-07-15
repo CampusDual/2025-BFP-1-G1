@@ -1,10 +1,8 @@
-/* ===== LAYOUT ===== */
 .offer-list-container {
   padding: 16px;
   height: calc(100vh - 120px);
   overflow-y: auto;
   background-color: var(--font-base);
-  /* Assuming this variable is defined elsewhere */
   margin-bottom: 8rem;
 }
 
@@ -24,24 +22,48 @@ mat-grid-list {
   background-color: #f8f9fa;
   border: 1px solid #ccc;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
-  /* Existing shadow, giving a "raised" look */
   border-radius: 9px;
   transition: all 0.3s ease-in-out;
-  /* Smooth transition for active/inactive state */
 }
 
 .offer-title {
   font-size: 1.3rem;
+  flex: 1;
   margin-bottom: 12px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  border-bottom: 3px solid var(--primary);
-  /* Assuming this variable is defined */
   padding-bottom: 0.3em;
   font-family: "Montserrat", "Poppins", "Segoe UI", Arial, sans-serif;
   text-align: left;
 }
+
+.title-with-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  width: 100%;
+  border-bottom: 3px solid var(--primary);
+
+}
+
+.tooltip-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  width: 100%;
+}
+
+.status-toggle {
+  flex-shrink: 0;
+  padding-bottom: 1rem;
+  padding-left: 1rem;
+}
+
+
+
 
 .company-info {
   display: grid;
@@ -61,6 +83,7 @@ mat-grid-list {
   text-overflow: ellipsis;
   color: #a3999a;
   font-family: "Poppins", Arial, sans-serif;
+  padding-top: 0.3em;
 }
 
 .offer-date {
@@ -87,6 +110,7 @@ mat-grid-list {
   font-size: 16px;
   margin-right: 4px;
   color: inherit;
+  padding-top: 0.3em;
 }
 
 .offer-description {
@@ -94,6 +118,7 @@ mat-grid-list {
   min-height: 0;
   overflow: hidden;
   margin-top: 0;
+
 }
 
 .offer-description mat-card-content {
@@ -126,7 +151,6 @@ mat-grid-list {
   border: none;
   border-radius: 4px;
   font-family: var(--font-base, 'Roboto', sans-serif);
-  /* Assuming this variable is defined */
   font-size: 0.8rem;
   font-weight: 500;
   line-height: 1.4;
@@ -142,13 +166,11 @@ mat-grid-list {
 
 .edit-button {
   background-color: var(--primary);
-  /* Assuming this variable is defined */
   color: white;
 }
 
 .edit-button:hover {
   background-color: var(--primary-dark);
-  /* Assuming this variable is defined */
   transform: translateY(-1px);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
@@ -160,13 +182,11 @@ mat-grid-list {
 
 .details-button {
   background-color: var(--gray, #6c757d);
-  /* Assuming this variable is defined */
   color: white;
 }
 
 .details-button:hover {
   background-color: var(--gray-dark, #5a6268);
-  /* Assuming this variable is defined */
   transform: translateY(-1px);
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
 }
@@ -176,49 +196,56 @@ mat-grid-list {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-/* New: Styles for inactive offer cards */
 .inactive-offer-card {
   opacity: 0.7;
-  /* Make it more gray/transparent */
   filter: grayscale(100%);
-  /* Completely desaturate colors */
   background-color: #f0f0f0;
-  /* Lighter background for inactive */
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-  /* Slightly less prominent shadow */
   border-color: #e0e0e0;
-  /* Disable pointer events for the whole card to prevent hovering effects or clicks on non-toggle elements */
   pointer-events: none;
 }
-
-/* Re-enable pointer events and specific styles for the toggle button within an inactive card */
+ 
 .inactive-offer-card .toggle-action-container .status-toggle {
   pointer-events: auto;
-  /* Re-enable pointer events for the toggle */
   opacity: 1;
-  /* Ensure full opacity for the toggle */
   filter: none;
-  /* Remove grayscale for the toggle */
 }
-
-/* Styles for disabled buttons within an inactive card */
+ 
 .inactive-offer-card .offer-actions button {
   background-color: #cccccc;
-  /* Gray background for disabled buttons */
   color: #666666;
-  /* Darker text for disabled buttons */
   cursor: not-allowed;
   box-shadow: none;
-  /* No shadow for disabled buttons */
   transform: none;
-  /* No hover/active transform */
   pointer-events: none;
-  /* Explicitly disable pointer events for buttons, even if parent had it */
 }
-
+ 
 .inactive-offer-card .offer-actions button:hover {
   background-color: #cccccc;
-  /* No hover effect for disabled buttons */
+}
+ 
+.empty-card {
+  text-align: center;
+  padding: 24px;
+  background-color: #f8f9fa;
+  border: 1px solid #ccc;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+}
+
+
+
+
+/* Ensure buttons are full width on mobile */
+@media (max-width: 600px) {
+  .offer-actions {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .offer-actions button {
+    width: 100%;
+    margin: 0;
+  }
 }
 
 .empty-card {
@@ -229,7 +256,6 @@ mat-grid-list {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
 }
 
-/* Responsive adjustments */
 @media (max-width: 768px) {
   .offer-list-container {
     padding: 8px;
@@ -254,15 +280,5 @@ mat-grid-list {
 @media (max-width: 600px) {
   mat-grid-list {
     grid-template-columns: 1fr !important;
-  }
-
-  .offer-actions {
-    flex-direction: column;
-    gap: 8px;
-  }
-
-  .offer-actions button {
-    width: 100%;
-    margin: 0;
   }
 }
