@@ -46,7 +46,7 @@ public class WorkExperienceController {
             return ResponseEntity.status(400).body("Candidate not found");
         }
 
-        if(workExperienceDTO.getId() != user.getCandidate().getId()) {
+        if(workExperienceDTO.getIdCandidate() != user.getCandidate().getId()) {
             return ResponseEntity.status(400).body("Candidate id does not match");
         }
 
@@ -66,7 +66,7 @@ public class WorkExperienceController {
             return ResponseEntity.status(400).body("Candidate not found");
         }
 
-        if(workExperienceDTO.getId() != user.getCandidate().getId()) {
+        if(workExperienceDTO.getIdCandidate() != user.getCandidate().getId()) {
             return ResponseEntity.status(400).body("Candidate id does not match");
         }
 

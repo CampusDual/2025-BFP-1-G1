@@ -11,9 +11,9 @@ public class Education {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-
-    @JoinColumn(name = "id_candidate", referencedColumnName = "id")
-    private long idCandidate;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_candidate")
+    private Candidate candidate;
 
     @Column
     private String degree;
@@ -42,12 +42,12 @@ public class Education {
         this.id = id;
     }
 
-    public long getIdCandidate() {
-        return idCandidate;
+    public Candidate getCandidate() {
+        return candidate;
     }
 
-    public void setIdCandidate(long idCandidate) {
-        this.idCandidate = idCandidate;
+    public void setCandidate(Candidate candidate) {
+        this.candidate = candidate;
     }
 
     public String getDegree() {

@@ -1,11 +1,11 @@
 package com.campusdual.bfp.service;
 
-import com.campusdual.bfp.model.JobOffer;
+
 import com.campusdual.bfp.model.WorkExperience;
 import com.campusdual.bfp.model.dao.WorkExperienceDao;
-import com.campusdual.bfp.model.dto.JobOffersDTO;
+
 import com.campusdual.bfp.model.dto.WorkExperienceDTO;
-import com.campusdual.bfp.model.dto.dtomapper.JobOffersMapper;
+
 import com.campusdual.bfp.model.dto.dtomapper.WorkExperienceMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
