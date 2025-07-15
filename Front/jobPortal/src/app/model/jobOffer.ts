@@ -3,7 +3,7 @@ import { Company } from './company';
 export enum EnumModalidadTrabajo {
   Presencial = 'presencial',
   Remoto = 'remoto',
-  Hibrido = 'hibrido'
+  Hibrido = 'hibrido',
 }
 
 export class JobOffer {
@@ -18,4 +18,5 @@ export class JobOffer {
   requisitos!: string;
   deseables?: string;
   beneficios!: string;
+  active!: boolean;
 }
