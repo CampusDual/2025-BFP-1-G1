@@ -4,13 +4,14 @@
       <mat-card class="offer-card">
         <mat-card-title class="offer-title" [matTooltip]="offer.title">
           {{ offer.title }}
-        </mat-card-title>
-        <mat-card-actions class="toggle-action-container">
+          <mat-card-actions class="toggle-action-container">
           <mat-slide-toggle [checked]="offer.active" (change)="onToggleOfferStatus(offer)" color="primary"
             class="status-toggle" [matTooltip]="offer.active ? 'Desactivar oferta' : 'Activar oferta'">
             {{ offer.active ? 'Activa' : 'Inactiva' }}
           </mat-slide-toggle>
         </mat-card-actions>
+        </mat-card-title>
+        
 
         <div class="company-info">
           <mat-card-subtitle class="company-name">{{ offer.company?.name }}</mat-card-subtitle>
