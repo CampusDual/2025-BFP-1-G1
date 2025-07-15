@@ -16,13 +16,14 @@ import { Location } from '@angular/common';
   styleUrls: ['./offer-details.component.css'],
 })
 export class OfferDetailsComponent implements OnInit {
-  offer: JobOffer | undefined;
+  offer!: JobOffer;
   userData: UserData | null = null;
   appliedOfferIds: number[] = [];
   candidate: Candidate | null = null;
   offerCandidates: Candidate[] = [];
   isLoadingCandidates: boolean = false;
   errorLoadingCandidates: string | null = null;
+  displayedColumns: string[] = ['name', 'email', 'phone', 'birthdate'];
 
   constructor(
     private route: ActivatedRoute,
@@ -61,15 +62,16 @@ export class OfferDetailsComponent implements OnInit {
             },
           });
         }
+
+        if (this.isOfferOwner() || this.isAdmin()) {
+          this.loadCandidatesForOffer(id);
+        }
       });
 
     if (id) {
       this.jobService.getJobOfferById(id).subscribe({
         next: (data: JobOffer) => {
           this.offer = data;
-          if (this.offer.id) {
-            this.loadCandidatesForOffer(this.offer.id);
-          }
         },
         error: (err) => {
           console.error('Error al cargar la oferta:', err);

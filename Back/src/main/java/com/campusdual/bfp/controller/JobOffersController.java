@@ -20,6 +20,23 @@ public class JobOffersController {
     @Autowired
     private IJobOffersService jobOffersService;
 
+    private static final Logger logger = LoggerFactory.getLogger(JobOffersController.class);
+
+    @PostMapping(value = "/getCandidatesByJobOffer")
+    public ResponseEntity<List<CandidateDTO>> getCandidatesByJobOffer(@RequestBody JobOffersDTO jobOffersDTO) {
+        try {
+            long offerId = jobOffersDTO.getId();
+            if (offerId <= 0) {
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            }
+            List<CandidateDTO> candidates = jobOffersService.getCandidatesByJobOffer(offerId);
+            return ResponseEntity.ok(candidates);
+        } catch (Exception e) {
+            logger.error("Error getting candidates for job offer: " + e.getMessage(), e);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
     @GetMapping(value = "/testController")
     public String testJobOffersController() {
         return "jobOffers controller works!";
@@ -55,8 +72,6 @@ public class JobOffersController {
         }
     }
 
-    private static final Logger logger = LoggerFactory.getLogger(JobOffersController.class);
-
     @PutMapping("/{id}/status")
     public ResponseEntity<JobOffersDTO> updateJobOfferStatus(
             @PathVariable Long id,
@@ -86,12 +101,6 @@ public class JobOffersController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND); // O un 500 si es otro error
         }
     }
-@PostMapping(value = "/getCandidatesByJobOffer")
-public ResponseEntity<List<CandidateDTO>> getCandidatesByJobOffer(@RequestBody JobOffersDTO jobOffersDTO) {
-
-        return ResponseEntity.ok(jobOffersService.getCandidatesByJobOffer(jobOffersDTO));
-
-}
 
     @PostMapping(value = "/add")
     public ResponseEntity<Long> insertJobOffer(@RequestBody JobOffersDTO jobOffersDTO) {

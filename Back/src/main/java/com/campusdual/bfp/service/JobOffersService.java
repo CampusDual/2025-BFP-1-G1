@@ -202,11 +202,10 @@ public class JobOffersService implements IJobOffersService {
         }
     }
     @Transactional
-    public List<CandidateDTO> getCandidatesByJobOffer(JobOffersDTO jobOffersDTO) {
-        return jobOffersDao.getCandidatesByJobOffer(jobOffersDTO)
+    public List<CandidateDTO> getCandidatesByJobOffer(long jobId) {
+        return jobOffersDao.getCandidatesByJobOffer(jobId)
                 .stream()
-                .map(candidate -> CandidateMapper.INSTANCE.toDTO(candidate))
+                .map(CandidateMapper.INSTANCE::toDTO)
                 .collect(Collectors.toList());
-
     }
 }

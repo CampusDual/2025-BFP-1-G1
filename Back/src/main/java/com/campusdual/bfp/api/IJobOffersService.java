@@ -22,7 +22,7 @@ public interface IJobOffersService {
     JobOffersDTO updateJobOffer(JobOffersDTO jobOffersDTO);
 
     JobOffersDTO updateJobOfferActiveStatus(Long id, Boolean isActive);
-    List<CandidateDTO> getCandidatesByJobOffer(JobOffersDTO jobOffersDTO);
+    List<CandidateDTO> getCandidatesByJobOffer(long jobId);
 
 
 }
