@@ -25,13 +25,13 @@ import { BrowserModule } from '@angular/platform-browser';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { TokenInterceptor } from './token-interceptor';
 import { CompanySignupComponent } from './company-signup/company-signup.component';
-import {MatDividerModule} from '@angular/material/divider';
-import {MatSelectModule} from '@angular/material/select';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatSelectModule } from '@angular/material/select';
 import { OfferDetailsComponent } from './offer-details/offer-details.component';
 import { EditOfferComponent } from './edit-offer/edit-offer.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-
+import { RouterModule } from '@angular/router';
 
 @NgModule({
   providers: [
@@ -75,6 +75,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
     MatDividerModule,
     MatSelectModule,
     MatSlideToggleModule,
+    RouterModule,
   ],
 })
 export class MainModule {}

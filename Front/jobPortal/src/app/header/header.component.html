@@ -10,7 +10,8 @@
       </button>
       <mat-menu #userMenu="matMenu">
         <button mat-menu-item (click)="redirectToProfile()">
-          {{ isAdmin() ? 'Perfil Admin' : (isCandidate() ? 'Perfil Candidato' : 'Perfil Empresa') }}
+          {{ isAdmin() ? 'Perfil Admin' : (isCandidate() ? 'Perfil Candidato' : (isCompany() ? 'Perfil Empresa' : ''))
+          }}
         </button>
         <button mat-menu-item *ngIf="isCompany()" [routerLink]="['/main/createOffer']">
           Añadir Oferta

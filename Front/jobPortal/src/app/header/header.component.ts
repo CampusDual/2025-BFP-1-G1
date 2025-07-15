@@ -20,6 +20,9 @@ export class HeaderComponent implements OnInit {
     if (!this.userData && this.usersService.isLoggedIn()) {
       this.usersService.getUserData().subscribe();
     }
+    console.log('isAdmin():', this.isAdmin());
+console.log('isCandidate():', this.isCandidate());
+console.log('isCompany():', this.isCompany());
   }
 
   goToCatalogue(): void {
@@ -91,7 +94,7 @@ export class HeaderComponent implements OnInit {
   }
   isAdmin(): boolean {
     return (
-      !!this.userData?.company ||
+      !!this.userData?.admin ||
       (!!this.userData?.user && this.userData.user.role_id === 1)
     );
   }

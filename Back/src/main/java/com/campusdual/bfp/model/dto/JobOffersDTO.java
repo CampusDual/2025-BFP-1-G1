@@ -14,6 +14,7 @@ public class JobOffersDTO {
     private String email;
     private CompanyDTO company;
     private String title;
+    private boolean active = true;
 
     @NotBlank(message = "La descripción es obligatoria")
     @Size(max = 4000, message = "La descripción no puede exceder los 4000 caracteres")
@@ -36,7 +37,6 @@ public class JobOffersDTO {
 
     private String beneficios;
 
-    // Constructores
     public JobOffersDTO() {
     }
 
@@ -54,13 +54,36 @@ public class JobOffersDTO {
         this.beneficios = beneficios;
     }
 
-    // Método de validación
     public void validateDescription() {
         if (this.description != null && this.description.length() > 4000) {
             throw new IllegalArgumentException("La descripción excede los 4000 caracteres permitidos");
         }
     }
 
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;    }
+
+    @Override
+    public String toString() {
+        return "JobOffersDTO{" +
+                "id=" + id +
+                ", email='" + email + '\'' +
+                ", company=" + (company != null ? company.getName() : "null") + // Evita recursión si Company es grande
+                ", title='" + title + '\'' +
+                ", description='" + description + '\'' +
+                ", releaseDate='" + releaseDate + '\'' +
+                ", localizacion='" + localizacion + '\'' +
+                ", modalidad='" + modalidad + '\'' +
+                ", requisitos='" + requisitos + '\'' +
+                ", deseables='" + deseables + '\'' +
+                ", beneficios='" + beneficios + '\'' +
+                ", active=" + active + // <-- ¡Esto nos dirá el valor exacto del DTO!
+                '}';
+    }
     public long getId() {
         return id;
     }

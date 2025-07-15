@@ -1,6 +1,5 @@
 package com.campusdual.bfp.controller;
 
-
 import com.campusdual.bfp.api.IJobOffersService;
 import com.campusdual.bfp.model.User;
 import com.campusdual.bfp.model.dto.JobOffersDTO;
@@ -12,16 +11,19 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+import javax.persistence.EntityNotFoundException; // Asegúrate de importar esto
+
 
 import java.util.List;
 
 @RestController
+
 @RequestMapping("/offersManagement")
 public class OffersManagementController {
 
     @Autowired
     private IJobOffersService jobOffersService;
-    
+
     @Autowired
     private UserDataService userDataService;
 
@@ -84,20 +86,18 @@ public class OffersManagementController {
         if (existingOffer == null) {
             throw new RuntimeException("No se encontró la oferta con ID: " + id);
         }
-        
 
-        if (existingOffer.getCompany() == null || 
-            existingOffer.getCompany().getId() != userData.getCompany().getId()) {
+
+        if (existingOffer.getCompany() == null ||
+                existingOffer.getCompany().getId() != userData.getCompany().getId()) {
             throw new SecurityException("No tienes permiso para modificar esta oferta");
         }
-        
+
 
         return ResponseEntity.ok(jobOffersService.updateJobOffer(jobOffersDTO));
     }
 
 /*
-
-
     @DeleteMapping (value="/delete")
     public long deleteJobOffer(@RequestBody JobOffersDTO jobOffersDTO){
         return jobOffersService.deleteJobOffer(jobOffersDTO);

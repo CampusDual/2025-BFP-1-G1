@@ -2,7 +2,7 @@
   padding: 16px;
   height: calc(100vh - 120px);
   overflow-y: auto;
-  background-color: var(--font-base); 
+  background-color: var(--font-base);
   margin-bottom: 8rem;
 }
 
@@ -19,23 +19,51 @@ mat-grid-list {
   padding: 16px;
   box-sizing: border-box;
   position: relative;
-  background-color: #f8f9fa; 
+  background-color: #f8f9fa;
   border: 1px solid #ccc;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4); 
-  border-radius: 9px; 
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+  border-radius: 9px;
+  transition: all 0.3s ease-in-out;
 }
 
 .offer-title {
   font-size: 1.3rem;
+  flex: 1;
   margin-bottom: 12px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  border-bottom: 3px solid var(--primary); 
-  padding-bottom: 0.3em; 
+  padding-bottom: 0.3em;
   font-family: "Montserrat", "Poppins", "Segoe UI", Arial, sans-serif;
   text-align: left;
 }
+
+.title-with-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  width: 100%;
+  border-bottom: 3px solid var(--primary);
+
+}
+
+.tooltip-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  width: 100%;
+}
+
+.status-toggle {
+  flex-shrink: 0;
+  padding-bottom: 1rem;
+  padding-left: 1rem;
+}
+
+
+
 
 .company-info {
   display: grid;
@@ -53,8 +81,9 @@ mat-grid-list {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  color: #a3999a; 
+  color: #a3999a;
   font-family: "Poppins", Arial, sans-serif;
+  padding-top: 0.3em;
 }
 
 .offer-date {
@@ -63,8 +92,8 @@ mat-grid-list {
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  color: #a3999a; 
-  font-family: "Poppins", Arial, sans-serif; 
+  color: #a3999a;
+  font-family: "Poppins", Arial, sans-serif;
 }
 
 .offer-email {
@@ -73,14 +102,15 @@ mat-grid-list {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  color: #a3999a; 
-  font-family: "Poppins", Arial, sans-serif; 
+  color: #a3999a;
+  font-family: "Poppins", Arial, sans-serif;
 }
 
 .clock-icon {
   font-size: 16px;
   margin-right: 4px;
-  color: inherit; 
+  color: inherit;
+  padding-top: 0.3em;
 }
 
 .offer-description {
@@ -88,7 +118,7 @@ mat-grid-list {
   min-height: 0;
   overflow: hidden;
   margin-top: 0;
-  
+
 }
 
 .offer-description mat-card-content {
@@ -166,13 +196,52 @@ mat-grid-list {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
+.inactive-offer-card {
+  opacity: 0.7;
+  filter: grayscale(100%);
+  background-color: #f0f0f0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  border-color: #e0e0e0;
+  pointer-events: none;
+}
+ 
+.inactive-offer-card .toggle-action-container .status-toggle {
+  pointer-events: auto;
+  opacity: 1;
+  filter: none;
+}
+ 
+.inactive-offer-card .offer-actions button {
+  background-color: #cccccc;
+  color: #666666;
+  cursor: not-allowed;
+  box-shadow: none;
+  transform: none;
+  pointer-events: none;
+}
+ 
+.inactive-offer-card .offer-actions button:hover {
+  background-color: #cccccc;
+}
+ 
+.empty-card {
+  text-align: center;
+  padding: 24px;
+  background-color: #f8f9fa;
+  border: 1px solid #ccc;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+}
+
+
+
+
 /* Ensure buttons are full width on mobile */
 @media (max-width: 600px) {
   .offer-actions {
     flex-direction: column;
     gap: 8px;
   }
-  
+
   .offer-actions button {
     width: 100%;
     margin: 0;
@@ -182,7 +251,7 @@ mat-grid-list {
 .empty-card {
   text-align: center;
   padding: 24px;
-  background-color: #f8f9fa; 
+  background-color: #f8f9fa;
   border: 1px solid #ccc;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
 }
@@ -192,23 +261,22 @@ mat-grid-list {
     padding: 8px;
     height: calc(100vh - 100px);
   }
-  
+
   .offer-card {
     padding: 16px;
     height: auto;
     min-height: 300px;
   }
-  
+
   .offer-title {
     font-size: 1.2rem;
   }
-  
+
   .offer-actions {
     padding-top: 12px;
   }
 }
 
-/* Ajuste específico para el grid en móviles */
 @media (max-width: 600px) {
   mat-grid-list {
     grid-template-columns: 1fr !important;

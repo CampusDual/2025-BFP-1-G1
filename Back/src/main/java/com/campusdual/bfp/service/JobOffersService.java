@@ -5,17 +5,25 @@ import com.campusdual.bfp.model.JobOffer;
 import com.campusdual.bfp.model.dao.JobOffersDao;
 import com.campusdual.bfp.model.dto.JobOffersDTO;
 import com.campusdual.bfp.model.dto.dtomapper.JobOffersMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional; // Importar Transactional
 
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 
 @Service
 @Lazy
 public class JobOffersService implements IJobOffersService {
+    private static final Logger logger = LoggerFactory.getLogger(JobOffersService.class); // Añadir esto
+
 
     @Autowired
     private JobOffersDao jobOffersDao;
@@ -30,8 +38,10 @@ public class JobOffersService implements IJobOffersService {
     @Override
     public List<JobOffersDTO> queryAllJobOffer() {
         List<JobOffer> list = jobOffersDao.findAll();
-        List<JobOffersDTO> listDto = JobOffersMapper.INSTANCE.toDTOList(list);
-        return listDto;
+        return list.stream()
+                .filter(jobOffer -> jobOffer.getIsActive() != null && jobOffer.getIsActive())
+                .map(JobOffersMapper.INSTANCE::toDTO)
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -52,6 +62,7 @@ public class JobOffersService implements IJobOffersService {
 
 
     @Override
+    @Transactional
     public long insertJobOffer(JobOffersDTO jobOffersDTO) {
         if (jobOffersDTO.getModalidad() == null) {
             throw new IllegalArgumentException("La modalidad es un campo requerido");
@@ -78,15 +89,22 @@ public class JobOffersService implements IJobOffersService {
         Sort.Direction sortDirection = "desc".equalsIgnoreCase(direction) ? Sort.Direction.DESC : Sort.Direction.ASC;
         Sort sort = Sort.by(sortDirection, sortBy);
         List<JobOffer> jobOffers = jobOffersDao.findAll(sort);
-        return JobOffersMapper.INSTANCE.toDTOList(jobOffers);
+        return jobOffers.stream()
+                .filter(jobOffer -> jobOffer.getIsActive() != null && jobOffer.getIsActive())
+                .map(JobOffersMapper.INSTANCE::toDTO)
+                .collect(Collectors.toList());
     }
 
     @Override
     public List<JobOffersDTO> queryAllOffersFilterByCompany(String filterBy, Long id) {
         if (filterBy == null || filterBy.trim().isEmpty()) {
-            return queryAllJobOffer();
+            return queryAllJobOfferByCompanyId(id);
         }
-        return JobOffersMapper.INSTANCE.toDTOList(jobOffersDao.filterOffersByCompany(filterBy, id));
+        List<JobOffer> filteredOffers = jobOffersDao.filterOffersByCompany(filterBy, id);
+        return filteredOffers.stream()
+                .filter(jobOffer -> jobOffer.getIsActive() != null && jobOffer.getIsActive())
+                .map(JobOffersMapper.INSTANCE::toDTO)
+                .collect(Collectors.toList());
     }
 
 
@@ -94,7 +112,11 @@ public class JobOffersService implements IJobOffersService {
         if (filterBy == null || filterBy.trim().isEmpty()) {
             return queryAllJobOffer();
         }
-        return JobOffersMapper.INSTANCE.toDTOList(jobOffersDao.filterOffers(filterBy));
+        List<JobOffer> filteredOffers = jobOffersDao.filterOffers(filterBy);
+        return filteredOffers.stream()
+                .filter(jobOffer -> jobOffer.getIsActive() != null && jobOffer.getIsActive())
+                .map(JobOffersMapper.INSTANCE::toDTO)
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -104,22 +126,21 @@ public class JobOffersService implements IJobOffersService {
 
 
     @Override
+    @Transactional
     public JobOffersDTO updateJobOffer(JobOffersDTO jobOffersDTO) {
-
         if (jobOffersDTO.getId() <= 0) {
             throw new IllegalArgumentException("Invalid job offer ID: " + jobOffersDTO.getId());
         }
 
         JobOffer existingOffer = jobOffersDao.findById(jobOffersDTO.getId())
-            .orElseThrow(() -> new RuntimeException("Job offer not found with id: " + jobOffersDTO.getId()));
-
+                .orElseThrow(() -> new EntityNotFoundException("Job offer not found with id: " + jobOffersDTO.getId())); // Usar EntityNotFoundException
 
         if (jobOffersDTO.getTitle() != null) {
             existingOffer.setTitle(jobOffersDTO.getTitle());
         }
         if (jobOffersDTO.getDescription() != null) {
             existingOffer.setDescription(
-                jobOffersDTO.getDescription().substring(0, Math.min(jobOffersDTO.getDescription().length(), 4000))
+                    jobOffersDTO.getDescription().substring(0, Math.min(jobOffersDTO.getDescription().length(), 4000))
             );
         }
         if (jobOffersDTO.getEmail() != null) {
@@ -144,19 +165,34 @@ public class JobOffersService implements IJobOffersService {
             existingOffer.setBeneficios(jobOffersDTO.getBeneficios());
         }
 
-        // Save the updated entity
+        existingOffer.setIsActive(jobOffersDTO.isActive());
+
+
         jobOffersDao.saveAndFlush(existingOffer);
         return JobOffersMapper.INSTANCE.toDTO(existingOffer);
     }
 
-    /*  TODO implementar métodos.
 
+    @Transactional
+    public JobOffersDTO updateJobOfferActiveStatus(Long id, Boolean isActive) {
+        logger.info("Intentando actualizar el estado de la oferta con ID: {} a isActive: {}", id, isActive);
 
-    @Override
-    public long deleteJobOffer(JobOffersDTO jobOffersDTO) {
-        long id = jobOffersDTO.getId();
-        JobOffer jobOffer = JobOffersMapper.INSTANCE.toEntity(jobOffersDTO);
-        jobOffersDao.delete(jobOffer);
-        return id;
-    }*/
+        Optional<JobOffer> offerOptional = jobOffersDao.findById(id);
+
+        if (offerOptional.isPresent()) {
+            JobOffer jobOffer = offerOptional.get();
+            logger.info("Oferta encontrada. Estado actual en la entidad ANTES de setear: {}", jobOffer.getIsActive());
+
+            jobOffer.setIsActive(isActive);
+            logger.info("Estado de la entidad DESPUÉS de setear: {}", jobOffer.getIsActive());
+
+            JobOffer updatedJobOffer = jobOffersDao.saveAndFlush(jobOffer);
+            logger.info("Oferta guardada en la base de datos. Estado devuelto por saveAndFlush: {}", updatedJobOffer.getIsActive());
+
+            return JobOffersMapper.INSTANCE.toDTO(updatedJobOffer);
+        } else {
+            logger.warn("Oferta de empleo con ID {} no encontrada.", id);
+            throw new EntityNotFoundException("Oferta de empleo con ID " + id + " no encontrada.");
+        }
+    }
 }
