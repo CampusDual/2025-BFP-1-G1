@@ -1,0 +1,135 @@
+<div class="candidate-detail-container">
+  <div class="candidate-header-card">
+    <div class="avatar-section">
+      <div class="avatar">
+        <img
+          *ngIf="userData?.candidate?.profileImg"
+          class="avatar-img"
+          [src]="userData?.candidate?.profileImg"
+          alt="Profile Image"
+        />
+        <div class="avatar-icon" *ngIf="!userData?.candidate?.profileImg">
+          <mat-icon>person</mat-icon>
+        </div>
+      </div>
+    </div>
+    <div class="candidate-info">
+          <h2>
+            {{ userData?.candidate?.name }} {{ userData?.candidate?.surname }}
+          </h2>
+          <p class="candidate-degree">
+            <mat-icon>school</mat-icon> {{ userData?.candidate?.qualification }}
+          </p>
+          <p class="candidate-location" *ngIf="userData?.candidate?.location">
+            <mat-icon>location_on</mat-icon> {{ userData?.candidate?.location }}
+          </p>
+        </div>
+  </div>
+  <div class="tab-container">
+    <mat-tab-group animationDuration="0ms">
+      <mat-tab label="Sobre min">
+        <p>{{ userData?.candidate?.name }}</p>
+      </mat-tab>
+
+      <mat-tab label="Experiencia profesional">
+        <ul>
+          <div class="form-section">
+            <h4>Engadir experiencia profesional</h4>
+            <form (ngSubmit)="addExperience()" #expForm="ngForm">
+              <input
+                type="text"
+                placeholder="Posto"
+                [(ngModel)]="workExperience.jobTitle"
+                name="jobTitle"
+                required
+              />
+              <input
+                type="text"
+                placeholder="Empresa"
+                [(ngModel)]="workExperience.company"
+                name="company"
+                required
+              />
+              <input
+                type="text"
+                placeholder="Inicio"
+                [(ngModel)]="workExperience.startPeriod"
+                name="start"
+                required
+              />
+              <input
+                type="text"
+                placeholder="Fin"
+                [(ngModel)]="workExperience.endPeriod"
+                name="end"
+              />
+              <textarea
+                placeholder="Descrición"
+                [(ngModel)]="workExperience.description"
+                name="desc"
+              ></textarea>
+              <button mat-button type="submit">Gardar experiencia</button>
+            </form>
+            <li *ngFor="let exp of experiences">
+              <strong>{{ exp.jobTitle }}</strong> en {{ exp.company }} ({{
+                exp.startPeriod
+              }}
+              - {{ exp.endPeriod }})
+              <p>{{ exp.description }}</p>
+            </li>
+          </div>
+        </ul>
+      </mat-tab>
+
+      <mat-tab label="Educación">
+        <ul>
+          <div class="form-section">
+            <h4>Engadir educación</h4>
+            <form (ngSubmit)="addEducation()" #eduForm="ngForm">
+              <input
+                type="text"
+                placeholder="Titulación"
+                [(ngModel)]="education.degree"
+                name="degree"
+                required
+              />
+              <input
+                type="text"
+                placeholder="Centro"
+                [(ngModel)]="education.institution"
+                name="institution"
+                required
+              />
+              <input
+                type="text"
+                placeholder="Inicio"
+                [(ngModel)]="education.startPeriod"
+                name="startEdu"
+                required
+              />
+              <input
+                type="text"
+                placeholder="Fin"
+                [(ngModel)]="education.endPeriod"
+                name="endEdu"
+              />
+              <textarea
+                placeholder="Descrición"
+                [(ngModel)]="education.description"
+                name="descEdu"
+              ></textarea>
+              <button mat-button type="submit">Gardar educación</button>
+            </form>
+            <li *ngFor="let edu of educations">
+              <strong>{{ edu.degree }}</strong> en {{ edu.institution }} ({{
+                edu.startPeriod
+              }}
+              - {{ edu.endPeriod }})
+              <p>{{ edu.description }}</p>
+            </li>
+          </div>
+        </ul>
+      </mat-tab>
+    </mat-tab-group>
+  </div>
+</div>

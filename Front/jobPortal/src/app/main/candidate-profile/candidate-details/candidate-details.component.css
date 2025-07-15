@@ -1,0 +1,228 @@
+:host {
+  display: block;
+  padding: 2rem;
+  min-height: 100vh;
+  font-family: var(--font-base);
+  color: var(--text-base);
+}
+
+.candidate-detail-container {
+  max-width: 1300px;
+  min-height: calc(100vh - 200px);
+  margin: 60px auto 4em auto;
+  padding: 0 2rem 2rem;
+  background: var(--gray-megalightest, #f5f5f5);
+  border-radius: 18px;
+  box-shadow: 0 2px 16px rgba(0, 0, 0, 0.07);
+  border: 1px solid var(--gray-lightest, #e0e0e0);
+}
+/* ===== HEADER ===== */
+
+.candidate-header-card {
+  display: flex;
+  align-items: center;
+  padding: 2.5rem 2.5rem 2rem;
+  background: white;
+  border-radius: 14px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
+  border: 1px solid var(--gray-lightest, #e0e0e0);
+  margin-bottom: 2rem;
+  margin-top: 1.5rem;
+  padding-left: 3.5rem;
+}
+
+.avatar-section {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  width: 100%;
+  max-width: 128px;
+  max-height: 128px;
+  border-radius: 50%;
+}
+
+.avatar {
+  width: 80px;
+  height: 80px;
+  background: var(--primary, #e81c34);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 2.5rem;
+  padding: 0;
+}
+
+.avatar-img {
+  width: 128px;
+  height: 128px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.mat-icon {
+  font-size: 1.3em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  margin: 0;
+  padding: 0;
+  overflow: visible;
+}
+
+.candidate-info h2 {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.75rem;
+  font-weight: 600;
+  color: var(--primary, #e81c34);
+}
+
+.candidate-email,
+.candidate-extra {
+  color: var(--gray-dark, #5b5152);
+  font-size: 0.95rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0.25rem 0;
+}
+
+.candidate-email mat-icon,
+.candidate-extra mat-icon {
+  color: var(--primary, #e81c34);
+  font-size: 1.1rem;
+  width: 1.1rem;
+  height: 1.1rem;
+}
+
+/* Titulares */
+h3 {
+  font-size: 2rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+  color: var(--darker);
+}
+
+h4 {
+  font-size: 1.2rem;
+  font-weight: 500;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+  color: var(--primary-dark);
+}
+
+/* Formularios */
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  background: white;
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+/* Inputs y textareas */
+input,
+textarea {
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--gray-lightest);
+  border-radius: 8px;
+  font-size: 1rem;
+  background-color: white;
+  font-family: var(--font-base);
+  color: var(--text-base);
+}
+
+input:focus,
+textarea:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 2px var(--primary-lightest);
+}
+
+/* Botones */
+button {
+  background-color: var(--primary);
+  color: white;
+  padding: 0.6rem 1.2rem;
+  font-size: 1rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  width: fit-content;
+}
+
+button:hover {
+  background-color: var(--primary-dark);
+}
+
+/* Lista de elementos */
+ul {
+  list-style: none;
+  padding: 0;
+  margin-top: 1rem;
+}
+
+li {
+  background-color: white;
+  padding: 1rem;
+  border-radius: 10px;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+}
+
+li strong {
+  display: block;
+  color: var(--primary-darkest);
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+}
+
+li p {
+  margin: 0.25rem 0 0;
+  font-size: 0.95rem;
+  color: var(--gray-dark);
+}
+
+/* Tabs */
+.mat-mdc-tab-group {
+  background-color: transparent;
+}
+
+.mat-mdc-tab-header {
+  background-color: white;
+  border-radius: 8px 8px 0 0;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.mat-mdc-tab-body {
+  background-color: white;
+  padding: 1.5rem;
+  border-radius: 0 0 8px 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  :host {
+    padding: 1rem;
+  }
+
+  form {
+    padding: 1rem;
+  }
+
+  input,
+  textarea {
+    font-size: 0.95rem;
+  }
+
+  button {
+    font-size: 0.95rem;
+  }
+}

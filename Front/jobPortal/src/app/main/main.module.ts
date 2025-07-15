@@ -25,6 +25,8 @@ import { EditOfferComponent } from './edit-offer/edit-offer.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { CandidateDetailsComponent } from './candidate-profile/candidate-details/candidate-details.component';
+import {MatTabsModule} from '@angular/material/tabs';
 
 
 @NgModule({
@@ -39,6 +41,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
     CandidateProfileComponent,
     OfferDetailsComponent,
     EditOfferComponent,
+    CandidateDetailsComponent,
   ],
   imports: [
     CommonModule,
@@ -59,6 +62,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
     MatSelectModule,
     MatPaginatorModule,
     MatSlideToggleModule,
+    MatTabsModule,
   ],
 })
 export class MainModule {}
