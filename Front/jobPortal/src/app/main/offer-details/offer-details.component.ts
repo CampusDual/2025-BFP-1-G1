@@ -1,3 +1,4 @@
+import { Candidate } from './../../model/candidate';
 import { Component, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -15,9 +16,13 @@ import { Location } from '@angular/common';
   styleUrls: ['./offer-details.component.css'],
 })
 export class OfferDetailsComponent implements OnInit {
-  offer!: JobOffer;
+  offer: JobOffer | undefined;
   userData: UserData | null = null;
   appliedOfferIds: number[] = [];
+  candidate: Candidate | null = null;
+  offerCandidates: Candidate[] = [];
+  isLoadingCandidates: boolean = false;
+  errorLoadingCandidates: string | null = null;
 
   constructor(
     private route: ActivatedRoute,
@@ -32,35 +37,39 @@ export class OfferDetailsComponent implements OnInit {
   ngOnInit(): void {
     const id = Number(this.route.snapshot.paramMap.get('id'));
 
-    // Obtener datos del usuario (si está logueado)
-    this.usersService.userData$.pipe(
-      tap((data) => {
-        if (!data && this.usersService.isLoggedIn()) {
-          this.usersService.getUserData().subscribe();
-        }
-      }),
-      filter((data) => data !== null)
-    ).subscribe((data) => {
-      this.userData = data;
-
-      // Si es candidato, obtener las ofertas a las que ya aplicó
-      if (this.isCandidate()) {
-        this.applicationService.getUserApplications().subscribe({
-          next: (applications: any[]) => {
-            this.appliedOfferIds = applications.map((app: any) => app.offerId);
-          },
-          error: (err) => {
-            console.error('Error al obtener aplicaciones del usuario:', err);
+    this.usersService.userData$
+      .pipe(
+        tap((data) => {
+          if (!data && this.usersService.isLoggedIn()) {
+            this.usersService.getUserData().subscribe();
           }
-        });
-      }
-    });
+        }),
+        filter((data) => data !== null)
+      )
+      .subscribe((data) => {
+        this.userData = data;
 
-    // Obtener la oferta por ID
+        if (this.isCandidate()) {
+          this.applicationService.getUserApplications().subscribe({
+            next: (applications: any[]) => {
+              this.appliedOfferIds = applications.map(
+                (app: any) => app.offerId
+              );
+            },
+            error: (err) => {
+              console.error('Error al obtener aplicaciones del usuario:', err);
+            },
+          });
+        }
+      });
+
     if (id) {
       this.jobService.getJobOfferById(id).subscribe({
         next: (data: JobOffer) => {
           this.offer = data;
+          if (this.offer.id) {
+            this.loadCandidatesForOffer(this.offer.id);
+          }
         },
         error: (err) => {
           console.error('Error al cargar la oferta:', err);
@@ -135,5 +144,33 @@ export class OfferDetailsComponent implements OnInit {
         console.error('Error applying to offer:', err);
       },
     });
+  }
+
+  loadCandidatesForOffer(offerId: number): void {
+    this.isLoadingCandidates = true;
+    this.errorLoadingCandidates = null;
+    this.jobService.getCandidatesByJobOfferId(offerId).subscribe({
+      next: (candidates: Candidate[]) => {
+        this.offerCandidates = candidates;
+        this.isLoadingCandidates = false;
+        console.log(`Candidatos para la oferta ${offerId}:`, candidates);
+      },
+      error: (err) => {
+        this.errorLoadingCandidates =
+          'Error al cargar los candidatos para esta oferta.';
+        this._snackBar.open(this.errorLoadingCandidates, 'Cerrar', {
+          duration: 3000,
+          verticalPosition: 'top',
+        });
+        this.isLoadingCandidates = false;
+        console.error('Error al cargar candidatos:', err);
+      },
+    });
+  }
+  isAdmin(): boolean {
+    return (
+      !!this.userData?.admin ||
+      (!!this.userData?.user && this.userData.user.role_id === 1)
+    );
   }
 }

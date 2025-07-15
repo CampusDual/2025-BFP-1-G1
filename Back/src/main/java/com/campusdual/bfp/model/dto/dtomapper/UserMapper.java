@@ -17,10 +17,10 @@ public interface UserMapper {
         dto.setEmail(user.getEmail());
         dto.setLogin(user.getLogin());
         Long roleId = null;
-        if (user.getRole().getId() != null && user.getRole().getId() != 0) {
-            roleId = user.getRole().getId();
-        } else if (user.getRole() != null) {
-            roleId = user.getRole().getId();
+        if (user.getRole() != null) {
+            dto.setRole_id(user.getRole().getId());
+        } else {
+            dto.setRole_id(0L);
         }
         dto.setRole_id(roleId != null ? roleId : 0L);
         return dto;

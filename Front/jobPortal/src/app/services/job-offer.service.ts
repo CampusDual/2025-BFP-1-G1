@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { catchError, map, Observable, Subject, throwError } from 'rxjs';
 import { JobOffer } from '../model/jobOffer';
 import { Company } from '../model/company';
+import { Candidate } from '../model/candidate';
 
 @Injectable({ providedIn: 'root' })
 export class JobOfferService {
@@ -181,6 +182,37 @@ export class JobOfferService {
         }),
         catchError((error) => {
           console.error('Error al actualizar el estado de la oferta:', error);
+          return throwError(() => error);
+        })
+      );
+  }
+  getCandidatesByJobOfferId(offerId: number): Observable<Candidate[]> {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      return throwError(
+        () =>
+          new Error(
+            'No se encontró el token de autenticación. Por favor, inicia sesión.'
+          )
+      );
+    }
+
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    });
+
+    const requestBody: JobOffer = { id: offerId } as JobOffer;
+
+    return this.http
+      .post<Candidate[]>(
+        `${this.urlJobOffers}/getCandidatesByJobOffer`,
+        requestBody,
+        { headers }
+      )
+      .pipe(
+        catchError((error) => {
+          console.error('Error al obtener candidatos por oferta:', error);
           return throwError(() => error);
         })
       );

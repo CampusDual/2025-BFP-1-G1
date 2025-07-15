@@ -32,6 +32,7 @@ import { EditOfferComponent } from './edit-offer/edit-offer.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { RouterModule } from '@angular/router';
+import { MatTabsModule } from '@angular/material/tabs';
 
 @NgModule({
   providers: [
@@ -76,6 +77,7 @@ import { RouterModule } from '@angular/router';
     MatSelectModule,
     MatSlideToggleModule,
     RouterModule,
+    MatTabsModule,
   ],
 })
 export class MainModule {}

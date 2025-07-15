@@ -28,8 +28,8 @@ public interface JobOffersDao extends JpaRepository<JobOffer, Long> {
     Company findCompanyById(long id);
     List<JobOffer> findByActiveTrue();
 
-    @Query("SELECT c FROM Candidate c, Application a WHERE c.id = a.idCandidate AND a.idOffer = :#{#jobOffersDTO.id}")
-    List<Candidate> getCandidatesByJobOffer(JobOffersDTO jobOffersDTO);
+    @Query(value = "SELECT c.* FROM candidate c JOIN applications a ON c.id = a.id_candidate WHERE a.id_offer = :jobOfferId", nativeQuery = true)
+    List<Candidate> getCandidatesByJobOffer(@Param("jobOfferId") Long jobOfferId);
     long countByCompany(Company company);
 
 }

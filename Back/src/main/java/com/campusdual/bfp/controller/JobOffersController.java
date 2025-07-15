@@ -86,14 +86,13 @@ public class JobOffersController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND); // O un 500 si es otro error
         }
     }
-@PostMapping(value = "/getcandidatesbyjoboffer")
+@PostMapping(value = "/getCandidatesByJobOffer")
 public ResponseEntity<List<CandidateDTO>> getCandidatesByJobOffer(@RequestBody JobOffersDTO jobOffersDTO) {
-    try {
+
         return ResponseEntity.ok(jobOffersService.getCandidatesByJobOffer(jobOffersDTO));
-    }catch (IllegalArgumentException e) {
-        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-    }
+
 }
+
     @PostMapping(value = "/add")
     public ResponseEntity<Long> insertJobOffer(@RequestBody JobOffersDTO jobOffersDTO) {
         try {
