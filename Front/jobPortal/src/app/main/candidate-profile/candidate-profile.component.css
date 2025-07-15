@@ -100,8 +100,10 @@
   padding: 0;
 }
 
-.mat-icon{
-  font-size: 1.3em;
+.avatar-icon {
+  font-size: 2.5rem;
+  width: 2.5rem;
+  height: 2.5rem;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -110,6 +112,7 @@
   padding: 0;
   overflow: visible;
 }
+
 
 .candidate-info h2 {
   margin: 0 0 0.5rem 0;
@@ -232,6 +235,16 @@
   margin-right: 4px;
 }
 
+.offer-status-active {
+  color: #4CAF50;
+  font-weight: bold;
+}
+
+.offer-status-inactive {
+  color: #F44336;
+  font-weight: bold;
+}
+
 .application-actions {
   display: flex;
   justify-content: flex-end;
@@ -264,217 +277,255 @@
   height: 18px;
 }
 
+/* ===== NEW: Styles for inactive job offer cards ===== */
+.inactive-offer-card {
+  opacity: 0.6;
+  filter: grayscale(80%);
+  background-color: #f0f0f0;
+  border-color: #d0d0d0;
+  box-shadow: none;
+  pointer-events: none;
+}
+
+.inactive-offer-card .application-actions button {
+  pointer-events: auto;
+  opacity: 1;
+  filter: none;
+}
+
+.application-actions button[disabled] {
+  background-color: #cccccc;
+  cursor: not-allowed;
+  opacity: 0.7;
+  box-shadow: none;
+}
+
+.application-actions button[disabled]:hover {
+  background-color: #cccccc;
+}
+
 /* ===== RESPONSIVE ===== */
 @media (max-width: 800px) {
   .candidate-header-card {
     flex-direction: column;
     align-items: flex-start;
     gap: 1rem;
-    .application-card {
-      padding: 1.25rem;
-    }
   }
 
-  @media (max-width: 768px) {
-    .candidate-header-card {
-      flex-direction: column;
-      text-align: center;
-      padding: 1.5rem;
-      align-items: center;
-    }
-
-    .avatar-section {
-      flex-direction: column;
-      margin-bottom: 1rem;
-      text-align: center;
-    }
-
-    .avatar {
-      margin: 0 0 1rem 0;
-    }
-
-    .applications-section {
-      padding: 1.5rem;
-    }
-
-    .applications-grid {
-      grid-template-columns: 1fr;
-      gap: 1.25rem;
-      padding: 0 0.5rem;
-    }
-
-    .applications-section h1 {
-      font-size: 1.3rem;
-    }
+  .application-card {
+    padding: 1.25rem;
   }
+}
 
-  /* Estilos para la paginación */
-  .pagination-controls {
-    display: flex;
-    justify-content: center;
+@media (max-width: 768px) {
+  .candidate-header-card {
+    flex-direction: column;
+    text-align: center;
+    padding: 1.5rem;
     align-items: center;
-    gap: 0.5rem;
-    margin-top: 2rem;
-    padding: 1.5rem 0;
-    border-top: 1px solid var(--gray-lightest, #f0f0f0);
-    width: 100%;
   }
 
-  .pagination-button {
-    min-width: 36px;
-    height: 36px;
+  .avatar-section {
+    flex-direction: column;
+    margin-bottom: 1rem;
+    text-align: center;
+  }
+
+  .avatar {
+    margin: 0 0 1rem 0;
+  }
+
+  .applications-section {
+    padding: 1.5rem;
+  }
+
+  .applications-grid {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+    padding: 0 0.5rem;
+  }
+
+  .applications-section h2 {
+    font-size: 1.3rem;
+  }
+}
+
+/* Estilos para la paginación */
+.pagination-controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 2rem;
+  padding: 1.5rem 0;
+  border-top: 1px solid var(--gray-lightest, #f0f0f0);
+  width: 100%;
+}
+
+.pagination-button {
+  min-width: 36px;
+  height: 36px;
+  padding: 0 8px;
+  border-radius: 18px;
+  margin: 0 2px;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid transparent;
+  background-color: #fff;
+  color: var(--primary, #e81c34);
+}
+
+::ng-deep .mat-mdc-paginator-page-size {
+  margin-right: 8px;
+}
+
+::ng-deep .mat-mdc-paginator-range-actions {
+  margin: 0 8px;
+}
+
+::ng-deep .mat-mdc-paginator-page-size-label {
+  margin-right: 8px;
+  color: rgba(0, 0, 0, 0.6);
+}
+
+::ng-deep .mat-mdc-select-value {
+  color: #3f51b5;
+  font-weight: 500;
+}
+
+::ng-deep .mat-mdc-paginator-page-size .mat-mdc-select-arrow {
+  color: #3f51b5;
+}
+
+::ng-deep .mat-mdc-paginator-range-label {
+  margin: 0 16px;
+  color: rgba(0, 0, 0, 0.6);
+}
+
+::ng-deep .mat-mdc-paginator-navigation-previous,
+::ng-deep .mat-mdc-paginator-navigation-next,
+::ng-deep .mat-mdc-paginator-navigation-first,
+::ng-deep .mat-mdc-paginator-navigation-last {
+  color: #3f51b5;
+}
+
+::ng-deep .mat-mdc-paginator-navigation-previous[disabled],
+::ng-deep .mat-mdc-paginator-navigation-next[disabled],
+::ng-deep .mat-mdc-paginator-navigation-first[disabled],
+::ng-deep .mat-mdc-paginator-navigation-last[disabled] {
+  color: rgba(0, 0, 0, 0.38);
+}
+
+/* Estilos para móviles */
+@media (max-width: 600px) {
+  .pagination-container {
     padding: 0 8px;
-    border-radius: 18px;
-    margin: 0 2px;
-    transition: all 0.2s ease;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border: 1px solid transparent;
-    background-color: #fff;
-    color: var(--primary, #e81c34);
-  }
-
-  ::ng-deep .mat-mdc-paginator-page-size {
-    margin-right: 8px;
   }
 
   ::ng-deep .mat-mdc-paginator-range-actions {
-    margin: 0 8px;
-  }
-
-  ::ng-deep .mat-mdc-paginator-page-size-label {
-    margin-right: 8px;
-    color: rgba(0, 0, 0, 0.6);
-  }
-
-  ::ng-deep .mat-mdc-select-value {
-    color: #3f51b5;
-    font-weight: 500;
-  }
-
-  ::ng-deep .mat-mdc-paginator-page-size .mat-mdc-select-arrow {
-    color: #3f51b5;
+    margin: 0 4px;
   }
 
   ::ng-deep .mat-mdc-paginator-range-label {
-    margin: 0 16px;
-    color: rgba(0, 0, 0, 0.6);
+    margin: 0 8px;
+    font-size: 12px;
+  }
+
+  ::ng-deep .mat-mdc-paginator-page-size {
+    margin-right: 4px;
+  }
+
+  ::ng-deep .mat-mdc-paginator-page-size-label {
+    display: none;
   }
 
   ::ng-deep .mat-mdc-paginator-navigation-previous,
   ::ng-deep .mat-mdc-paginator-navigation-next,
   ::ng-deep .mat-mdc-paginator-navigation-first,
   ::ng-deep .mat-mdc-paginator-navigation-last {
-    color: #3f51b5;
+    min-width: 32px;
+    width: 32px;
+    height: 32px;
+    line-height: 32px;
+  }
+}
+
+@media (max-width: 480px) {
+  .candidate-profile-container {
+    margin: 60px auto 1rem auto;
+    padding: 1rem 0.5rem;
+    border-radius: 0;
   }
 
-  ::ng-deep .mat-mdc-paginator-navigation-previous[disabled],
-  ::ng-deep .mat-mdc-paginator-navigation-next[disabled],
-  ::ng-deep .mat-mdc-paginator-navigation-first[disabled],
-  ::ng-deep .mat-mdc-paginator-navigation-last[disabled] {
-    color: rgba(0, 0, 0, 0.38);
+  .candidate-header-card {
+    padding: 1rem;
+    border-radius: 0;
   }
 
-  /* Estilos para móviles */
-  @media (max-width: 600px) {
-    .pagination-container {
-      padding: 0 8px;
-    }
-
-    ::ng-deep .mat-mdc-paginator-range-actions {
-      margin: 0 4px;
-    }
-
-    ::ng-deep .mat-mdc-paginator-range-label {
-      margin: 0 8px;
-      font-size: 12px;
-    }
-
-    ::ng-deep .mat-mdc-paginator-page-size {
-      margin-right: 4px;
-    }
-
-    ::ng-deep .mat-mdc-paginator-page-size-label {
-      display: none;
-    }
-
-    ::ng-deep .mat-mdc-paginator-navigation-previous,
-    ::ng-deep .mat-mdc-paginator-navigation-next,
-    ::ng-deep .mat-mdc-paginator-navigation-first,
-    ::ng-deep .mat-mdc-paginator-navigation-last {
-      min-width: 32px;
-      width: 32px;
-      height: 32px;
-      line-height: 32px;
-    }
+  .avatar {
+    width: 60px;
+    height: 60px;
+    font-size: 32px;
+    margin: 0 0 0.75rem 0;
   }
 
-  @media (max-width: 480px) {
-    .candidate-profile-container {
-      margin: 60px auto 1rem auto;
-      padding: 1rem 0.5rem;
-      border-radius: 0;
-    }
+  .avatar-icon {
+    font-size: 32px;
+    width: 32px;
+    height: 32px;
+  }
 
-    .candidate-header-card {
-      padding: 1rem;
-      border-radius: 0;
-    }
+  .candidate-info h2 {
+    font-size: 1.5rem;
+  }
 
-    .avatar {
-      width: 60px;
-      height: 60px;
-      font-size: 32px;
-      margin: 0 0 0.75rem 0;
-    }
+  .applications-section {
+    padding: 1.25rem;
+  }
 
-    .candidate-info h2 {
-      font-size: 1.5rem;
-    }
+  .application-card {
+    padding: 1.25rem;
+  }
 
-    .applications-section {
-      padding: 1.25rem;
-    }
+  .application-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
 
-    .application-card {
-      padding: 1.25rem;
-    }
+  .status-badge {
+    align-self: flex-start;
+  }
 
-    .application-header {
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 0.75rem;
-    }
+  .application-actions {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
 
-    .status-badge {
-      align-self: flex-start;
-    }
+  .application-actions button {
+    width: 100%;
+    justify-content: center;
+  }
 
-    .application-actions {
-      flex-direction: column;
-      gap: 0.5rem;
-    }
+  .candidate-email,
+  .candidate-extra {
+    font-size: 0.9rem;
+  }
 
-    .application-actions button {
-      width: 100%;
-      justify-content: center;
-    }
-    .candidate-email,
-    .candidate-extra {
-      font-size: 0.9rem;
-    }
-    .applications-section h1 {
-      font-size: 1.3rem;
-      margin-left: 0;
-    }
-    .applications-list {
-      padding: 0;
-    }
-    .application-card,
-    .application-card.empty {
-      padding: 0.8rem;
-      border-radius: 8px;
-    }
+  .applications-section h2 {
+    font-size: 1.3rem;
+    margin-left: 0;
+  }
+
+  .applications-list {
+    padding: 0;
+  }
+
+  .application-card,
+  .application-card.empty {
+    padding: 0.8rem;
+    border-radius: 8px;
   }
 }

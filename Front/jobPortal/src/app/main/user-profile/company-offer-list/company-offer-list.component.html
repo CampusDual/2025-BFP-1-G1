@@ -1,7 +1,7 @@
 <div class="offer-list-container">
   <mat-grid-list [cols]="gridCols" [rowHeight]="'300px'" gutterSize="8px">
     <mat-grid-tile *ngFor="let offer of jobOffers">
-      <mat-card class="offer-card">
+      <mat-card class="offer-card" [class.inactive-offer-card]="!offer.active">
         <mat-card-title class="offer-title" [matTooltip]="offer.title">
           {{ offer.title }}
         </mat-card-title>
@@ -29,12 +29,10 @@
 
         <mat-card-actions class="offer-actions">
           <button mat-raised-button color="primary" class="edit-button" *ngIf="offer.id !== undefined"
-            [routerLink]="['/main/editOffer', offer.id]">
-            Editar
+            [routerLink]="['/main/editOffer', offer.id]" [disabled]="!offer.active"> Editar
           </button>
           <button mat-raised-button color="accent" class="details-button" *ngIf="offer.id !== undefined"
-            (click)="goToOfferDetails(offer.id)">
-            Ver detalles
+            (click)="goToOfferDetails(offer.id)" [disabled]="!offer.active"> Ver detalles
           </button>
         </mat-card-actions>
       </mat-card>

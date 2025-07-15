@@ -93,6 +93,7 @@ export class CompanyOfferListComponent implements OnInit, OnDestroy {
           console.error('Error al cargar ofertas de la compañía:', err);
           this.snackBar.open('Error al cargar ofertas', 'Cerrar', {
             duration: 3000,
+            verticalPosition: 'top',
           });
           this.loadingScreenService.hide();
         },
@@ -122,6 +123,7 @@ export class CompanyOfferListComponent implements OnInit, OnDestroy {
           console.error('Error sorting job offers:', error);
           this.snackBar.open('Error al ordenar ofertas de trabajo', 'Cerrar', {
             duration: 3000,
+            verticalPosition: 'top',
           });
         },
       });
@@ -140,6 +142,7 @@ export class CompanyOfferListComponent implements OnInit, OnDestroy {
           console.error('Error filtering job offers:', error);
           this.snackBar.open('Error al filtrar ofertas de trabajo', 'Cerrar', {
             duration: 3000,
+            verticalPosition: 'top',
           });
         },
       });
@@ -163,6 +166,7 @@ export class CompanyOfferListComponent implements OnInit, OnDestroy {
     } catch (error) {
       this.snackBar.open('Error al abrir detalles', 'Cerrar', {
         duration: 3000,
+        verticalPosition: 'top',
       });
     }
   }
@@ -201,6 +205,7 @@ export class CompanyOfferListComponent implements OnInit, OnDestroy {
       console.error('ERROR: ID de oferta es undefined. No se puede proceder.');
       this.snackBar.open('ID de oferta no válido.', 'Cerrar', {
         duration: 3000,
+        verticalPosition: 'top',
       });
       return;
     }
@@ -259,7 +264,12 @@ export class CompanyOfferListComponent implements OnInit, OnDestroy {
             updatedOffer.active ? 'activada' : 'desactivada'
           } con éxito.`,
           'Cerrar',
-          { duration: 3000, panelClass: ['success-snackbar'] }
+          {
+            duration: 3000,
+            horizontalPosition: 'center',
+            verticalPosition: 'top',
+            panelClass: ['successSnackbar'],
+          }
         );
         console.log('SnackBar de éxito mostrado.');
         this.loadingScreenService.hide();
@@ -277,7 +287,7 @@ export class CompanyOfferListComponent implements OnInit, OnDestroy {
         this.snackBar.open(
           'Error al cambiar el estado de la oferta. Revirtiendo cambio.',
           'Cerrar',
-          { duration: 5000, panelClass: ['error-snackbar'] }
+          { duration: 5000, panelClass: ['errorSnackbar'] }
         );
         console.log('SnackBar de error mostrado.');
 
