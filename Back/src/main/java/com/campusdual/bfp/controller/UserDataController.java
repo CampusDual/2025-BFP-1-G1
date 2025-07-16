@@ -28,8 +28,8 @@ public class UserDataController {
         }
     }
     @GetMapping("/{id}")
-    @PreAuthorize("isAuthenticated()") // Puedes ajustar la seguridad aquí si solo ciertos roles pueden ver datos de otros
-    public ResponseEntity<?> getUserDataById(@PathVariable Long id) { // @PathVariable para extraer el ID de la URL
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<?> getUserDataById(@PathVariable Long id) { 
         try {
 
             UserDataDTO userData = userDataService.getUserDataById(id);

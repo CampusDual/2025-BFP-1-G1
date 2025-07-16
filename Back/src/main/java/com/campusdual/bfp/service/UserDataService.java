@@ -58,7 +58,7 @@ public class UserDataService {
     public UserDataDTO getUserDataById(Long userId) {
 
         Optional<User> userOpt = userDao.findById(userId);
-
+       User useren = userDao.getReferenceById(userId);
         if (userOpt.isEmpty()) {
             return null;
         }
