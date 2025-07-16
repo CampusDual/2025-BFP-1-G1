@@ -85,8 +85,9 @@
       </div>
     </mat-tab>
 
-    <mat-tab label="Candidatos inscritos" *ngIf="(userData$ | async) as userData; else loadingCandidatesTab">
-      <ng-container *ngIf="isOfferOwner(userData) || isAdmin(userData)">
+    <ng-container *ngIf="(userData$ | async) as userData">
+      <mat-tab label="Candidatos inscritos"
+        *ngIf="isOfferOwner(userData) || isAdmin(userData); else loadingCandidatesTab">
         <div class="candidates-list-section">
           <div *ngIf="isLoadingCandidates" class="loading-container">
             <mat-spinner diameter="30"></mat-spinner>
@@ -132,14 +133,10 @@
             </table>
           </div>
         </div>
-      </ng-container>
-    </mat-tab>
-    <ng-template #loadingCandidatesTab>
-      <div class="loading-container">
-        <mat-spinner diameter="30"></mat-spinner>
-        <p>Cargando información de usuario para esta sección...</p>
-      </div>
-    </ng-template>
+      </mat-tab>
+      <ng-template #loadingCandidatesTab>
+      </ng-template>
+    </ng-container>
   </mat-tab-group>
 
   <div class="button-container">

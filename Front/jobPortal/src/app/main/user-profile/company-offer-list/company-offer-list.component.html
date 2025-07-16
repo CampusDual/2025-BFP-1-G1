@@ -10,7 +10,6 @@
             </span>
             <mat-slide-toggle [checked]="offer.active" (change)="onToggleOfferStatus(offer)" color="primary"
               class="status-toggle" [matTooltip]="offer.active ? 'Desactivar oferta' : 'Activar oferta'">
-              {{ offer.active ? 'Activa' : 'Inactiva' }}
             </mat-slide-toggle>
           </div>
         </mat-card-title>
