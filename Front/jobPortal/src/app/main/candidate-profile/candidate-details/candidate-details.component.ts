@@ -21,6 +21,10 @@ export class CandidateDetailsComponent implements OnInit {
   ) {}
   userData: UserData | null = null;
   candidate!: Candidate;
+  experiences: WorkExperience[] = [];
+  educations: Education[] = [];
+  showEduForm: boolean = false;
+  showExpForm: boolean = false;
 
   workExperience: WorkExperience = {
     idCandidate: this.userData?.candidate?.id ?? 0,
@@ -47,12 +51,18 @@ export class CandidateDetailsComponent implements OnInit {
       this.candidateService.getCandidateProfile().subscribe((candidate) => {
         this.candidate = candidate;
         console.log('Candidate profile loaded:', this.candidate);
+        this.candidateService.getExperienceByCandidateId(this.candidate.id!).subscribe((experiences) => {
+          this.experiences = experiences;
+          console.log('Work experiences loaded', this.experiences);
+        });
+        this.candidateService.getEducationByCandidateId(this.candidate.id!).subscribe((educations) => {
+          this.educations = educations;
+          console.log('Edications loaded', this.educations);
+        });
       });
     });
   }
 
-  experiences: WorkExperience[] = [];
-  educations: Education[] = [];
 
   addExperience() {
     this.experiences.push({ ...this.workExperience });
@@ -97,4 +107,28 @@ export class CandidateDetailsComponent implements OnInit {
     if (!text) return '';
     return text.charAt(0).toUpperCase() + text.slice(1);
   }
+
+  openLink(url: string): void {
+    if (url) {
+      window.open(url, '_blank');
+    }
+  }
+
+  onEndPeriodChange(date: Date | null) {
+  if (date) {
+    const isoString = date.toISOString().split('T')[0];
+    this.workExperience.endPeriod = isoString;
+  } else {
+    this.workExperience.endPeriod = '';
+  }
+}
+
+  onStartPeriodChange(date: Date | null) {
+  if (date) {
+    const isoString = date.toISOString().split('T')[0];
+    this.workExperience.startPeriod = isoString;
+  } else {
+    this.workExperience.startPeriod = '';
+  }
+}
 }

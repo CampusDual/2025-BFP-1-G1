@@ -35,6 +35,7 @@
       </button>
     </div>
   </div>
+
   <div class="tab-container">
     <mat-tab-group animationDuration="0ms">
       <mat-tab>
@@ -42,6 +43,7 @@
           <mat-icon class="tab-icon">person</mat-icon>
           Sobre min
         </ng-template>
+
         <div class="tab-content about-me-tab" *ngIf="userData?.candidate">
           <div class="info-row">
             <div *ngIf="userData?.candidate?.qualification">
@@ -54,7 +56,9 @@
             </div>
             <div *ngIf="userData?.candidate?.employmentStatus">
               <strong>Situación laboral</strong>
-              <span>{{ capitalizeFirst(userData?.candidate?.employmentStatus) }}</span>
+              <span>{{
+                capitalizeFirst(userData?.candidate?.employmentStatus)
+              }}</span>
             </div>
             <div *ngIf="userData?.candidate?.availability">
               <strong>Dispoñibilidade</strong>
@@ -67,7 +71,10 @@
           </div>
 
           <div class="info-bottom-container">
-            <div class="presentation-section" *ngIf="userData?.candidate?.aboutMe">
+            <div
+              class="presentation-section"
+              *ngIf="userData?.candidate?.aboutMe"
+            >
               <h3>Presentación</h3>
               <p>{{ userData?.candidate?.aboutMe }}</p>
             </div>
@@ -119,112 +126,235 @@
         </div>
       </mat-tab>
 
-      <mat-tab>
-        <ng-template mat-tab-label>
+      <mat-tab
+        ><ng-template mat-tab-label>
           <mat-icon class="tab-icon">work</mat-icon>
-          Experiencia profesional
+          Experiencia Laboral
         </ng-template>
-        <ul>
-          <div class="form-section">
-            <h4>Engadir experiencia profesional</h4>
-            <form (ngSubmit)="addExperience()" #expForm="ngForm">
+        <div class="section-header">
+          <h3>experiencia profesional</h3>
+        </div>
+
+        <button
+          *ngIf="isCandidate() && isOwner()"
+          mat-raised-button
+          color="primary"
+          (click)="showExpForm = !showExpForm"
+        >
+          <mat-icon>add</mat-icon>
+          {{
+            showExpForm
+              ? "pechar formulario"
+              : "engadir experiencia profesional"
+          }}
+        </button>
+
+        <form
+          *ngIf="showExpForm"
+          (ngSubmit)="addExperience()"
+          #expForm="ngForm"
+          class="experience-form"
+        >
+          <div class="inputs">
+            <mat-form-field appearance="outline">
+              <mat-label>posto</mat-label>
               <input
-                type="text"
-                placeholder="Posto"
-                [(ngModel)]="workExperience.jobTitle"
+                matInput
                 name="jobTitle"
+                [(ngModel)]="workExperience.jobTitle"
                 required
               />
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>empresa</mat-label>
               <input
-                type="text"
-                placeholder="Empresa"
-                [(ngModel)]="workExperience.company"
+                matInput
                 name="company"
+                [(ngModel)]="workExperience.company"
                 required
               />
+            </mat-form-field>
+
+            <mat-form-field color="primary" appearance="outline">
+              <mat-label>Fecha de Inicio</mat-label>
               <input
-                type="text"
-                placeholder="Inicio"
-                [(ngModel)]="workExperience.startPeriod"
-                name="start"
+                matInput
+                [matDatepicker]="startPeriod"
+                [value]="
+                  workExperience.startPeriod
+                    ? (workExperience.startPeriod | date : 'yyyy-MM-dd')
+                    : null
+                "
+                (dateChange)="onStartPeriodChange($event.value)"
+                name="endPeriod"
                 required
               />
+              <mat-hint>MM/DD/AAAA</mat-hint>
+              <mat-datepicker-toggle
+                matIconSuffix
+                [for]="startPeriod"
+              ></mat-datepicker-toggle>
+              <mat-datepicker #startPeriod></mat-datepicker>
+            </mat-form-field>
+
+            <mat-form-field color="primary" appearance="outline">
+              <mat-label>Fecha de Fin</mat-label>
               <input
-                type="text"
-                placeholder="Fin"
-                [(ngModel)]="workExperience.endPeriod"
-                name="end"
+                matInput
+                [matDatepicker]="endPicker"
+                [value]="
+                  workExperience.endPeriod
+                    ? (workExperience.endPeriod | date : 'yyyy-MM-dd')
+                    : null
+                "
+                (dateChange)="onEndPeriodChange($event.value)"
+                name="endPeriod"
+                required
               />
+              <mat-datepicker-toggle
+                matSuffix
+                [for]="endPicker"
+              ></mat-datepicker-toggle>
+              <mat-datepicker #endPicker></mat-datepicker>
+              <mat-hint>MM/DD/AAAA</mat-hint>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="description">
+              <mat-label>descrición</mat-label>
               <textarea
-                placeholder="Descrición"
+                matInput
+                name="description"
                 [(ngModel)]="workExperience.description"
-                name="desc"
+                required
               ></textarea>
-              <button mat-button type="submit">Gardar experiencia</button>
-            </form>
-            <li *ngFor="let exp of experiences">
-              <strong>{{ exp.jobTitle }}</strong> en {{ exp.company }} ({{
-                exp.startPeriod
-              }}
-              - {{ exp.endPeriod }})
-              <p>{{ exp.description }}</p>
-            </li>
+            </mat-form-field>
           </div>
-        </ul>
+          <button
+            mat-raised-button
+            color="accent"
+            type="submit"
+            [disabled]="!expForm.form.valid"
+          >
+            gardar experiencia
+          </button>
+        </form>
+
+        <div class="experience-list">
+          <mat-card class="experience-card" *ngFor="let exp of experiences">
+            <mat-card-title
+              >{{ exp.jobTitle }} en {{ exp.company }}</mat-card-title
+            >
+            <mat-card-subtitle
+              >{{ exp.startPeriod }} - {{ exp.endPeriod }}</mat-card-subtitle
+            >
+            <mat-card-content>
+              <p>{{ exp.description }}</p>
+            </mat-card-content>
+          </mat-card>
+        </div>
       </mat-tab>
 
-      <mat-tab>
-        <ng-template mat-tab-label>
+      <mat-tab
+        ><ng-template mat-tab-label>
           <mat-icon class="tab-icon">school</mat-icon>
           Educación
         </ng-template>
-        <ul>
-          <div class="form-section">
-            <h4>Engadir educación</h4>
-            <form (ngSubmit)="addEducation()" #eduForm="ngForm">
-              <input
-                type="text"
-                placeholder="Titulación"
-                [(ngModel)]="education.degree"
-                name="degree"
-                required
-              />
-              <input
-                type="text"
-                placeholder="Centro"
-                [(ngModel)]="education.institution"
-                name="institution"
-                required
-              />
-              <input
-                type="text"
-                placeholder="Inicio"
-                [(ngModel)]="education.startPeriod"
-                name="startEdu"
-                required
-              />
-              <input
-                type="text"
-                placeholder="Fin"
-                [(ngModel)]="education.endPeriod"
-                name="endEdu"
-              />
-              <textarea
-                placeholder="Descrición"
-                [(ngModel)]="education.description"
-                name="descEdu"
-              ></textarea>
-              <button mat-button type="submit">Gardar educación</button>
-            </form>
-            <li *ngFor="let edu of educations">
-              <strong>{{ edu.degree }}</strong> en {{ edu.institution }} ({{
-                edu.startPeriod
-              }}
-              - {{ edu.endPeriod }})
+        <div class="section-header">
+          <h3>formación académica</h3>
+        </div>
+
+        <button
+          *ngIf="isCandidate() && isOwner()"
+          mat-raised-button
+          color="primary"
+          (click)="showEduForm = !showEduForm"
+        >
+          <mat-icon>add</mat-icon>
+          {{ showEduForm ? "pechar formulario" : "engadir formación" }}
+        </button>
+
+        <form
+          *ngIf="showEduForm"
+          (ngSubmit)="addEducation()"
+          #eduForm="ngForm"
+          class="education-form"
+        >
+          <mat-form-field appearance="fill">
+            <mat-label>titulación</mat-label>
+            <input
+              matInput
+              name="degree"
+              [(ngModel)]="education.degree"
+              required
+            />
+          </mat-form-field>
+
+          <mat-form-field appearance="fill">
+            <mat-label>institución</mat-label>
+            <input
+              matInput
+              name="institution"
+              [(ngModel)]="education.institution"
+              required
+            />
+          </mat-form-field>
+
+          <mat-form-field appearance="fill">
+            <mat-label>data de inicio</mat-label>
+            <input
+              matInput
+              type="month"
+              name="startPeriod"
+              [(ngModel)]="education.startPeriod"
+              required
+            />
+          </mat-form-field>
+
+          <mat-form-field appearance="fill">
+            <mat-label>data de fin</mat-label>
+            <input
+              matInput
+              type="month"
+              name="endPeriod"
+              [(ngModel)]="education.endPeriod"
+              required
+            />
+          </mat-form-field>
+
+          <mat-form-field appearance="fill">
+            <mat-label>descrición</mat-label>
+            <textarea
+              matInput
+              name="description"
+              [(ngModel)]="education.description"
+              required
+            ></textarea>
+          </mat-form-field>
+
+          <button
+            mat-raised-button
+            color="accent"
+            type="submit"
+            [disabled]="!eduForm.form.valid"
+          >
+            gardar formación
+          </button>
+        </form>
+
+        <div class="education-list">
+          <mat-card class="education-card" *ngFor="let edu of educations">
+            <mat-card-title
+              >{{ edu.degree }} en {{ edu.institution }}</mat-card-title
+            >
+            <mat-card-subtitle
+              >{{ edu.startPeriod }} - {{ edu.endPeriod }}</mat-card-subtitle
+            >
+            <mat-card-content>
               <p>{{ edu.description }}</p>
-            </li>
-          </div>
-        </ul>
+            </mat-card-content>
+          </mat-card>
+        </div>
       </mat-tab>
     </mat-tab-group>
   </div>

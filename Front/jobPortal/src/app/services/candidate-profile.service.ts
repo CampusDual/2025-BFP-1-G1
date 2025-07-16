@@ -3,7 +3,7 @@ import { UserData } from './../model/userData';
 import { Injectable } from '@angular/core';
 import { UsersService } from './users.service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { catchError, Observable, throwError } from 'rxjs';
 import { Education } from '../model/education';
 import { WorkExperience } from '../model/workExperience';
 
@@ -156,5 +156,34 @@ export class CandidateProfileService {
     );
   }
 
+ getEducationByCandidateId(idCandidate: number): Observable<Education[]> {
+  const token = localStorage.getItem('token');
+  const headers = new HttpHeaders({
+    Authorization: `Bearer ${token}`,
+    'Content-Type': 'application/json',
+  });
+
+  return this.http.get<Education[]>(`${this.urlCandidateEducation}/candidate/${idCandidate}`, { headers }).pipe(
+    catchError((error) => {
+      console.error('Error al obtener la educación del candidato:', error);
+      return throwError(() => error);
+    })
+  );
+}
+
+getExperienceByCandidateId(idCandidate: number): Observable<WorkExperience[]> {
+  const token = localStorage.getItem('token');
+  const headers = new HttpHeaders({
+    Authorization: `Bearer ${token}`,
+    'Content-Type': 'application/json',
+  });
+
+  return this.http.get<WorkExperience[]>(`${this.urlCandidateWorkExperience}/candidate/${idCandidate}`, { headers }).pipe(
+    catchError((error) => {
+      console.error('Error al obtener la experiencia del candidato:', error);
+      return throwError(() => error);
+    })
+  );
+}
 
 }

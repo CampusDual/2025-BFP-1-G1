@@ -29,6 +29,7 @@
   margin-bottom: 2rem;
   margin-top: 1.5rem;
   padding-left: 3.5rem;
+  gap: 2rem;
 }
 
 .avatar-section {
@@ -52,6 +53,7 @@
   color: white;
   font-size: 2.5rem;
   padding: 0;
+  border: 1.7rem solid var(--primary);
 }
 
 .avatar-img {
@@ -179,19 +181,97 @@ form {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
 
+.experience-form {
+  display: flex;
+  align-items: center;
+  background-color: #ffffff;
+  border-radius: 8px;
+  margin: 5px;
+  margin-top: 20px;
+  box-sizing: border-box;
+}
+
+.experience-form .description {
+  grid-column: span 2;
+  grid-row: 3;
+}
+
+
+.experience-form mat-form-field {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+.mdc-text-field__input  {
+  margin: 0;
+  padding: 0;
+  height: auto;
+}
+
+.experience-form button[type="submit"] {
+  grid-column: 1 / -1;
+  padding: 10px 24px;
+  font-weight: 500;
+  font-size: 14px;
+  color: white;
+  background-color: #d32f2f;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  width: fit-content;
+}
+
+.experience-form button[type="submit"]:hover {
+  background-color: #b71c1c;
+}
+
+.inputs {
+  display: grid;
+  grid-template-columns: auto auto;
+  grid-template-rows: 1fr 1fr 1fr;
+  width: 90%;
+  gap: 20px;
+}
+
+.experience-list {
+  margin-top: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.experience-card {
+  padding: 1rem;
+  border-radius: 12px;
+  background-color: white;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  margin: 3px;
+}
+
+.section-header h3 {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+
 .tab-content.about-me-tab {
   padding-top: 2rem;
   display: flex;
   flex-direction: column;
   gap: 24px;
-  font-family: 'Roboto', sans-serif;
+  font-family: "Roboto", sans-serif;
 }
 
 .info-bottom-container {
   display: flex;
   gap: 2rem;
-  margin-top: 2rem;
   flex-wrap: wrap;
+  border-top: 1px solid #ddd;
+  border-bottom: 1px solid #ddd;
+  padding-top: 2rem;
+  padding-bottom: 2rem;
 }
 
 .presentation-section,
@@ -203,9 +283,9 @@ form {
 .info-row {
   display: flex;
   flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-evenly;
-  text-align: center;
+  align-items: flex-start;
+  gap: 5.5rem;
+  padding-left: 1rem;
 }
 
 .info-row > div {
@@ -251,18 +331,11 @@ form {
   line-height: 1.6;
 }
 
-.links-section {
-  border-top: 1px solid #ddd;
-  border-bottom: 1px solid #ddd;
-  padding-top: 8px;
-  padding-bottom: 8px;
-  border-radius: 8px;
-}
-
 .links-section h3 {
   font-size: 18px;
   margin-bottom: 12px;
-  color: #3f51b5;
+  color: var(--primary);
+  border-bottom: 3px solid var(--primary);
 }
 
 .links-section ul {
@@ -273,23 +346,36 @@ form {
   gap: 10px;
 }
 
-.links-section li {
+.links-section li.clickable-link {
+  cursor: pointer;
   display: flex;
   align-items: center;
   gap: 8px;
+  padding: 0.75rem 1rem;
+  border-right: 10px solid var(--primary);
+  border-radius: 8px;
+  background-color: white;
+  transition: background-color 0.3s ease, border-right-width 0.3s ease;
+}
+
+.links-section li.clickable-link:hover {
+  background-color: #f1f1f1;
+  border-right-width: 30px;
+  color: var(--primary);
 }
 
 .links-section a {
   text-decoration: none;
-  color: #1e88e5;
+  color: var(--primary);
   word-break: break-all;
 }
 
 .contact-section {
   display: flex;
   flex-direction: row;
-  justify-content: space-evenly;
-  align-items: center;
+  justify-content: flex-start;
+  align-items: start;
+  gap: 4rem;
 }
 
 .contact-section p {
@@ -373,35 +459,45 @@ li p {
 }
 
 .mat-mdc-tab-header {
-  background-color: white;
+  background-color: var(--darker);
   border-radius: 8px 8px 0 0;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  position: relative;
+  z-index: 1;
 }
 
 .mat-mdc-tab-body {
-  background-color: white;
+  background-color: var(--darker);
   padding: 1.5rem;
   border-radius: 0 0 8px 8px;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+  border-top: none; /* Para que no sobresalga debajo de la tab activa */
 }
 
 ::ng-deep .mat-mdc-tab-label {
-  background-color: #f0f0f0;
-  color: rgba(0, 0, 0, 0.54);
+  background-color: var(--darker);
+  color: rgba(0, 0, 0, 0.7); /* MÁS OSCURO */
   opacity: 0.8;
   padding: 12px 24px;
   transition: background-color 0.3s ease, color 0.3s ease;
   font-weight: 500;
+  font-size: 1.1rem;
   border-top-left-radius: 8px;
   border-top-right-radius: 8px;
-  font-size: 1.1rem;
 }
 
 ::ng-deep .mat-mdc-tab-label.mat-mdc-tab-label-active {
   background-color: white;
-  color: #e81c34;
+  color: var(--primary);
   opacity: 1;
   font-size: 1.1rem;
+  border: 1px solid var(--primary);
+  border-bottom: none;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+  position: relative;
+  top: 1px;
+  z-index: 2;
 }
 
 ::ng-deep .mat-mdc-tab-label .mat-icon {
@@ -410,13 +506,12 @@ li p {
 }
 
 ::ng-deep .mat-mdc-tab-label.mat-mdc-tab-label-active .mat-icon {
-  color: #e81c34;
+  color: var(--primary);
 }
 
 ::ng-deep .mat-mdc-ink-bar {
-  background-color: #e81c34;
-  height: 3px;
-  border-radius: 2px;
+  background-color: transparent;
+  height: 0;
 }
 
 @media (max-width: 768px) {

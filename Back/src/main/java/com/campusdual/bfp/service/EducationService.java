@@ -53,4 +53,8 @@ public class EducationService {
         educationDao.saveAndFlush(education);
         return education.getId();
     }
+
+    public List<EducationDTO> getEducationByCandidateId(long candidateId) {
+        return EducationMapper.INSTANCE.toDTOList(educationDao.findByCandidateId(candidateId));
+    }
 }

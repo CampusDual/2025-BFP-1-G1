@@ -33,6 +33,11 @@ public class WorkExperienceController {
         return ResponseEntity.ok(workExperienceService.queryWorkExperience(workExperienceDTO));
     }
 
+    @GetMapping("candidate/{id}")
+    public ResponseEntity<?> getExperienceByCandidate(@PathVariable("id") long candidateId){
+        return ResponseEntity.ok(workExperienceService.getWorkExperienceByCandidateId(candidateId));
+    }
+
     @PostMapping("/insertExperience")
     public ResponseEntity<?> insertWorkExperience(@RequestBody WorkExperienceDTO workExperienceDTO) {
 

@@ -1,6 +1,5 @@
 package com.campusdual.bfp.service;
 
-
 import com.campusdual.bfp.model.WorkExperience;
 import com.campusdual.bfp.model.dao.WorkExperienceDao;
 
@@ -55,5 +54,9 @@ public class WorkExperienceService {
 
         workExperienceDao.saveAndFlush(workExperience);
         return workExperience.getId();
+    }
+
+    public List<WorkExperienceDTO> getWorkExperienceByCandidateId(long candidateId) {
+        return WorkExperienceMapper.INSTANCE.toDTOList(workExperienceDao.findByCandidateId(candidateId));
     }
 }

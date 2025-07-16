@@ -27,6 +27,9 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { CandidateDetailsComponent } from './candidate-profile/candidate-details/candidate-details.component';
 import {MatTabsModule} from '@angular/material/tabs';
+import { MatMenuModule } from "@angular/material/menu";
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
 
 
 @NgModule({
@@ -63,6 +66,9 @@ import {MatTabsModule} from '@angular/material/tabs';
     MatPaginatorModule,
     MatSlideToggleModule,
     MatTabsModule,
-  ],
+    MatMenuModule,
+    MatDatepickerModule,
+    MatNativeDateModule
+],
 })
 export class MainModule {}

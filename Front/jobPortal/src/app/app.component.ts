@@ -12,10 +12,16 @@ export class AppComponent {
   title = 'jobPortal';
   isLogin = false;
 
-  constructor(private router: Router, private iconRegistry: MatIconRegistry, private sanitizer: DomSanitizer) {
+  constructor(
+    private router: Router,
+    private iconRegistry: MatIconRegistry,
+    private sanitizer: DomSanitizer
+  ) {
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
-        this.isLogin = this.router.url === '/main/login' || this.router.url === '/main/signup';
+        this.isLogin =
+          this.router.url === '/main/login' ||
+          this.router.url === '/main/signup';
       }
     });
     this.iconRegistry.addSvgIcon(
@@ -27,4 +33,5 @@ export class AppComponent {
       this.sanitizer.bypassSecurityTrustResourceUrl('assets/icon/github.svg')
     );
   }
+
 }

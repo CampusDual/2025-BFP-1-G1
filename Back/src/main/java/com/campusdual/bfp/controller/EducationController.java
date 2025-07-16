@@ -34,6 +34,11 @@ public class EducationController {
         return ResponseEntity.ok(educationService.queryEducation(educationDTO));
     }
 
+    @GetMapping("candidate/{id}")
+    public ResponseEntity<?> getEducationByCandidate(@PathVariable("id") long candidateId){
+        return ResponseEntity.ok(educationService.getEducationByCandidateId(candidateId));
+    }
+
     @PostMapping("/insertEducation")
     public ResponseEntity<?> insertEducation(@RequestBody EducationDTO educationDTO) {
 
@@ -74,4 +79,3 @@ public class EducationController {
         return ResponseEntity.ok(educationService.updateEducation(educationDTO));
     }
 }
-
