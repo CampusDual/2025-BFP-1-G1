@@ -73,6 +73,17 @@ export class ApplicationService {
     );
   }
 
+  getApplicationsByOfferId(offerId: number): Observable<Application[]> {
+    const token = localStorage.getItem('token');
+    console.log('Token:', token);
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    });
+    return this.http.get<Application[]>(`${this.apiUrl}/offer/${offerId}`, {
+      headers,
+    });
+  }
   /* getApplicationInscriptionDateById(applicationId: number): Observable<string> {
     const token = localStorage.getItem('token');
     if (!token) {

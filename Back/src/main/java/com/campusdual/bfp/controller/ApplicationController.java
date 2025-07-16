@@ -101,4 +101,6 @@ public class ApplicationController {
                 .map(ResponseEntity::ok)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Application not found"));
     }
+
+
 }

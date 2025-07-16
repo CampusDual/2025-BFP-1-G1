@@ -7,8 +7,18 @@ import { UserData } from 'src/app/model/userData';
 import { ApplicationService } from 'src/app/services/application.service';
 import { JobOfferService } from 'src/app/services/job-offer.service';
 import { UsersService } from 'src/app/services/users.service';
-import { filter, tap, Observable, of, combineLatest } from 'rxjs';
+import {
+  filter,
+  tap,
+  Observable,
+  of,
+  combineLatest,
+  switchMap,
+  forkJoin,
+  map,
+} from 'rxjs';
 import { Location } from '@angular/common';
+import { Application } from 'src/app/model/application';
 
 @Component({
   selector: 'app-offer-details',
@@ -21,10 +31,15 @@ export class OfferDetailsComponent implements OnInit {
   appliedOfferIds: number[] = [];
   candidate: Candidate | null = null;
   offerCandidates: Candidate[] = [];
-
   isLoadingCandidates: boolean = false;
+  offerApplications: any[] = [];
   errorLoadingCandidates: string | null = null;
-  displayedColumns: string[] = ['name', 'email', 'phone', 'birthdate'];
+  displayedColumns: string[] = [
+    'candidateName',
+    'candidateEmail',
+
+    'inscriptionDate',
+  ];
 
   constructor(
     private route: ActivatedRoute,
@@ -74,7 +89,7 @@ export class OfferDetailsComponent implements OnInit {
       }
 
       if (this.isOfferOwner(userData) || this.isAdmin(userData)) {
-        this.loadCandidatesForOffer(id);
+        this.loadApplicationsAndCandidateDetails(id);
       }
     });
 
@@ -173,5 +188,56 @@ export class OfferDetailsComponent implements OnInit {
     return (
       !!userData?.admin || (!!userData?.user && userData.user.role_id === 1)
     );
+  }
+
+  loadApplicationsAndCandidateDetails(offerId: number): void {
+    this.isLoadingCandidates = true;
+    this.errorLoadingCandidates = null;
+
+    this.applicationService
+      .getApplicationsByOfferId(offerId)
+      .pipe(
+        switchMap((applications: Application[]) => {
+          if (applications.length === 0) {
+            return of([]);
+          }
+
+          const candidateDetailsRequests = applications.map((app) =>
+            this.usersService
+              .getUserDataById(app.idCandidate)
+              .pipe(
+                map((candidate) => ({ ...app, candidateDetails: candidate }))
+              )
+          );
+          return forkJoin(candidateDetailsRequests);
+        })
+      )
+      .subscribe({
+        next: (applicationsWithDetails: any[]) => {
+          this.offerApplications = applicationsWithDetails.map((app) => ({
+            ...app,
+
+            candidateName: app.candidateDetails?.name,
+            candidateEmail: app.candidateDetails?.user?.email,
+            candidatePhone: app.candidateDetails?.phone,
+            candidateBirthdate: app.candidateDetails?.birthdate,
+          }));
+          this.isLoadingCandidates = false;
+          console.log(
+            `Aplicaciones con detalles de candidato para la oferta ${offerId}:`,
+            this.offerApplications
+          );
+        },
+        error: (err) => {
+          this.errorLoadingCandidates =
+            'Error al cargar las aplicaciones y los detalles de los candidatos.';
+          this._snackBar.open(this.errorLoadingCandidates, 'Cerrar', {
+            duration: 3000,
+            verticalPosition: 'top',
+          });
+          this.isLoadingCandidates = false;
+          console.error('Error al cargar aplicaciones y candidatos:', err);
+        },
+      });
   }
 }

@@ -11,7 +11,7 @@ export interface Application {
       name: string;
     };
   };
-  candidateDetails?: {
+  /* candidateDetails?: {
     id: number;
     name: string;
     surname: string;
@@ -21,5 +21,5 @@ export interface Application {
       id: number;
       email: string;
     };
-  };
+  };*/
 }
