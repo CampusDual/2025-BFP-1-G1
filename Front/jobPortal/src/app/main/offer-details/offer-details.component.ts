@@ -37,7 +37,6 @@ export class OfferDetailsComponent implements OnInit {
   displayedColumns: string[] = [
     'candidateName',
     'candidateEmail',
-
     'inscriptionDate',
   ];
 
@@ -138,6 +137,14 @@ export class OfferDetailsComponent implements OnInit {
 
   aplicarAOferta(oferta: any) {
     this.applicationService.aplicarAOferta(oferta.id).subscribe({
+      /*************  ✨ Windsurf Command ⭐  *************/
+      /**
+       * next callback for application subscription. Shows a success snackbar
+       * with the response message and adds the offer id to the appliedOfferIds
+       * array.
+       * @param res response from application subscription
+       */
+      /*******  83ff9cd0-7d1c-43c2-a17c-699782555c59  *******/
       next: (res) => {
         this.openSnackBar(res, 'success');
         this.appliedOfferIds.push(oferta.id);
@@ -216,11 +223,13 @@ export class OfferDetailsComponent implements OnInit {
         next: (applicationsWithDetails: any[]) => {
           this.offerApplications = applicationsWithDetails.map((app) => ({
             ...app,
-
-            candidateName: app.candidateDetails?.name,
+            candidateName:
+              app.candidateDetails?.candidate?.name +
+              ' ' +
+              app.candidateDetails?.candidate?.surname,
             candidateEmail: app.candidateDetails?.user?.email,
-            candidatePhone: app.candidateDetails?.phone,
-            candidateBirthdate: app.candidateDetails?.birthdate,
+            candidatePhone: app.candidateDetails?.candidate?.phone,
+            candidateBirthdate: app.candidateDetails?.candidate?.birthdate,
           }));
           this.isLoadingCandidates = false;
           console.log(

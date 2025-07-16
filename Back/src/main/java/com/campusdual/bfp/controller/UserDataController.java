@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -26,6 +27,20 @@ public class UserDataController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred: " + e.getMessage());
         }
     }
+    @GetMapping("/{id}")
+    @PreAuthorize("isAuthenticated()") // Puedes ajustar la seguridad aquí si solo ciertos roles pueden ver datos de otros
+    public ResponseEntity<?> getUserDataById(@PathVariable Long id) { // @PathVariable para extraer el ID de la URL
+        try {
 
+            UserDataDTO userData = userDataService.getUserDataById(id);
+            if (userData != null) {
+                return ResponseEntity.ok(userData);
+            } else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User data not found for ID: " + id);
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred: " + e.getMessage());
+        }
+    }
 
 }

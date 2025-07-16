@@ -2,7 +2,7 @@ export interface Application {
   id: number;
   idCandidate: number;
   offerId: number;
-  inscriptionDate?: string;
+  inscriptionDate: string;
   status?: string;
   offer?: {
     id: number;
