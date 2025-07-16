@@ -7,7 +7,7 @@ import { UserData } from 'src/app/model/userData';
 import { ApplicationService } from 'src/app/services/application.service';
 import { JobOfferService } from 'src/app/services/job-offer.service';
 import { UsersService } from 'src/app/services/users.service';
-import { filter, tap, Observable, of } from 'rxjs'; // Import Observable and of
+import { filter, tap, Observable, of, combineLatest } from 'rxjs';
 import { Location } from '@angular/common';
 
 @Component({
@@ -17,8 +17,7 @@ import { Location } from '@angular/common';
 })
 export class OfferDetailsComponent implements OnInit {
   offer!: JobOffer;
-  // Change userData to an Observable
-  userData$: Observable<UserData | null> = of(null); // Initialize with null or undefined
+  userData$: Observable<UserData | null> = of(null);
   appliedOfferIds: number[] = [];
   candidate: Candidate | null = null;
   offerCandidates: Candidate[] = [];
@@ -39,61 +38,54 @@ export class OfferDetailsComponent implements OnInit {
   ngOnInit(): void {
     const id = Number(this.route.snapshot.paramMap.get('id'));
 
-    // Assign the userData$ directly from the service and handle initial fetch
-    this.userData$ = this.usersService.userData$.pipe(
-      tap((data) => {
-        // If data is null/undefined and user is logged in, try to fetch it
-        if (!data && this.usersService.isLoggedIn()) {
-          this.usersService.getUserData().subscribe();
-        }
-      })
-      // No need for filter((data) => data !== null) here, let the template handle null
-    );
-
-    // Subscribe to userData$ to trigger side effects (loading applications, candidates)
-    // This subscription runs when userData$ emits a new value.
-    this.userData$.subscribe((data) => {
-      if (data) {
-        // Ensure data is not null before using it for checks
-        if (this.isCandidate(data)) {
-          this.applicationService.getUserApplications().subscribe({
-            next: (applications: any[]) => {
-              this.appliedOfferIds = applications.map(
-                (app: any) => app.offerId
-              );
-            },
-            error: (err) => {
-              console.error('Error al obtener aplicaciones del usuario:', err);
-            },
-          });
-        }
-
-        // Only load candidates if offer is loaded and user data is available
-        if (this.offer && (this.isOfferOwner(data) || this.isAdmin(data))) {
-          this.loadCandidatesForOffer(id);
-        }
-      }
-    });
-
-    if (id) {
-      this.jobService.getJobOfferById(id).subscribe({
-        next: (data: JobOffer) => {
-          this.offer = data;
-          // Optionally, if offer loading also influences visibility based on user roles
-          // and userData might already be available, you could re-trigger checks.
-          // However, the userData$ subscription above should handle most cases.
-        },
+    const offer$ = this.jobService.getJobOfferById(id).pipe(
+      tap({
+        next: (data: JobOffer) => (this.offer = data),
         error: (err) => {
           console.error('Error al cargar la oferta:', err);
           this.router.navigate(['main/catalogue']);
         },
-      });
-    } else {
+      }),
+      filter((data) => !!data)
+    );
+
+    this.userData$ = this.usersService.userData$.pipe(
+      tap((data) => {
+        if (!data && this.usersService.isLoggedIn()) {
+          this.usersService.getUserData().subscribe();
+        }
+      })
+    );
+
+    combineLatest([
+      this.userData$.pipe(filter((data) => !!data)),
+      offer$,
+    ]).subscribe(([userData, offer]) => {
+      if (this.isCandidate(userData)) {
+        this.applicationService.getUserApplications().subscribe({
+          next: (applications: any[]) => {
+            this.appliedOfferIds = applications.map((app: any) => app.offerId);
+          },
+          error: (err) => {
+            console.error('Error al obtener aplicaciones del usuario:', err);
+          },
+        });
+      }
+
+      if (this.isOfferOwner(userData) || this.isAdmin(userData)) {
+        this.loadCandidatesForOffer(id);
+      }
+    });
+
+    if (!id) {
       this.router.navigate(['main/catalogue']);
     }
   }
 
-  // Update these methods to accept userData as an argument
+  goBack(): void {
+    this.location.back();
+  }
+
   isCompany(userData: UserData | null): boolean {
     return (
       !!userData?.company || (!!userData?.user && userData.user.role_id === 2)
@@ -113,22 +105,12 @@ export class OfferDetailsComponent implements OnInit {
     return userData.user.id === this.offer.company.user.id;
   }
 
-  isAdmin(userData: UserData | null): boolean {
-    return (
-      !!userData?.admin || (!!userData?.user && userData.user.role_id === 1)
-    );
-  }
-
-  // ... (rest of your methods remain the same)
-  goBack(): void {
-    this.location.back();
-  }
-
   editOffer(): void {
     if (this.offer?.id) {
       this.router.navigate(['main/editOffer', this.offer.id]);
     }
   }
+
   openSnackBar(message: string, panelClass: string = '') {
     this._snackBar.open(message, 'Cerrar', {
       duration: 10000,
@@ -143,7 +125,7 @@ export class OfferDetailsComponent implements OnInit {
       next: (res) => {
         this.openSnackBar(res, 'success');
         this.appliedOfferIds.push(oferta.id);
-        this.appliedOfferIds = [...this.appliedOfferIds]; // Trigger change detection for array mutation
+        this.appliedOfferIds = [...this.appliedOfferIds];
       },
       error: (err) => {
         let errorMessage =
@@ -152,7 +134,7 @@ export class OfferDetailsComponent implements OnInit {
           errorMessage = err.error || 'Ya estás inscrito a esta oferta';
           if (!this.appliedOfferIds.includes(oferta.id)) {
             this.appliedOfferIds.push(oferta.id);
-            this.appliedOfferIds = [...this.appliedOfferIds]; // Trigger change detection
+            this.appliedOfferIds = [...this.appliedOfferIds];
           }
         } else if (err.status === 401) {
           errorMessage =
@@ -184,5 +166,11 @@ export class OfferDetailsComponent implements OnInit {
         console.error('Error al cargar candidatos:', err);
       },
     });
+  }
+
+  isAdmin(userData: UserData | null): boolean {
+    return (
+      !!userData?.admin || (!!userData?.user && userData.user.role_id === 1)
+    );
   }
 }
