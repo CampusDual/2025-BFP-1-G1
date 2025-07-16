@@ -27,14 +27,14 @@ public class WorkExperienceService {
     public List<WorkExperienceDTO> queryAllWorkExperience() {
         return WorkExperienceMapper.INSTANCE.toDTOList(workExperienceDao.findAll()); }
 
-    public long insertWorkExperience(WorkExperienceDTO workExperienceDTO) {
-        return workExperienceDao.saveAndFlush(WorkExperienceMapper.INSTANCE.toEntity(workExperienceDTO)).getId();
+    public WorkExperienceDTO insertWorkExperience(WorkExperienceDTO workExperienceDTO) {
+        workExperienceDao.saveAndFlush(WorkExperienceMapper.INSTANCE.toEntity(workExperienceDTO));
+        return workExperienceDTO;
     }
 
     public long updateWorkExperience(WorkExperienceDTO workExperienceDTO) {
 
-        WorkExperience workExperience = workExperienceDao.findById(workExperienceDTO.getId())
-                .orElseThrow(() -> new RuntimeException("WorkExperience not found with id: " + workExperienceDTO.getId()));
+        WorkExperience workExperience = workExperienceDao.getReferenceById(workExperienceDTO.getId());
 
         if(workExperienceDTO.getDescription() != null) {
             workExperience.setDescription(workExperienceDTO.getDescription());

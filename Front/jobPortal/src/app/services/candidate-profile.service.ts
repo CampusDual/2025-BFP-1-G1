@@ -113,9 +113,7 @@ export class CandidateProfileService {
     );
   }
 
-  addWorkExperience(
-    workExperience: WorkExperience
-  ): Observable<WorkExperience> {
+  addWorkExperience(workExperience: WorkExperience): Observable<WorkExperience> {
     const token = localStorage.getItem('token');
     const headers = new HttpHeaders({
       Authorization: `Bearer ${token}`,

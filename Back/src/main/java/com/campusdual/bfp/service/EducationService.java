@@ -31,8 +31,8 @@ public class EducationService {
 
     public long updateEducation(EducationDTO educationDTO) {
 
-        Education education = educationDao.findById(educationDTO.getId())
-                .orElseThrow(() -> new RuntimeException("Education not found with id: " + educationDTO.getId()));
+        Education education = educationDao.getReferenceById(educationDTO.getId());
+
 
         if(educationDTO.getDescription() != null) {
             education.setDescription(educationDTO.getDescription());

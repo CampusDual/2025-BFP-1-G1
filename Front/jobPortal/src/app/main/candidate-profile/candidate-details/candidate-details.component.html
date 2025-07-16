@@ -126,11 +126,12 @@
         </div>
       </mat-tab>
 
-      <mat-tab
-        ><ng-template mat-tab-label>
+      <mat-tab>
+        <ng-template mat-tab-label>
           <mat-icon class="tab-icon">work</mat-icon>
           Experiencia Laboral
         </ng-template>
+
         <div class="section-header">
           <h3>experiencia profesional</h3>
         </div>
@@ -149,31 +150,22 @@
           }}
         </button>
 
+
         <form
           *ngIf="showExpForm"
+          [formGroup]="experienceForm"
           (ngSubmit)="addExperience()"
-          #expForm="ngForm"
           class="experience-form"
         >
           <div class="inputs">
             <mat-form-field appearance="outline">
-              <mat-label>posto</mat-label>
-              <input
-                matInput
-                name="jobTitle"
-                [(ngModel)]="workExperience.jobTitle"
-                required
-              />
+              <mat-label>Título</mat-label>
+              <input matInput formControlName="jobTitle" required />
             </mat-form-field>
 
             <mat-form-field appearance="outline">
-              <mat-label>empresa</mat-label>
-              <input
-                matInput
-                name="company"
-                [(ngModel)]="workExperience.company"
-                required
-              />
+              <mat-label>Empresa</mat-label>
+              <input matInput formControlName="company" required />
             </mat-form-field>
 
             <mat-form-field color="primary" appearance="outline">
@@ -181,13 +173,7 @@
               <input
                 matInput
                 [matDatepicker]="startPeriod"
-                [value]="
-                  workExperience.startPeriod
-                    ? (workExperience.startPeriod | date : 'yyyy-MM-dd')
-                    : null
-                "
-                (dateChange)="onStartPeriodChange($event.value)"
-                name="endPeriod"
+                formControlName="startPeriod"
                 required
               />
               <mat-hint>MM/DD/AAAA</mat-hint>
@@ -203,38 +189,31 @@
               <input
                 matInput
                 [matDatepicker]="endPicker"
-                [value]="
-                  workExperience.endPeriod
-                    ? (workExperience.endPeriod | date : 'yyyy-MM-dd')
-                    : null
-                "
-                (dateChange)="onEndPeriodChange($event.value)"
-                name="endPeriod"
-                required
+                formControlName="endPeriod"
               />
+              <mat-hint>MM/DD/AAAA</mat-hint>
               <mat-datepicker-toggle
                 matSuffix
                 [for]="endPicker"
               ></mat-datepicker-toggle>
               <mat-datepicker #endPicker></mat-datepicker>
-              <mat-hint>MM/DD/AAAA</mat-hint>
             </mat-form-field>
 
             <mat-form-field appearance="outline" class="description">
               <mat-label>descrición</mat-label>
               <textarea
                 matInput
-                name="description"
-                [(ngModel)]="workExperience.description"
+                formControlName="description"
                 required
               ></textarea>
             </mat-form-field>
           </div>
+
           <button
             mat-raised-button
             color="accent"
             type="submit"
-            [disabled]="!expForm.form.valid"
+            [disabled]="!experienceForm.valid"
           >
             gardar experiencia
           </button>
@@ -255,11 +234,12 @@
         </div>
       </mat-tab>
 
-      <mat-tab
-        ><ng-template mat-tab-label>
+      <mat-tab>
+        <ng-template mat-tab-label>
           <mat-icon class="tab-icon">school</mat-icon>
           Educación
         </ng-template>
+
         <div class="section-header">
           <h3>formación académica</h3>
         </div>
