@@ -11,4 +11,6 @@ import java.util.Optional;
 public interface ApplicationDao extends JpaRepository<Application, Long> {
     Optional<Application> findByIdCandidateAndIdOffer(Long idCandidate, Long idOffer);
     List<Application> findByIdCandidate(Long idCandidate);
+    List<Application> findByJobOfferId(Long jobOfferId);
+    Optional<Application> findByIdCandidateAndJobOfferId(Long idCandidate, Long jobOfferId);
 }

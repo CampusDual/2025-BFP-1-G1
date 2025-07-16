@@ -21,6 +21,7 @@ export class OfferDetailsComponent implements OnInit {
   appliedOfferIds: number[] = [];
   candidate: Candidate | null = null;
   offerCandidates: Candidate[] = [];
+
   isLoadingCandidates: boolean = false;
   errorLoadingCandidates: string | null = null;
   displayedColumns: string[] = ['name', 'email', 'phone', 'birthdate'];

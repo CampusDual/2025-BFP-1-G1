@@ -1,6 +1,7 @@
 package com.campusdual.bfp.model;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "applications")
@@ -18,6 +19,7 @@ public class Application {
     @ManyToOne
     @JoinColumn(name = "id_candidate", insertable = false, updatable = false)
     private Candidate candidate;
+    @Column(name = "inscription_date", nullable = false, updatable = false) private LocalDateTime inscriptionDate;
 
     @ManyToOne
     @JoinColumn(name = "id_offer", insertable = false, updatable = false)
@@ -44,6 +46,14 @@ public class Application {
 
     public void setIdCandidate(Long idCandidate) {
         this.idCandidate = idCandidate;
+    }
+
+    public LocalDateTime getInscriptionDate() {
+        return inscriptionDate;
+    }
+
+    public void setInscriptionDate(LocalDateTime inscriptionDate) {
+        this.inscriptionDate = inscriptionDate;
     }
 
     public Long getIdOffer() {

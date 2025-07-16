@@ -13,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.HashMap;
 import java.util.List;
@@ -85,5 +86,19 @@ public class ApplicationController {
                 .collect(Collectors.toList());
 
         return ResponseEntity.ok(offerIds);
+    }
+    @GetMapping("/offer/{offerId}")
+    public ResponseEntity<List<Application>> getApplicationsByOfferId(@RequestHeader("Authorization") String token,
+                                                                      @PathVariable Long offerId) {
+        List<Application> applications = applicationService.getApplicationsByOfferId(offerId);
+        return ResponseEntity.ok(applications);
+    }
+
+    @GetMapping("/{applicationId}")
+    public ResponseEntity<Application> getApplicationById(@RequestHeader("Authorization") String token,
+                                                          @PathVariable Long applicationId) {
+        return applicationService.getApplicationById(applicationId)
+                .map(ResponseEntity::ok)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Application not found"));
     }
 }

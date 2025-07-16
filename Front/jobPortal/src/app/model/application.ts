@@ -2,15 +2,24 @@ export interface Application {
   id: number;
   idCandidate: number;
   offerId: number;
-  applicationDate?: string;
+  inscriptionDate?: string;
   status?: string;
-  // Add any other fields that might be returned by the API
   offer?: {
     id: number;
     title: string;
     company?: {
       name: string;
     };
-    // Add other offer fields as needed
+  };
+  candidateDetails?: {
+    id: number;
+    name: string;
+    surname: string;
+    phone?: string;
+    birthdate?: string;
+    user?: {
+      id: number;
+      email: string;
+    };
   };
 }
