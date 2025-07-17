@@ -27,16 +27,15 @@ public class UserDataController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred: " + e.getMessage());
         }
     }
-    @GetMapping("/{id}")
+    @GetMapping("/user/{userId}")
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<?> getUserDataById(@PathVariable Long id) { 
+    public ResponseEntity<?> getUserDataByUserId(@PathVariable Long userId) {
         try {
-
-            UserDataDTO userData = userDataService.getUserDataById(id);
+            UserDataDTO userData = userDataService.getUserDataById(userId);
             if (userData != null) {
                 return ResponseEntity.ok(userData);
             } else {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User data not found for ID: " + id);
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User data not found for user ID: " + userId);
             }
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred: " + e.getMessage());

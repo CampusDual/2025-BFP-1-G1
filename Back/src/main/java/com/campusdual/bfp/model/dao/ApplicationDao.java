@@ -1,6 +1,7 @@
 package com.campusdual.bfp.model.dao;
 
 import com.campusdual.bfp.model.Application;
+import com.campusdual.bfp.model.Candidate;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -13,4 +14,6 @@ public interface ApplicationDao extends JpaRepository<Application, Long> {
     List<Application> findByIdCandidate(Long idCandidate);
     List<Application> findByJobOfferId(Long jobOfferId);
     Optional<Application> findByIdCandidateAndJobOfferId(Long idCandidate, Long jobOfferId);
+
+
 }

@@ -30,14 +30,14 @@ export class OfferDetailsComponent implements OnInit {
   userData$: Observable<UserData | null> = of(null);
   appliedOfferIds: number[] = [];
   candidate: Candidate | null = null;
-  offerCandidates: Candidate[] = [];
+  // offerCandidates: Candidate[] = []; // This line might no longer be needed if using offerApplications
   isLoadingCandidates: boolean = false;
-  offerApplications: any[] = [];
+  offerApplications: any[] = []; // This will hold applications with candidate details
   errorLoadingCandidates: string | null = null;
   displayedColumns: string[] = [
     'candidateName',
     'candidateEmail',
-    'inscriptionDate',
+    'inscriptionDate', // This should match the property name in offerApplications
   ];
 
   constructor(
@@ -87,6 +87,7 @@ export class OfferDetailsComponent implements OnInit {
         });
       }
 
+      // Load applications and candidate details if the user is the offer owner or an admin
       if (this.isOfferOwner(userData) || this.isAdmin(userData)) {
         this.loadApplicationsAndCandidateDetails(id);
       }
@@ -137,14 +138,6 @@ export class OfferDetailsComponent implements OnInit {
 
   aplicarAOferta(oferta: any) {
     this.applicationService.aplicarAOferta(oferta.id).subscribe({
-      /*************  ✨ Windsurf Command ⭐  *************/
-      /**
-       * next callback for application subscription. Shows a success snackbar
-       * with the response message and adds the offer id to the appliedOfferIds
-       * array.
-       * @param res response from application subscription
-       */
-      /*******  83ff9cd0-7d1c-43c2-a17c-699782555c59  *******/
       next: (res) => {
         this.openSnackBar(res, 'success');
         this.appliedOfferIds.push(oferta.id);
@@ -169,11 +162,16 @@ export class OfferDetailsComponent implements OnInit {
     });
   }
 
+  // This method is now redundant if loadApplicationsAndCandidateDetails covers the need
+  // for displaying candidate details for a company.
+  // If you still need to load *only* CandidateDTOs without application details for some reason,
+  // then you'd keep this and potentially adjust its usage.
+  /*
   loadCandidatesForOffer(offerId: number): void {
     this.isLoadingCandidates = true;
     this.errorLoadingCandidates = null;
-    this.jobService.getCandidatesByJobOfferId(offerId).subscribe({
-      next: (candidates: Candidate[]) => {
+    this.applicationService.getCandidatesByJobOffer(offerId).subscribe({
+      next: (candidates: CandidateDTO[]) => { // Use CandidateDTO[] here
         this.offerCandidates = candidates;
         this.isLoadingCandidates = false;
         console.log(`Candidatos para la oferta ${offerId}:`, candidates);
@@ -190,6 +188,7 @@ export class OfferDetailsComponent implements OnInit {
       },
     });
   }
+  */
 
   isAdmin(userData: UserData | null): boolean {
     return (
@@ -202,35 +201,42 @@ export class OfferDetailsComponent implements OnInit {
     this.errorLoadingCandidates = null;
 
     this.applicationService
-      .getApplicationsByOfferId(offerId)
+      .getApplicationsByOfferId(offerId) // This fetches the Application objects
       .pipe(
         switchMap((applications: Application[]) => {
           if (applications.length === 0) {
-            return of([]);
+            return of([]); // Return an empty array if no applications
           }
 
+          // For each application, fetch the candidate's UserData
           const candidateDetailsRequests = applications.map((app) =>
-            this.usersService
-              .getUserDataById(app.idCandidate)
-              .pipe(
-                map((candidate) => ({ ...app, candidateDetails: candidate }))
-              )
+            this.usersService.getUserDataById(app.idCandidate).pipe(
+              map((userData: UserData) => ({
+                // Combine application data with relevant candidate details
+                id: app.id, // Application ID
+                idOffer: app.offerId, // Offer ID
+                idCandidate: app.idCandidate, // Candidate ID
+                inscriptionDate: app.inscriptionDate, // Application's inscription date
+
+                // Candidate details for the table
+                candidateName: `${userData?.candidate?.name || ''} ${
+                  userData?.candidate?.surname || ''
+                }`.trim(),
+                candidateEmail: userData?.user?.email || 'N/A',
+                candidatePhone: userData?.candidate?.phone || 'N/A',
+                candidateBirthdate: userData?.candidate?.birthdate || 'N/A',
+                // Add other candidate details you might need later
+              }))
+            )
           );
+          // Wait for all candidate details requests to complete
           return forkJoin(candidateDetailsRequests);
         })
       )
       .subscribe({
         next: (applicationsWithDetails: any[]) => {
-          this.offerApplications = applicationsWithDetails.map((app) => ({
-            ...app,
-            candidateName:
-              app.candidateDetails?.candidate?.name +
-              ' ' +
-              app.candidateDetails?.candidate?.surname,
-            candidateEmail: app.candidateDetails?.user?.email,
-            candidatePhone: app.candidateDetails?.candidate?.phone,
-            candidateBirthdate: app.candidateDetails?.candidate?.birthdate,
-          }));
+          // applicationsWithDetails is already mapped to the desired format
+          this.offerApplications = applicationsWithDetails;
           this.isLoadingCandidates = false;
           console.log(
             `Aplicaciones con detalles de candidato para la oferta ${offerId}:`,

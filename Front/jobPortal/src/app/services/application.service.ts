@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, map } from 'rxjs';
 import { Application } from '../model/application';
+import { Candidate } from '../model/candidate';
 
 @Injectable({ providedIn: 'root' })
 export class ApplicationService {
@@ -103,4 +104,34 @@ export class ApplicationService {
       .get<Application>(url, { headers })
       .pipe(map((application) => application.inscriptionDate));
   }*/
+  getCandidatesByJobOffer(offerId: number): Observable<Candidate[]> {
+    //
+    const token = localStorage.getItem('token');
+
+    if (!token) {
+      const errorMsg =
+        'No token found in localStorage. User might not be authenticated to view candidates.';
+      console.error(errorMsg);
+      return new Observable((observer) => observer.error(new Error(errorMsg)));
+    }
+
+    console.log('Fetching candidates for offer ID:', offerId, 'with token.');
+
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`, // Pass the JWT token for authentication
+    });
+
+    const url = `${this.apiUrl}/getcandidates/${offerId}`;
+    console.log('Making GET request to:', url);
+
+    // Make the HTTP GET request and expect an array of Candidate
+    return this.http.get<Candidate[]>(url, { headers }).pipe(
+      //                          ^^^^^^^^^^ Correctly expecting Candidate[]
+      map((candidates) => {
+        console.log('Received candidates:', candidates);
+        return candidates;
+      })
+    );
+  }
 }

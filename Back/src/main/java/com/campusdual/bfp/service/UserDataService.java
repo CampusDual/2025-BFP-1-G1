@@ -54,16 +54,13 @@ public class UserDataService {
 
 
 
+
+
     @Transactional(readOnly = true)
     public UserDataDTO getUserDataById(Long userId) {
+        User user= userDao.getReferenceById(userId);
 
-        Optional<User> userOpt = userDao.findById(userId);
-       User useren = userDao.getReferenceById(userId);
-        if (userOpt.isEmpty()) {
-            return null;
-        }
 
-        User user = userOpt.get();
         UserDataDTO userDataDTO = new UserDataDTO();
         userDataDTO.setUser(UserMapper.INSTANCE.toDTO(user));
 

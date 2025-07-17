@@ -38,6 +38,13 @@ public class JobOffer {
     @Type(type = "com.campusdual.bfp.util.PostgresEnumType")
     private EnumModalidadTrabajo modalidad;
 
+    public Boolean getActive() {
+        return active;
+    }
+
+    public void setActive(Boolean active) {
+        this.active = active;
+    }
 
     @Column
     private String requisitos;

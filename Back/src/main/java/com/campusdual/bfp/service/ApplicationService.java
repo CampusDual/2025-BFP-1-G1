@@ -1,8 +1,10 @@
 package com.campusdual.bfp.service;
 
 import com.campusdual.bfp.model.Application;
+import com.campusdual.bfp.model.Candidate;
 import com.campusdual.bfp.model.JobOffer;
 import com.campusdual.bfp.model.dao.ApplicationDao;
+import com.campusdual.bfp.model.dao.CandidateDao;
 import com.campusdual.bfp.model.dao.JobOffersDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,6 +15,7 @@ import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class ApplicationService {
@@ -23,6 +26,9 @@ public class ApplicationService {
 
     @Autowired
     private JobOffersDao jobOffersDao;
+
+    @Autowired
+    private CandidateDao candidateDao;
 
 
     public boolean hasAlreadyApplied(Long idCandidate, Long idOffer) {
@@ -68,4 +74,20 @@ public class ApplicationService {
         applicationDao.save(application);
         return "Application successful!";
     }
+@Transactional
+    public List<Candidate> getCandidatesByJobOfferId(Long jobOfferId) {
+        List<Application> applications = applicationDao.findByJobOfferId(jobOfferId);
+        List<Long> candidateIds = applications.stream()
+                .map(Application::getIdCandidate)
+
+                .distinct()
+
+                .collect(Collectors.toList());
+
+
+        return candidateDao.findByIdIn(candidateIds);
+
+    }
+
+
 }
