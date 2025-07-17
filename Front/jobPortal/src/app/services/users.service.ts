@@ -23,7 +23,26 @@ export class UsersService {
   private urlCandidates: string = 'http://localhost:30030/candidate';
   userData$ = this.userDataSubject.asObservable();
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {
+    const storedUserData = localStorage.getItem('userData');
+    if (storedUserData) {
+      try {
+        this.userDataSubject.next(JSON.parse(storedUserData));
+      } catch (e) {
+        console.error('Error parsing stored user data:', e);
+        localStorage.removeItem('userData');
+      }
+    }
+  }
+
+  setUserData(data: UserData | null): void {
+    this.userDataSubject.next(data);
+    if (data) {
+      localStorage.setItem('userData', JSON.stringify(data));
+    } else {
+      localStorage.removeItem('userData');
+    }
+  }
 
   login(username: string, password: string): Observable<any> {
     const body = { username, password };
@@ -84,7 +103,6 @@ export class UsersService {
   getUserValue(): UserData | null {
     return this.userDataSubject.value;
   }
-
   handleError = (error: HttpErrorResponse): Observable<never> => {
     let errorMessage = 'Ocurrió un error desconocido.';
     if (error.status === 401) {
@@ -111,6 +129,7 @@ export class UsersService {
     console.error('Error en la petición:', error);
     return throwError(() => new Error(errorMessage));
   };
+
 
   isLoggedIn(): boolean {
     const token = localStorage.getItem('token');
@@ -152,27 +171,11 @@ export class UsersService {
       .pipe(
         map((userData) => {
           this.userDataSubject.next(userData);
+          localStorage.setItem('userData', JSON.stringify(userData));
           return userData;
         }),
         catchError(this.handleError)
       );
-  }
-
-  getUserDataById(id: number): Observable<UserData> {
-    const token = localStorage.getItem('token');
-    if (!token) {
-      return throwError(
-        () =>
-          new Error(
-            'No se encontró el token de autentificación. Por favor, inicia sesión.'
-          )
-      );
-    }
-    const headers = new HttpHeaders({ Authorization: `Bearer ${token}` });
-
-    return this.http
-      .get<UserData>(`${this.urlUserData}/user/${id}`, { headers }) // <--- Antes era ${this.urlUserData}/${id}
-      .pipe(catchError(this.handleError));
   }
   insertNewCompany(
     login: string,
@@ -300,4 +303,22 @@ export class UsersService {
       })
       .pipe(catchError(this.handleError));
   }
+  
+    getUserDataById(id: number): Observable<UserData> {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      return throwError(
+        () =>
+          new Error(
+            'No se encontró el token de autentificación. Por favor, inicia sesión.'
+          )
+      );
+    }
+    const headers = new HttpHeaders({ Authorization: `Bearer ${token}` });
+
+    return this.http
+      .get<UserData>(`${this.urlUserData}/user/${id}`, { headers }) 
+      .pipe(catchError(this.handleError));
+  }
 }
+
