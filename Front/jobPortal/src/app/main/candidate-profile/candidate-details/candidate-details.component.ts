@@ -1,4 +1,3 @@
-import { ActivatedRoute } from '@angular/router';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -11,6 +10,7 @@ import { UserData } from 'src/app/model/userData';
 
 import { CandidateProfileService } from 'src/app/services/candidate-profile.service';
 import { UsersService } from 'src/app/services/users.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-candidate-details',
@@ -72,20 +72,14 @@ export class CandidateDetailsComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.initializeForms();
-    this.loadUserData();
-
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
       this.loadCandidate(+id);
+    } else {
+      this.loadUserData();
     }
   }
 
-  loadCandidate(id: number) {
-    this.candidateService.getCandidateById(id).subscribe((candidate) => {
-      this.candidate = candidate;
-      this.profileForm.patchValue(candidate);
-    });
-  }
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
@@ -112,6 +106,54 @@ export class CandidateDetailsComponent implements OnInit, OnDestroy {
     return date.toLocaleDateString('es-ES', options);
   }
 
+  private loadCandidate(id: number): void {
+    this.candidateService
+      .getCandidateById(id)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (candidate) => {
+          this.candidate = candidate;
+          this.candidateForm.patchValue({
+            name: this.candidate.name,
+            surname: this.candidate.surname,
+            qualification: this.candidate.qualification,
+            location: this.candidate.location,
+            experience: this.candidate.experience,
+            employmentStatus:
+              this.candidate.employmentStatus?.toLowerCase() || 'no definido',
+            modality: this.candidate.modality?.toLowerCase() || 'indiferente',
+            availability: this.candidate.availability,
+            aboutMe: this.candidate.aboutMe,
+            linkedin: this.candidate.linkedin,
+            github: this.candidate.github,
+            web: this.candidate.web,
+            email: this.candidate.user?.email,
+            phone: this.candidate.phone,
+            birthdate: this.candidate.birthdate
+              ? new Date(this.candidate.birthdate)
+              : null,
+            profileImg: this.candidate.profileImg || '',
+          });
+
+          if (this.candidate.profileImg) {
+            this.imagePreviewUrl = this.candidate.profileImg;
+          } else {
+            this.imagePreviewUrl = null;
+          }
+          this.selectedFile = null;
+          this.selectedFileName = '';
+
+          this.loadExperiences();
+          this.loadEducations();
+        },
+        error: () =>
+          this.snackBar.open('Error al cargar el perfil', 'Cerrar', {
+            duration: 3000,
+            panelClass: ['snackbar-error'],
+          }),
+      });
+  }
+
   private initializeForms(): void {
     this.experienceForm = this.fb.group({
       jobTitle: ['', [Validators.required, Validators.maxLength(120)]],
@@ -135,9 +177,9 @@ export class CandidateDetailsComponent implements OnInit, OnDestroy {
       qualification: ['', Validators.maxLength(100)],
       location: ['', Validators.maxLength(100)],
       experience: [''],
-      employmentStatus: [''],
+      employmentStatus: ['no definido', Validators.required],
+      modality: ['indiferente', Validators.required],
       availability: [''],
-      modality: [''],
       aboutMe: ['', Validators.maxLength(4000)],
       linkedin: [
         '',
@@ -158,16 +200,13 @@ export class CandidateDetailsComponent implements OnInit, OnDestroy {
       profileImg: [''],
     });
   }
-
   private loadUserData(): void {
     this.userService.userData$
       .pipe(takeUntil(this.destroy$))
       .subscribe((user) => {
         this.userData = user;
+        if (!user || !user.candidate) return;
 
-        if (!user || !user.candidate) {
-          return;
-        }
         this.candidateService
           .getCandidateProfile()
           .pipe(takeUntil(this.destroy$))
@@ -179,9 +218,10 @@ export class CandidateDetailsComponent implements OnInit, OnDestroy {
               qualification: this.candidate.qualification,
               location: this.candidate.location,
               experience: this.candidate.experience,
-              employmentStatus: this.candidate.employmentStatus,
+              employmentStatus:
+                this.candidate.employmentStatus?.toLowerCase() || 'no definido',
+              modality: this.candidate.modality?.toLowerCase() || 'indiferente',
               availability: this.candidate.availability,
-              modality: this.candidate.modality,
               aboutMe: this.candidate.aboutMe,
               linkedin: this.candidate.linkedin,
               github: this.candidate.github,
@@ -193,6 +233,7 @@ export class CandidateDetailsComponent implements OnInit, OnDestroy {
                 : null,
               profileImg: this.candidate.profileImg || '',
             });
+
             if (this.candidate.profileImg) {
               this.imagePreviewUrl = this.candidate.profileImg;
             } else {
@@ -311,6 +352,27 @@ export class CandidateDetailsComponent implements OnInit, OnDestroy {
         ...this.experienceForm.value,
         idCandidate: this.candidate?.id || 0,
       };
+
+      // Format dates for new experience as well, similar to edit
+      if (
+        experienceData.startPeriod instanceof Date &&
+        !isNaN(experienceData.startPeriod.getTime())
+      ) {
+        experienceData.startPeriod = experienceData.startPeriod
+          .toISOString()
+          .split('T')[0];
+      }
+      if (
+        experienceData.endPeriod instanceof Date &&
+        !isNaN(experienceData.endPeriod.getTime())
+      ) {
+        experienceData.endPeriod = experienceData.endPeriod
+          .toISOString()
+          .split('T')[0];
+      } else if (experienceData.endPeriod === '') {
+        experienceData.endPeriod = null;
+      }
+
       this.candidateService
         .addWorkExperience(experienceData)
         .pipe(takeUntil(this.destroy$))
@@ -341,6 +403,27 @@ export class CandidateDetailsComponent implements OnInit, OnDestroy {
         ...this.educationForm.value,
         idCandidate: this.candidate?.id || 0,
       };
+
+      // Format dates for new education as well, similar to edit
+      if (
+        educationData.startPeriod instanceof Date &&
+        !isNaN(educationData.startPeriod.getTime())
+      ) {
+        educationData.startPeriod = educationData.startPeriod
+          .toISOString()
+          .split('T')[0];
+      }
+      if (
+        educationData.endPeriod instanceof Date &&
+        !isNaN(educationData.endPeriod.getTime())
+      ) {
+        educationData.endPeriod = educationData.endPeriod
+          .toISOString()
+          .split('T')[0];
+      } else if (educationData.endPeriod === '') {
+        educationData.endPeriod = null;
+      }
+
       this.candidateService
         .addEducation(educationData)
         .pipe(takeUntil(this.destroy$))
@@ -396,30 +479,33 @@ export class CandidateDetailsComponent implements OnInit, OnDestroy {
 
   saveCandidate(): void {
     if (this.candidateForm.valid) {
+      const formData = this.candidateForm.getRawValue();
+
+      let formattedBirthdate: string | null = null;
+      if (
+        formData.birthdate instanceof Date &&
+        !isNaN(formData.birthdate.getTime())
+      ) {
+        formattedBirthdate = formData.birthdate.toISOString().split('T')[0];
+      } else if (typeof formData.birthdate === 'string' && formData.birthdate) {
+        formattedBirthdate = formData.birthdate;
+      }
+
+      formData.employmentStatus =
+        formData.employmentStatus?.toLowerCase() || 'no definido';
+      formData.modality = formData.modality?.toLowerCase() || 'indiferente';
+
       const candidateDataToUpdate: Candidate = {
         id: this.candidate.id,
-        name: this.candidateForm.get('name')?.value,
-        surname: this.candidateForm.get('surname')?.value,
-        qualification: this.candidateForm.get('qualification')?.value,
-        location: this.candidateForm.get('location')?.value,
-        experience: this.candidateForm.get('experience')?.value,
-        employmentStatus: this.candidateForm.get('employmentStatus')?.value,
-        availability: this.candidateForm.get('availability')?.value,
-        modality: this.candidateForm.get('modality')?.value,
-        aboutMe: this.candidateForm.get('aboutMe')?.value,
-        linkedin: this.candidateForm.get('linkedin')?.value,
-        github: this.candidateForm.get('github')?.value,
-        web: this.candidateForm.get('web')?.value,
-        phone: this.candidateForm.get('phone')?.value,
-        birthdate: this.candidateForm.get('birthdate')?.value
-          ? new Date(this.candidateForm.get('birthdate')?.value)
-          : undefined,
-        profileImg: this.candidateForm.get('profileImg')?.value || null,
+        ...formData,
         user: {
           ...this.candidate.user,
-          email: this.candidateForm.get('email')?.value,
+          email: formData.email,
         },
       };
+
+      delete (candidateDataToUpdate as any).birthdate;
+      candidateDataToUpdate.birthdate = formattedBirthdate;
 
       let updateObservable;
       if (this.selectedFile) {
@@ -497,17 +583,56 @@ export class CandidateDetailsComponent implements OnInit, OnDestroy {
 
   startEditingExperience(exp: any): void {
     this.editingExpId = exp.id;
-    this.experienceForm.patchValue(exp);
+    this.experienceForm.patchValue({
+      ...exp,
+      startPeriod: exp.startPeriod ? new Date(exp.startPeriod) : null,
+      endPeriod: exp.endPeriod ? new Date(exp.endPeriod) : null,
+    });
     this.showExpForm = false;
   }
 
   editExperience(): void {
     if (this.experienceForm.valid) {
+      // Added check for editingExpId
+      if (
+        this.editingExpId === null ||
+        this.editingExpId === undefined ||
+        this.editingExpId === 0
+      ) {
+        this.snackBar.open(
+          'Error: No se ha seleccionado una experiencia para editar.',
+          'Cerrar',
+          {
+            duration: 3000,
+            panelClass: ['snackbar-error'],
+          }
+        );
+        return;
+      }
+
       const experience = {
         ...this.experienceForm.value,
         id: this.editingExpId,
         idCandidate: this.candidate?.id || 0,
       };
+
+      // Ensure startPeriod and endPeriod are formatted as strings before sending
+      if (
+        experience.startPeriod instanceof Date &&
+        !isNaN(experience.startPeriod.getTime())
+      ) {
+        experience.startPeriod = experience.startPeriod
+          .toISOString()
+          .split('T')[0];
+      }
+      if (
+        experience.endPeriod instanceof Date &&
+        !isNaN(experience.endPeriod.getTime())
+      ) {
+        experience.endPeriod = experience.endPeriod.toISOString().split('T')[0];
+      } else if (experience.endPeriod === '') {
+        experience.endPeriod = null; // Send null if empty string to backend
+      }
 
       this.candidateService
         .updateWorkExperience(experience)
@@ -520,7 +645,7 @@ export class CandidateDetailsComponent implements OnInit, OnDestroy {
             });
 
             this.loadExperiences();
-            this.editingExpId = null;
+            this.editingExpId = null; // Reset after successful edit
             this.experienceForm.reset();
           },
           error: (error) => {
@@ -556,11 +681,46 @@ export class CandidateDetailsComponent implements OnInit, OnDestroy {
 
   editEducation(): void {
     if (this.educationForm.valid) {
+      // Added check for editingEduId
+      if (
+        this.editingEduId === null ||
+        this.editingEduId === undefined ||
+        this.editingEduId === 0
+      ) {
+        this.snackBar.open(
+          'Error: No se ha seleccionado una educación para editar.',
+          'Cerrar',
+          {
+            duration: 3000,
+            panelClass: ['snackbar-error'],
+          }
+        );
+        return;
+      }
+
       const education = {
         ...this.educationForm.value,
         id: this.editingEduId,
         idCandidate: this.candidate?.id || 0,
       };
+
+      // Ensure startPeriod and endPeriod are formatted as strings before sending
+      if (
+        education.startPeriod instanceof Date &&
+        !isNaN(education.startPeriod.getTime())
+      ) {
+        education.startPeriod = education.startPeriod
+          .toISOString()
+          .split('T')[0];
+      }
+      if (
+        education.endPeriod instanceof Date &&
+        !isNaN(education.endPeriod.getTime())
+      ) {
+        education.endPeriod = education.endPeriod.toISOString().split('T')[0];
+      } else if (education.endPeriod === '') {
+        education.endPeriod = null; // Send null if empty string to backend
+      }
 
       this.candidateService
         .updateEducation(education)
@@ -573,7 +733,7 @@ export class CandidateDetailsComponent implements OnInit, OnDestroy {
             });
 
             this.loadEducations();
-            this.editingEduId = null;
+            this.editingEduId = null; // Reset after successful edit
             this.educationForm.reset();
           },
           error: (error) => {
