@@ -1,3 +1,4 @@
+import { ActivatedRoute } from '@angular/router';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -65,14 +66,26 @@ export class CandidateDetailsComponent implements OnInit, OnDestroy {
     private userService: UsersService,
     private candidateService: CandidateProfileService,
     private snackBar: MatSnackBar,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
     this.initializeForms();
     this.loadUserData();
+
+    const id = this.route.snapshot.paramMap.get('id');
+    if (id) {
+      this.loadCandidate(+id);
+    }
   }
 
+  loadCandidate(id: number) {
+    this.candidateService.getCandidateById(id).subscribe((candidate) => {
+      this.candidate = candidate;
+      this.profileForm.patchValue(candidate);
+    });
+  }
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
