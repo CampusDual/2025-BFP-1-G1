@@ -31,7 +31,13 @@ import { OfferDetailsComponent } from './offer-details/offer-details.component';
 import { EditOfferComponent } from './edit-offer/edit-offer.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { CandidateDetailsComponent } from './candidate-profile/candidate-details/candidate-details.component';
+import {MatTabsModule} from '@angular/material/tabs';
+import { MatMenuModule } from "@angular/material/menu";
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
 import { RouterModule } from '@angular/router';
+
 
 @NgModule({
   providers: [
@@ -55,6 +61,7 @@ import { RouterModule } from '@angular/router';
     CompanySignupComponent,
     OfferDetailsComponent,
     EditOfferComponent,
+    CandidateDetailsComponent,
   ],
   imports: [
     CommonModule,
@@ -75,6 +82,10 @@ import { RouterModule } from '@angular/router';
     MatDividerModule,
     MatSelectModule,
     MatSlideToggleModule,
+    MatTabsModule,
+    MatMenuModule,
+    MatDatepickerModule,
+    MatNativeDateModule
     RouterModule,
   ],
 })

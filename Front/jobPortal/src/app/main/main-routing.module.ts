@@ -12,6 +12,7 @@ import { AdminProfileComponent } from './admin-profile/admin-profile.component';
 import { CompanySignupComponent } from './company-signup/company-signup.component';
 import { OfferDetailsComponent } from './offer-details/offer-details.component';
 import { EditOfferComponent } from './edit-offer/edit-offer.component';
+import { CandidateDetailsComponent } from './candidate-profile/candidate-details/candidate-details.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'catalogue', pathMatch: 'full' },
@@ -51,6 +52,11 @@ const routes: Routes = [
   {
     path: 'editOffer/:id',
     component: EditOfferComponent,
+    canActivate: [authGuard],
+  },
+  {
+    path: 'candidateDetails',
+    component: CandidateDetailsComponent,
     canActivate: [authGuard],
   },
 ];
