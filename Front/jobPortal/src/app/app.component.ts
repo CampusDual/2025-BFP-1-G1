@@ -19,9 +19,8 @@ export class AppComponent {
   ) {
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
-        this.isLogin =
-          this.router.url === '/main/login' ||
-          this.router.url === '/main/signup';
+
+        this.isLogin = this.router.url === '/main/login' || this.router.url === '/main/signup' || this.router.url === '/main/companysignup';
       }
     });
     this.iconRegistry.addSvgIcon(

@@ -4,13 +4,16 @@
       <img src="assets/img/logoCluster.png" alt="Logo Cluster TIC Galiza" (click)="goToCatalogue()">
     </div>
     <div class="iconContainer" *ngIf="usersService.isLoggedIn(); else guestMenu">
-      <span (click)="navigateToProfile()" class="display-name">{{ getDisplayName() }}</span>
+      <span (click)="redirectToProfile()" class="display-name">{{ getDisplayName() }}</span>
       <button mat-fab [matMenuTriggerFor]="userMenu">
         <mat-icon class="icon">account_circle</mat-icon>
       </button>
       <mat-menu #userMenu="matMenu">
         <button mat-menu-item (click)="redirectToProfile()">
-          {{ isCandidate() ? 'Candidaturas' : 'Perfil Empresa' }}
+
+          {{ isAdmin() ? 'Perfil Admin' : (isCandidate() ? 'Perfil Candidato' : (isCompany() ? 'Perfil Empresa' : ''))
+          }}
+
         </button>
         <button mat-menu-item *ngIf="isCandidate()" [routerLink]="['/main/candidateDetails']">
           Ver Perfil

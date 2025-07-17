@@ -1,7 +1,5 @@
 package com.campusdual.bfp.model.dto;
 
-import com.campusdual.bfp.model.User;
-
 public class CompanyDTO {
 
     private Long id;
@@ -27,7 +25,7 @@ public class CompanyDTO {
         this.logo = logo;
     }
 
-    public Long getId() {
+    public long getId() {
         return id;
     }
 

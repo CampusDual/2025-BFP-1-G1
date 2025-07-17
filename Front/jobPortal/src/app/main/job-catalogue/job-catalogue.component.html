@@ -9,13 +9,6 @@
           <span *ngIf="sortDirection === 'asc'">&#9650;</span>
         </span>
       </button>
-      <button mat-button (click)="sortOffers('title', 'desc')" [class.active]="sortBy === 'title'">
-        Título
-        <span *ngIf="sortBy === 'title'">
-          <span *ngIf="sortDirection === 'desc'">&#9660;</span>
-          <span *ngIf="sortDirection === 'asc'">&#9650;</span>
-        </span>
-      </button>
       <button mat-button (click)="sortOffers('company', 'desc')" [class.active]="sortBy === 'company'">
         Empresa
         <span *ngIf="sortBy === 'company'">
@@ -35,9 +28,10 @@
   <div class="grid-wrapper">
     <mat-grid-list class="content" [cols]="gridCols" rowHeight="300px" gutterSize="24px">
       <mat-grid-tile *ngFor="let offer of jobOffers">
-        <mat-card class="card">
+        <mat-card class="card" [class.inactive-offer]="!offer.active">
           <mat-card-title #titleElement [matTooltip]="isTruncated(titleElement) ? offer.title : ''">
             {{ offer.title }}
+            <span *ngIf="!offer.active" class="inactive-badge">INACTIVA</span>
           </mat-card-title>
           <div class="company-info">
             <mat-card-subtitle class="empresa">{{ offer.company?.name }}</mat-card-subtitle>
@@ -53,12 +47,14 @@
           </div>
           <div class="button-container">
             <mat-card-actions>
+
               <ng-container>
                 <button mat-raised-button color="grey" class="details-button" (click)="goToOfferDetails(offer.id!)">
                   Ver detalles
                 </button>
               </ng-container>
-              <ng-container *ngIf="!isCompany()">
+              <ng-container *ngIf="!isCompany() && !isAdmin()">
+
                 <button mat-raised-button color="primary" class="apply-button" (click)="aplicarAOferta(offer)"
                   [disabled]="appliedOfferIds.includes(offer.id!)">
                   {{ appliedOfferIds.includes(offer.id!) ? 'Inscrito' : 'Inscribirse' }}

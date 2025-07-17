@@ -14,6 +14,7 @@ export class JobOfferService {
   private offersChangedSubject = new Subject<void>();
 
   constructor(private http: HttpClient) {}
+
   getOffersChangedObservable(): Observable<void> {
     return this.offersChangedSubject.asObservable();
   }
@@ -101,7 +102,6 @@ export class JobOfferService {
       .pipe(
         map((response) => {
           let jobOffer = response as JobOffer;
-          // Emitir evento para notificar que las ofertas cambiaron
           this.offersChangedSubject.next();
           return jobOffer;
         }),
@@ -139,12 +139,50 @@ export class JobOfferService {
       Authorization: `Bearer ${token}`,
     });
     jobOffer.releaseDate = new Date();
-    return this.http.put<JobOffer>(`${this.urlOffersManagement}/${id}`, jobOffer, {
-      headers,
-    });
+    return this.http.put<JobOffer>(
+      `${this.urlOffersManagement}/${id}`,
+      jobOffer,
+      {
+        headers,
+      }
+    );
   }
 
   getJobOfferById(id: number): Observable<JobOffer> {
     return this.http.get<JobOffer>(`${this.urlJobOffers}/get/${id}`);
+  }
+
+  updateJobOfferStatus(id: number, isActive: boolean): Observable<JobOffer> {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      return throwError(
+        () =>
+          new Error(
+            'No se encontró el token de autenticación. Por favor, inicia sesión.'
+          )
+      );
+    }
+
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+    });
+
+    const params = new HttpParams().set('active', isActive.toString());
+
+    return this.http
+      .put<JobOffer>(`${this.urlJobOffers}/${id}/status`, null, {
+        headers,
+        params,
+      })
+      .pipe(
+        map((response) => {
+          this.offersChangedSubject.next();
+          return response;
+        }),
+        catchError((error) => {
+          console.error('Error al actualizar el estado de la oferta:', error);
+          return throwError(() => error);
+        })
+      );
   }
 }

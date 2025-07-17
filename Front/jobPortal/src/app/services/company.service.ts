@@ -1,10 +1,15 @@
 import { UserData } from './../model/userData';
 import { Injectable, OnInit } from '@angular/core';
 import { Company } from '../model/company';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { BehaviorSubject, Observable, catchError, map, throwError } from 'rxjs';
+import {
+  HttpClient,
+  HttpErrorResponse,
+  HttpHeaders,
+} from '@angular/common/http';
 import { UsersService } from './users.service';
 import { User } from '../model/user';
+import { JobOffer } from '../model/jobOffer';
 
 @Injectable({
   providedIn: 'root',
@@ -30,6 +35,33 @@ export class CompanyService implements OnInit {
       Authorization: `Bearer ${token}`,
     });
     return this.http.get<Company>(`${this.urlCompanyProfile}/getCompany`, {
+      headers,
+    });
+  }
+  getAllCompanies(): Observable<Company[]> {
+    const token = localStorage.getItem('token'); // Get the token
+    if (!token) {
+      console.error(
+        'Token is missing for getAllCompanies. User not logged in?'
+      );
+      return throwError(() => new Error('Authentication token is missing.'));
+    }
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+    });
+    return this.http.get<Company[]>(
+      `${this.urlCompanyProfile}/getAllCompanies`,
+      {
+        headers,
+      }
+    );
+  }
+  updateCompany(id:number, company: Company): Observable<Company>{
+    const token = localStorage.getItem('token');
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+    });
+    return this.http.put<Company>(`${this.urlCompanyProfile}/update/${id}`, company, {
       headers,
     });
   }

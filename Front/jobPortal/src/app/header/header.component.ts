@@ -20,6 +20,9 @@ export class HeaderComponent implements OnInit {
     if (!this.userData && this.usersService.isLoggedIn()) {
       this.usersService.getUserData().subscribe();
     }
+    console.log('isAdmin():', this.isAdmin());
+console.log('isCandidate():', this.isCandidate());
+console.log('isCompany():', this.isCompany());
   }
 
   goToCatalogue(): void {
@@ -40,6 +43,8 @@ export class HeaderComponent implements OnInit {
       this.router.navigate(['/main/candidateprofile']);
     } else if (this.isCompany()) {
       this.router.navigate(['/main/userprofile']);
+    } else if (this.isAdmin()) {
+      this.router.navigate(['/main/adminprofile']);
     }
   }
 
@@ -57,6 +62,8 @@ export class HeaderComponent implements OnInit {
       return `${this.userData.candidate.name} ${this.userData.candidate.surname}`;
     } else if (this.userData?.company) {
       return this.userData.company.name;
+    } else if (this.userData?.admin) {
+      return this.userData.user.login;
     } else if (this.userData?.user) {
       return this.userData.user.login;
     }
@@ -67,6 +74,8 @@ export class HeaderComponent implements OnInit {
       this.router.navigate(['/main/candidateprofile']);
     } else if (this.userData?.company) {
       this.router.navigate(['/main/userprofile']);
+    } else if (this.userData?.admin) {
+      this.router.navigate(['/main/adminprofile']);
     }
   }
 
@@ -81,6 +90,12 @@ export class HeaderComponent implements OnInit {
     return (
       !!this.userData?.company ||
       (!!this.userData?.user && this.userData.user.role_id === 2)
+    );
+  }
+  isAdmin(): boolean {
+    return (
+      !!this.userData?.admin ||
+      (!!this.userData?.user && this.userData.user.role_id === 1)
     );
   }
 }
