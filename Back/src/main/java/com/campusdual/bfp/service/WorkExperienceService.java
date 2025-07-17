@@ -32,7 +32,7 @@ public class WorkExperienceService {
         return workExperienceDTO;
     }
 
-    public long updateWorkExperience(WorkExperienceDTO workExperienceDTO) {
+    public WorkExperienceDTO updateWorkExperience(WorkExperienceDTO workExperienceDTO) {
 
         WorkExperience workExperience = workExperienceDao.getReferenceById(workExperienceDTO.getId());
 
@@ -53,7 +53,7 @@ public class WorkExperienceService {
         }
 
         workExperienceDao.saveAndFlush(workExperience);
-        return workExperience.getId();
+        return workExperienceDTO;
     }
 
     public List<WorkExperienceDTO> getWorkExperienceByCandidateId(long candidateId) {

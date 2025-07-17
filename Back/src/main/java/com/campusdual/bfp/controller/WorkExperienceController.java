@@ -75,7 +75,7 @@ public class WorkExperienceController {
             return ResponseEntity.status(400).body("Candidate id does not match");
         }
 
-        workExperienceService.updateWorkExperience(workExperienceDTO);
-        return ResponseEntity.ok().build();
+        WorkExperienceDTO updated = workExperienceService.updateWorkExperience(workExperienceDTO);
+        return ResponseEntity.ok(updated);
     }
 }

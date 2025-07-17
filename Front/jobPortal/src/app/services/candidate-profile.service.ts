@@ -52,7 +52,6 @@ export class CandidateProfileService {
     );
   }
 
-
   getAllEducation(): Observable<Education[]> {
     const token = localStorage.getItem('token');
     const headers = new HttpHeaders({
@@ -113,7 +112,9 @@ export class CandidateProfileService {
     );
   }
 
-  addWorkExperience(workExperience: WorkExperience): Observable<WorkExperience> {
+  addWorkExperience(
+    workExperience: WorkExperience
+  ): Observable<WorkExperience> {
     const token = localStorage.getItem('token');
     const headers = new HttpHeaders({
       Authorization: `Bearer ${token}`,
@@ -154,34 +155,78 @@ export class CandidateProfileService {
     );
   }
 
- getEducationByCandidateId(idCandidate: number): Observable<Education[]> {
-  const token = localStorage.getItem('token');
-  const headers = new HttpHeaders({
-    Authorization: `Bearer ${token}`,
-    'Content-Type': 'application/json',
-  });
+  getEducationByCandidateId(idCandidate: number): Observable<Education[]> {
+    const token = localStorage.getItem('token');
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    });
 
-  return this.http.get<Education[]>(`${this.urlCandidateEducation}/candidate/${idCandidate}`, { headers }).pipe(
-    catchError((error) => {
-      console.error('Error al obtener la educación del candidato:', error);
-      return throwError(() => error);
-    })
-  );
-}
+    return this.http
+      .get<Education[]>(
+        `${this.urlCandidateEducation}/candidate/${idCandidate}`,
+        { headers }
+      )
+      .pipe(
+        catchError((error) => {
+          console.error('Error al obtener la educación del candidato:', error);
+          return throwError(() => error);
+        })
+      );
+  }
 
-getExperienceByCandidateId(idCandidate: number): Observable<WorkExperience[]> {
-  const token = localStorage.getItem('token');
-  const headers = new HttpHeaders({
-    Authorization: `Bearer ${token}`,
-    'Content-Type': 'application/json',
-  });
+  getExperienceByCandidateId(
+    idCandidate: number
+  ): Observable<WorkExperience[]> {
+    const token = localStorage.getItem('token');
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    });
 
-  return this.http.get<WorkExperience[]>(`${this.urlCandidateWorkExperience}/candidate/${idCandidate}`, { headers }).pipe(
-    catchError((error) => {
-      console.error('Error al obtener la experiencia del candidato:', error);
-      return throwError(() => error);
-    })
-  );
-}
+    return this.http
+      .get<WorkExperience[]>(
+        `${this.urlCandidateWorkExperience}/candidate/${idCandidate}`,
+        { headers }
+      )
+      .pipe(
+        catchError((error) => {
+          console.error(
+            'Error al obtener la experiencia del candidato:',
+            error
+          );
+          return throwError(() => error);
+        })
+      );
+  }
 
+  updateCandidateProfileWithImage(
+    candidate: Candidate,
+    imageFile: File
+  ): Observable<Candidate> {
+    const token = localStorage.getItem('token');
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+    });
+
+    const formData = new FormData();
+    formData.append(
+      'candidate',
+      new Blob([JSON.stringify(candidate)], { type: 'application/json' })
+    );
+    formData.append('imageFile', imageFile, imageFile.name);
+
+    return this.http
+      .put<Candidate>(
+        `${this.urlCandidateProfile}/update-with-image`,
+        formData,
+        { headers }
+      )
+      .pipe(
+        catchError((error) => {
+          console.error('Error al actualizar el perfil con imagen:', error);
+          return throwError(() => error);
+        })
+      );
+  }
 }

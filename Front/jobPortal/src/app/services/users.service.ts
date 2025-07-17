@@ -21,7 +21,26 @@ export class UsersService {
   private userDataSubject = new BehaviorSubject<UserData | null>(null);
   userData$ = this.userDataSubject.asObservable();
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {
+    const storedUserData = localStorage.getItem('userData');
+    if (storedUserData) {
+      try {
+        this.userDataSubject.next(JSON.parse(storedUserData));
+      } catch (e) {
+        console.error('Error parsing stored user data:', e);
+        localStorage.removeItem('userData');
+      }
+    }
+  }
+
+  setUserData(data: UserData | null): void {
+    this.userDataSubject.next(data);
+    if (data) {
+      localStorage.setItem('userData', JSON.stringify(data));
+    } else {
+      localStorage.removeItem('userData');
+    }
+  }
 
   login(username: string, password: string): Observable<any> {
     const body = { username, password };
@@ -44,12 +63,19 @@ export class UsersService {
       );
   }
 
-  signUpCandidate(login: string, password: string, name: string, surname: string, email: string, phone: string): Observable<any> {
+  signUpCandidate(
+    login: string,
+    password: string,
+    name: string,
+    surname: string,
+    email: string,
+    phone: string
+  ): Observable<any> {
     const user: User = {
       email,
       login,
       password,
-      role_id: 3 // Candidate role
+      role_id: 3,
     };
 
     const candidate: Candidate = {
@@ -57,49 +83,48 @@ export class UsersService {
       surname,
       phone,
       user: user,
-      birthdate: undefined
+      birthdate: undefined,
     };
 
     const userData: UserData = {
       user: user,
       candidate: candidate,
-      company: undefined
+      company: undefined,
     };
 
-    return this.http.post(`${this.urlEndpoint}/signup`, userData, {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json'
+    return this.http
+      .post(`${this.urlEndpoint}/signup`, userData, {
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json',
+        }),
       })
-    }).pipe(
-      map((response: any) => {
-        console.log('Registration successful:', response);
-        return response;
-      }),
-      catchError(this.handleError)
-    );
+      .pipe(
+        map((response: any) => {
+          console.log('Registration successful:', response);
+          return response;
+        }),
+        catchError(this.handleError)
+      );
   }
 
   getUserValue(): UserData | null {
     return this.userDataSubject.value;
   }
+
   private handleError(error: HttpErrorResponse) {
     let errorMessage = 'Ocurrió un error desconocido.';
-    
+
     if (error.status === 0) {
-      // A client-side or network error occurred
-      errorMessage = 'Error de conexión. Por favor, verifica tu conexión a internet.';
+      errorMessage =
+        'Error de conexión. Por favor, verifica tu conexión a internet.';
     } else if (error.error instanceof ErrorEvent) {
-      // Client-side error
       errorMessage = `Error del cliente: ${error.error.message}`;
     } else if (error.status === 401) {
-      // Unauthorized - likely trying to access protected route without auth
       errorMessage = 'No autorizado. Por favor, inicia sesión nuevamente.';
       this.logout();
     } else if (error.status === 409) {
-      // Conflict - duplicate username/email
-      return throwError(() => error); // Pass through the error for the component to handle
+      return throwError(() => error);
     } else if (error.error) {
-      // Server-side error with response
       if (typeof error.error === 'string') {
         errorMessage = error.error;
       } else if (error.error.message) {
@@ -110,14 +135,16 @@ export class UsersService {
     } else {
       errorMessage = `Error del servidor: ${error.status} - ${error.statusText}`;
     }
-    
+
     console.error('Error en la petición:', error);
     return throwError(() => new Error(errorMessage));
   }
+
   isLoggedIn(): boolean {
     const token = localStorage.getItem('token');
     return !!token;
   }
+
   isTokenExpired(): boolean {
     const token = localStorage.getItem('token');
     if (!token) return true;
@@ -154,10 +181,10 @@ export class UsersService {
       .pipe(
         map((userData) => {
           this.userDataSubject.next(userData);
+          localStorage.setItem('userData', JSON.stringify(userData));
           return userData;
         }),
         catchError(this.handleError)
       );
   }
 }
-

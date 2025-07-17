@@ -2,6 +2,7 @@ package com.campusdual.bfp.controller;
 
 import com.campusdual.bfp.model.dto.EducationDTO;
 import com.campusdual.bfp.model.dto.UserDataDTO;
+import com.campusdual.bfp.model.dto.WorkExperienceDTO;
 import com.campusdual.bfp.service.EducationService;
 import com.campusdual.bfp.service.UserDataService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -76,6 +77,7 @@ public class EducationController {
             return ResponseEntity.status(400).body("Candidate id does not match");
         }
 
-        return ResponseEntity.ok(educationService.updateEducation(educationDTO));
+        EducationDTO updated = educationService.updateEducation(educationDTO);
+        return ResponseEntity.ok(updated);
     }
 }

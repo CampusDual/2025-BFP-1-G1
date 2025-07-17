@@ -54,76 +54,69 @@ public class CandidateService {
     }
 
     @Transactional
-    public UserDataDTO updateCandidate(UserDataDTO userDataDTO) throws AccessDeniedException {
+    public CandidateDTO updateCandidate(CandidateDTO candidateDTO) throws AccessDeniedException {
 
         UserDataDTO userAuth = userDataService.getUserData();
 
-        if (userDataDTO.getCandidate() == null) {
-            throw new AccessDeniedException("El usuario no tiene un candidato asociado.");
-        }
-
-        if(userAuth.getCandidate().getId() != userDataDTO.getCandidate().getId()) {
+        if(userAuth.getCandidate().getId() != candidateDTO.getId()) {
             throw new AccessDeniedException("Los id de los candidatos no coinciden. Acceso denegado.");
         }
 
-        Candidate candidate = CandidateMapper.INSTANCE.toEntity(userDataDTO.getCandidate());
+        Candidate candidate = CandidateMapper.INSTANCE.toEntity(candidateDTO);
 
-        if(userDataDTO.getUser().getEmail() != null) {
-            candidate.getUser().setEmail(userDataDTO.getUser().getEmail());
-        }
-
-        if(userDataDTO.getCandidate().getName() != null) {
-            candidate.setName(userDataDTO.getCandidate().getName());
+        if(candidateDTO.getUser().getEmail() != null) {
+            candidate.getUser().setEmail(candidateDTO.getUser().getEmail());
         }
 
-        if(userDataDTO.getCandidate().getSurname() != null) {
-            candidate.setSurname(userDataDTO.getCandidate().getSurname());
+        if(candidateDTO.getName() != null) {
+            candidate.setName(candidateDTO.getName());
         }
-        if(userDataDTO.getCandidate().getPhone() != null) {
-            candidate.setPhone(userDataDTO.getCandidate().getPhone());
+
+        if(candidateDTO.getSurname() != null) {
+            candidate.setSurname(candidateDTO.getSurname());
         }
-        if(userDataDTO.getCandidate().getBirthDate() != null) {
-            candidate.setBirthDate(userDataDTO.getCandidate().getBirthDate());
+        if(candidateDTO.getPhone() != null) {
+            candidate.setPhone(candidateDTO.getPhone());
         }
-        if(userDataDTO.getCandidate().getProfileImg() != null) {
-            candidate.setProfileImg(userDataDTO.getCandidate().getProfileImg());
+        if(candidateDTO.getBirthDate() != null) {
+            candidate.setBirthDate(candidateDTO.getBirthDate());
         }
-        if(userDataDTO.getCandidate().getLocation() != null) {
-            candidate.setLocation(userDataDTO.getCandidate().getLocation());
+        if(candidateDTO.getProfileImg() != null) {
+            candidate.setProfileImg(candidateDTO.getProfileImg());
         }
-        if(userDataDTO.getCandidate().getQualification() != null) {
-            candidate.setQualification(userDataDTO.getCandidate().getQualification());
+        if(candidateDTO.getLocation() != null) {
+            candidate.setLocation(candidateDTO.getLocation());
         }
-        if(userDataDTO.getCandidate().getExperience() != null) {
-            candidate.setExperience(userDataDTO.getCandidate().getExperience());
+        if(candidateDTO.getQualification() != null) {
+            candidate.setQualification(candidateDTO.getQualification());
         }
-        if(userDataDTO.getCandidate().getEmploymentStatus() != null) {
-            candidate.setEmploymentStatus(userDataDTO.getCandidate().getEmploymentStatus());
+        if(candidateDTO.getExperience() != null) {
+            candidate.setExperience(candidateDTO.getExperience());
         }
-        if(userDataDTO.getCandidate().getAvailability() != null) {
-            candidate.setAvailability(userDataDTO.getCandidate().getAvailability());
+        if(candidateDTO.getEmploymentStatus() != null) {
+            candidate.setEmploymentStatus(candidateDTO.getEmploymentStatus());
         }
-        if(userDataDTO.getCandidate().getModality() != null) {
-            candidate.setModality(userDataDTO.getCandidate().getModality());
+        if(candidateDTO.getAvailability() != null) {
+            candidate.setAvailability(candidateDTO.getAvailability());
         }
-        if(userDataDTO.getCandidate().getAboutMe() != null) {
-            candidate.setAboutMe(userDataDTO.getCandidate().getAboutMe());
+        if(candidateDTO.getModality() != null) {
+            candidate.setModality(candidateDTO.getModality());
         }
-        if(userDataDTO.getCandidate().getLinkedin() != null) {
-            candidate.setLinkedin(userDataDTO.getCandidate().getLinkedin());
+        if(candidateDTO.getAboutMe() != null) {
+            candidate.setAboutMe(candidateDTO.getAboutMe());
         }
-        if(userDataDTO.getCandidate().getGithub() != null) {
-            candidate.setGithub(userDataDTO.getCandidate().getGithub());
+        if(candidateDTO.getLinkedin() != null) {
+            candidate.setLinkedin(candidateDTO.getLinkedin());
         }
-        if(userDataDTO.getCandidate().getWeb() != null) {
-            candidate.setWeb(userDataDTO.getCandidate().getWeb());
+        if(candidateDTO.getGithub() != null) {
+            candidate.setGithub(candidateDTO.getGithub());
+        }
+        if(candidateDTO.getWeb() != null) {
+            candidate.setWeb(candidateDTO.getWeb());
         }
 
         candidateDao.saveAndFlush(candidate);
-
-        userDataDTO.setCandidate(CandidateMapper.INSTANCE.toDTO(candidate));
-
-        return userDataDTO;
+        return CandidateMapper.INSTANCE.toDTO(candidate);
 
     }
 

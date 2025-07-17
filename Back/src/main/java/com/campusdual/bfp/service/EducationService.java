@@ -25,11 +25,12 @@ public class EducationService {
         return EducationMapper.INSTANCE.toDTOList(educationDao.findAll());
     }
 
-    public long insertEducation(EducationDTO educationDTO) {
-        return educationDao.saveAndFlush(EducationMapper.INSTANCE.toEntity(educationDTO)).getId();
+    public EducationDTO insertEducation(EducationDTO educationDTO) {
+        educationDao.saveAndFlush(EducationMapper.INSTANCE.toEntity(educationDTO));
+        return educationDTO;
     }
 
-    public long updateEducation(EducationDTO educationDTO) {
+    public EducationDTO updateEducation(EducationDTO educationDTO) {
 
         Education education = educationDao.getReferenceById(educationDTO.getId());
 
@@ -51,7 +52,7 @@ public class EducationService {
         }
 
         educationDao.saveAndFlush(education);
-        return education.getId();
+        return educationDTO;
     }
 
     public List<EducationDTO> getEducationByCandidateId(long candidateId) {
