@@ -11,7 +11,7 @@
       <mat-menu #userMenu="matMenu">
         <button mat-menu-item (click)="redirectToProfile()">
 
-          {{ isAdmin() ? 'Perfil Admin' : (isCandidate() ? 'Perfil Candidato' : (isCompany() ? 'Perfil Empresa' : ''))
+          {{ isAdmin() ? 'Perfil Admin' : (isCandidate() ? 'Candidaturas' : (isCompany() ? 'Perfil Empresa' : ''))
           }}
 
         </button>
