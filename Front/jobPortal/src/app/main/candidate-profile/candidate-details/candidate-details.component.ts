@@ -17,6 +17,7 @@ import { UsersService } from 'src/app/services/users.service';
 })
 export class CandidateDetailsComponent implements OnInit {
   experienceForm!: FormGroup;
+  educationForm!: FormGroup;
 
   userData: UserData | null = null;
   candidate!: Candidate;
@@ -26,6 +27,8 @@ export class CandidateDetailsComponent implements OnInit {
 
   showEduForm: boolean = false;
   showExpForm: boolean = false;
+
+  startDate = new Date();
 
   workExperience: WorkExperience = {
     idCandidate: 0,
@@ -53,6 +56,26 @@ export class CandidateDetailsComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.initializeForms();
+    this.loadUserData();
+  }
+
+  formatDate(dateString: string | undefined | null): string {
+    if (!dateString) return '';
+    
+    const date = new Date(dateString);
+    if (isNaN(date.getTime())) return dateString; 
+    
+    const options: Intl.DateTimeFormatOptions = { 
+      year: 'numeric', 
+      month: 'short',
+      timeZone: 'UTC' 
+    };
+    
+    return date.toLocaleDateString('es-ES', options);
+  }
+
+  private initializeForms(): void {
     this.experienceForm = this.fb.group({
       jobTitle: ['', [Validators.required, Validators.maxLength(120)]],
       company: ['', Validators.required],
@@ -61,74 +84,135 @@ export class CandidateDetailsComponent implements OnInit {
       description: ['', [Validators.required, Validators.maxLength(4000)]],
     });
 
+    this.educationForm = this.fb.group({
+      degree: ['', Validators.required],
+      institution: ['', Validators.required],
+      startDate: [null, Validators.required],
+      endDate: [null],
+      description: ['', [Validators.required, Validators.maxLength(4000)]],
+    });
+  }
+
+  private loadUserData(): void {
     this.userService.userData$.subscribe((user) => {
       this.userData = user;
 
-      this.workExperience.idCandidate = user?.candidate?.id ?? 0;
-      this.education.idCandidate = user?.candidate?.id ?? 0;
-
-      console.log('User data loaded:', this.userData);
+      if (!user || !user.candidate) {
+        return;
+      }
       this.candidateService.getCandidateProfile().subscribe((candidate) => {
         this.candidate = candidate;
         console.log('Candidate profile loaded:', this.candidate);
-
-        this.candidateService
-          .getExperienceByCandidateId(this.candidate.id!)
-          .subscribe((experiences) => {
-            this.experiences = experiences;
-            console.log('Work experiences loaded', this.experiences);
-          });
-
-        this.candidateService
-          .getEducationByCandidateId(this.candidate.id!)
-          .subscribe((educations) => {
-            this.educations = educations;
-            console.log('Educations loaded', this.educations);
-          });
+        this.loadExperiences();
+        this.loadEducations();
       });
     });
   }
 
- addExperience() {
-  if (this.experienceForm.valid) {
-    const newExperience = this.experienceForm.value;
-    newExperience.idCandidate = this.userData?.candidate?.id ?? 0;
+  private loadExperiences(): void {
+    if (!this.candidate?.id) return;
 
-    this.candidateService.addWorkExperience(newExperience).subscribe({
-      next: (response) => {
-        this.experiences = [...this.experiences, response];
-        this.snackBar.open('Experiencia añadida correctamente', 'Cerrar', {
-          duration: 3000,
-          panelClass: 'successSnackbar',
-          verticalPosition: 'top',
-        });
-        this.showExpForm = false;
-        this.experienceForm.reset();
-        console.log('Experiencia añadida correctamente');
-      },
-      error: (error) => {
-        console.error('Error al añadir experiencia', error);
-        this.snackBar.open('Error al crear la experiencia', 'Cerrar', {
-          duration: 3000,
-          verticalPosition: 'top',
-        });
-      },
-    });
-  } else {
-    this.experienceForm.markAllAsTouched();
+    this.candidateService
+      .getExperienceByCandidateId(this.candidate.id)
+      .subscribe({
+        next: (experiences) => {
+          this.experiences = experiences;
+          console.log('Experiences loaded', this.experiences);
+        },
+        error: (error) => {
+          console.error('Error loading experiences:', error);
+          this.snackBar.open('Error al cargar las experiencias', 'Cerrar', {
+            duration: 3000,
+          });
+        },
+      });
   }
-}
 
-  addEducation() {
-    this.educations.push({ ...this.education });
-    this.education = {
-      idCandidate: this.userData?.candidate?.id ?? 0,
-      degree: '',
-      institution: '',
-      startPeriod: '',
-      endPeriod: '',
-      description: '',
-    };
+  private loadEducations(): void {
+    if (!this.candidate?.id) return;
+
+    this.candidateService
+      .getEducationByCandidateId(this.candidate.id)
+      .subscribe({
+        next: (educations) => {
+          this.educations = educations;
+          console.log('Educations loaded', this.educations);
+        },
+        error: (error) => {
+          console.error('Error loading educations:', error);
+          this.snackBar.open(
+            'Error al cargar la formación académica',
+            'Cerrar',
+            {
+              duration: 3000,
+            }
+          );
+        },
+      });
+  }
+
+  addExperience(): void {
+    if (this.experienceForm.valid) {
+      const experienceData = {
+        ...this.experienceForm.value,
+        idCandidate: this.candidate?.id || 0,
+      };
+      this.candidateService.addWorkExperience(experienceData).subscribe({
+        next: (response) => {
+          this.experiences = [...this.experiences, response];
+          this.snackBar.open('Experiencia añadida correctamente', 'Cerrar', {
+            duration: 3000,
+          });
+          this.showExpForm = false;
+          this.experienceForm.reset();
+        },
+        error: (error) => {
+          console.error('Error adding experience:', error);
+          this.snackBar.open('Error al añadir la experiencia', 'Cerrar', {
+            duration: 3000,
+          });
+        },
+      });
+    }
+  }
+
+  addEducation(): void {
+    if (this.educationForm.valid) {
+      const educationData = {
+        ...this.educationForm.value,
+        idCandidate: this.candidate?.id || 0,
+        startPeriod: this.educationForm.value.startDate,
+        endPeriod: this.educationForm.value.endDate || null,
+      };
+
+      delete educationData.startDate;
+      delete educationData.endDate;
+
+      this.candidateService.addEducation(educationData).subscribe({
+        next: (response) => {
+          this.educations = [...this.educations, response];
+          this.snackBar.open(
+            'Formación académica añadida correctamente',
+            'Cerrar',
+            {
+              duration: 3000,
+            }
+          );
+          this.showEduForm = false;
+          this.educationForm.reset();
+        },
+        error: (error) => {
+          console.error('Error adding education:', error);
+          this.snackBar.open(
+            'Error al añadir la formación académica',
+            'Cerrar',
+            {
+              duration: 3000,
+            }
+          );
+        },
+      });
+    }
   }
 
   isCandidate(): boolean {
@@ -178,17 +262,17 @@ export class CandidateDetailsComponent implements OnInit {
     }
   }
 
-   private showSuccess(message: string): void {
+  private showSuccess(message: string): void {
     this.snackBar.open(message, 'Cerrar', {
       duration: 3000,
-      panelClass: ['success-snackbar']
+      panelClass: ['success-snackbar'],
     });
   }
 
   private showError(message: string): void {
     this.snackBar.open(message, 'Cerrar', {
       duration: 3000,
-      panelClass: ['error-snackbar']
+      panelClass: ['error-snackbar'],
     });
   }
 }

@@ -2,12 +2,8 @@
   <div class="candidate-header-card">
     <div class="avatar-section">
       <div class="avatar">
-        <img
-          *ngIf="userData?.candidate?.profileImg"
-          class="avatar-img"
-          [src]="userData?.candidate?.profileImg"
-          alt="Profile Image"
-        />
+        <img *ngIf="userData?.candidate?.profileImg" class="avatar-img" [src]="userData?.candidate?.profileImg"
+          alt="Profile Image" />
         <div class="avatar-icon" *ngIf="!userData?.candidate?.profileImg">
           <mat-icon>person</mat-icon>
         </div>
@@ -25,12 +21,7 @@
       </p>
     </div>
     <div class="edit-button-container">
-      <button
-        *ngIf="isCandidate() && isOwner()"
-        mat-icon-button
-        class="edit-button"
-        (click)="editCandidate()"
-      >
+      <button *ngIf="isCandidate() && isOwner()" mat-icon-button class="edit-button" (click)="editCandidate()">
         <mat-icon>edit</mat-icon>
       </button>
     </div>
@@ -58,7 +49,7 @@
               <strong>Situación laboral</strong>
               <span>{{
                 capitalizeFirst(userData?.candidate?.employmentStatus)
-              }}</span>
+                }}</span>
             </div>
             <div *ngIf="userData?.candidate?.availability">
               <strong>Dispoñibilidade</strong>
@@ -71,41 +62,35 @@
           </div>
 
           <div class="info-bottom-container">
-            <div
-              class="presentation-section"
-              *ngIf="userData?.candidate?.aboutMe"
-            >
+            <div class="presentation-section" *ngIf="userData?.candidate?.aboutMe">
               <h3>Presentación</h3>
               <p>{{ userData?.candidate?.aboutMe }}</p>
             </div>
 
-            <div
-              class="links-section"
-              *ngIf="
+            <div class="links-section" *ngIf="
                 userData?.candidate?.linkedin ||
                 userData?.candidate?.github ||
                 userData?.candidate?.web
-              "
-            >
+              ">
               <h3>Enlaces de interese</h3>
               <ul>
                 <li *ngIf="userData?.candidate?.linkedin">
                   <mat-icon svgIcon="linkedin"></mat-icon>
                   <a [href]="userData?.candidate?.linkedin" target="_blank">{{
                     userData?.candidate?.linkedin
-                  }}</a>
+                    }}</a>
                 </li>
                 <li *ngIf="userData?.candidate?.github">
                   <mat-icon svgIcon="github"></mat-icon>
                   <a [href]="userData?.candidate?.github" target="_blank">{{
                     userData?.candidate?.github
-                  }}</a>
+                    }}</a>
                 </li>
                 <li *ngIf="userData?.candidate?.web">
                   <mat-icon>language</mat-icon>
                   <a [href]="userData?.candidate?.web" target="_blank">{{
                     userData?.candidate?.web
-                  }}</a>
+                    }}</a>
                 </li>
               </ul>
             </div>
@@ -132,101 +117,89 @@
           Experiencia Laboral
         </ng-template>
 
-        <div class="section-header">
-          <h3>experiencia profesional</h3>
+        <div class="section-header-container">
+          <button *ngIf="isCandidate() && isOwner()" mat-raised-button color="primary" class="add-button"
+            (click)="showExpForm = !showExpForm">
+            <mat-icon>add</mat-icon>
+            {{
+            showExpForm
+            ? "Cerrar"
+            : "Añadir"
+            }}
+          </button>
         </div>
 
-        <button
-          *ngIf="isCandidate() && isOwner()"
-          mat-raised-button
-          color="primary"
-          (click)="showExpForm = !showExpForm"
-        >
-          <mat-icon>add</mat-icon>
-          {{
-            showExpForm
-              ? "pechar formulario"
-              : "engadir experiencia profesional"
-          }}
-        </button>
-
-
-        <form
-          *ngIf="showExpForm"
-          [formGroup]="experienceForm"
-          (ngSubmit)="addExperience()"
-          class="experience-form"
-        >
-          <div class="inputs">
+        <form *ngIf="showExpForm" [formGroup]="experienceForm" (ngSubmit)="addExperience()" class="experience-form">
+          <div class="form-grid">
             <mat-form-field appearance="outline">
-              <mat-label>Título</mat-label>
+              <mat-label>Título del puesto</mat-label>
               <input matInput formControlName="jobTitle" required />
+              <mat-error *ngIf="experienceForm.get('jobTitle')?.hasError('required')">
+                El título es obligatorio
+              </mat-error>
             </mat-form-field>
 
             <mat-form-field appearance="outline">
               <mat-label>Empresa</mat-label>
               <input matInput formControlName="company" required />
+              <mat-error *ngIf="experienceForm.get('company')?.hasError('required')">
+                La empresa es obligatoria
+              </mat-error>
             </mat-form-field>
 
-            <mat-form-field color="primary" appearance="outline">
+            <mat-form-field appearance="outline">
               <mat-label>Fecha de Inicio</mat-label>
-              <input
-                matInput
-                [matDatepicker]="startPeriod"
-                formControlName="startPeriod"
-                required
-              />
-              <mat-hint>MM/DD/AAAA</mat-hint>
-              <mat-datepicker-toggle
-                matIconSuffix
-                [for]="startPeriod"
-              ></mat-datepicker-toggle>
+              <input matInput [matDatepicker]="startPeriod" formControlName="startPeriod" required />
+
+              <mat-datepicker-toggle matSuffix [for]="startPeriod"></mat-datepicker-toggle>
               <mat-datepicker #startPeriod></mat-datepicker>
+              <mat-error *ngIf="experienceForm.get('startPeriod')?.hasError('required')">
+                La fecha de inicio es obligatoria
+              </mat-error>
             </mat-form-field>
 
-            <mat-form-field color="primary" appearance="outline">
+            <mat-form-field appearance="outline">
               <mat-label>Fecha de Fin</mat-label>
-              <input
-                matInput
-                [matDatepicker]="endPicker"
-                formControlName="endPeriod"
-              />
-              <mat-hint>MM/DD/AAAA</mat-hint>
-              <mat-datepicker-toggle
-                matSuffix
-                [for]="endPicker"
-              ></mat-datepicker-toggle>
+              <input matInput [matDatepicker]="endPicker" formControlName="endPeriod"
+                [min]="experienceForm.get('startPeriod')?.value" />
+
+              <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
               <mat-datepicker #endPicker></mat-datepicker>
+              <mat-error *ngIf="experienceForm.get('endPeriod')?.hasError('matDatepickerMin')">
+                La fecha de fin debe ser posterior a la fecha de inicio
+              </mat-error>
             </mat-form-field>
 
-            <mat-form-field appearance="outline" class="description">
-              <mat-label>descrición</mat-label>
-              <textarea
-                matInput
-                formControlName="description"
-                required
-              ></textarea>
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Descripción</mat-label>
+              <textarea matInput formControlName="description" rows="3"
+                placeholder="Describe tus responsabilidades y logros" required></textarea>
+              <mat-error *ngIf="experienceForm.get('description')?.hasError('required')">
+                La descripción es obligatoria
+              </mat-error>
             </mat-form-field>
+
+            <div class="form-actions">
+              <button mat-raised-button type="button" color="warn" (click)="showExpForm = false">
+                Cancelar
+              </button>
+              <button mat-raised-button color="primary" type="submit" [disabled]="!experienceForm.valid">
+                <mat-icon>save</mat-icon>
+                Guardar Experiencia
+              </button>
+            </div>
           </div>
-
-          <button
-            mat-raised-button
-            color="accent"
-            type="submit"
-            [disabled]="!experienceForm.valid"
-          >
-            gardar experiencia
-          </button>
         </form>
 
         <div class="experience-list">
           <mat-card class="experience-card" *ngFor="let exp of experiences">
-            <mat-card-title
-              >{{ exp.jobTitle }} en {{ exp.company }}</mat-card-title
-            >
-            <mat-card-subtitle
-              >{{ exp.startPeriod }} - {{ exp.endPeriod }}</mat-card-subtitle
-            >
+            <mat-card-title>{{ exp.jobTitle }} en {{ exp.company }}</mat-card-title>
+            <div class="date-period">
+              <span class="date-item">
+                <mat-icon class="date-icon">event</mat-icon>
+                <span class="date-range">{{ formatDate(exp.startPeriod) }} - {{ exp.endPeriod ? formatDate(exp.endPeriod) : 'Actualidad' }}</span>
+              </span>
+            </div>
             <mat-card-content>
               <p>{{ exp.description }}</p>
             </mat-card-content>
@@ -240,96 +213,85 @@
           Educación
         </ng-template>
 
-        <div class="section-header">
-          <h3>formación académica</h3>
+        <div class="section-header-container">
+          <button *ngIf="isCandidate() && isOwner()" mat-raised-button color="primary" class="add-button"
+            (click)="showEduForm = !showEduForm">
+            <mat-icon>add</mat-icon>
+            {{ showEduForm ? "Cerrar" : "Añadir" }}
+          </button>
         </div>
 
-        <button
-          *ngIf="isCandidate() && isOwner()"
-          mat-raised-button
-          color="primary"
-          (click)="showEduForm = !showEduForm"
-        >
-          <mat-icon>add</mat-icon>
-          {{ showEduForm ? "pechar formulario" : "engadir formación" }}
-        </button>
+        <form *ngIf="showEduForm" [formGroup]="educationForm" (ngSubmit)="addEducation()" class="education-form">
+          <div class="form-grid">
+            <mat-form-field appearance="outline">
+              <mat-label>Título académico</mat-label>
+              <input matInput formControlName="degree" required />
+              <mat-error *ngIf="educationForm.get('degree')?.hasError('required')">
+                El título es obligatorio
+              </mat-error>
+            </mat-form-field>
 
-        <form
-          *ngIf="showEduForm"
-          (ngSubmit)="addEducation()"
-          #eduForm="ngForm"
-          class="education-form"
-        >
-          <mat-form-field appearance="fill">
-            <mat-label>titulación</mat-label>
-            <input
-              matInput
-              name="degree"
-              [(ngModel)]="education.degree"
-              required
-            />
-          </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>Institución</mat-label>
+              <input matInput formControlName="institution" required />
+              <mat-error *ngIf="educationForm.get('institution')?.hasError('required')">
+                La institución es obligatoria
+              </mat-error>
+            </mat-form-field>
 
-          <mat-form-field appearance="fill">
-            <mat-label>institución</mat-label>
-            <input
-              matInput
-              name="institution"
-              [(ngModel)]="education.institution"
-              required
-            />
-          </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>Fecha de Inicio</mat-label>
+              <input matInput [matDatepicker]="eduStartPicker" formControlName="startDate" required />
 
-          <mat-form-field appearance="fill">
-            <mat-label>data de inicio</mat-label>
-            <input
-              matInput
-              type="month"
-              name="startPeriod"
-              [(ngModel)]="education.startPeriod"
-              required
-            />
-          </mat-form-field>
+              <mat-datepicker-toggle matSuffix [for]="eduStartPicker"></mat-datepicker-toggle>
+              <mat-datepicker #eduStartPicker startView="multi-year" [startAt]="startDate"></mat-datepicker>
+              <mat-error *ngIf="educationForm.get('startDate')?.hasError('required')">
+                La fecha de inicio es obligatoria
+              </mat-error>
+            </mat-form-field>
 
-          <mat-form-field appearance="fill">
-            <mat-label>data de fin</mat-label>
-            <input
-              matInput
-              type="month"
-              name="endPeriod"
-              [(ngModel)]="education.endPeriod"
-              required
-            />
-          </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>Fecha de Fin</mat-label>
+              <input matInput [matDatepicker]="eduEndPicker" formControlName="endDate"
+                [min]="educationForm.get('startDate')?.value" />
 
-          <mat-form-field appearance="fill">
-            <mat-label>descrición</mat-label>
-            <textarea
-              matInput
-              name="description"
-              [(ngModel)]="education.description"
-              required
-            ></textarea>
-          </mat-form-field>
+              <mat-datepicker-toggle matSuffix [for]="eduEndPicker"></mat-datepicker-toggle>
+              <mat-datepicker #eduEndPicker startView="multi-year" [startAt]="startDate"></mat-datepicker>
+              <mat-error *ngIf="educationForm.get('endDate')?.hasError('matDatepickerMin')">
+                La fecha de fin debe ser posterior a la fecha de inicio
+              </mat-error>
+            </mat-form-field>
 
-          <button
-            mat-raised-button
-            color="accent"
-            type="submit"
-            [disabled]="!eduForm.form.valid"
-          >
-            gardar formación
-          </button>
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Descripción</mat-label>
+              <textarea matInput formControlName="description" rows="3"
+                placeholder="Describe tu formación, logros o actividades relevantes" required></textarea>
+              <mat-error *ngIf="educationForm.get('description')?.hasError('required')">
+                La descripción es obligatoria
+              </mat-error>
+            </mat-form-field>
+
+            <div class="form-actions">
+              <button mat-raised-button type="button" color="warn" (click)="showEduForm = false">
+                Cancelar
+              </button>
+              <button mat-raised-button color="primary" type="submit" [disabled]="!educationForm.valid">
+                <mat-icon>save</mat-icon>
+                Guardar Formación
+              </button>
+            </div>
+          </div>
         </form>
 
         <div class="education-list">
           <mat-card class="education-card" *ngFor="let edu of educations">
-            <mat-card-title
-              >{{ edu.degree }} en {{ edu.institution }}</mat-card-title
-            >
-            <mat-card-subtitle
-              >{{ edu.startPeriod }} - {{ edu.endPeriod }}</mat-card-subtitle
-            >
+            <mat-card-title>{{ edu.degree }} en {{ edu.institution }}</mat-card-title>
+            <div class="date-period">
+              <span class="date-item">
+                <mat-icon class="date-icon">event</mat-icon>
+                <span class="date-range">{{ formatDate(edu.startPeriod) }} - {{ edu.endPeriod ? formatDate(edu.endPeriod) : 'Actualidad' }}</span>
+              </span>
+            </div>
             <mat-card-content>
               <p>{{ edu.description }}</p>
             </mat-card-content>
