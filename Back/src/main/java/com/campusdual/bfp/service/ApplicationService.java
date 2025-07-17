@@ -61,7 +61,7 @@ public class ApplicationService {
         JobOffer jobOffer = jobOffersDao.findById(offerId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Job offer not found"));
 
-        if (applicationDao.findByIdCandidateAndJobOfferId(candidateId, offerId).isPresent()) {
+        if (applicationDao.findByIdCandidateAndIdOffer(candidateId, offerId).isPresent()) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "Already applied to this offer");
         }
 
@@ -87,6 +87,11 @@ public class ApplicationService {
 
         return candidateDao.findByIdIn(candidateIds);
 
+    }
+    @Transactional
+    public Application getApplicationByIdCandidateAndIdOffer(Long idCandidate, Long idOffer) {
+        return applicationDao.findByIdCandidateAndIdOffer(idCandidate, idOffer)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Application not found"));
     }
 
 

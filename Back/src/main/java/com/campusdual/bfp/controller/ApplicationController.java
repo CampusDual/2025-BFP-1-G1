@@ -134,4 +134,13 @@ public class ApplicationController {
         return ResponseEntity.ok(candidates);
     }
 
+    @GetMapping("/getapplications/{idoffer}/{idcandidate}")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<Application> getApplication(
+            @PathVariable Long idcandidate,
+            @PathVariable Long idoffer
+    ) {
+        Application application = applicationService.getApplicationByIdCandidateAndIdOffer(idcandidate, idoffer);
+        return ResponseEntity.ok(application);
+    }
 }

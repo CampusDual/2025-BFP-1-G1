@@ -7,6 +7,7 @@ import { Candidate } from '../model/candidate'; // Mantén si lo usas en otro lu
 @Injectable({ providedIn: 'root' })
 export class ApplicationService {
   private apiUrl = 'http://localhost:30030/applications';
+  private apiUrlCandidate = 'http://localhost:30030/candidate';
 
   constructor(private http: HttpClient) {}
 
@@ -109,5 +110,24 @@ export class ApplicationService {
     });
     const url = `${this.apiUrl}/getcandidates/${offerId}`;
     return this.http.get<Candidate[]>(url, { headers });
+  }
+
+  getApplicationbyofferbycandidate(
+    candidateId: number,
+    offerId: number
+  ): Observable<Application> {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      console.error('Authentication token not found for candidates.');
+      return new Observable((observer) =>
+        observer.error(new Error('Authentication token not found.'))
+      );
+    }
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    });
+    const url = `${this.apiUrl}/getapplications/${offerId}/${candidateId}`;
+    return this.http.get<Application>(url, { headers });
   }
 }

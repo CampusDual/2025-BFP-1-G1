@@ -34,8 +34,8 @@ export class OfferDetailsComponent implements OnInit {
   isLoadingCandidates: boolean = false;
   offerApplications: Application[] = [];
   errorLoadingCandidates: string | null = null;
-  offerApplications: any[] = [];
-  displayedColumns: string[] = ['candidateName', 'qualification'];
+  displayedColumns: string[] = ['candidateName', 'qualification', 'date'];
+  count: number = 0;
 
   constructor(
     private route: ActivatedRoute,
@@ -163,11 +163,33 @@ export class OfferDetailsComponent implements OnInit {
       !!userData?.admin || (!!userData?.user && userData.user.role_id === 1)
     );
   }
+
   loadCandidatesbyId(offerid: number): void {
     this.candidates = [];
+    this.offerApplications = [];
+
     this.applicationService.getCandidatesOnlyForOffer(offerid).subscribe({
       next: (candidates: Candidate[]) => {
         this.candidates = candidates;
+        this.candidates.forEach((candidate) => {
+          this.applicationService
+            .getApplicationbyofferbycandidate(candidate.id!, offerid)
+            .subscribe(
+              (application) => {
+                this.offerApplications = [
+                  ...this.offerApplications,
+                  application,
+                ];
+                console.log('aplicacion añadida', application);
+              },
+              (err) => {
+                console.error(
+                  'Error al obtener la aplicación por oferta y candidato:',
+                  err
+                );
+              }
+            );
+        });
       },
       error: (err) => {
         console.error('Error al obtener los candidatos:', err);
