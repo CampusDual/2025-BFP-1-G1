@@ -50,7 +50,8 @@
 
               <ng-container>
                 <button mat-raised-button color="grey" class="details-button" (click)="goToOfferDetails(offer.id!)">
-                  Ver detalles
+                  <mat-icon>visibility</mat-icon>
+                  <span>Ver detalles</span>
                 </button>
               </ng-container>
               <ng-container *ngIf="!isCompany() && !isAdmin()">

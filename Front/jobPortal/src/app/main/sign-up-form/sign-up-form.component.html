@@ -1,5 +1,8 @@
 <div class="container">
   <div class="sign-up-box">
+    <button mat-icon-button class="back-button" (click)="goBack()" aria-label="Volver atrás">
+      <mat-icon class="back-icon">arrow_back</mat-icon>
+    </button>
     <div class="image-section">
       <div class="circle-image" (mousemove)="onMouseMove($event)" (mouseenter)="showTooltip = true"
         (mouseleave)="showTooltip = false" style="cursor: pointer; position: relative;">

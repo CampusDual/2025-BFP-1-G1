@@ -20,12 +20,11 @@ html, body {
   padding: 0;
   overflow-x: hidden;
   overflow-y: auto;
-  /* Add padding for fixed header and footer */
-  padding-top: 60px; /* Corresponds to header height */
-  padding-bottom: 60px; /* Corresponds to footer height */
+  padding-top: 60px;
+  padding-bottom: 60px;
 }
 
-/* Global styles for Angular Material Menu */
+
 .mat-menu-panel {
   background-color: var(--gray-darkest);
   color: #fff;
@@ -46,7 +45,7 @@ html, body {
   margin-right: 8px;
 }
 
-/* Standardized Button Styles */
+
 button.mat-button,
 button.mat-raised-button,
 button.mat-flat-button,
@@ -59,7 +58,7 @@ button.mat-stroked-button {
   border-radius: 4px;
 }
 
-/* Primary Buttons */
+
 button.mat-raised-button[color="primary"],
 button.mat-flat-button[color="primary"],
 button.mat-stroked-button[color="primary"] {
@@ -74,7 +73,7 @@ button.mat-stroked-button[color="primary"]:hover {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
-/* Basic Buttons */
+
 button.mat-button:not([color]),
 button.mat-button-base:not([color]) {
   color: var(--primary);
@@ -90,7 +89,7 @@ button.mat-button-base:not([color]):hover {
 }
 
 
-/* Tablet */
+
 @media (max-width: var(--breakpoint-tablet)) {
   body {
     padding-top: 55px;
@@ -108,7 +107,7 @@ button.mat-button-base:not([color]):hover {
   }
 }
 
-/* Móvil */
+
 @media (max-width: var(--breakpoint-mobile)) {
   body {
     padding-top: 50px;

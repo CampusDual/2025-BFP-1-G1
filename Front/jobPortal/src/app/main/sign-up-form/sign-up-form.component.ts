@@ -22,7 +22,9 @@ export class SignUpFormComponent {
     private usersService: UsersService,
     private router: Router,
     private snackBar: MatSnackBar
-  ) {
+  ) {}
+
+  ngOnInit(): void {
     this.signUpForm = this.fb.group({
       login: ['', [Validators.required]],
       password: ['', [Validators.required, Validators.minLength(4)]],
@@ -170,5 +172,9 @@ export class SignUpFormComponent {
     const offset = 15;
     this.tooltipX = event.clientX;
     this.tooltipY = event.clientY + offset;
+  }
+
+  goBack(): void {
+    this.router.navigate(['/main/login']);
   }
 }

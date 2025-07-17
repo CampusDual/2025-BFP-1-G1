@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, map } from 'rxjs';
 import { Application } from '../model/application';
-import { Candidate } from '../model/candidate'; // Mantén si lo usas en otro lugar o para construir la vista de candidatos
+import { Candidate } from '../model/candidate';
 
 @Injectable({ providedIn: 'root' })
 export class ApplicationService {

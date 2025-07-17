@@ -30,11 +30,13 @@
         </div>
 
         <mat-card-actions class="offer-actions">
-          <button mat-raised-button color="primary" class="edit-button" *ngIf="offer.id !== undefined"
-            [routerLink]="['/main/editOffer', offer.id]" [disabled]="!offer.active"> Editar
+          <button mat-button color="accent" class="details-button" *ngIf="offer.id !== undefined"
+            (click)="goToOfferDetails(offer.id)" [disabled]="!offer.active">
+            <mat-icon>visibility</mat-icon> Ver detalles
           </button>
-          <button mat-raised-button color="accent" class="details-button" *ngIf="offer.id !== undefined"
-            (click)="goToOfferDetails(offer.id)" [disabled]="!offer.active"> Ver detalles
+          <button mat-raised-button color="primary" class="edit-button" *ngIf="offer.id !== undefined"
+            [routerLink]="['/main/editOffer', offer.id]" [disabled]="!offer.active">
+            <mat-icon>edit</mat-icon> Editar
           </button>
         </mat-card-actions>
       </mat-card>

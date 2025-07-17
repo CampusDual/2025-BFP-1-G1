@@ -19,6 +19,63 @@ body,
   justify-content: center;
   align-items: center;
   overflow-y: auto;
+  position: relative;
+}
+
+.sign-up-box {
+  position: relative;
+  display: flex;
+  width: 80%;
+  max-width: 1200px;
+  max-height: 90vh;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+  overflow: hidden;
+  flex-wrap: nowrap;
+}
+
+.back-button {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  z-index: 10;
+  color: white;
+  background-color: rgba(0, 0, 0, 0.2);
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 0;
+  margin: 0;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  backdrop-filter: blur(2px);
+}
+
+.back-button:hover {
+  background-color: rgba(0, 0, 0, 0.3);
+  transform: translateX(-2px);
+}
+
+.back-icon {
+  font-size: 24px;
+  height: 24px;
+  width: 24px;
+  font-weight: normal;
+  transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.back-button:hover .back-icon {
+  transform: translateX(-2px);
+}
+
+.image-section {
+  position: relative;
+  overflow: visible;
 }
 
 .sign-up-box {
@@ -39,7 +96,7 @@ body,
   display: flex;
   align-items: center;
   justify-content: center;
-}
+  background: linear-gradient(to bottom right, var(--primary-light), var(--primary));}
 
 .circle-image {
   width: 250px;
@@ -69,7 +126,7 @@ body,
 }
 
 .form-title {
-  font-size: 22px;
+  font-size: 32px;
   color: var(--darker);
   margin: 0 0 30px 0;
   padding-top: 10px;
@@ -205,7 +262,7 @@ mat-error {
     max-width: 100%;
     border-radius: 0;
     margin-top: 60px;
-    /* Space for the header */
+
     max-height: none;
     box-shadow: none;
   }
