@@ -98,6 +98,14 @@ export class OfferDetailsComponent implements OnInit {
     this.location.back();
   }
 
+  getApplicationDate(candidate: Candidate): string {
+    const application = this.offerApplications.find(app => app.idCandidate === candidate.id);
+    if (application && application.inscriptionDate) {
+      return new Date(application.inscriptionDate).toLocaleDateString('es-ES');
+    }
+    return 'N/A';
+  }
+
   isCompany(userData: UserData | null): boolean {
     return (
       !!userData?.company || (!!userData?.user && userData.user.role_id === 2)
