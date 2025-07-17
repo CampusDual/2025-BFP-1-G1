@@ -62,7 +62,6 @@ public class ApplicationController {
     @GetMapping("/user")
     public ResponseEntity<?> getUserApplications(Authentication authentication) {
         UserDataDTO userData = userDataService.getUserData();
-
         if (userData.getUser() == null || userData.getUser().getRole_id() != 3L) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Access denied: Only candidates can view their applications.");
         }

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import javax.persistence.PrePersist;
 
 @Entity
 @Table(name = "applications")
@@ -35,6 +36,11 @@ public class Application {
     public Application(Long idCandidate, Long idOffer) {
         this.idCandidate = idCandidate;
         this.idOffer = idOffer;
+    }
+    
+    @PrePersist
+    protected void onCreate() {
+        this.inscriptionDate = LocalDateTime.now();
     }
 
     public Long getId() {

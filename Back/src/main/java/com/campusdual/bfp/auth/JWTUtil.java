@@ -1,5 +1,6 @@
 package com.campusdual.bfp.auth;
 
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.MalformedJwtException;
@@ -27,9 +28,10 @@ public class JWTUtil {
         this.key = Keys.hmacShaKeyFor(this.jwtSecret.getBytes(StandardCharsets.UTF_8));
     }
 
-    public String generateJWTToken(String username){
+    public String generateJWTToken(String username, Long roleId){
         return Jwts.builder()
                 .setSubject(username)
+                .claim("roleId", roleId)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(new Date().getTime() + this.jwtExpiration))
                 .signWith(this.key, SignatureAlgorithm.HS256)
@@ -37,11 +39,18 @@ public class JWTUtil {
     }
 
     public String getUsernameFromToken(String token) {
-        return Jwts.parserBuilder()
-                .setSigningKey(this.key).build()
+        return Jwts.parserBuilder().setSigningKey(key).build()
+                .parseClaimsJws(token).getBody().getSubject();
+    }
+    
+    public Long getRoleIdFromJwtToken(String token) {
+        Claims claims = Jwts.parserBuilder()
+                .setSigningKey(key)
+                .build()
                 .parseClaimsJws(token)
-                .getBody()
-                .getSubject();
+                .getBody();
+                
+        return claims.get("roleId", Long.class);
     }
 
     public boolean validateJwtToken(String token) {

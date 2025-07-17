@@ -45,41 +45,43 @@ public class CandidateController {
 
     @GetMapping("/getcandidateById/{id}")
     @PreAuthorize("isAuthenticated()")
-    public  ResponseEntity<Candidate> getCandidateById(@PathVariable Long id) {
+    public ResponseEntity<Candidate> getCandidateById(@PathVariable Long id) {
         try {
             Candidate candidate = candidateService.getCandidateById(id);
             return ResponseEntity.ok(candidate);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
-
-
-    @PutMapping("/update")
-    @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<?> updateCandidate(@RequestBody CandidateDTO candidate) {
-        try {
-            CandidateDTO updatedCandidate = candidateService.updateCandidate(candidate);
-            return ResponseEntity.ok(updatedCandidate);
-        } catch (AccessDeniedException e) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Access Denied: " + e.getMessage());
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred: " + e.getMessage());
         }
     }
 
-    @PutMapping(value = "/update-with-image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<?> updateCandidateWithImage(
-            @RequestPart("candidate")  CandidateDTO candidateDto,
-            @RequestPart("imageFile") MultipartFile imageFile) {
-        try {
-            byte[] imageBytes = imageFile.getBytes();
-            String base64Image = "data:" + imageFile.getContentType() + ";base64," + Base64.getEncoder().encodeToString(imageBytes);
+            @PutMapping("/update")
+            @PreAuthorize("isAuthenticated()")
+            public ResponseEntity<?> updateCandidate (@RequestBody CandidateDTO candidate){
+                try {
+                    CandidateDTO updatedCandidate = candidateService.updateCandidate(candidate);
+                    return ResponseEntity.ok(updatedCandidate);
+                } catch (AccessDeniedException e) {
+                    return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Access Denied: " + e.getMessage());
+                } catch (Exception e) {
+                    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred: " + e.getMessage());
+                }
+            }
 
-            candidateDto.setProfileImg(base64Image);
-            CandidateDTO updatedCandidate = candidateService.updateCandidate(candidateDto);
-            return ResponseEntity.ok(updatedCandidate);
-        } catch (IOException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred: " + e.getMessage());
+            @PutMapping(value = "/update-with-image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+            public ResponseEntity<?> updateCandidateWithImage (
+                    @RequestPart("candidate") CandidateDTO candidateDto,
+                    @RequestPart("imageFile") MultipartFile imageFile) {
+                try {
+                    byte[] imageBytes = imageFile.getBytes();
+                    String base64Image = "data:" + imageFile.getContentType() + ";base64," + Base64.getEncoder().encodeToString(imageBytes);
 
+                    candidateDto.setProfileImg(base64Image);
+                    CandidateDTO updatedCandidate = candidateService.updateCandidate(candidateDto);
+                    return ResponseEntity.ok(updatedCandidate);
+                } catch (IOException e) {
+                    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred: " + e.getMessage());
+
+                }
+            }
         }
-    }
-}
+

@@ -17,6 +17,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -34,27 +35,66 @@ public class UserDataService {
 
 
     @Transactional
-    public  UserDataDTO getUserData() {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        UserDataDTO userData = new UserDataDTO();
-        User user = userDao.findByLogin(auth.getName());
-        if (user != null) {
-            userData.setUser(UserMapper.INSTANCE.toDTO(user));
+    public UserDataDTO getUserData() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null || !authentication.isAuthenticated()) {
+            return new UserDataDTO();
         }
-        Company company = companyDao.findByUser(user);
-        if (company != null) {
-            userData.setCompany(CompanyMapper.INSTANCE.toDTO(company));
+
+        String username = authentication.getName();
+        User user = userDao.findByLogin(username);
+        if (user == null) {
+            return new UserDataDTO();
         }
-        Candidate candidate = candidateDao.findByUser(user);
-        if (candidate != null) {
-            userData.setCandidate(CandidateMapper.INSTANCE.toDTO(candidate));
+
+        UserDataDTO userDataDTO = new UserDataDTO();
+        userDataDTO.setUser(UserMapper.INSTANCE.toDTO(user));
+
+        // Get role ID from authentication details if available
+        Long roleId = null;
+        if (authentication.getDetails() instanceof Map) {
+            Map<?, ?> details = (Map<?, ?>) authentication.getDetails();
+            if (details != null && details.containsKey("roleId")) {
+                roleId = ((Number) details.get("roleId")).longValue();
+            }
         }
-        return userData;
+
+        // If role ID not in details, get it from the user object
+        if (roleId == null && user.getRole() != null) {
+            roleId = user.getRole().getId();
+        }
+
+        // Set role ID in user DTO
+        if (roleId != null) {
+            userDataDTO.getUser().setRole_id(roleId);
+        }
+
+        if (roleId != null) {
+            switch (roleId.intValue()) {
+                case 3: // Candidate
+                    Candidate candidate = candidateDao.findByUser(user);
+                    if (candidate != null) {
+                        userDataDTO.setCandidate(CandidateMapper.INSTANCE.toDTO(candidate));
+                    }
+                    break;
+                case 2: // Company
+                    Company company = companyDao.findByUser(user);
+                    if (company != null) {
+                        userDataDTO.setCompany(CompanyMapper.INSTANCE.toDTO(company));
+                    }
+                    break;
+                case 1: // Admin
+                    // If you have an Admin entity and DAO, uncomment and implement this
+                    // Admin admin = adminDao.findByUser(user);
+                    // if (admin != null) {
+                    //     userDataDTO.setAdmin(AdminMapper.INSTANCE.toDTO(admin));
+                    // }
+                    break;
+            }
+        }
+
+        return userDataDTO;
     }
-
-
-
-
 
     @Transactional(readOnly = true)
     public UserDataDTO getUserDataById(Long userId) {
@@ -76,7 +116,4 @@ public class UserDataService {
 
         return userDataDTO;
     }
-    }
-
-
-
+}

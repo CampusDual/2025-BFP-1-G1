@@ -20,8 +20,6 @@ import { SignUpFormComponent } from './sign-up-form/sign-up-form.component';
 import { CandidateProfileComponent } from './candidate-profile/candidate-profile.component';
 import { AdminProfileComponent } from './admin-profile/admin-profile.component';
 import { MatTableModule } from '@angular/material/table';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { BrowserModule } from '@angular/platform-browser';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { TokenInterceptor } from './token-interceptor';
 import { CompanySignupComponent } from './company-signup/company-signup.component';
@@ -37,7 +35,6 @@ import { MatMenuModule } from "@angular/material/menu";
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { RouterModule } from '@angular/router';
-import { MatTabsModule } from '@angular/material/tabs';
 
 
 @NgModule({
@@ -86,9 +83,8 @@ import { MatTabsModule } from '@angular/material/tabs';
     MatTabsModule,
     MatMenuModule,
     MatDatepickerModule,
-    MatNativeDateModule
-    RouterModule,
-    MatTabsModule,
+    MatNativeDateModule,
+    RouterModule
   ],
 })
 export class MainModule {}
