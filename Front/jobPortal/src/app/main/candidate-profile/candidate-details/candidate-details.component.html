@@ -44,7 +44,7 @@
                 <span>{{ userData?.candidate?.qualification }}</span>
               </div>
               <div *ngIf="userData?.candidate?.experience">
-                <strong>Anos de experiencia</strong>
+                <strong>Años de experiencia</strong>
                 <span>{{ userData?.candidate?.experience }}</span>
               </div>
               <div *ngIf="userData?.candidate?.employmentStatus">
@@ -54,11 +54,11 @@
                   }}</span>
               </div>
               <div *ngIf="userData?.candidate?.availability">
-                <strong>Dispoñibilidade</strong>
+                <strong>Disponibilidad</strong>
                 <span>{{ userData?.candidate?.availability }}</span>
               </div>
               <div *ngIf="userData?.candidate?.modality">
-                <strong>Modalidade preferida</strong>
+                <strong>Modalidad preferida</strong>
                 <span>{{
                   capitalizeFirst(userData?.candidate?.modality)
                   }}</span>
@@ -76,7 +76,7 @@
                   userData?.candidate?.github ||
                   userData?.candidate?.web
                 ">
-                <h3>Enlaces de interese</h3>
+                <h3>Enlaces de interés</h3>
                 <ul>
                   <li *ngIf="userData?.candidate?.linkedin">
                     <mat-icon svgIcon="linkedin"></mat-icon>
@@ -130,10 +130,12 @@
               <mat-form-field appearance="outline">
                 <mat-label>Título del puesto</mat-label>
                 <input matInput formControlName="jobTitle" required />
-                <mat-error *ngIf="experienceForm.get('jobTitle')?.hasError('required') && experienceForm.get('jobTitle')?.touched">
+                <mat-error
+                  *ngIf="experienceForm.get('jobTitle')?.hasError('required') && experienceForm.get('jobTitle')?.touched">
                   El título es obligatorio.
                 </mat-error>
-                <mat-error *ngIf="experienceForm.get('jobTitle')?.hasError('maxlength') && experienceForm.get('jobTitle')?.touched">
+                <mat-error
+                  *ngIf="experienceForm.get('jobTitle')?.hasError('maxlength') && experienceForm.get('jobTitle')?.touched">
                   El título no puede exceder los 120 caracteres.
                 </mat-error>
               </mat-form-field>
@@ -141,7 +143,8 @@
               <mat-form-field appearance="outline">
                 <mat-label>Empresa</mat-label>
                 <input matInput formControlName="company" required />
-                <mat-error *ngIf="experienceForm.get('company')?.hasError('required') && experienceForm.get('company')?.touched">
+                <mat-error
+                  *ngIf="experienceForm.get('company')?.hasError('required') && experienceForm.get('company')?.touched">
                   La empresa es obligatoria.
                 </mat-error>
               </mat-form-field>
@@ -152,7 +155,8 @@
 
                 <mat-datepicker-toggle matSuffix [for]="startPeriod"></mat-datepicker-toggle>
                 <mat-datepicker #startPeriod></mat-datepicker>
-                <mat-error *ngIf="experienceForm.get('startPeriod')?.hasError('required') && experienceForm.get('startPeriod')?.touched">
+                <mat-error
+                  *ngIf="experienceForm.get('startPeriod')?.hasError('required') && experienceForm.get('startPeriod')?.touched">
                   La fecha de inicio es obligatoria.
                 </mat-error>
               </mat-form-field>
@@ -164,7 +168,8 @@
 
                 <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
                 <mat-datepicker #endPicker></mat-datepicker>
-                <mat-error *ngIf="experienceForm.get('endPeriod')?.hasError('matDatepickerMin') && experienceForm.get('endPeriod')?.touched">
+                <mat-error
+                  *ngIf="experienceForm.get('endPeriod')?.hasError('matDatepickerMin') && experienceForm.get('endPeriod')?.touched">
                   La fecha de fin debe ser posterior a la fecha de inicio.
                 </mat-error>
               </mat-form-field>
@@ -173,10 +178,12 @@
                 <mat-label>Descripción</mat-label>
                 <textarea matInput formControlName="description" rows="3"
                   placeholder="Describe tus responsabilidades y logros" required></textarea>
-                <mat-error *ngIf="experienceForm.get('description')?.hasError('required') && experienceForm.get('description')?.touched">
+                <mat-error
+                  *ngIf="experienceForm.get('description')?.hasError('required') && experienceForm.get('description')?.touched">
                   La descripción es obligatoria.
                 </mat-error>
-                <mat-error *ngIf="experienceForm.get('description')?.hasError('maxlength') && experienceForm.get('description')?.touched">
+                <mat-error
+                  *ngIf="experienceForm.get('description')?.hasError('maxlength') && experienceForm.get('description')?.touched">
                   La descripción no puede exceder los 4000 caracteres.
                 </mat-error>
               </mat-form-field>
@@ -195,19 +202,17 @@
 
           <div class="experience-list">
             <mat-card class="experience-card" *ngFor="let exp of experiences">
-              <mat-card-title *ngIf="editingExpId !== exp.id">
-                {{ exp.jobTitle }} en {{ exp.company }}
-              </mat-card-title>
-
               <div *ngIf="editingExpId === exp.id; else viewMode">
                 <form [formGroup]="experienceForm" (ngSubmit)="editExperience()" class="inline-edit-form">
                   <mat-form-field appearance="outline" class="full-width">
                     <mat-label>Título del puesto</mat-label>
                     <input matInput formControlName="jobTitle" />
-                    <mat-error *ngIf="experienceForm.get('jobTitle')?.hasError('required') && experienceForm.get('jobTitle')?.touched">
+                    <mat-error
+                      *ngIf="experienceForm.get('jobTitle')?.hasError('required') && experienceForm.get('jobTitle')?.touched">
                       El título es obligatorio.
                     </mat-error>
-                    <mat-error *ngIf="experienceForm.get('jobTitle')?.hasError('maxlength') && experienceForm.get('jobTitle')?.touched">
+                    <mat-error
+                      *ngIf="experienceForm.get('jobTitle')?.hasError('maxlength') && experienceForm.get('jobTitle')?.touched">
                       El título no puede exceder los 120 caracteres.
                     </mat-error>
                   </mat-form-field>
@@ -215,7 +220,8 @@
                   <mat-form-field appearance="outline" class="full-width">
                     <mat-label>Empresa</mat-label>
                     <input matInput formControlName="company" />
-                    <mat-error *ngIf="experienceForm.get('company')?.hasError('required') && experienceForm.get('company')?.touched">
+                    <mat-error
+                      *ngIf="experienceForm.get('company')?.hasError('required') && experienceForm.get('company')?.touched">
                       La empresa es obligatoria.
                     </mat-error>
                   </mat-form-field>
@@ -225,7 +231,8 @@
                     <input matInput [matDatepicker]="editExpStartPicker" formControlName="startPeriod" />
                     <mat-datepicker-toggle matSuffix [for]="editExpStartPicker"></mat-datepicker-toggle>
                     <mat-datepicker #editExpStartPicker></mat-datepicker>
-                    <mat-error *ngIf="experienceForm.get('startPeriod')?.hasError('required') && experienceForm.get('startPeriod')?.touched">
+                    <mat-error
+                      *ngIf="experienceForm.get('startPeriod')?.hasError('required') && experienceForm.get('startPeriod')?.touched">
                       La fecha de inicio es obligatoria.
                     </mat-error>
                   </mat-form-field>
@@ -235,7 +242,8 @@
                     <input matInput [matDatepicker]="editExpEndPicker" formControlName="endPeriod" />
                     <mat-datepicker-toggle matSuffix [for]="editExpEndPicker"></mat-datepicker-toggle>
                     <mat-datepicker #editExpEndPicker></mat-datepicker>
-                    <mat-error *ngIf="experienceForm.get('endPeriod')?.hasError('matDatepickerMin') && experienceForm.get('endPeriod')?.touched">
+                    <mat-error
+                      *ngIf="experienceForm.get('endPeriod')?.hasError('matDatepickerMin') && experienceForm.get('endPeriod')?.touched">
                       La fecha de fin debe ser posterior a la fecha de inicio.
                     </mat-error>
                   </mat-form-field>
@@ -243,10 +251,12 @@
                   <mat-form-field appearance="outline" class="full-width">
                     <mat-label>Descripción</mat-label>
                     <textarea matInput formControlName="description" rows="3"></textarea>
-                    <mat-error *ngIf="experienceForm.get('description')?.hasError('required') && experienceForm.get('description')?.touched">
+                    <mat-error
+                      *ngIf="experienceForm.get('description')?.hasError('required') && experienceForm.get('description')?.touched">
                       La descripción es obligatoria.
                     </mat-error>
-                    <mat-error *ngIf="experienceForm.get('description')?.hasError('maxlength') && experienceForm.get('description')?.touched">
+                    <mat-error
+                      *ngIf="experienceForm.get('description')?.hasError('maxlength') && experienceForm.get('description')?.touched">
                       La descripción no puede exceder los 4000 caracteres.
                     </mat-error>
                   </mat-form-field>
@@ -263,6 +273,15 @@
               </div>
 
               <ng-template #viewMode>
+                <div class="card-header-with-edit">
+                  <mat-card-title>
+                    {{ exp.jobTitle }} en {{ exp.company }}
+                  </mat-card-title>
+                  <button *ngIf="isCandidate() && isOwner()" mat-icon-button class="edit-button-cards"
+                    (click)="startEditingExperience(exp)">
+                    <mat-icon>edit</mat-icon>
+                  </button>
+                </div>
                 <div class="date-period">
                   <span class="date-item">
                     <mat-icon class="date-icon">event</mat-icon>
@@ -277,10 +296,6 @@
                 <mat-card-content>
                   <p>{{ exp.description }}</p>
                 </mat-card-content>
-                <button *ngIf="isCandidate() && isOwner()" mat-icon-button class="edit-button"
-                  (click)="startEditingExperience(exp)">
-                  <mat-icon>edit</mat-icon>
-                </button>
               </ng-template>
             </mat-card>
           </div>
@@ -305,7 +320,8 @@
               <mat-form-field appearance="outline">
                 <mat-label>Título académico</mat-label>
                 <input matInput formControlName="degree" required />
-                <mat-error *ngIf="educationForm.get('degree')?.hasError('required') && educationForm.get('degree')?.touched">
+                <mat-error
+                  *ngIf="educationForm.get('degree')?.hasError('required') && educationForm.get('degree')?.touched">
                   El título es obligatorio.
                 </mat-error>
               </mat-form-field>
@@ -313,7 +329,8 @@
               <mat-form-field appearance="outline">
                 <mat-label>Institución</mat-label>
                 <input matInput formControlName="institution" required />
-                <mat-error *ngIf="educationForm.get('institution')?.hasError('required') && educationForm.get('institution')?.touched">
+                <mat-error
+                  *ngIf="educationForm.get('institution')?.hasError('required') && educationForm.get('institution')?.touched">
                   La institución es obligatoria.
                 </mat-error>
               </mat-form-field>
@@ -323,8 +340,9 @@
                 <input matInput [matDatepicker]="eduStartPicker" formControlName="startPeriod" required />
 
                 <mat-datepicker-toggle matSuffix [for]="eduStartPicker"></mat-datepicker-toggle>
-                <mat-datepicker #eduStartPicker startView="multi-year" [startAt]="startDate"></mat-datepicker>
-                <mat-error *ngIf="educationForm.get('startPeriod')?.hasError('required') && educationForm.get('startPeriod')?.touched">
+                <mat-datepicker #eduStartPicker [startAt]="startDate"></mat-datepicker>
+                <mat-error
+                  *ngIf="educationForm.get('startPeriod')?.hasError('required') && educationForm.get('startPeriod')?.touched">
                   La fecha de inicio es obligatoria.
                 </mat-error>
               </mat-form-field>
@@ -335,8 +353,9 @@
                   [min]="educationForm.get('startPeriod')?.value" />
 
                 <mat-datepicker-toggle matSuffix [for]="eduEndPicker"></mat-datepicker-toggle>
-                <mat-datepicker #eduEndPicker startView="multi-year" [startAt]="startDate"></mat-datepicker>
-                <mat-error *ngIf="educationForm.get('endPeriod')?.hasError('matDatepickerMin') && educationForm.get('endPeriod')?.touched">
+                <mat-datepicker #eduEndPicker [startAt]="startDate"></mat-datepicker>
+                <mat-error
+                  *ngIf="educationForm.get('endPeriod')?.hasError('matDatepickerMin') && educationForm.get('endPeriod')?.touched">
                   La fecha de fin debe ser posterior a la fecha de inicio.
                 </mat-error>
               </mat-form-field>
@@ -345,10 +364,12 @@
                 <mat-label>Descripción</mat-label>
                 <textarea matInput formControlName="description" rows="3"
                   placeholder="Describe tu formación, logros o actividades relevantes" required></textarea>
-                <mat-error *ngIf="educationForm.get('description')?.hasError('required') && educationForm.get('description')?.touched">
+                <mat-error
+                  *ngIf="educationForm.get('description')?.hasError('required') && educationForm.get('description')?.touched">
                   La descripción es obligatoria.
                 </mat-error>
-                <mat-error *ngIf="educationForm.get('description')?.hasError('maxlength') && educationForm.get('description')?.touched">
+                <mat-error
+                  *ngIf="educationForm.get('description')?.hasError('maxlength') && educationForm.get('description')?.touched">
                   La descripción no puede exceder los 4000 caracteres.
                 </mat-error>
               </mat-form-field>
@@ -367,16 +388,13 @@
 
           <div class="education-list">
             <mat-card class="education-card" *ngFor="let edu of educations">
-              <mat-card-title>
-                {{ edu.degree }} en {{ edu.institution }}
-              </mat-card-title>
-
               <div *ngIf="editingEduId === edu.id; else educationView">
                 <form [formGroup]="educationForm" (ngSubmit)="editEducation()" class="inline-edit-form">
                   <mat-form-field appearance="outline" class="full-width">
                     <mat-label>Título académico</mat-label>
                     <input matInput formControlName="degree" required />
-                    <mat-error *ngIf="educationForm.get('degree')?.hasError('required') && educationForm.get('degree')?.touched">
+                    <mat-error
+                      *ngIf="educationForm.get('degree')?.hasError('required') && educationForm.get('degree')?.touched">
                       El título es obligatorio.
                     </mat-error>
                   </mat-form-field>
@@ -384,7 +402,8 @@
                   <mat-form-field appearance="outline" class="full-width">
                     <mat-label>Institución</mat-label>
                     <input matInput formControlName="institution" required />
-                    <mat-error *ngIf="educationForm.get('institution')?.hasError('required') && educationForm.get('institution')?.touched">
+                    <mat-error
+                      *ngIf="educationForm.get('institution')?.hasError('required') && educationForm.get('institution')?.touched">
                       La institución es obligatoria.
                     </mat-error>
                   </mat-form-field>
@@ -393,8 +412,9 @@
                     <mat-label>Fecha de Inicio</mat-label>
                     <input matInput [matDatepicker]="editEduStartPicker" formControlName="startPeriod" required />
                     <mat-datepicker-toggle matSuffix [for]="editEduStartPicker"></mat-datepicker-toggle>
-                    <mat-datepicker #editEduStartPicker startView="multi-year" [startAt]="startDate"></mat-datepicker>
-                    <mat-error *ngIf="educationForm.get('startPeriod')?.hasError('required') && educationForm.get('startPeriod')?.touched">
+                    <mat-datepicker #editEduStartPicker [startAt]="startDate"></mat-datepicker>
+                    <mat-error
+                      *ngIf="educationForm.get('startPeriod')?.hasError('required') && educationForm.get('startPeriod')?.touched">
                       La fecha de inicio es obligatoria.
                     </mat-error>
                   </mat-form-field>
@@ -404,8 +424,9 @@
                     <input matInput [matDatepicker]="editEduEndPicker" formControlName="endPeriod"
                       [min]="educationForm.get('startPeriod')?.value" />
                     <mat-datepicker-toggle matSuffix [for]="editEduEndPicker"></mat-datepicker-toggle>
-                    <mat-datepicker #editEduEndPicker startView="multi-year" [startAt]="startDate"></mat-datepicker>
-                    <mat-error *ngIf="educationForm.get('endPeriod')?.hasError('matDatepickerMin') && educationForm.get('endPeriod')?.touched">
+                    <mat-datepicker #editEduEndPicker [startAt]="startDate"></mat-datepicker>
+                    <mat-error
+                      *ngIf="educationForm.get('endPeriod')?.hasError('matDatepickerMin') && educationForm.get('endPeriod')?.touched">
                       La fecha de fin debe ser posterior a la fecha de inicio.
                     </mat-error>
                   </mat-form-field>
@@ -413,10 +434,12 @@
                   <mat-form-field appearance="outline" class="full-width">
                     <mat-label>Descripción</mat-label>
                     <textarea matInput formControlName="description" rows="3" required></textarea>
-                    <mat-error *ngIf="educationForm.get('description')?.hasError('required') && educationForm.get('description')?.touched">
+                    <mat-error
+                      *ngIf="educationForm.get('description')?.hasError('required') && educationForm.get('description')?.touched">
                       La descripción es obligatoria.
                     </mat-error>
-                    <mat-error *ngIf="educationForm.get('description')?.hasError('maxlength') && educationForm.get('description')?.touched">
+                    <mat-error
+                      *ngIf="educationForm.get('description')?.hasError('maxlength') && educationForm.get('description')?.touched">
                       La descripción no puede exceder los 4000 caracteres.
                     </mat-error>
                   </mat-form-field>
@@ -433,6 +456,15 @@
               </div>
 
               <ng-template #educationView>
+                <div class="card-header-with-edit">
+                  <mat-card-title>
+                    {{ edu.degree }} en {{ edu.institution }}
+                  </mat-card-title>
+                  <button *ngIf="isCandidate() && isOwner()" mat-icon-button class="edit-button-cards"
+                    (click)="startEditingEducation(edu)">
+                    <mat-icon>edit</mat-icon>
+                  </button>
+                </div>
                 <div class="date-period">
                   <span class="date-item">
                     <mat-icon class="date-icon">event</mat-icon>
@@ -447,10 +479,6 @@
                 <mat-card-content>
                   <p>{{ edu.description }}</p>
                 </mat-card-content>
-                <button *ngIf="isCandidate() && isOwner()" mat-icon-button class="edit-button"
-                  (click)="startEditingEducation(edu)">
-                  <mat-icon>edit</mat-icon>
-                </button>
               </ng-template>
             </mat-card>
           </div>
@@ -505,24 +533,28 @@
             <mat-form-field appearance="outline">
               <mat-label>Apellido</mat-label>
               <input matInput formControlName="surname" required />
-              <mat-error *ngIf="candidateForm.get('surname')?.hasError('required') && candidateForm.get('surname')?.touched">
+              <mat-error
+                *ngIf="candidateForm.get('surname')?.hasError('required') && candidateForm.get('surname')?.touched">
                 El apellido es obligatorio.
               </mat-error>
-              <mat-error *ngIf="candidateForm.get('surname')?.hasError('maxlength') && candidateForm.get('surname')?.touched">
+              <mat-error
+                *ngIf="candidateForm.get('surname')?.hasError('maxlength') && candidateForm.get('surname')?.touched">
                 El apellido no puede exceder los 100 caracteres.
               </mat-error>
             </mat-form-field>
             <mat-form-field appearance="outline">
               <mat-label>Título profesional</mat-label>
               <input matInput formControlName="qualification" />
-              <mat-error *ngIf="candidateForm.get('qualification')?.hasError('maxlength') && candidateForm.get('qualification')?.touched">
+              <mat-error
+                *ngIf="candidateForm.get('qualification')?.hasError('maxlength') && candidateForm.get('qualification')?.touched">
                 El título no puede exceder los 100 caracteres.
               </mat-error>
             </mat-form-field>
             <mat-form-field appearance="outline">
               <mat-label>Ubicación</mat-label>
               <input matInput formControlName="location" />
-              <mat-error *ngIf="candidateForm.get('location')?.hasError('maxlength') && candidateForm.get('location')?.touched">
+              <mat-error
+                *ngIf="candidateForm.get('location')?.hasError('maxlength') && candidateForm.get('location')?.touched">
                 La ubicación no puede exceder los 100 caracteres.
               </mat-error>
             </mat-form-field>
@@ -538,7 +570,16 @@
             </mat-form-field>
             <mat-form-field appearance="outline">
               <mat-label>Situación laboral</mat-label>
-              <input matInput formControlName="employmentStatus" />
+              <mat-select formControlName="employmentStatus" required>
+                <mat-option value="desempleado">Desempleado</mat-option>
+                <mat-option value="activo">Activo</mat-option>
+                <mat-option value="autonomo">Autónomo</mat-option>
+                <mat-option value="estudiante">Estudiante</mat-option>
+                <mat-option value="no definido">No definido</mat-option>
+              </mat-select>
+              <mat-error *ngIf="candidateForm.get('employmentStatus')?.hasError('required')">
+                La situación laboral es requerida
+              </mat-error>
             </mat-form-field>
             <mat-form-field appearance="outline">
               <mat-label>Disponibilidad</mat-label>
@@ -546,12 +587,21 @@
             </mat-form-field>
             <mat-form-field appearance="outline">
               <mat-label>Modalidad preferida</mat-label>
-              <input matInput formControlName="modality" />
+              <mat-select formControlName="modality" required>
+                <mat-option value="hibrido">Híbrido</mat-option>
+                <mat-option value="remoto">Remoto</mat-option>
+                <mat-option value="presencial">Presencial</mat-option>
+                <mat-option value="indiferente">Indiferente</mat-option>
+              </mat-select>
+              <mat-error *ngIf="candidateForm.get('modality')?.hasError('required')">
+                La modalidad es requerida
+              </mat-error>
             </mat-form-field>
             <mat-form-field appearance="outline" class="full-width">
               <mat-label>Presentación</mat-label>
               <textarea matInput formControlName="aboutMe" rows="5"></textarea>
-              <mat-error *ngIf="candidateForm.get('aboutMe')?.hasError('maxlength') && candidateForm.get('aboutMe')?.touched">
+              <mat-error
+                *ngIf="candidateForm.get('aboutMe')?.hasError('maxlength') && candidateForm.get('aboutMe')?.touched">
                 La presentación no puede exceder los 4000 caracteres.
               </mat-error>
             </mat-form-field>
@@ -564,14 +614,16 @@
             <mat-form-field appearance="outline" class="full-width">
               <mat-label>LinkedIn</mat-label>
               <input matInput formControlName="linkedin" />
-              <mat-error *ngIf="candidateForm.get('linkedin')?.hasError('pattern') && candidateForm.get('linkedin')?.touched">
+              <mat-error
+                *ngIf="candidateForm.get('linkedin')?.hasError('pattern') && candidateForm.get('linkedin')?.touched">
                 Introduce una URL de LinkedIn válida.
               </mat-error>
             </mat-form-field>
             <mat-form-field appearance="outline" class="full-width">
               <mat-label>GitHub</mat-label>
               <input matInput formControlName="github" />
-              <mat-error *ngIf="candidateForm.get('github')?.hasError('pattern') && candidateForm.get('github')?.touched">
+              <mat-error
+                *ngIf="candidateForm.get('github')?.hasError('pattern') && candidateForm.get('github')?.touched">
                 Introduce una URL de GitHub válida.
               </mat-error>
             </mat-form-field>
@@ -591,7 +643,8 @@
             <mat-form-field appearance="outline">
               <mat-label>Email</mat-label>
               <input matInput type="email" formControlName="email" required />
-              <mat-error *ngIf="candidateForm.get('email')?.hasError('required') && candidateForm.get('email')?.touched">
+              <mat-error
+                *ngIf="candidateForm.get('email')?.hasError('required') && candidateForm.get('email')?.touched">
                 El email es obligatorio.
               </mat-error>
               <mat-error *ngIf="candidateForm.get('email')?.hasError('email') && candidateForm.get('email')?.touched">
@@ -604,25 +657,25 @@
               <mat-error *ngIf="candidateForm.get('phone')?.hasError('pattern') && candidateForm.get('phone')?.touched">
                 El teléfono debe contener 9 dígitos numéricos.
               </mat-error>
-              <mat-error *ngIf="(candidateForm.get('phone')?.hasError('minlength') || candidateForm.get('phone')?.hasError('maxlength')) && candidateForm.get('phone')?.touched">
+              <mat-error
+                *ngIf="(candidateForm.get('phone')?.hasError('minlength') || candidateForm.get('phone')?.hasError('maxlength')) && candidateForm.get('phone')?.touched">
                 El teléfono debe tener entre 9 y 15 dígitos.
               </mat-error>
             </mat-form-field>
             <mat-form-field appearance="outline">
               <mat-label>Fecha de Nacimiento</mat-label>
-              <input matInput [matDatepicker]="birthdatePicker" formControlName="birthdate" />
-              <mat-datepicker-toggle matSuffix [for]="birthdatePicker"></mat-datepicker-toggle>
-              <mat-datepicker #birthdatePicker></mat-datepicker>
+              <input matInput [matDatepicker]="picker" formControlName="birthdate" />
+              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-datepicker #picker></mat-datepicker>
             </mat-form-field>
           </div>
-
-          <div class="form-actions full-width">
+          <div class="form-actions edit-candidate-actions">
             <button mat-raised-button type="button" color="warn" (click)="cancelEditingCandidate()">
               Cancelar
             </button>
             <button mat-raised-button color="primary" type="submit" [disabled]="!candidateForm.valid">
               <mat-icon>save</mat-icon>
-              Guardar Perfil
+              Guardar Cambios
             </button>
           </div>
         </form>

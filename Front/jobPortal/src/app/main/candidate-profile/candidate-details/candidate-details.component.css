@@ -73,6 +73,7 @@
   justify-content: center;
   align-items: center;
   position: relative;
+  border: 2px solid var(--primary);
 }
 
 .avatar-img {
@@ -180,6 +181,13 @@
   display: flex;
   flex-direction: column;
   gap: 20px;
+}
+
+.edit-button-cards {
+  position: absolute;
+  top: 1rem;
+  right: 2rem;
+  color: var(--primary);
 }
 
 .edit-button-container {
@@ -475,7 +483,8 @@ textarea.mat-input-element {
 
 button[mat-raised-button].add-button {
   margin: 0;
-  padding: 0 1rem;
+  margin-right: 0.3rem;
+  padding: 0 1.2rem;
   border-radius: 6px;
   font-weight: 500;
   text-transform: none;
@@ -567,7 +576,7 @@ button[mat-raised-button] mat-icon {
 .education-card {
   position: relative;
   background: white;
-  border-radius: 12px;
+  border-radius: 12px; 
   padding: 1.5rem;
   height: 100%;
   box-sizing: border-box;
@@ -576,6 +585,7 @@ button[mat-raised-button] mat-icon {
   border: 1px solid #e0e0e0;
   display: flex;
   flex-direction: column;
+  overflow: hidden;
 }
 
 .experience-card:hover,
@@ -596,6 +606,8 @@ button[mat-raised-button] mat-icon {
   transform: scaleX(0);
   transform-origin: left;
   transition: transform 0.3s ease;
+  border-top-left-radius: 12px; 
+  border-top-right-radius: 12px; 
 }
 
 .experience-card:hover::before,
@@ -629,10 +641,15 @@ button[mat-raised-button] mat-icon {
 }
 
 mat-card-title {
-  font-size: 1.1rem !important;
+  font-size: 1.4rem !important;
   font-weight: 600 !important;
   margin-bottom: 0.5rem !important;
   line-height: 1.4 !important;
+}
+
+mat-card-content{
+  font-size: 1rem;
+  text-align: justify;
 }
 
 .date-period {

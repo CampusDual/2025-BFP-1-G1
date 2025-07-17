@@ -122,9 +122,9 @@ export class CandidateDetailsComponent implements OnInit, OnDestroy {
       qualification: ['', Validators.maxLength(100)],
       location: ['', Validators.maxLength(100)],
       experience: [''],
-      employmentStatus: [''],
+      employmentStatus: ['no definido', Validators.required],
+      modality: ['indiferente', Validators.required],
       availability: [''],
-      modality: [''],
       aboutMe: ['', Validators.maxLength(4000)],
       linkedin: [
         '',
@@ -133,7 +133,7 @@ export class CandidateDetailsComponent implements OnInit, OnDestroy {
       github: ['', Validators.pattern('^(https?://)?(www\\.)?github\\.com/.*')],
       web: ['', Validators.pattern('^(https?://)?(www\\.)?.*')],
       email: [
-        { value: '' },
+        { value: ''},
         [Validators.required, Validators.email],
       ],
       phone: [
@@ -148,16 +148,13 @@ export class CandidateDetailsComponent implements OnInit, OnDestroy {
       profileImg: [''],
     });
   }
-
   private loadUserData(): void {
     this.userService.userData$
       .pipe(takeUntil(this.destroy$))
       .subscribe((user) => {
         this.userData = user;
+        if (!user || !user.candidate) return;
 
-        if (!user || !user.candidate) {
-          return;
-        }
         this.candidateService
           .getCandidateProfile()
           .pipe(takeUntil(this.destroy$))
@@ -169,9 +166,10 @@ export class CandidateDetailsComponent implements OnInit, OnDestroy {
               qualification: this.candidate.qualification,
               location: this.candidate.location,
               experience: this.candidate.experience,
-              employmentStatus: this.candidate.employmentStatus,
+              employmentStatus:
+                this.candidate.employmentStatus?.toLowerCase() || 'no definido',
+              modality: this.candidate.modality?.toLowerCase() || 'indiferente',
               availability: this.candidate.availability,
-              modality: this.candidate.modality,
               aboutMe: this.candidate.aboutMe,
               linkedin: this.candidate.linkedin,
               github: this.candidate.github,
@@ -183,6 +181,7 @@ export class CandidateDetailsComponent implements OnInit, OnDestroy {
                 : null,
               profileImg: this.candidate.profileImg || '',
             });
+
             if (this.candidate.profileImg) {
               this.imagePreviewUrl = this.candidate.profileImg;
             } else {
@@ -386,28 +385,18 @@ export class CandidateDetailsComponent implements OnInit, OnDestroy {
 
   saveCandidate(): void {
     if (this.candidateForm.valid) {
+      const formData = this.candidateForm.getRawValue();
+
+      formData.employmentStatus =
+        formData.employmentStatus?.toLowerCase() || 'no definido';
+      formData.modality = formData.modality?.toLowerCase() || 'indiferente';
+
       const candidateDataToUpdate: Candidate = {
         id: this.candidate.id,
-        name: this.candidateForm.get('name')?.value,
-        surname: this.candidateForm.get('surname')?.value,
-        qualification: this.candidateForm.get('qualification')?.value,
-        location: this.candidateForm.get('location')?.value,
-        experience: this.candidateForm.get('experience')?.value,
-        employmentStatus: this.candidateForm.get('employmentStatus')?.value,
-        availability: this.candidateForm.get('availability')?.value,
-        modality: this.candidateForm.get('modality')?.value,
-        aboutMe: this.candidateForm.get('aboutMe')?.value,
-        linkedin: this.candidateForm.get('linkedin')?.value,
-        github: this.candidateForm.get('github')?.value,
-        web: this.candidateForm.get('web')?.value,
-        phone: this.candidateForm.get('phone')?.value,
-        birthdate: this.candidateForm.get('birthdate')?.value
-          ? new Date(this.candidateForm.get('birthdate')?.value)
-          : undefined,
-        profileImg: this.candidateForm.get('profileImg')?.value || null,
+        ...formData,
         user: {
           ...this.candidate.user,
-          email: this.candidateForm.get('email')?.value,
+          email: formData.email,
         },
       };
 
