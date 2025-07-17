@@ -37,6 +37,7 @@ import { MatMenuModule } from "@angular/material/menu";
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { RouterModule } from '@angular/router';
+import { MatTabsModule } from '@angular/material/tabs';
 
 
 @NgModule({
@@ -87,6 +88,7 @@ import { RouterModule } from '@angular/router';
     MatDatepickerModule,
     MatNativeDateModule
     RouterModule,
+    MatTabsModule,
   ],
 })
 export class MainModule {}

@@ -1,9 +1,15 @@
 package com.campusdual.bfp.model;
 
+import com.fasterxml.jackson.annotation.*;
 import javax.persistence.*;
 
 @Entity
 @Table(name = "admin")
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "id"
+)
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Admin {
     @Id
     @GeneratedValue( strategy = GenerationType.IDENTITY )
@@ -12,8 +18,10 @@ public class Admin {
     @Column
     private String name;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    @JsonBackReference("admin-user")
     private User user;
 
 

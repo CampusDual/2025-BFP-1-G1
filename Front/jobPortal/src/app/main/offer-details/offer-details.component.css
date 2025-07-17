@@ -1,4 +1,3 @@
-
 .offer-form-container {
   width: 80%;
   max-width: 1400px;
@@ -10,7 +9,7 @@
   border-radius: 8px;
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
   color: var(--text-base);
-  overflow-x: hidden; 
+  overflow-x: hidden;
   position: relative;
   box-sizing: border-box;
   display: flex;
@@ -260,7 +259,7 @@
   height: 20px;
 }
 
-.mat-mdc-button:not(:disabled){
+.mat-mdc-button:not(:disabled) {
   color: white;
 }
 
@@ -326,4 +325,12 @@
   .title-container {
     max-width: 100%;
   }
+}
+
+.main-content {
+  padding-top: 2rem;
+}
+
+.candidates-list-section {
+  padding-top: 2rem;
 }

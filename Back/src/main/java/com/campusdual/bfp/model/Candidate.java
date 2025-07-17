@@ -1,5 +1,7 @@
 package com.campusdual.bfp.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import javax.validation.constraints.Pattern;
 import java.util.Date;
@@ -20,7 +22,7 @@ public class Candidate {
     @Column(name = "telephone")
     private String phone;
 
-    @ManyToOne
+        @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 

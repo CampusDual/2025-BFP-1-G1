@@ -14,11 +14,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.nio.file.AccessDeniedException;
+import java.util.Optional;
 
 @Service
 @Lazy
@@ -51,6 +50,31 @@ public class UserDataService {
             userData.setCandidate(CandidateMapper.INSTANCE.toDTO(candidate));
         }
         return userData;
+    }
+
+
+
+
+
+    @Transactional(readOnly = true)
+    public UserDataDTO getUserDataById(Long userId) {
+        User user= userDao.getReferenceById(userId);
+
+
+        UserDataDTO userDataDTO = new UserDataDTO();
+        userDataDTO.setUser(UserMapper.INSTANCE.toDTO(user));
+
+        Company company = companyDao.findByUser(user);
+        if (company != null) {
+            userDataDTO.setCompany(CompanyMapper.INSTANCE.toDTO(company));
+        }
+
+        Candidate candidate = candidateDao.findByUser(user);
+        if (candidate != null) {
+            userDataDTO.setCandidate(CandidateMapper.INSTANCE.toDTO(candidate));
+        }
+
+        return userDataDTO;
     }
     }
 

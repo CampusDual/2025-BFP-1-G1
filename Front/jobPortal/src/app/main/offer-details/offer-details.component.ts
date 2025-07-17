@@ -1,3 +1,4 @@
+import { Candidate } from './../../model/candidate';
 import { Component, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -6,8 +7,18 @@ import { UserData } from 'src/app/model/userData';
 import { ApplicationService } from 'src/app/services/application.service';
 import { JobOfferService } from 'src/app/services/job-offer.service';
 import { UsersService } from 'src/app/services/users.service';
-import { filter, tap } from 'rxjs';
+import {
+  filter,
+  tap,
+  Observable,
+  of,
+  combineLatest,
+  switchMap,
+  forkJoin,
+  map,
+} from 'rxjs';
 import { Location } from '@angular/common';
+import { Application } from 'src/app/model/application';
 
 @Component({
   selector: 'app-offer-details',
@@ -16,8 +27,15 @@ import { Location } from '@angular/common';
 })
 export class OfferDetailsComponent implements OnInit {
   offer!: JobOffer;
-  userData: UserData | null = null;
+  userData$: Observable<UserData | null> = of(null);
   appliedOfferIds: number[] = [];
+  candidates: Candidate[] = [];
+  candidate: Candidate | null = null;
+  isLoadingCandidates: boolean = false;
+  offerApplications: Application[] = [];
+  errorLoadingCandidates: string | null = null;
+  displayedColumns: string[] = ['candidateName', 'qualification', 'date'];
+  count: number = 0;
 
   constructor(
     private route: ActivatedRoute,
@@ -32,42 +50,46 @@ export class OfferDetailsComponent implements OnInit {
   ngOnInit(): void {
     const id = Number(this.route.snapshot.paramMap.get('id'));
 
-    // Obtener datos del usuario (si está logueado)
-    this.usersService.userData$.pipe(
+    const offer$ = this.jobService.getJobOfferById(id).pipe(
+      tap({
+        next: (data: JobOffer) => (this.offer = data),
+        error: (err) => {
+          console.error('Error al cargar la oferta:', err);
+          this.router.navigate(['main/catalogue']);
+        },
+      }),
+      filter((data) => !!data)
+    );
+
+    this.userData$ = this.usersService.userData$.pipe(
       tap((data) => {
         if (!data && this.usersService.isLoggedIn()) {
           this.usersService.getUserData().subscribe();
         }
-      }),
-      filter((data) => data !== null)
-    ).subscribe((data) => {
-      this.userData = data;
+      })
+    );
 
-      // Si es candidato, obtener las ofertas a las que ya aplicó
-      if (this.isCandidate()) {
+    combineLatest([
+      this.userData$.pipe(filter((data) => !!data)),
+      offer$,
+    ]).subscribe(([userData, offer]) => {
+      if (this.isCandidate(userData)) {
         this.applicationService.getUserApplications().subscribe({
           next: (applications: any[]) => {
             this.appliedOfferIds = applications.map((app: any) => app.offerId);
           },
           error: (err) => {
             console.error('Error al obtener aplicaciones del usuario:', err);
-          }
+          },
         });
+      }
+
+      if (this.isOfferOwner(userData) || this.isAdmin(userData)) {
+        this.loadCandidatesbyId(id);
       }
     });
 
-    // Obtener la oferta por ID
-    if (id) {
-      this.jobService.getJobOfferById(id).subscribe({
-        next: (data: JobOffer) => {
-          this.offer = data;
-        },
-        error: (err) => {
-          console.error('Error al cargar la oferta:', err);
-          this.router.navigate(['main/catalogue']);
-        },
-      });
-    } else {
+    if (!id) {
       this.router.navigate(['main/catalogue']);
     }
   }
@@ -76,25 +98,23 @@ export class OfferDetailsComponent implements OnInit {
     this.location.back();
   }
 
-  isCompany(): boolean {
+  isCompany(userData: UserData | null): boolean {
     return (
-      !!this.userData?.company ||
-      (!!this.userData?.user && this.userData.user.role_id === 2)
+      !!userData?.company || (!!userData?.user && userData.user.role_id === 2)
     );
   }
 
-  isCandidate(): boolean {
+  isCandidate(userData: UserData | null): boolean {
     return (
-      !!this.userData?.candidate ||
-      (!!this.userData?.user && this.userData.user.role_id === 3)
+      !!userData?.candidate || (!!userData?.user && userData.user.role_id === 3)
     );
   }
 
-  isOfferOwner(): boolean {
-    if (!this.userData?.user?.id || !this.offer?.company?.user?.id) {
+  isOfferOwner(userData: UserData | null): boolean {
+    if (!userData?.user?.id || !this.offer?.company?.user?.id) {
       return false;
     }
-    return this.userData.user.id === this.offer.company.user.id;
+    return userData.user.id === this.offer.company.user.id;
   }
 
   editOffer(): void {
@@ -102,6 +122,7 @@ export class OfferDetailsComponent implements OnInit {
       this.router.navigate(['main/editOffer', this.offer.id]);
     }
   }
+
   openSnackBar(message: string, panelClass: string = '') {
     this._snackBar.open(message, 'Cerrar', {
       duration: 10000,
@@ -135,5 +156,95 @@ export class OfferDetailsComponent implements OnInit {
         console.error('Error applying to offer:', err);
       },
     });
+  }
+
+  isAdmin(userData: UserData | null): boolean {
+    return (
+      !!userData?.admin || (!!userData?.user && userData.user.role_id === 1)
+    );
+  }
+
+  loadCandidatesbyId(offerid: number): void {
+    this.candidates = [];
+    this.offerApplications = [];
+
+    this.applicationService.getCandidatesOnlyForOffer(offerid).subscribe({
+      next: (candidates: Candidate[]) => {
+        this.candidates = candidates;
+        this.candidates.forEach((candidate) => {
+          this.applicationService
+            .getApplicationbyofferbycandidate(candidate.id!, offerid)
+            .subscribe(
+              (application) => {
+                this.offerApplications = [
+                  ...this.offerApplications,
+                  application,
+                ];
+                console.log('aplicacion añadida', application);
+              },
+              (err) => {
+                console.error(
+                  'Error al obtener la aplicación por oferta y candidato:',
+                  err
+                );
+              }
+            );
+        });
+      },
+      error: (err) => {
+        console.error('Error al obtener los candidatos:', err);
+      },
+    });
+  }
+
+  loadApplicationsAndCandidateDetails(offerId: number): void {
+    this.isLoadingCandidates = true;
+    this.errorLoadingCandidates = null;
+
+    this.applicationService
+      .getApplicationsForOffer(offerId)
+      .pipe(
+        switchMap((applications: Application[]) => {
+          if (applications.length === 0) {
+            return of([]);
+          }
+
+          const candidateDetailsRequests = applications.map((app) =>
+            this.usersService.getCandidateById(app.idCandidate).pipe(
+              map((userData: UserData) => ({
+                id: app.id,
+                idOffer: app.offerId,
+                idCandidate: app.idCandidate,
+                inscriptionDate: app.inscriptionDate,
+                candidateName: `${userData?.candidate?.name || ''} ${
+                  userData?.candidate?.surname || ''
+                }`.trim(),
+                candidateEmail: userData?.user?.email || 'N/A',
+              }))
+            )
+          );
+          return forkJoin(candidateDetailsRequests);
+        })
+      )
+      .subscribe({
+        next: (applicationsWithDetails: any[]) => {
+          this.offerApplications = applicationsWithDetails;
+          this.isLoadingCandidates = false;
+          console.log(
+            `Aplicaciones con detalles de candidato para la oferta ${offerId}:`,
+            this.offerApplications
+          );
+        },
+        error: (err) => {
+          this.errorLoadingCandidates =
+            'Error al cargar las aplicaciones y los detalles de los candidatos.';
+          this._snackBar.open(this.errorLoadingCandidates, 'Cerrar', {
+            duration: 3000,
+            verticalPosition: 'top',
+          });
+          this.isLoadingCandidates = false;
+          console.error('Error al cargar aplicaciones y candidatos:', err);
+        },
+      });
   }
 }

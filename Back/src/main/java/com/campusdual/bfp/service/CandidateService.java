@@ -119,5 +119,9 @@ public class CandidateService {
         return CandidateMapper.INSTANCE.toDTO(candidate);
 
     }
+@Transactional
+    public Candidate getCandidateById(Long id) {
+        return candidateDao.getReferenceById(id);
+    }
 
 }

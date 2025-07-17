@@ -43,6 +43,16 @@ public class CandidateController {
         }
     }
 
+    @GetMapping("/getcandidateById/{id}")
+    @PreAuthorize("isAuthenticated()")
+    public  ResponseEntity<Candidate> getCandidateById(@PathVariable Long id) {
+        try {
+            Candidate candidate = candidateService.getCandidateById(id);
+            return ResponseEntity.ok(candidate);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+
+
     @PutMapping("/update")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<?> updateCandidate(@RequestBody CandidateDTO candidate) {
@@ -69,6 +79,7 @@ public class CandidateController {
             return ResponseEntity.ok(updatedCandidate);
         } catch (IOException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred: " + e.getMessage());
+
         }
     }
 }
