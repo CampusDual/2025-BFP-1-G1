@@ -50,5 +50,8 @@ public class CandidateService {
     }
 
 
-
+@Transactional
+    public Candidate getCandidateById(Long id) {
+        return candidateDao.getReferenceById(id);
+    }
 }

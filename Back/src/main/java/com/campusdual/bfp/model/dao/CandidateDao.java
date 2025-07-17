@@ -13,6 +13,7 @@ public interface CandidateDao extends JpaRepository<Candidate, Long> {
     Candidate findByUser(User user);
     Optional<Candidate> findByUserId(Long userId);
     List<Candidate> findByIdIn(List<Long> ids);
+    Candidate getReferenceById(Long id);
 
 
 }

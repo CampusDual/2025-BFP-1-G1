@@ -1,6 +1,7 @@
 package com.campusdual.bfp.model;
 
 import com.campusdual.bfp.Enumerados.EnumModalidadTrabajo;
+import com.fasterxml.jackson.annotation.*;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
@@ -9,14 +10,21 @@ import java.time.ZonedDateTime;
 
 @Entity
 @Table(name = "joboffers")
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "id"
+)
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class JobOffer {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "company_id", referencedColumnName = "id")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    @JsonBackReference("joboffer-company")
     private Company company;
 
     @Column

@@ -20,7 +20,7 @@ export class UsersService {
   private urlUserData: string = 'http://localhost:30030/userdata';
   private urlCompanyProfile: string = 'http://localhost:30030/company';
   private userDataSubject = new BehaviorSubject<UserData | null>(null);
-  private urlCandidates: string = 'http://localhost:30030/candidates';
+  private urlCandidates: string = 'http://localhost:30030/candidate';
   userData$ = this.userDataSubject.asObservable();
 
   constructor(private http: HttpClient) {}
@@ -171,7 +171,7 @@ export class UsersService {
     const headers = new HttpHeaders({ Authorization: `Bearer ${token}` });
 
     return this.http
-      .get<UserData>(`${this.urlUserData}/${id}`, { headers })
+      .get<UserData>(`${this.urlUserData}/user/${id}`, { headers }) // <--- Antes era ${this.urlUserData}/${id}
       .pipe(catchError(this.handleError));
   }
   insertNewCompany(
@@ -295,7 +295,9 @@ export class UsersService {
     });
 
     return this.http
-      .get<Candidate>(`${this.urlCandidates}/${candidateId}`, { headers })
+      .get<Candidate>(`${this.urlCandidates}/getcandidateById/${candidateId}`, {
+        headers,
+      })
       .pipe(catchError(this.handleError));
   }
 }

@@ -1,5 +1,7 @@
 package com.campusdual.bfp.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
@@ -16,12 +18,15 @@ public class Application {
     @Column(name = "id_offer", nullable = false)
     private Long idOffer;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_candidate", insertable = false, updatable = false)
+    @JsonIgnore
     private Candidate candidate;
+
+
     @Column(name = "inscription_date", nullable = false, updatable = false) private LocalDateTime inscriptionDate;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_offer", insertable = false, updatable = false)
     private JobOffer jobOffer;
 

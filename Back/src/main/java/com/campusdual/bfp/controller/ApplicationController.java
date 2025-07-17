@@ -133,4 +133,5 @@ public class ApplicationController {
         List<CandidateDTO> candidates = CandidateMapper.INSTANCE.toDTOList(applicationService.getCandidatesByJobOfferId(idoffer));
         return ResponseEntity.ok(candidates);
     }
+
 }

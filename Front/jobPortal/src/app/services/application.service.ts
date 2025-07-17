@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, map } from 'rxjs';
 import { Application } from '../model/application';
-import { Candidate } from '../model/candidate';
+import { Candidate } from '../model/candidate'; // Mantén si lo usas en otro lugar o para construir la vista de candidatos
 
 @Injectable({ providedIn: 'root' })
 export class ApplicationService {
@@ -74,64 +74,40 @@ export class ApplicationService {
     );
   }
 
-  getApplicationsByOfferId(offerId: number): Observable<Application[]> {
+  getApplicationsForOffer(offerId: number): Observable<Application[]> {
     const token = localStorage.getItem('token');
-    console.log('Token:', token);
+
+    if (!token) {
+      console.error('Authentication token not found.');
+      return new Observable((observer) =>
+        observer.error(new Error('Authentication token not found.'))
+      );
+    }
+
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       Authorization: `Bearer ${token}`,
     });
-    return this.http.get<Application[]>(`${this.apiUrl}/offer/${offerId}`, {
-      headers,
-    });
-  }
-  /* getApplicationInscriptionDateById(applicationId: number): Observable<string> {
-    const token = localStorage.getItem('token');
-    if (!token) {
-      const errorMsg =
-        'No token found in localStorage. User might not be authenticated.';
-      console.error(errorMsg);
-      return new Observable((observer) => {
-        observer.error(new Error(errorMsg));
-      });
-    }
-    const headers = new HttpHeaders({
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${token}`,
-    });
-    const url = `${this.apiUrl}/${applicationId}`;
-    return this.http
-      .get<Application>(url, { headers })
-      .pipe(map((application) => application.inscriptionDate));
-  }*/
-  getCandidatesByJobOffer(offerId: number): Observable<Candidate[]> {
-    //
-    const token = localStorage.getItem('token');
 
-    if (!token) {
-      const errorMsg =
-        'No token found in localStorage. User might not be authenticated to view candidates.';
-      console.error(errorMsg);
-      return new Observable((observer) => observer.error(new Error(errorMsg)));
-    }
-
-    console.log('Fetching candidates for offer ID:', offerId, 'with token.');
-
-    const headers = new HttpHeaders({
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${token}`, // Pass the JWT token for authentication
-    });
-
-    const url = `${this.apiUrl}/getcandidates/${offerId}`;
+    const url = `${this.apiUrl}/offer/${offerId}`;
     console.log('Making GET request to:', url);
 
-    // Make the HTTP GET request and expect an array of Candidate
-    return this.http.get<Candidate[]>(url, { headers }).pipe(
-      //                          ^^^^^^^^^^ Correctly expecting Candidate[]
-      map((candidates) => {
-        console.log('Received candidates:', candidates);
-        return candidates;
-      })
-    );
+    return this.http.get<Application[]>(url, { headers });
+  }
+
+  getCandidatesOnlyForOffer(offerId: number): Observable<Candidate[]> {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      console.error('Authentication token not found for candidates.');
+      return new Observable((observer) =>
+        observer.error(new Error('Authentication token not found.'))
+      );
+    }
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    });
+    const url = `${this.apiUrl}/getcandidates/${offerId}`;
+    return this.http.get<Candidate[]>(url, { headers });
   }
 }

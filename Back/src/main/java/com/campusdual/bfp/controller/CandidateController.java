@@ -34,4 +34,14 @@ public class CandidateController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred: " + e.getMessage());
         }
     }
+    @GetMapping("/getcandidateById/{id}")
+    @PreAuthorize("isAuthenticated()")
+    public  ResponseEntity<Candidate> getCandidateById(@PathVariable Long id) {
+        try {
+            Candidate candidate = candidateService.getCandidateById(id);
+            return ResponseEntity.ok(candidate);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
 }
