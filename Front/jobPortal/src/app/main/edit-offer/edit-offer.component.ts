@@ -103,6 +103,7 @@ export class EditOfferComponent implements OnInit {
   private showSuccess(message: string): void {
     this.snackBar.open(message, 'Cerrar', {
       duration: 3000,
+      verticalPosition: 'top',
       panelClass: ['successSnackbar']
     });
   }
@@ -110,6 +111,7 @@ export class EditOfferComponent implements OnInit {
   private showError(message: string): void {
     this.snackBar.open(message, 'Cerrar', {
       duration: 3000,
+      verticalPosition: 'top',
       panelClass: ['errorSnackbar']
     });
   }
