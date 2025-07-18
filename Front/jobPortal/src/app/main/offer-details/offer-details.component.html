@@ -1,12 +1,17 @@
 <div class="offer-form-container" *ngIf="offer">
+
   <div class="header-container">
     <div class="header-actions">
       <ng-container *ngIf="userData$ | async as userData">
+        <div class="inscrito">
+          <span *ngIf="!isCompany(userData) && appliedOfferIds.includes(offer?.id!)"
+            class="status-badge">Inscrito</span>
+        </div>
         <button *ngIf="isCompany(userData) && isOfferOwner(userData)" mat-icon-button class="edit-button"
           (click)="editOffer()">
           <mat-icon>edit</mat-icon>
         </button>
-        <span *ngIf="!isCompany(userData) && appliedOfferIds.includes(offer?.id!)" class="status-badge">Inscrito</span>
+
       </ng-container>
     </div>
 

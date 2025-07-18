@@ -75,7 +75,7 @@
         <div class="application-actions">
           <ng-container *ngIf="offerDetails[app.offerId] as offer">
             <button mat-button color="primary" [routerLink]="['/main/offerDetails', app.offerId]"
-              [disabled]="!offer.active || offer.loading || offer.error">
+              [disabled]=" offer.loading || offer.error">
               <mat-icon>visibility</mat-icon>
               Ver oferta
             </button>
