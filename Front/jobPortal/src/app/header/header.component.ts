@@ -98,4 +98,13 @@ export class HeaderComponent implements OnInit {
       (!!this.userData?.user && this.userData.user.role_id === 1)
     );
   }
+
+  getProfileImage(): string | null {
+    if (this.userData?.candidate?.profileImg) {
+      return this.userData.candidate.profileImg;
+    } else if (this.userData?.company?.logo) {
+      return this.userData.company.logo;
+    }
+    return null;
+  }
 }

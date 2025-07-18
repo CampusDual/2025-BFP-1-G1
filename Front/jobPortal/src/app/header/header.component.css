@@ -49,17 +49,52 @@
   padding: 0;
 }
 
-.iconContainer .mat-mdc-fab {
-  background-color: var(--primary);
+.iconContainer .mat-mfc-fab {
+  background-color: transparent;
   color: white;
-  width: 40px;
-  height: 40px;
+  width: 28px;
+  height: 28px;
+  min-width: 28px !important;
+  min-height: 28px !important;
   border-radius: 50%;
   display: flex;
   justify-content: center;
   align-items: center;
   padding: 0;
-  min-width: unset;
+  overflow: hidden;
+  position: relative;
+  border: 2px solid red;
+  margin: 0 5px;
+  box-shadow: none;
+}
+
+.profile-image-container {
+  width: 45px;
+  height: 45px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  overflow: hidden;
+  padding: 1px;
+  border: 1px solid var(--primary);
+}
+
+.profile-image {
+  width: 45px;
+  height: 45px;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.profile-button {
+  background-color: transparent !important;
+  box-shadow: none !important;
+  transition: transform 0.2s ease;
+}
+
+.profile-button:hover {
+  transform: scale(1.05);
 }
 
 .iconContainer .mat-mdc-fab .mat-icon {

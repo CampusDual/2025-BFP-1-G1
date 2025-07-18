@@ -692,7 +692,7 @@ mat-card-title {
 mat-card-title span {
   font-weight: 400 !important;
   font-size: 90% !important;
-  color: #666;
+  color: var(--primary);
   margin: 0 0.25rem;
 }
 
