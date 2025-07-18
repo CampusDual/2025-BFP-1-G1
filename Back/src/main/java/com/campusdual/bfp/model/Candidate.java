@@ -1,6 +1,7 @@
 package com.campusdual.bfp.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 import javax.validation.constraints.Pattern;
@@ -8,6 +9,7 @@ import java.util.Date;
 
 @Entity
 @Table(name = "candidate")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Candidate {
     @Id
     @GeneratedValue( strategy = GenerationType.IDENTITY )

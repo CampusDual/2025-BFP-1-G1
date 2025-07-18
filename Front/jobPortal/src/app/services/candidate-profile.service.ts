@@ -2,7 +2,11 @@ import { Candidate } from '../model/candidate';
 import { UserData } from './../model/userData';
 import { Injectable } from '@angular/core';
 import { UsersService } from './users.service';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import {
+  HttpClient,
+  HttpErrorResponse,
+  HttpHeaders,
+} from '@angular/common/http';
 import { catchError, Observable, throwError } from 'rxjs';
 import { Education } from '../model/education';
 import { WorkExperience } from '../model/workExperience';
@@ -23,9 +27,25 @@ export class CandidateProfileService {
   constructor(private http: HttpClient, private userService: UsersService) {}
 
   ngOnInit(): void {
+    console.log('User Data:');
     this.userService.userData$.subscribe((userData) => {
       this.userData = userData;
     });
+    this.getCandidateProfile().subscribe((candidate) => {
+      this.candidate = candidate;
+      console.log('Candidate Profile:', this.candidate);
+    });
+  }
+  getCandidateById(id: number): Observable<Candidate> {
+    const token = localStorage.getItem('token');
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+    });
+    return this.http
+      .get<Candidate>(`${this.urlCandidateProfile}/getcandidateById/${id}`, {
+        headers,
+      })
+      .pipe(catchError(this.handleError));
   }
 
   getCandidateProfile(): Observable<Candidate> {
@@ -33,10 +53,38 @@ export class CandidateProfileService {
     const headers = new HttpHeaders({
       Authorization: `Bearer ${token}`,
     });
-    return this.http.get<Candidate>(
-      `${this.urlCandidateProfile}/getCandidate`,
-      { headers }
-    );
+    return this.http
+      .get<Candidate>(`${this.urlCandidateProfile}/getCandidate`, { headers })
+      .pipe(catchError(this.handleError));
+  }
+
+  private handleError(error: HttpErrorResponse) {
+    let errorMessage = 'An unknown error occurred!';
+    if (error.error instanceof ErrorEvent) {
+      errorMessage = `Error: ${error.error.message}`;
+    } else {
+      console.error(
+        `Backend returned code ${error.status}, ` + `body was: ${error.error}`
+      );
+      if (error.status === 0) {
+        errorMessage = 'Network error: Could not connect to the server.';
+      } else if (error.status === 401) {
+        errorMessage = 'Unauthorized: Please log in again.';
+      } else if (error.status === 404) {
+        errorMessage = 'Candidate profile not found.';
+      } else if (error.status === 500) {
+        errorMessage = 'Server error: Something went wrong on the server.';
+      } else {
+        errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
+      }
+      if (error.error && typeof error.error === 'string') {
+        errorMessage = error.error;
+      } else if (error.error && error.error.message) {
+        errorMessage = error.error.message;
+      }
+    }
+    console.error(errorMessage);
+    return throwError(() => new Error(errorMessage));
   }
 
   updateCandidateProfile(candidate: Candidate): Observable<Candidate> {
