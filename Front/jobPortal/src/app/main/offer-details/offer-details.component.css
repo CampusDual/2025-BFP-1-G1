@@ -31,8 +31,8 @@
 
 .header-actions {
   position: absolute;
-  top: 0;
   right: 0;
+  top: 0;
   display: flex;
   align-items: center;
   gap: 12px;
@@ -45,7 +45,9 @@
   margin: 0;
 }
 
+
 .status-badge {
+  margin-left: 10rem;
   background-color: rgba(25, 118, 210, 0.1);
   color: #1976d2;
   padding: 6px 12px;
@@ -147,6 +149,7 @@
   border-left: 1px solid rgba(0, 0, 0, 0.08);
   padding-left: 30px;
   margin-left: 15px;
+  padding-right: 100px;
 }
 
 .title-meta h2 {
