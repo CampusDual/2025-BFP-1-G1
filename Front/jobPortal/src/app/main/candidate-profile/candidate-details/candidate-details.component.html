@@ -11,15 +11,15 @@
       </div>
       <div class="candidate-info">
         <h2>
-          {{ candidate.name }} {{candidate.surname }}
+          {{ candidate?.name }} {{candidate?.surname }}
         </h2>
         <p class="candidate-qualification">
           <mat-icon>school</mat-icon>
-          {{ candidate.qualification }}
+          {{ candidate?.qualification }}
         </p>
         <p class="candidate-location" *ngIf="candidate?.location">
           <mat-icon>location_on</mat-icon>
-          {{ candidate.location }}
+          {{ candidate?.location }}
         </p>
       </div>
       <div class="edit-button-container">
