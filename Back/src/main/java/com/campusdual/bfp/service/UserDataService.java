@@ -50,7 +50,6 @@ public class UserDataService {
         UserDataDTO userDataDTO = new UserDataDTO();
         userDataDTO.setUser(UserMapper.INSTANCE.toDTO(user));
 
-        // Get role ID from authentication details if available
         Long roleId = null;
         if (authentication.getDetails() instanceof Map) {
             Map<?, ?> details = (Map<?, ?>) authentication.getDetails();
@@ -59,36 +58,29 @@ public class UserDataService {
             }
         }
 
-        // If role ID not in details, get it from the user object
         if (roleId == null && user.getRole() != null) {
             roleId = user.getRole().getId();
         }
 
-        // Set role ID in user DTO
         if (roleId != null) {
             userDataDTO.getUser().setRole_id(roleId);
         }
 
         if (roleId != null) {
             switch (roleId.intValue()) {
-                case 3: // Candidate
+                case 3:
                     Candidate candidate = candidateDao.findByUser(user);
                     if (candidate != null) {
                         userDataDTO.setCandidate(CandidateMapper.INSTANCE.toDTO(candidate));
                     }
                     break;
-                case 2: // Company
+                case 2:
                     Company company = companyDao.findByUser(user);
                     if (company != null) {
                         userDataDTO.setCompany(CompanyMapper.INSTANCE.toDTO(company));
                     }
                     break;
-                case 1: // Admin
-                    // If you have an Admin entity and DAO, uncomment and implement this
-                    // Admin admin = adminDao.findByUser(user);
-                    // if (admin != null) {
-                    //     userDataDTO.setAdmin(AdminMapper.INSTANCE.toDTO(admin));
-                    // }
+                case 1:
                     break;
             }
         }

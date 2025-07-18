@@ -30,7 +30,7 @@
   position: relative;
   display: flex;
   align-items: center;
-  justify-content: flex-start; /* Información a la izquierda en vista de perfil fijo */
+  justify-content: flex-start; 
   padding: 1.75rem 2.5rem;
   background: white;
   border-radius: 14px;
@@ -140,11 +140,11 @@
   box-shadow: none;
   display: flex;
   flex-direction: column;
-  align-items: flex-start; /* Alinea la información a la izquierda por defecto */
+  align-items: flex-start; 
 }
 
 .candidate-header-card.edit-mode-container .candidate-info {
-  align-items: center; /* Sobrescribe para centrar en modo edición */
+  align-items: center; 
 }
 
 .candidate-info h2 {
@@ -184,10 +184,10 @@
 }
 
 .edit-button-cards {
-  position: absolute;
-  top: 1rem;
-  right: 2rem;
+  position: relative;
   color: var(--primary);
+  margin-left: auto;
+  flex-shrink: 0;
 }
 
 .edit-button-container {
@@ -347,6 +347,7 @@ h4:after {
 
 .full-width {
   grid-column: 1 / -1;
+  resize: none;
 }
 
 .form-column {
@@ -588,6 +589,47 @@ button[mat-raised-button] mat-icon {
   overflow: hidden;
 }
 
+.fixed-size-textarea {
+  min-height: 70px;
+  height: 100px;
+  resize: none;
+  overflow-y: auto;
+  box-sizing: border-box;
+  display: block;
+  width: 100%;
+}
+
+.card-header-with-edit {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+  gap: 1.5rem;
+  width: 100%;
+  position: relative;
+}
+
+.card-header-with-edit mat-card-title {
+  margin: 0 !important;
+  padding-right: 1rem;
+  flex: 1 1 auto;
+  min-width: 0;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+.card-edit-button {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  opacity: 0.8;
+  transition: opacity 0.2s ease;
+}
+
+.card-edit-button:hover {
+  opacity: 1;
+}
+
 .experience-card:hover,
 .education-card:hover {
   transform: translateY(-3px);
@@ -645,6 +687,13 @@ mat-card-title {
   font-weight: 600 !important;
   margin-bottom: 0.5rem !important;
   line-height: 1.4 !important;
+}
+
+mat-card-title span {
+  font-weight: 400 !important;
+  font-size: 90% !important;
+  color: #666;
+  margin: 0 0.25rem;
 }
 
 mat-card-content{

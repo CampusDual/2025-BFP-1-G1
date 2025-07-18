@@ -55,39 +55,65 @@
 }
 
 .company-header {
-  text-align: left;
+  text-align: center;
   margin: 0 0 0.75rem 0;
   padding: 0 0 0.75rem 0;
   position: relative;
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
   border-bottom: 1px solid var(--gray-megalightest);
 }
 
-.company-header::before {
-  content: 'business';
-  font-family: 'Material Icons';
-  font-size: 1.25rem;
-  color: var(--primary);
-  display: inline-flex;
+.logo-name-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  width: 100%;
+}
+
+.company-logo-container {
+  width: 4rem;
+  height: 4rem;
+  border-radius: 12px;
+  overflow: hidden;
+  background: rgba(232, 28, 52, 0.03);
+  display: flex;
   align-items: center;
   justify-content: center;
-  width: 1.75rem;
-  height: 1.75rem;
-  background: rgba(232, 28, 52, 0.08);
-  border-radius: 6px;
   flex-shrink: 0;
+  border: 1px solid var(--gray-megalightest);
+  margin: 0 auto;
+  padding: 0.5rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.company-logo {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  padding: 0.25rem;
+  box-sizing: border-box;
+}
+
+.default-logo {
+  color: var(--primary);
+  opacity: 0.7;
+  font-size: 1.5rem;
+  width: 1.5rem;
+  height: 1.5rem;
 }
 
 .company-name {
   font-size: 1.1rem;
   font-weight: 600;
   color: var(--darker);
-  margin: 0;
+  margin: 0.25rem 0 0;
   line-height: 1.3;
-  flex: 1;
-  font-family: var(--font-base);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+  text-align: center;
+  width: 100%;
 }
 
 .company-info {
@@ -100,11 +126,11 @@
 .info-item {
   display: flex;
   align-items: flex-start;
-  gap: 0.5rem;
+  gap: 0.35rem;
   font-size: 0.85rem;
   color: var(--gray-dark);
   line-height: 1.4;
-  padding: 0.4rem 0.4rem 0.4rem 0.25rem;
+  padding: 0.25rem 0.25rem 0.25rem 0.15rem;
   border-radius: 4px;
   transition: all 0.15s ease;
   position: relative;
@@ -118,12 +144,13 @@
 
 .info-item mat-icon {
   color: var(--primary);
-  font-size: 1rem;
-  min-width: 1.25rem;
-  margin-top: 0.1rem;
-  opacity: 0.8;
+  font-size: 0.95rem;
+  min-width: 1.1rem;
+  margin-top: 0.05rem;
+  opacity: 0.85;
   transition: all 0.15s ease;
   flex-shrink: 0;
+  transform: scale(0.95);
 }
 
 .info-item:hover mat-icon {

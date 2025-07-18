@@ -404,10 +404,8 @@ mat-card-subtitle {
   overflow: hidden;
   text-overflow: ellipsis;
   display: -moz-box;
-  display: flex;
   line-clamp: 3;
   -moz-box-orient: vertical;
-  box-orient: vertical;
   line-height: 1.45;
   white-space: normal;
   word-break: break-word;

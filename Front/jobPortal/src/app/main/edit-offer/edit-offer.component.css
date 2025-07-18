@@ -1,4 +1,4 @@
-*{
+* {
   scrollbar-width: none;
 }
 
@@ -54,9 +54,9 @@
 }
 
 .logo-container {
-  width: 100px;
-  height: 90px;
-  border-radius: 8px;
+  width: 110px;
+  height: 110px;
+  border-radius: 50%;
   background-color: #f5f5f5;
   display: flex;
   align-items: center;
@@ -87,10 +87,10 @@
 }
 
 .company-name {
-  font-weight: 500;
-  font-size: 1rem;
+  font-weight: 600;
+  font-size: 1.3rem;
   line-height: 1.3;
-  color: #333;
+  color: var(--primary);
   margin: 0.25rem 0 0.15rem 0;
   width: 100%;
   word-wrap: break-word;
@@ -144,7 +144,6 @@
   width: 100%;
   margin: 0.15rem 0 0.25rem 0;
 }
-
 
 .offer-meta {
   display: flex;
@@ -282,74 +281,6 @@ textarea:focus {
   box-shadow: 0 0 0 1px var(--primary);
 }
 
-/* Standardized Button Styles */
-.action-button,
-.save-button,
-.cancel-button,
-.delete-button {
-  background-color: var(--primary, #e81c34);
-  color: white;
-  border: none;
-  border-radius: 4px;
-  padding: 8px 16px;
-  font-weight: 500;
-  font-size: 0.875rem;
-  line-height: 1.5;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  height: 36px;
-  min-width: 120px;
-  margin: 0 8px;
-}
-
-.action-button:hover,
-.save-button:hover,
-.cancel-button:hover,
-.delete-button:hover {
-  background-color: var(--primary-dark, #a71123);
-  transform: translateY(-1px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-}
-
-.action-button:active,
-.save-button:active,
-.cancel-button:active,
-.delete-button:active {
-  transform: translateY(0);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.action-button:disabled,
-.save-button:disabled,
-.cancel-button:disabled,
-.delete-button:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-  transform: none !important;
-  box-shadow: none !important;
-}
-
-.action-button mat-icon,
-.save-button mat-icon,
-.cancel-button mat-icon,
-.delete-button mat-icon {
-  margin-right: 8px;
-  font-size: 18px;
-  width: 18px;
-  height: 18px;
-}
-
-/* Specific button styles */
-.cancel-button {
-  background-color: #757575;
-}
-
 .cancel-button:hover {
   background-color: #616161;
 }
@@ -372,29 +303,33 @@ textarea:focus {
   border-top: 1px solid #e0e0e0;
 }
 
-.catalogueButton {
-  border: 1px solid #e0e0e0;
-  background-color: #f5f5f5;
-  color: #333;
-  padding: 0 16px;
-  height: 40px;
+.cancel-button {
+  background-color: #fff;
+  color: #5b5152;
+  border: 1px solid #a3999a;
   border-radius: 4px;
   font-weight: 500;
+  font-size: 0.9rem;
   transition: all 0.2s ease;
-}
-
-.catalogueButton:hover {
-  background-color: #e0e0e0;
+  text-transform: uppercase;
+  font-family: "Roboto", sans-serif;
+  padding: 8px 20px;
+  margin: 0;
+  line-height: 1.5;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
 }
 
 .publish-button {
-  background-color: var(--primary);
-  color: white;
-  padding: 0 16px;
-  height: 40px;
+ padding: 0.5rem 1.5rem;
   border-radius: 4px;
   font-weight: 500;
+  font-size: 0.9rem;
   transition: all 0.2s ease;
+  background-color: var(--primary);
+  color: white;
+  text-transform: uppercase;
+  font-family: "Roboto", sans-serif;
+  border: none;
 }
 
 .publish-button:hover {
@@ -415,7 +350,7 @@ textarea:focus {
     grid-template-columns: 1fr;
     gap: 1rem;
   }
-  
+
   .form-section {
     min-height: 300px;
     max-height: none;

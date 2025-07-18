@@ -19,16 +19,14 @@
 
 .header-container {
   display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  padding: 20px;
-  margin-bottom: 25px;
   flex-wrap: wrap;
+  gap: 30px;
+  padding: 20px 25px;
+  margin-bottom: 25px;
   position: relative;
-  padding-right: 40px;
   background-color: white;
   border-radius: 8px;
-  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.1);
+  align-items: flex-start;
 }
 
 .header-actions {
@@ -73,14 +71,19 @@
 .company-info {
   display: flex;
   align-items: center;
-  gap: 15px;
-  min-width: 280px;
+  gap: 20px;
+  padding: 0;
+  transition: opacity 0.2s;
+}
+
+.company-info:hover {
+  opacity: 0.9;
 }
 
 .logo-container {
-  width: 70px;
-  height: 70px;
-  border-radius: 10px;
+  width: 90px;
+  height: 90px;
+  border-radius: 12px;
   overflow: hidden;
   display: flex;
   justify-content: center;
@@ -88,46 +91,62 @@
 }
 
 .company-logo {
-  max-width: 100%;
-  max-height: 100%;
-  object-fit: contain;
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 50%;
+  transition: all 0.2s ease;
 }
 
-.logo-placeholder mat-icon {
-  font-size: 50px;
-  color: var(--primary-dark);
+.company-logo:hover {
+  transform: scale(1.03);
+  border-color: rgba(0,0,0,0.1);
 }
 
 .company-details {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 8px;
 }
 
 .company-name {
-  font-weight: 700;
-  font-size: 1.25rem;
-  color: var(--primary);
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #2c3e50;
+  margin-bottom: 3px;
 }
 
 .company-website,
 .company-email {
   display: flex;
   align-items: center;
-  font-size: 0.9rem;
-  color: var(--text-base);
-  gap: 5px;
+  gap: 6px;
+  color: #5f6b7c;
   text-decoration: none;
-  transition: color 0.3s;
+  font-size: 0.9rem;
+  transition: color 0.2s;
 }
 
 .company-website:hover {
-  color: var(--primary-dark);
+  color: var(--primary);
+  text-decoration: underline;
+}
+
+.company-website mat-icon,
+.company-email mat-icon {
+  font-size: 1.1rem;
+  width: 1.1rem;
+  height: 1.1rem;
+  color: var(--primary);
 }
 
 .title-container {
-  flex: 1 1 350px;
-  max-width: 600px;
+  flex: 1;
+  min-width: 0;
+  padding: 5px 0;
+  border-left: 1px solid rgba(0,0,0,0.08);
+  padding-left: 30px;
+  margin-left: 15px;
 }
 
 .title-meta h2 {

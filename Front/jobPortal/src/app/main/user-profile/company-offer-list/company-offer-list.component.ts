@@ -154,13 +154,12 @@ export class CompanyOfferListComponent implements OnInit, OnDestroy {
 
       this.router.navigate(['/main/offerDetails', id]).then((success) => {
         if (!success) {
-          // No se puede usar console.error aquí porque se ha pedido eliminar logs.
-          // En un entorno de producción, esto podría ser un log a un servicio de monitoreo.
         }
       });
     } catch (error) {
       this.snackBar.open('Error al abrir detalles', 'Cerrar', {
         duration: 3000,
+        panelClass: 'errorSnackbar',
         verticalPosition: 'top',
       });
     }
@@ -196,6 +195,7 @@ export class CompanyOfferListComponent implements OnInit, OnDestroy {
     if (offer.id === undefined) {
       this.snackBar.open('ID de oferta no válido.', 'Cerrar', {
         duration: 3000,
+        panelClass: 'errorSnackbar',
         verticalPosition: 'top',
       });
       return;

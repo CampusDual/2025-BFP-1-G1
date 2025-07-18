@@ -11,7 +11,6 @@ import { CreateOfferComponent } from './user-profile/create-offer/create-offer.c
 import { UserProfileComponent } from './user-profile/user-profile.component';
 import { MatButtonModule } from '@angular/material/button';
 import { LoginBoxComponent } from './login-box/login-box.component';
-import { UsersListComponent } from '../users-list/users-list.component';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { CompanyOfferListComponent } from './user-profile/company-offer-list/company-offer-list.component';
 import { MatIconModule } from '@angular/material/icon';
@@ -51,7 +50,6 @@ import { RouterModule } from '@angular/router';
     CreateOfferComponent,
     UserProfileComponent,
     LoginBoxComponent,
-    UsersListComponent,
     CompanyOfferListComponent,
     SignUpFormComponent,
     CandidateProfileComponent,

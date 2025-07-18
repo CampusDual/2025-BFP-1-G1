@@ -44,7 +44,7 @@ export class JobCatalogueComponent implements OnInit, OnDestroy {
     private breakpointObserver: BreakpointObserver,
     private applicationService: ApplicationService,
     public usersService: UsersService,
-    private _snackBar: MatSnackBar,
+    private snackBar: MatSnackBar,
     private loadingScreenService: LoadingScreenService,
     private router: Router
   ) {}
@@ -171,7 +171,11 @@ export class JobCatalogueComponent implements OnInit, OnDestroy {
         },
         error: (error) => {
           console.error('Error sorting job offers:', error);
-          this.openSnackBar('Error al ordenar las ofertas de trabajo', 'error');
+          this.snackBar.open('Error al ordenar ofertas de trabajo', 'Cerrar', {
+            duration: 3000,
+            panelClass: ['errorSnackbar'],
+            verticalPosition: 'top',
+          });
         },
       });
   }
@@ -188,7 +192,11 @@ export class JobCatalogueComponent implements OnInit, OnDestroy {
       },
       error: (error) => {
         console.error('Error filtering job offers:', error);
-        this.openSnackBar('Error al filtrar ofertas de trabajo', 'error');
+        this.snackBar.open('Error al filtrar ofertas de trabajo', 'Cerrar', {
+          duration: 3000,
+          panelClass: ['errorSnackbar'],
+          verticalPosition: 'top',
+        });
       },
     });
   }
@@ -196,7 +204,12 @@ export class JobCatalogueComponent implements OnInit, OnDestroy {
   aplicarAOferta(oferta: any) {
     this.applicationService.aplicarAOferta(oferta.id).subscribe({
       next: (res) => {
-        this.openSnackBar(res, 'success');
+        this.snackBar.open(res, 'Cerrar', {
+          duration: 1000,
+          horizontalPosition: 'center',
+          verticalPosition: 'top',
+          panelClass: ['successSnackbar'],
+        });
         this.appliedOfferIds.push(oferta.id);
         this.appliedOfferIds = [...this.appliedOfferIds];
       },
@@ -213,7 +226,12 @@ export class JobCatalogueComponent implements OnInit, OnDestroy {
           errorMessage =
             'No autorizado. Por favor, inicia sesión para aplicar.';
         }
-        this.openSnackBar(errorMessage, 'error');
+        this.snackBar.open(errorMessage, 'Cerrar', {
+          duration: 1000,
+          horizontalPosition: 'center',
+          verticalPosition: 'top',
+          panelClass: ['errorSnackbar'],
+        });
         console.error('Error applying to offer:', err);
       },
     });
@@ -238,15 +256,6 @@ export class JobCatalogueComponent implements OnInit, OnDestroy {
       !!this.userData?.admin ||
       (!!this.userData?.user && this.userData.user.role_id === 1)
     );
-  }
-
-  openSnackBar(message: string, panelClass: string = '') {
-    this._snackBar.open(message, 'Cerrar', {
-      duration: 10000,
-      horizontalPosition: 'center',
-      verticalPosition: 'top',
-      panelClass: [panelClass],
-    });
   }
 
   getRelativeDate(dateInput: string | Date): string {

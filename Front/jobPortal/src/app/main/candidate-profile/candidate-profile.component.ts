@@ -7,6 +7,7 @@ import { JobOffer } from 'src/app/model/jobOffer';
 import { UsersService } from 'src/app/services/users.service';
 import { ApplicationService } from 'src/app/services/application.service';
 import { JobOfferService } from 'src/app/services/job-offer.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-candidate-profile',
@@ -14,7 +15,6 @@ import { JobOfferService } from 'src/app/services/job-offer.service';
   styleUrls: ['./candidate-profile.component.css'],
 })
 export class CandidateProfileComponent implements OnInit, OnDestroy {
-  // User data and applications
   userData: UserData | null = null;
   applications: Application[] = [];
   offerDetails: { [key: number]: JobOffer } = {};
@@ -26,7 +26,8 @@ export class CandidateProfileComponent implements OnInit, OnDestroy {
     private usersService: UsersService,
     private applicationService: ApplicationService,
     private jobOfferService: JobOfferService,
-    private router: Router
+    private router: Router,
+    private snackBar: MatSnackBar
   ) {}
 
   ngOnInit(): void {
@@ -111,7 +112,11 @@ export class CandidateProfileComponent implements OnInit, OnDestroy {
 
   private handleUserDataError(error: any): void {
     console.error('Error loading user data:', error);
-    this.handleError('Error al cargar los datos del usuario');
+    this.snackBar.open('Error al cargar los datos del usuario', 'Cerrar', {
+      duration: 3000,
+      verticalPosition: 'top',
+      panelClass: ['errorSnackbar'],
+    });
 
     if (error.status === 401) {
       this.router.navigate(['/auth/login']);
@@ -147,8 +152,11 @@ export class CandidateProfileComponent implements OnInit, OnDestroy {
     } else if (error.status === 404) {
       message = 'No se encontraron candidaturas';
     }
-
-    this.handleError(message);
+    this.snackBar.open(message, 'Cerrar', {
+      duration: 3000,
+      verticalPosition: 'top',
+      panelClass: ['errorSnackbar'],
+    });
   }
 
   private setLoading(isLoading: boolean): void {

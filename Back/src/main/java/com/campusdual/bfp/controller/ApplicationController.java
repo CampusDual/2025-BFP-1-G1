@@ -102,7 +102,7 @@ public class ApplicationController {
 
 
     @GetMapping("/getcandidates/{idoffer}")
-    @PreAuthorize("isAuthenticated()") // Ensure the user is authenticated
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<?> getCandidatesByJobOffer(@PathVariable Long idoffer) {
         UserDataDTO userData = userDataService.getUserData();
 
@@ -118,7 +118,7 @@ public class ApplicationController {
 
         Optional<JobOffer> jobOfferOpt = jobOffersDao.findById(idoffer);
         if (jobOfferOpt.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND) // Changed from FORBIDDEN to NOT_FOUND for clarity
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body("Error: Job offer with ID " + idoffer + " not found.");
         }
 

@@ -76,6 +76,7 @@ export class CreateOfferComponent implements OnInit {
         error: () => {
           this.snackBar.open('Error al crear la oferta', 'Cerrar', {
             duration: 3000,
+            panelClass: 'errorSnackbar',
             verticalPosition: 'top',
           });
         },

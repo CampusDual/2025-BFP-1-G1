@@ -161,7 +161,13 @@ export class OfferDetailsComponent implements OnInit {
             'No autorizado. Por favor, inicia sesión para aplicar.';
         }
         this.openSnackBar(errorMessage, 'error');
-        console.error('Error applying to offer:', err);
+        console.error('Error al aplicar a la oferta:', err);
+        this._snackBar.open(errorMessage, 'Cerrar', {
+          duration: 1000,
+          horizontalPosition: 'center',
+          verticalPosition: 'top',
+          panelClass: ['errorSnackbar'],
+        });
       },
     });
   }

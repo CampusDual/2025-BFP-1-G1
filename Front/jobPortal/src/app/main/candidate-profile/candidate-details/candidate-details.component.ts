@@ -149,7 +149,9 @@ export class CandidateDetailsComponent implements OnInit, OnDestroy {
         error: () =>
           this.snackBar.open('Error al cargar el perfil', 'Cerrar', {
             duration: 3000,
-            panelClass: ['snackbar-error'],
+            panelClass: ['errorSnackbar'],
+            verticalPosition: 'top',
+            horizontalPosition: 'center',
           }),
       });
   }
@@ -262,7 +264,9 @@ export class CandidateDetailsComponent implements OnInit, OnDestroy {
           'Cerrar',
           {
             duration: 5000,
-            panelClass: ['snackbar-error'],
+            panelClass: ['snackbarError'],
+            verticalPosition: 'top',
+            horizontalPosition: 'center',
           }
         );
         this.selectedFile = null;
@@ -299,6 +303,9 @@ export class CandidateDetailsComponent implements OnInit, OnDestroy {
     this.imagePreviewUrl = null;
     this.snackBar.open('Imagen de perfil eliminada', 'Cerrar', {
       duration: 2000,
+      panelClass: ['snackbarSuccess'],
+      verticalPosition: 'top',
+      horizontalPosition: 'center',
     });
   }
 
@@ -317,6 +324,8 @@ export class CandidateDetailsComponent implements OnInit, OnDestroy {
           this.snackBar.open('Error al cargar las experiencias', 'Cerrar', {
             duration: 3000,
             panelClass: ['errorSnackbar'],
+            verticalPosition: 'top',
+            horizontalPosition: 'center',
           });
         },
       });
@@ -340,6 +349,8 @@ export class CandidateDetailsComponent implements OnInit, OnDestroy {
             {
               duration: 3000,
               panelClass: ['errorSnackbar'],
+              verticalPosition: 'top',
+              horizontalPosition: 'center',
             }
           );
         },
@@ -382,6 +393,8 @@ export class CandidateDetailsComponent implements OnInit, OnDestroy {
             this.snackBar.open('Experiencia añadida correctamente', 'Cerrar', {
               duration: 3000,
               panelClass: ['successSnackbar'],
+              verticalPosition: 'top',
+              horizontalPosition: 'center',
             });
             this.showExpForm = false;
             this.experienceForm.reset();
@@ -391,6 +404,8 @@ export class CandidateDetailsComponent implements OnInit, OnDestroy {
             this.snackBar.open('Error al añadir la experiencia', 'Cerrar', {
               duration: 3000,
               panelClass: ['errorSnackbar'],
+              verticalPosition: 'top',
+              horizontalPosition: 'center',
             });
           },
         });
@@ -433,6 +448,8 @@ export class CandidateDetailsComponent implements OnInit, OnDestroy {
             this.snackBar.open('Educación añadida correctamente', 'Cerrar', {
               duration: 3000,
               panelClass: ['successSnackbar'],
+              verticalPosition: 'top',
+              horizontalPosition: 'center',
             });
             this.showEduForm = false;
             this.educationForm.reset();
@@ -442,6 +459,8 @@ export class CandidateDetailsComponent implements OnInit, OnDestroy {
             this.snackBar.open('Error al añadir la educación', 'Cerrar', {
               duration: 3000,
               panelClass: ['errorSnackbar'],
+              verticalPosition: 'top',
+              horizontalPosition: 'center',
             });
           },
         });
@@ -533,6 +552,8 @@ export class CandidateDetailsComponent implements OnInit, OnDestroy {
             this.snackBar.open('Perfil actualizado correctamente', 'Cerrar', {
               duration: 3000,
               panelClass: ['successSnackbar'],
+              verticalPosition: 'top',
+              horizontalPosition: 'center',
             });
             this.editingCandidate = false;
             this.selectedFile = null;
@@ -551,6 +572,8 @@ export class CandidateDetailsComponent implements OnInit, OnDestroy {
           this.snackBar.open('Error al actualizar el perfil', 'Cerrar', {
             duration: 3000,
             panelClass: ['errorSnackbar'],
+            verticalPosition: 'top',
+            horizontalPosition: 'center',
           });
         },
       });
@@ -561,7 +584,9 @@ export class CandidateDetailsComponent implements OnInit, OnDestroy {
         'Cerrar',
         {
           duration: 5000,
-          panelClass: ['snackbar-error'],
+          panelClass: ['errorSnackbar'],
+          verticalPosition: 'top',
+          horizontalPosition: 'center',
         }
       );
     }
@@ -593,7 +618,6 @@ export class CandidateDetailsComponent implements OnInit, OnDestroy {
 
   editExperience(): void {
     if (this.experienceForm.valid) {
-      // Added check for editingExpId
       if (
         this.editingExpId === null ||
         this.editingExpId === undefined ||
@@ -604,7 +628,9 @@ export class CandidateDetailsComponent implements OnInit, OnDestroy {
           'Cerrar',
           {
             duration: 3000,
-            panelClass: ['snackbar-error'],
+            panelClass: ['errorSnackbar'],
+            verticalPosition: 'top',
+            horizontalPosition: 'center',
           }
         );
         return;
@@ -642,10 +668,12 @@ export class CandidateDetailsComponent implements OnInit, OnDestroy {
             this.snackBar.open('Experiencia editada correctamente', 'Cerrar', {
               duration: 3000,
               panelClass: ['successSnackbar'],
+              verticalPosition: 'top',
+              horizontalPosition: 'center',
             });
 
             this.loadExperiences();
-            this.editingExpId = null; // Reset after successful edit
+            this.editingExpId = null;
             this.experienceForm.reset();
           },
           error: (error) => {
@@ -653,6 +681,8 @@ export class CandidateDetailsComponent implements OnInit, OnDestroy {
             this.snackBar.open('Error al editar la experiencia', 'Cerrar', {
               duration: 3000,
               panelClass: ['errorSnackbar'],
+              verticalPosition: 'top',
+              horizontalPosition: 'center',
             });
           },
         });
@@ -663,7 +693,9 @@ export class CandidateDetailsComponent implements OnInit, OnDestroy {
         'Cerrar',
         {
           duration: 3000,
-          panelClass: ['snackbar-error'],
+          panelClass: ['errorSnackbar'],
+          verticalPosition: 'top',
+          horizontalPosition: 'center',
         }
       );
     }
@@ -692,7 +724,9 @@ export class CandidateDetailsComponent implements OnInit, OnDestroy {
           'Cerrar',
           {
             duration: 3000,
-            panelClass: ['snackbar-error'],
+            panelClass: ['errorSnackbar'],
+            verticalPosition: 'top',
+            horizontalPosition: 'center',
           }
         );
         return;
@@ -730,10 +764,12 @@ export class CandidateDetailsComponent implements OnInit, OnDestroy {
             this.snackBar.open('Educación editada correctamente', 'Cerrar', {
               duration: 3000,
               panelClass: ['successSnackbar'],
+              verticalPosition: 'top',
+              horizontalPosition: 'center',
             });
 
             this.loadEducations();
-            this.editingEduId = null; // Reset after successful edit
+            this.editingEduId = null;
             this.educationForm.reset();
           },
           error: (error) => {
@@ -741,6 +777,8 @@ export class CandidateDetailsComponent implements OnInit, OnDestroy {
             this.snackBar.open('Error al editar la educación', 'Cerrar', {
               duration: 3000,
               panelClass: ['errorSnackbar'],
+              verticalPosition: 'top',
+              horizontalPosition: 'center',
             });
           },
         });
@@ -751,7 +789,9 @@ export class CandidateDetailsComponent implements OnInit, OnDestroy {
         'Cerrar',
         {
           duration: 3000,
-          panelClass: ['snackbar-error'],
+          panelClass: ['errorSnackbar'],
+          verticalPosition: 'top',
+          horizontalPosition: 'center',
         }
       );
     }
