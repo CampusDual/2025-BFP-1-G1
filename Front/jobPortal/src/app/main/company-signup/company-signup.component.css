@@ -1,4 +1,3 @@
-html,
 body,
 .container {
   height: 100%;
@@ -97,11 +96,21 @@ body,
 .inputs2 {
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: 16px;
 }
 
 .formulario {
   width: 100%;
+}
+
+mat-form-field {
+  margin-bottom: 4px;
+}
+
+mat-error {
+  margin-top: -4px;
+  font-size: 0.85rem;
+  color: var(--primary);
 }
 
 mat-form-field .mat-mdc-text-field-wrapper,
@@ -117,20 +126,16 @@ mat-form-field input[type="password"] {
 
 .buttons {
   grid-column: 1 / -1;
-  /* Make buttons span both columns */
   display: flex;
   justify-content: center;
-  /* Center the buttons horizontally */
   gap: 16px;
   margin-top: 1em;
   width: 100%;
 }
 
 .action-button {
-  /* Renamed from sign-up-button and backButton for consistency */
   width: 60%;
   max-width: 200px;
-  /* To prevent buttons from becoming too wide on larger screens */
   padding: 12px 24px;
   background-color: var(--primary);
   color: white;
@@ -164,25 +169,20 @@ button[mat-raised-button]:hover:not([disabled]) {
 }
 
 button[mat-raised-button]:disabled {
-  background-color: #E0E0E0 !important;
-  color: #757575 !important;
+  background-color: #E0E0E0;
+  color: #757575;
   cursor: not-allowed;
   box-shadow: none;
 }
 
-mat-error {
-  font-size: 0.85rem;
-  color: var(--primary);
-}
-
 .success {
-  background-color: #4CAF50 !important;
-  color: white !important;
+  background-color: #4CAF50;
+  color: white;
 }
 
 .error {
-  background-color: #F44336 !important;
-  color: white !important;
+  background-color: #F44336;
+  color: white;
 }
 
 @media (max-width: 992px) {
@@ -240,19 +240,14 @@ mat-error {
 
   .action-button {
     width: 100%;
-    /* Make buttons take full width on mobile */
     margin: 1em 0 0 0;
     max-width: none;
-    /* Remove max-width on mobile */
   }
 
   .buttons {
     flex-direction: column;
-    /* Stack buttons vertically on small screens */
     align-items: center;
-    /* Center stacked buttons */
     margin-bottom: 2em;
-    /* Add some space at the bottom */
   }
 }
 

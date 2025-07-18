@@ -2,13 +2,27 @@ package com.campusdual.bfp.model.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
+
 public class UserDTO {
     private String token;
     private long id;
+
+    @NotBlank(message = "El email no puede estar vacío.")
     private String email;
-    String login;
+
+    @NotBlank(message = "El nombre de usuario no puede estar vacío.")
+    private String login;
+
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @NotBlank(message = "La contraseña no puede estar vacía.")
+    @Pattern(
+            regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[^a-zA-Z\\d]).{8,}$",
+            message = "La contraseña debe tener al menos 8 caracteres, incluyendo una mayúscula, una minúscula, un número y un carácter especial."
+    )
     private String password;
+
     private long role_id;
 
     public UserDTO() {}

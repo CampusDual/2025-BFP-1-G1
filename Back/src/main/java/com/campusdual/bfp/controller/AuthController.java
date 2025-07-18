@@ -94,16 +94,7 @@ public class AuthController {
         }
     }
 
-    /**
-     * Handles user registration for both candidates and companies
-     * @param userDataDTO Contains user data and optionally candidate or company data
-     * @return ResponseEntity with the result of the registration
-     */
-    /**
-     * Handles user registration for both candidates and companies
-     * @param userDataDTO Contains user data and optionally candidate or company data
-     * @return ResponseEntity with the result of the registration
-     */
+   
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@RequestBody UserDataDTO userDataDTO) {
         try {
