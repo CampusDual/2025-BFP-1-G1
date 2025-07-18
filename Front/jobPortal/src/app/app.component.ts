@@ -19,8 +19,9 @@ export class AppComponent {
   ) {
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
-
-        this.isLogin = this.router.url === '/main/login' || this.router.url === '/main/signup' || this.router.url === '/main/companysignup';
+        this.isLogin =
+          this.router.url === '/main/login' ||
+          this.router.url === '/main/signup';
       }
     });
     this.iconRegistry.addSvgIcon(
@@ -32,5 +33,4 @@ export class AppComponent {
       this.sanitizer.bypassSecurityTrustResourceUrl('assets/icon/github.svg')
     );
   }
-
 }

@@ -320,7 +320,6 @@
   height: 18px;
 }
 
-/* Responsive para móviles */
 @media (max-width: 900px) {
   .header-actions {
     position: static;
