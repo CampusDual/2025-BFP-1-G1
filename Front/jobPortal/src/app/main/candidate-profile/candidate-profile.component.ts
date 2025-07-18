@@ -1,6 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
-import { finalize, takeUntil, Subject } from 'rxjs';
+import { finalize, takeUntil, Subject, forkJoin, of } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 import { UserData } from 'src/app/model/userData';
 import { Application } from 'src/app/model/application';
 import { JobOffer } from 'src/app/model/jobOffer';
@@ -11,6 +12,11 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { LoadingScreenComponent } from 'src/app/loading-screen/loading-screen.component';
 import { LoadingScreenService } from 'src/app/services/loading-screen.service';
 
+interface JobOfferWithState extends JobOffer {
+  loading?: boolean;
+  error?: boolean;
+}
+
 @Component({
   selector: 'app-candidate-profile',
   templateUrl: './candidate-profile.component.html',
@@ -19,7 +25,7 @@ import { LoadingScreenService } from 'src/app/services/loading-screen.service';
 export class CandidateProfileComponent implements OnInit, OnDestroy {
   userData: UserData | null = null;
   applications: Application[] = [];
-  offerDetails: { [key: number]: JobOffer } = {};
+  offerDetails: { [key: number]: JobOfferWithState } = {};
   isLoading = true;
   error: string | null = null;
   private destroy$ = new Subject<void>();
@@ -87,21 +93,96 @@ export class CandidateProfileComponent implements OnInit, OnDestroy {
   private loadOfferDetails(): void {
     if (!this.applications?.length) return;
 
-    this.applications.forEach((app) => {
-      const offerId = app.offerId;
-      if (!offerId || this.offerDetails[offerId]) return;
+    const updatedOfferDetails = { ...this.offerDetails };
 
-      this.jobOfferService
-        .getJobOfferById(offerId)
-        .pipe(takeUntil(this.destroy$))
-        .subscribe({
-          next: (offer) => {
-            if (offer) {
-              this.offerDetails[offerId] = offer;
-            }
-          },
-          error: (err) => console.error(`Error loading offer ${offerId}:`, err),
+    this.applications.forEach(app => {
+      if (app.offerId && !updatedOfferDetails[app.offerId]) {
+        updatedOfferDetails[app.offerId] = { loading: true } as JobOfferWithState;
+      }
+    });
+
+    const offerIds = [...new Set(
+      this.applications
+        .map(app => app.offerId)
+        .filter((id): id is number => {
+          if (!id) return false;
+          const existing = updatedOfferDetails[id];
+          return !existing || existing.loading === true;
+        })
+    )];
+
+    if (offerIds.length === 0) return;
+
+    // Mark all as loading
+    offerIds.forEach(id => {
+      updatedOfferDetails[id] = {
+        ...(updatedOfferDetails[id] || {}),
+        loading: true,
+        error: false
+      };
+    });
+
+    // Update the component's offerDetails
+    this.offerDetails = updatedOfferDetails;
+
+    const offerObservables = offerIds.map(offerId => 
+      this.jobOfferService.getJobOfferById(offerId).pipe(
+        catchError(error => {
+          console.error(`Error loading offer ${offerId}:`, error);
+          this.snackBar.open(`Error al cargar la oferta ${offerId}`, 'Cerrar', {
+            duration: 3000,
+            panelClass: ['errorSnackbar'],
+            verticalPosition: 'top',
+            horizontalPosition: 'center',
+          });
+          return of(null);
+        })
+      )
+    );
+
+    forkJoin(offerObservables).pipe(
+      takeUntil(this.destroy$)
+    ).subscribe({
+      next: (offers) => {
+        // Create a new object to trigger change detection
+        const updatedOffers = { ...this.offerDetails };
+        
+        offers.forEach((offer, index) => {
+          const offerId = offerIds[index];
+          if (offer) {
+            updatedOffers[offerId] = {
+              ...offer,
+              loading: false,
+              error: false
+            };
+          } else if (updatedOffers[offerId]) {
+            // Mark as error if offer is null (error case)
+            updatedOffers[offerId] = {
+              ...updatedOffers[offerId],
+              loading: false,
+              error: true
+            };
+          }
         });
+        
+        // Update the component's offerDetails
+        this.offerDetails = updatedOffers;
+      },
+      error: (error) => {
+        console.error('Error loading offer details:', error);
+        // Update with error state
+        const updatedOffers = { ...this.offerDetails };
+        offerIds.forEach(id => {
+          if (updatedOffers[id]) {
+            updatedOffers[id] = {
+              ...updatedOffers[id],
+              loading: false,
+              error: true
+            };
+          }
+        });
+        this.offerDetails = updatedOffers;
+      }
     });
   }
 
