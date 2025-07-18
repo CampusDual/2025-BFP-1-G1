@@ -21,8 +21,8 @@ export class HeaderComponent implements OnInit {
       this.usersService.getUserData().subscribe();
     }
     console.log('isAdmin():', this.isAdmin());
-console.log('isCandidate():', this.isCandidate());
-console.log('isCompany():', this.isCompany());
+    console.log('isCandidate():', this.isCandidate());
+    console.log('isCompany():', this.isCompany());
   }
 
   goToCatalogue(): void {

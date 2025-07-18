@@ -11,15 +11,15 @@
       </div>
       <div class="candidate-info">
         <h2>
-          {{ userData?.candidate?.name }} {{ userData?.candidate?.surname }}
+          {{ candidate?.name }} {{candidate?.surname }}
         </h2>
         <p class="candidate-qualification">
           <mat-icon>school</mat-icon>
-          {{ userData?.candidate?.qualification }}
+          {{ candidate?.qualification }}
         </p>
-        <p class="candidate-location" *ngIf="userData?.candidate?.location">
+        <p class="candidate-location" *ngIf="candidate?.location">
           <mat-icon>location_on</mat-icon>
-          {{ userData?.candidate?.location }}
+          {{ candidate?.location }}
         </p>
       </div>
       <div class="edit-button-container">
@@ -37,59 +37,59 @@
             Sobre min
           </ng-template>
 
-          <div class="tab-content about-me-tab" *ngIf="userData?.candidate">
+          <div class="tab-content about-me-tab" *ngIf="candidate">
             <div class="info-row">
-              <div *ngIf="userData?.candidate?.qualification">
+              <div *ngIf="candidate?.qualification">
                 <strong>Título profesional</strong>
-                <span>{{ userData?.candidate?.qualification }}</span>
+                <span>{{ candidate?.qualification }}</span>
               </div>
-              <div *ngIf="userData?.candidate?.experience">
+              <div *ngIf="candidate?.experience">
                 <strong>Años de experiencia</strong>
-                <span>{{ userData?.candidate?.experience }}</span>
+                <span>{{ candidate?.experience }}</span>
               </div>
-              <div *ngIf="userData?.candidate?.employmentStatus">
+              <div *ngIf="candidate?.employmentStatus">
                 <strong>Situación laboral</strong>
                 <span>{{
-                  capitalizeFirst(userData?.candidate?.employmentStatus)
+                  capitalizeFirst(candidate?.employmentStatus)
                   }}</span>
               </div>
-              <div *ngIf="userData?.candidate?.availability">
+              <div *ngIf="candidate?.availability">
                 <strong>Disponibilidad</strong>
-                <span>{{ userData?.candidate?.availability }}</span>
+                <span>{{ candidate?.availability }}</span>
               </div>
-              <div *ngIf="userData?.candidate?.modality">
+              <div *ngIf="candidate?.modality">
                 <strong>Modalidad preferida</strong>
                 <span>{{
-                  capitalizeFirst(userData?.candidate?.modality)
+                  capitalizeFirst(candidate?.modality)
                   }}</span>
               </div>
             </div>
 
             <div class="info-bottom-container">
-              <div class="presentation-section" *ngIf="userData?.candidate?.aboutMe">
+              <div class="presentation-section" *ngIf="candidate?.aboutMe">
                 <h3>Presentación</h3>
-                <p>{{ userData?.candidate?.aboutMe }}</p>
+                <p>{{ candidate?.aboutMe }}</p>
               </div>
 
               <div class="links-section" *ngIf="
-                  userData?.candidate?.linkedin ||
-                  userData?.candidate?.github ||
-                  userData?.candidate?.web
+                  candidate?.linkedin ||
+                  candidate?.github ||
+                  candidate?.web
                 ">
                 <h3>Enlaces de interés</h3>
                 <ul>
-                  <li *ngIf="userData?.candidate?.linkedin">
+                  <li *ngIf="candidate?.linkedin">
                     <mat-icon svgIcon="linkedin"></mat-icon>
-                    <a [href]="userData?.candidate?.linkedin" target="_blank">{{ userData?.candidate?.linkedin }}</a>
+                    <a [href]="candidate?.linkedin" target="_blank">{{ candidate?.linkedin }}</a>
                   </li>
-                  <li *ngIf="userData?.candidate?.github">
+                  <li *ngIf="candidate?.github">
                     <mat-icon svgIcon="github"></mat-icon>
-                    <a [href]="userData?.candidate?.github" target="_blank">{{ userData?.candidate?.github }}</a>
+                    <a [href]="candidate?.github" target="_blank">{{ candidate?.github }}</a>
                   </li>
-                  <li *ngIf="userData?.candidate?.web">
+                  <li *ngIf="candidate?.web">
                     <mat-icon>language</mat-icon>
-                    <a [href]="userData?.candidate?.web" target="_blank">{{
-                      userData?.candidate?.web
+                    <a [href]="candidate?.web" target="_blank">{{
+                      candidate?.web
                       }}</a>
                   </li>
                 </ul>
@@ -97,16 +97,16 @@
             </div>
 
             <div class="contact-section">
-              <p *ngIf="userData?.user?.email">
-                <mat-icon>email</mat-icon> {{ userData?.user?.email }}
+              <p *ngIf="candidate?.user?.email">
+                <mat-icon>email</mat-icon> {{ candidate?.user?.email }}
               </p>
-              <p *ngIf="userData?.candidate?.phone">
+              <p *ngIf="candidate?.phone">
                 <mat-icon>phone</mat-icon>
-                {{ userData?.candidate?.phone }}
+                {{ candidate?.phone }}
               </p>
-              <p *ngIf="userData?.candidate?.location">
+              <p *ngIf="candidate?.location">
                 <mat-icon>location_on</mat-icon>
-                {{ userData?.candidate?.location }}
+                {{ candidate?.location }}
               </p>
             </div>
           </div>
