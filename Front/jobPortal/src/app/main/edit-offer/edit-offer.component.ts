@@ -9,7 +9,7 @@ import { Location } from '@angular/common';
 @Component({
   selector: 'app-edit-offer',
   templateUrl: './edit-offer.component.html',
-  styleUrls: ['./edit-offer.component.css']
+  styleUrls: ['./edit-offer.component.css'],
 })
 export class EditOfferComponent implements OnInit {
   offerForm: FormGroup;
@@ -45,8 +45,8 @@ export class EditOfferComponent implements OnInit {
       company: this.fb.group({
         name: [''],
         logo: [''],
-        web: ['']
-      })
+        web: [''],
+      }),
     });
   }
 
@@ -64,14 +64,14 @@ export class EditOfferComponent implements OnInit {
           company: {
             name: offer.company?.name,
             logo: offer.company?.logo,
-            web: offer.company?.web
-          }
+            web: offer.company?.web,
+          },
         });
       },
       error: (err) => {
         this.showError('Error al cargar la oferta');
         this.router.navigate(['/main/jobOffers']);
-      }
+      },
     });
   }
 
@@ -80,19 +80,21 @@ export class EditOfferComponent implements OnInit {
       this.isSubmitting = true;
       const updatedOffer: JobOffer = {
         ...this.offerForm.value,
-        id: this.offerId
+        id: this.offerId,
       };
 
-      this.jobOfferService.updateJobOffer(this.offerId, updatedOffer).subscribe({
-        next: () => {
-          this.showSuccess('Oferta actualizada correctamente');
-          this.router.navigate(['/main/jobOffers']);
-        },
-        error: (err) => {
-          this.showError('Error al actualizar la oferta');
-          this.isSubmitting = false;
-        }
-      });
+      this.jobOfferService
+        .updateJobOffer(this.offerId, updatedOffer)
+        .subscribe({
+          next: () => {
+            this.showSuccess('Oferta actualizada correctamente');
+            this.router.navigate(['/main/userprofile']);
+          },
+          error: (err) => {
+            this.showError('Error al actualizar la oferta');
+            this.isSubmitting = false;
+          },
+        });
     }
   }
 
@@ -104,7 +106,7 @@ export class EditOfferComponent implements OnInit {
     this.snackBar.open(message, 'Cerrar', {
       duration: 3000,
       verticalPosition: 'top',
-      panelClass: ['successSnackbar']
+      panelClass: ['successSnackbar'],
     });
   }
 
@@ -112,18 +114,29 @@ export class EditOfferComponent implements OnInit {
     this.snackBar.open(message, 'Cerrar', {
       duration: 3000,
       verticalPosition: 'top',
-      panelClass: ['errorSnackbar']
+      panelClass: ['errorSnackbar'],
     });
   }
 
-  // Métodos de ayuda para el template
-  get title() { return this.offerForm.get('title'); }
-  get description() { return this.offerForm.get('description'); }
-  get localizacion() { return this.offerForm.get('localizacion'); }
-  get modalidad() { return this.offerForm.get('modalidad'); }
-  get requisitos() { return this.offerForm.get('requisitos'); }
-  get beneficios() { return this.offerForm.get('beneficios'); }
-  get company() { return this.offerForm.get('company'); }
-
-
+  get title() {
+    return this.offerForm.get('title');
+  }
+  get description() {
+    return this.offerForm.get('description');
+  }
+  get localizacion() {
+    return this.offerForm.get('localizacion');
+  }
+  get modalidad() {
+    return this.offerForm.get('modalidad');
+  }
+  get requisitos() {
+    return this.offerForm.get('requisitos');
+  }
+  get beneficios() {
+    return this.offerForm.get('beneficios');
+  }
+  get company() {
+    return this.offerForm.get('company');
+  }
 }
