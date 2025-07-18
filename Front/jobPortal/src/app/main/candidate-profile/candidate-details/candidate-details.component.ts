@@ -11,6 +11,7 @@ import { UserData } from 'src/app/model/userData';
 import { CandidateProfileService } from 'src/app/services/candidate-profile.service';
 import { UsersService } from 'src/app/services/users.service';
 import { ActivatedRoute } from '@angular/router';
+import { LoadingScreenService } from 'src/app/services/loading-screen.service';
 import { UrlUtils } from 'src/app/utils/url.utils';
 
 @Component({
@@ -71,7 +72,9 @@ export class CandidateDetailsComponent implements OnInit, OnDestroy {
     private candidateService: CandidateProfileService,
     private snackBar: MatSnackBar,
     private fb: FormBuilder,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private loadingScreenService: LoadingScreenService,
+    
   ) {}
 
   parseDate(dateString: string | null | undefined): Date | null {
@@ -83,7 +86,9 @@ export class CandidateDetailsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.loadingScreenService.show();
     this.initializeForms();
+    this.loadingScreenService.hide();
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
       this.loadCandidate(+id);
@@ -167,6 +172,7 @@ export class CandidateDetailsComponent implements OnInit, OnDestroy {
   }
 
   private initializeForms(): void {
+    
     this.experienceForm = this.fb.group({
       jobTitle: ['', [Validators.required, Validators.maxLength(100)]],
       company: ['', [Validators.required, Validators.maxLength(100)]],

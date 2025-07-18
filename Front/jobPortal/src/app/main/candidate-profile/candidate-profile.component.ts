@@ -8,6 +8,8 @@ import { UsersService } from 'src/app/services/users.service';
 import { ApplicationService } from 'src/app/services/application.service';
 import { JobOfferService } from 'src/app/services/job-offer.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { LoadingScreenComponent } from 'src/app/loading-screen/loading-screen.component';
+import { LoadingScreenService } from 'src/app/services/loading-screen.service';
 
 @Component({
   selector: 'app-candidate-profile',
@@ -27,12 +29,17 @@ export class CandidateProfileComponent implements OnInit, OnDestroy {
     private applicationService: ApplicationService,
     private jobOfferService: JobOfferService,
     private router: Router,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private loadingScreenService: LoadingScreenService,
   ) {}
 
   ngOnInit(): void {
+    this.loadingScreenService.show();
     this.loadUserData();
+    this.loadingScreenService.hide();
+
   }
+  
 
   ngOnDestroy(): void {
     this.destroy$.next();
