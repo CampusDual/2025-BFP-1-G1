@@ -1,51 +1,45 @@
 <div class="offer-list-container">
-<mat-grid-list [cols]="gridCols" [rowHeight]="'300px'" gutterSize="8px">
-<mat-grid-tile *ngFor="let offer of jobOffers">
-<mat-card class="offer-card" [class.inactive-offer-card]="!offer.active">
-<mat-card-title>
-<div class="title-with-toggle">
-<span
-              class="offer-title"
-              #offerTitleElement
-              [matTooltip]="offer.title"
+  <mat-grid-list [cols]="gridCols" [rowHeight]="'300px'" gutterSize="8px">
+    <mat-grid-tile *ngFor="let offer of jobOffers">
+      <mat-card class="offer-card" [class.inactive-offer-card]="!offer.active">
+        <mat-card-title>
+          <div class="title-with-toggle">
+            <span class="offer-title" #offerTitleElement [matTooltip]="offer.title"
               [matTooltipDisabled]="!isTruncated(offerTitleElement)">
               {{ offer.title }}
-</span>
-<mat-slide-toggle
-              [checked]="offer.active"
-              (change)="onToggleOfferStatus(offer)"
-              color="primary"
-              class="status-toggle"
-              [matTooltip]="offer.active ? 'Desactivar oferta' : 'Activar oferta'">
-              {{ offer.active ? 'Activa' : 'Inactiva' }}
-</mat-slide-toggle>
-</div>
-</mat-card-title>
- 
+            </span>
+            <mat-slide-toggle [checked]="offer.active" (change)="onToggleOfferStatus(offer)" color="primary"
+              class="status-toggle" [matTooltip]="offer.active ? 'Desactivar oferta' : 'Activar oferta'">
+            </mat-slide-toggle>
+          </div>
+        </mat-card-title>
+
         <div class="company-info">
-<mat-card-subtitle class="company-name">{{ offer.company?.name }}</mat-card-subtitle>
-<mat-card-subtitle class="offer-date">
-<mat-icon class="clock-icon">access_time</mat-icon>
+          <mat-card-subtitle class="company-name">{{ offer.company?.name }}</mat-card-subtitle>
+          <mat-card-subtitle class="offer-date">
+            <mat-icon class="clock-icon">access_time</mat-icon>
             {{ getRelativeDate(offer.releaseDate) }}
-</mat-card-subtitle>
-<mat-card-subtitle class="offer-email">{{ offer.email }}</mat-card-subtitle>
-</div>
- 
+          </mat-card-subtitle>
+          <mat-card-subtitle class="offer-email">{{ offer.email }}</mat-card-subtitle>
+        </div>
+
         <div class="offer-description">
-<mat-card-content>
+          <mat-card-content>
             {{ offer.description }}
-</mat-card-content>
-</div>
- 
+          </mat-card-content>
+        </div>
+
         <mat-card-actions class="offer-actions">
-<button mat-raised-button color="primary" class="edit-button" *ngIf="offer.id !== undefined"
-            [routerLink]="['/main/editOffer', offer.id]" [disabled]="!offer.active"> Editar
-</button>
-<button mat-raised-button color="accent" class="details-button" *ngIf="offer.id !== undefined"
-            (click)="goToOfferDetails(offer.id)" [disabled]="!offer.active"> Ver detalles
-</button>
-</mat-card-actions>
-</mat-card>
-</mat-grid-tile>
-</mat-grid-list>
+          <button mat-button color="accent" class="details-button" *ngIf="offer.id !== undefined"
+            (click)="goToOfferDetails(offer.id)" [disabled]="!offer.active">
+            <mat-icon>visibility</mat-icon> Ver detalles
+          </button>
+          <button mat-raised-button color="primary" class="edit-button" *ngIf="offer.id !== undefined"
+            [routerLink]="['/main/editOffer', offer.id]" [disabled]="!offer.active">
+            <mat-icon>edit</mat-icon> Editar
+          </button>
+        </mat-card-actions>
+      </mat-card>
+    </mat-grid-tile>
+  </mat-grid-list>
 </div>

@@ -103,14 +103,14 @@ export class EditOfferComponent implements OnInit {
   private showSuccess(message: string): void {
     this.snackBar.open(message, 'Cerrar', {
       duration: 3000,
-      panelClass: ['success-snackbar']
+      panelClass: ['successSnackbar']
     });
   }
 
   private showError(message: string): void {
     this.snackBar.open(message, 'Cerrar', {
       duration: 3000,
-      panelClass: ['error-snackbar']
+      panelClass: ['errorSnackbar']
     });
   }
 

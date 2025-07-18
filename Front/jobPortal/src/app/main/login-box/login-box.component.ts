@@ -3,7 +3,6 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { UserData } from 'src/app/model/userData';
 
 @Component({
   selector: 'app-login-box',
@@ -62,6 +61,7 @@ export class LoginBoxComponent {
           console.error('No se pudo obtener el usuario', error);
           this.snackBar.open('No se pudo obtener el usuario', 'Cerrar', {
             duration: 3000,
+            panelClass: ['errorSnackbar'],
             verticalPosition: 'top',
           });
         },
@@ -69,6 +69,7 @@ export class LoginBoxComponent {
     } else {
       this.snackBar.open('Inicio de sesión incorrecto', 'Cerrar', {
         duration: 3000,
+        panelClass: ['errorSnackbar'],
         verticalPosition: 'top',
       });
       if (errorMessage) {

@@ -1,10 +1,10 @@
 package com.campusdual.bfp.service;
 
 import com.campusdual.bfp.model.Candidate;
-import com.campusdual.bfp.model.User;
 import com.campusdual.bfp.model.dao.CandidateDao;
 import com.campusdual.bfp.model.dto.CandidateDTO;
-import com.campusdual.bfp.model.dto.UserDTO;
+import com.campusdual.bfp.model.dto.UserDataDTO;
+import com.campusdual.bfp.model.dto.dtomapper.CandidateMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.core.Authentication;
@@ -26,6 +26,10 @@ public class CandidateService {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private UserDataService userDataService;
+
 
 
     @Transactional
@@ -49,6 +53,75 @@ public class CandidateService {
         throw new AccessDeniedException("Authenticated principal is not a valid User instance or user not found. Access Denied.");
     }
 
+    @Transactional
+    public CandidateDTO updateCandidate(CandidateDTO candidateDTO) throws AccessDeniedException {
 
+        UserDataDTO userAuth = userDataService.getUserData();
+
+        if(userAuth.getCandidate().getId() != candidateDTO.getId()) {
+            throw new AccessDeniedException("Los id de los candidatos no coinciden. Acceso denegado.");
+        }
+
+        Candidate candidate = CandidateMapper.INSTANCE.toEntity(candidateDTO);
+
+        if(candidateDTO.getUser().getEmail() != null) {
+            candidate.getUser().setEmail(candidateDTO.getUser().getEmail());
+        }
+
+        if(candidateDTO.getName() != null) {
+            candidate.setName(candidateDTO.getName());
+        }
+
+        if(candidateDTO.getSurname() != null) {
+            candidate.setSurname(candidateDTO.getSurname());
+        }
+        if(candidateDTO.getPhone() != null) {
+            candidate.setPhone(candidateDTO.getPhone());
+        }
+        if(candidateDTO.getBirthDate() != null) {
+            candidate.setBirthDate(candidateDTO.getBirthDate());
+        }
+        if(candidateDTO.getProfileImg() != null) {
+            candidate.setProfileImg(candidateDTO.getProfileImg());
+        }
+        if(candidateDTO.getLocation() != null) {
+            candidate.setLocation(candidateDTO.getLocation());
+        }
+        if(candidateDTO.getQualification() != null) {
+            candidate.setQualification(candidateDTO.getQualification());
+        }
+        if(candidateDTO.getExperience() != null) {
+            candidate.setExperience(candidateDTO.getExperience());
+        }
+        if(candidateDTO.getEmploymentStatus() != null) {
+            candidate.setEmploymentStatus(candidateDTO.getEmploymentStatus());
+        }
+        if(candidateDTO.getAvailability() != null) {
+            candidate.setAvailability(candidateDTO.getAvailability());
+        }
+        if(candidateDTO.getModality() != null) {
+            candidate.setModality(candidateDTO.getModality());
+        }
+        if(candidateDTO.getAboutMe() != null) {
+            candidate.setAboutMe(candidateDTO.getAboutMe());
+        }
+        if(candidateDTO.getLinkedin() != null) {
+            candidate.setLinkedin(candidateDTO.getLinkedin());
+        }
+        if(candidateDTO.getGithub() != null) {
+            candidate.setGithub(candidateDTO.getGithub());
+        }
+        if(candidateDTO.getWeb() != null) {
+            candidate.setWeb(candidateDTO.getWeb());
+        }
+
+        candidateDao.saveAndFlush(candidate);
+        return CandidateMapper.INSTANCE.toDTO(candidate);
+
+    }
+@Transactional
+    public Candidate getCandidateById(Long id) {
+        return candidateDao.getReferenceById(id);
+    }
 
 }

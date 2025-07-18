@@ -14,6 +14,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -25,11 +26,11 @@ import com.campusdual.bfp.exception.RegistrationException;
 
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
-import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
@@ -60,30 +61,30 @@ public class AuthController {
 
         final String[] values = credentials.split(":", 2);
         if (values.length != 2) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Malformed auth header");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid authentication header");
         }
 
         try {
-            Authentication authentication = this.authenticationManager.authenticate(
+            Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(values[0], values[1])
             );
 
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+            User user = (User) authentication.getPrincipal();
+            
+            // Include role ID in the token
+            String token = jwtUtils.generateJWTToken(user.getUsername(), user.getRole().getId());
 
-            User authenticatedUser = (User) authentication.getPrincipal();
-
-            String token = this.jwtUtils.generateJWTToken(authenticatedUser.getLogin());
-
-
-            List<String> roles = authenticatedUser.getAuthorities().stream()
+            List<String> roles = authentication.getAuthorities().stream()
                     .map(GrantedAuthority::getAuthority)
                     .collect(Collectors.toList());
 
             UserDTO response = new UserDTO(
                     token,
-                    authenticatedUser.getId(),
-                    authenticatedUser.getEmail(),
-                    authenticatedUser.getLogin(),
-                    authenticatedUser.getRole().getId()
+                    user.getId(),
+                    user.getEmail(),
+                    user.getLogin(),
+                    user.getRole().getId()
             );
 
             return ResponseEntity.ok(response);
@@ -93,16 +94,7 @@ public class AuthController {
         }
     }
 
-    /**
-     * Handles user registration for both candidates and companies
-     * @param userDataDTO Contains user data and optionally candidate or company data
-     * @return ResponseEntity with the result of the registration
-     */
-    /**
-     * Handles user registration for both candidates and companies
-     * @param userDataDTO Contains user data and optionally candidate or company data
-     * @return ResponseEntity with the result of the registration
-     */
+   
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@RequestBody UserDataDTO userDataDTO) {
         try {

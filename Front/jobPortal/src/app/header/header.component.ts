@@ -21,8 +21,8 @@ export class HeaderComponent implements OnInit {
       this.usersService.getUserData().subscribe();
     }
     console.log('isAdmin():', this.isAdmin());
-console.log('isCandidate():', this.isCandidate());
-console.log('isCompany():', this.isCompany());
+    console.log('isCandidate():', this.isCandidate());
+    console.log('isCompany():', this.isCompany());
   }
 
   goToCatalogue(): void {
@@ -97,5 +97,14 @@ console.log('isCompany():', this.isCompany());
       !!this.userData?.admin ||
       (!!this.userData?.user && this.userData.user.role_id === 1)
     );
+  }
+
+  getProfileImage(): string | null {
+    if (this.userData?.candidate?.profileImg) {
+      return this.userData.candidate.profileImg;
+    } else if (this.userData?.company?.logo) {
+      return this.userData.company.logo;
+    }
+    return null;
   }
 }

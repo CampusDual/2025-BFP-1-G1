@@ -11,7 +11,6 @@ import { CreateOfferComponent } from './user-profile/create-offer/create-offer.c
 import { UserProfileComponent } from './user-profile/user-profile.component';
 import { MatButtonModule } from '@angular/material/button';
 import { LoginBoxComponent } from './login-box/login-box.component';
-import { UsersListComponent } from '../users-list/users-list.component';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { CompanyOfferListComponent } from './user-profile/company-offer-list/company-offer-list.component';
 import { MatIconModule } from '@angular/material/icon';
@@ -20,8 +19,6 @@ import { SignUpFormComponent } from './sign-up-form/sign-up-form.component';
 import { CandidateProfileComponent } from './candidate-profile/candidate-profile.component';
 import { AdminProfileComponent } from './admin-profile/admin-profile.component';
 import { MatTableModule } from '@angular/material/table';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { BrowserModule } from '@angular/platform-browser';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { TokenInterceptor } from './token-interceptor';
 import { CompanySignupComponent } from './company-signup/company-signup.component';
@@ -31,7 +28,13 @@ import { OfferDetailsComponent } from './offer-details/offer-details.component';
 import { EditOfferComponent } from './edit-offer/edit-offer.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { CandidateDetailsComponent } from './candidate-profile/candidate-details/candidate-details.component';
+import {MatTabsModule} from '@angular/material/tabs';
+import { MatMenuModule } from "@angular/material/menu";
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
 import { RouterModule } from '@angular/router';
+
 
 @NgModule({
   providers: [
@@ -47,7 +50,6 @@ import { RouterModule } from '@angular/router';
     CreateOfferComponent,
     UserProfileComponent,
     LoginBoxComponent,
-    UsersListComponent,
     CompanyOfferListComponent,
     SignUpFormComponent,
     CandidateProfileComponent,
@@ -55,6 +57,7 @@ import { RouterModule } from '@angular/router';
     CompanySignupComponent,
     OfferDetailsComponent,
     EditOfferComponent,
+    CandidateDetailsComponent,
   ],
   imports: [
     CommonModule,
@@ -75,7 +78,11 @@ import { RouterModule } from '@angular/router';
     MatDividerModule,
     MatSelectModule,
     MatSlideToggleModule,
-    RouterModule,
+    MatTabsModule,
+    MatMenuModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    RouterModule
   ],
 })
 export class MainModule {}

@@ -2,7 +2,11 @@
   <div class="candidate-header-card">
     <div class="avatar-section">
       <div class="avatar">
-        <mat-icon class="avatar-icon">person</mat-icon>
+        <img *ngIf="userData?.candidate?.profileImg" class="avatar-img" [src]="userData?.candidate?.profileImg"
+          alt="Profile Image" />
+        <div class="avatar-icon" *ngIf="!userData?.candidate?.profileImg">
+          <mat-icon>person</mat-icon>
+        </div>
       </div>
       <div class="candidate-info">
         <h2>{{ userData?.candidate?.name }} {{ userData?.candidate?.surname }}</h2>
@@ -42,7 +46,7 @@
 
     <div *ngIf="!isLoading && !error && applications.length > 0" class="applications-grid">
       <div *ngFor="let app of applications" class="application-card"
-        [class.inactive-offer-card]="offerDetails[app.offerId] && !offerDetails[app.offerId]?.active">
+        [class.inactive-offer-card]="offerDetails[app.offerId] && !offerDetails[app.offerId].active">
         <div class="application-header">
           <h3 *ngIf="offerDetails[app.offerId]?.title">
             {{ offerDetails[app.offerId].title }}
@@ -57,7 +61,7 @@
           <!-- <p>
             <strong>Estado de la Oferta:</strong>
             <span *ngIf="offerDetails[app.offerId]?.active" class="offer-status-active">Activa</span>
-            <span *ngIf="offerDetails[app.offerId] && !offerDetails[app.offerId]?.active"
+            <span *ngIf="offerDetails[app.offerId] && !offerDetails[app.offerId].active"
               class="offer-status-inactive">Desactivada</span>
             <span *ngIf="!offerDetails[app.offerId]">Cargando...</span>
           </p>-->
@@ -70,14 +74,14 @@
           <p *ngIf="offerDetails[app.offerId]?.modalidad">
             <strong>Modalidad:</strong> {{ offerDetails[app.offerId].modalidad }}
           </p>
-          <p *ngIf="app.applicationDate">
-            <strong>Fecha de postulación:</strong> {{ app.applicationDate | date:'shortDate' }}
+          <p *ngIf="app.inscriptionDate">
+            <strong>Fecha de postulación:</strong> {{ app.inscriptionDate | date:'shortDate' }}
           </p>
         </div>
 
         <div class="application-actions">
           <button mat-button color="primary" [routerLink]="['/main/offerDetails', app.offerId]"
-            [disabled]="!offerDetails[app.offerId]?.active">
+            [disabled]="!offerDetails[app.offerId].active">
             <mat-icon>visibility</mat-icon>
             Ver oferta
           </button>

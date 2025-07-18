@@ -17,7 +17,7 @@
         <a *ngIf="offerForm.get('company')?.value?.web" [href]="offerForm.get('company')?.value.web" target="_blank"
           class="company-website">
           <mat-icon>language</mat-icon>
-          {{ offerForm.get('company')?.value.web }}
+          {{ formatUrl(offerForm.get('company')?.value?.web) }}
         </a>
       </div>
     </div>

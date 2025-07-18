@@ -23,11 +23,19 @@ export class CompanySignupComponent {
     private usersService: UsersService,
     private router: Router,
     private snackBar: MatSnackBar,
-    private location: Location,
+    private location: Location
   ) {
     this.signUpForm = this.fb.group({
       login: ['', [Validators.required]],
-      password: ['', [Validators.required, Validators.minLength(8)]],
+      password: [
+        '',
+        [
+          Validators.required,
+          Validators.pattern(
+            '^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[^a-zA-Z\\d]).{8,}$'
+          ),
+        ],
+      ],
       name: ['', [Validators.required]],
       cif: [
         '',
@@ -155,7 +163,6 @@ export class CompanySignupComponent {
                 cifControl?.markAsTouched();
                 errorMessage = 'El CIF ya está registrado';
               }
-
             } else if (error.status === 400) {
               if (error.error && error.error.message) {
                 errorMessage = error.error.message;
@@ -211,6 +218,9 @@ export class CompanySignupComponent {
     if (controlName === 'web' && control?.hasError('pattern')) {
       return 'Formato de web no válido (ejemplo: https://...)';
     }
+    if (controlName === 'password' && control?.hasError('pattern')) {
+      return 'Debe tener 8 caracteres, con mayúscula, minúscula, número y símbolo';
+    }
 
     return '';
   }
@@ -221,7 +231,7 @@ export class CompanySignupComponent {
     this.tooltipY = event.clientY + offset;
   }
 
-  goBack():void{
+  goBack(): void {
     this.location.back();
   }
 }

@@ -14,11 +14,6 @@
                 <div class="company-name">
                     {{ offerForm.get('company')?.value?.name || 'Nombre de la empresa' }}
                 </div>
-                <a *ngIf="offerForm.get('company')?.value?.web" [href]="offerForm.get('company')?.value.web"
-                    target="_blank" class="company-website">
-                    <mat-icon>language</mat-icon>
-                    {{ offerForm.get('company')?.value.web }}
-                </a>
             </div>
         </div>
 
@@ -120,7 +115,7 @@
 
     <!-- Botones -->
     <div class="button-container">
-        <button type="button" mat-button class="catalogueButton" (click)="onCancel()" [disabled]="isSubmitting">
+        <button type="button" mat-button class="cancel-button" (click)="onCancel()" [disabled]="isSubmitting">
             <mat-icon>cancel</mat-icon> Cancelar
         </button>
         <button type="submit" mat-raised-button color="primary" class="publish-button"

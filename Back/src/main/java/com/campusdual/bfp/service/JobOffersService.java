@@ -3,7 +3,9 @@ package com.campusdual.bfp.service;
 import com.campusdual.bfp.api.IJobOffersService;
 import com.campusdual.bfp.model.JobOffer;
 import com.campusdual.bfp.model.dao.JobOffersDao;
+import com.campusdual.bfp.model.dto.CandidateDTO;
 import com.campusdual.bfp.model.dto.JobOffersDTO;
+import com.campusdual.bfp.model.dto.dtomapper.CandidateMapper;
 import com.campusdual.bfp.model.dto.dtomapper.JobOffersMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,6 +29,10 @@ public class JobOffersService implements IJobOffersService {
 
     @Autowired
     private JobOffersDao jobOffersDao;
+    @Autowired
+    private CandidateService candidateService;
+
+
 
 
     @Override
@@ -194,5 +200,12 @@ public class JobOffersService implements IJobOffersService {
             logger.warn("Oferta de empleo con ID {} no encontrada.", id);
             throw new EntityNotFoundException("Oferta de empleo con ID " + id + " no encontrada.");
         }
+    }
+    @Transactional
+    public List<CandidateDTO> getCandidatesByJobOffer(long jobId) {
+        return jobOffersDao.getCandidatesByJobOffer(jobId)
+                .stream()
+                .map(CandidateMapper.INSTANCE::toDTO)
+                .collect(Collectors.toList());
     }
 }

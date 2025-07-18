@@ -1,5 +1,6 @@
 server:
   port: 30030
+
 spring:
   banner:
     location: classpath:banner.txt
@@ -24,6 +25,11 @@ spring:
     mapper:
       accept-case-insensitive-enums: true
 
+  servlet:
+    multipart:
+      max-file-size: 20MB
+      max-request-size: 20MB
+
 logging:
   level:
     org:
@@ -32,6 +38,7 @@ logging:
       type:
         descriptor:
           sql: trace
+
 jwt:
   secret: xlJQSlmC4lT8HPtBY6vCf07klWfhUMmQze
   expiration: 36000000

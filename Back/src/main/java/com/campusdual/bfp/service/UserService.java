@@ -4,13 +4,11 @@ import com.campusdual.bfp.exception.RegistrationException;
 import com.campusdual.bfp.model.Candidate;
 import com.campusdual.bfp.model.Role;
 import com.campusdual.bfp.model.User;
-import com.campusdual.bfp.model.UserRole;
 import com.campusdual.bfp.model.dao.CandidateDao;
 import com.campusdual.bfp.model.dao.RoleDao;
 import com.campusdual.bfp.model.dao.UserDao;
 import com.campusdual.bfp.model.dao.UserRoleDao;
 import com.campusdual.bfp.model.dto.CandidateDTO;
-import com.campusdual.bfp.model.dto.CompanyDTO;
 import com.campusdual.bfp.model.dto.UserDTO;
 import com.campusdual.bfp.model.dto.UserDataDTO;
 import com.campusdual.bfp.model.dto.dtomapper.CandidateMapper;
@@ -63,7 +61,6 @@ public class UserService implements UserDetailsService {
         if (userDao.findByLogin(userDTO.getLogin()) != null) {
             throw new RegistrationException("login", "DUPLICATE_USERNAME", "Este nombre de usuario ya existe");
         }
-        // Check if email already exists
         if (userDao.findByEmail(userDTO.getEmail()) != null) {
             throw new RegistrationException("email", "DUPLICATE_EMAIL", "Este email ya existe");
         }

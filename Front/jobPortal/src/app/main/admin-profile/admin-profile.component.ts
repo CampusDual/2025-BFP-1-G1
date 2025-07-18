@@ -16,6 +16,7 @@ import { ConfirmDialogComponent } from 'src/app/confirm-dialog/confirm-dialog.co
 import { LoadingScreenService } from 'src/app/services/loading-screen.service';
 import { Subject, forkJoin } from 'rxjs';
 import { finalize, takeUntil } from 'rxjs/operators';
+import { UrlUtils } from 'src/app/utils/url.utils';
 
 @Component({
   selector: 'app-admin-profile',
@@ -29,6 +30,8 @@ export class AdminProfileComponent implements OnInit, OnDestroy {
   companies: Company[] = [];
   editMode: { [id: number]: boolean } = {};
   private destroy$ = new Subject<void>();
+  
+  formatUrl = UrlUtils.formatUrl;
 
   constructor(
     private usersService: UsersService,

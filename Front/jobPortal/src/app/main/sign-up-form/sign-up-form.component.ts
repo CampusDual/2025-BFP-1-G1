@@ -22,13 +22,15 @@ export class SignUpFormComponent {
     private usersService: UsersService,
     private router: Router,
     private snackBar: MatSnackBar
-  ) {
+  ) {}
+
+  ngOnInit(): void {
     this.signUpForm = this.fb.group({
-      login: ['', [Validators.required]],
-      password: ['', [Validators.required, Validators.minLength(4)]],
-      name: ['', [Validators.required]],
-      surname: ['', [Validators.required]],
-      email: ['', [Validators.required, Validators.email]],
+      login: ['', [Validators.required, Validators.maxLength(50)]],
+      password: ['', [Validators.required, Validators.pattern('^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[^a-zA-Z\\d]).{8,}$')]],
+      name: ['', [Validators.required, Validators.maxLength(60)]],
+      surname: ['', [Validators.required, Validators.maxLength(100)]],
+      email: ['', [Validators.required, Validators.email, Validators.maxLength(255)]],
       phone: ['', [Validators.required, Validators.pattern('^[0-9]{9}$')]],
     });
   }
@@ -75,7 +77,7 @@ export class SignUpFormComponent {
         .subscribe({
           next: (response) => {
             this.isSubmitting = false;
-            this.openSnackBar('Registro exitoso!', 'success-snackbar');
+            this.openSnackBar('Registro exitoso!', 'successSnackbar');
             this.router.navigate(['/main/login']);
           },
           error: (error) => {
@@ -162,6 +164,9 @@ export class SignUpFormComponent {
     if (controlName === 'phone' && control?.hasError('pattern')) {
       return 'Teléfono debe tener 9 dígitos';
     }
+    if (controlName === 'password' && control?.hasError('pattern')) {
+      return 'Debe tener 8 caracteres, con mayúscula, minúscula, número y símbolo.'
+    }
 
     return '';
   }
@@ -170,5 +175,9 @@ export class SignUpFormComponent {
     const offset = 15;
     this.tooltipX = event.clientX;
     this.tooltipY = event.clientY + offset;
+  }
+
+  goBack(): void {
+    this.router.navigate(['/main/login']);
   }
 }

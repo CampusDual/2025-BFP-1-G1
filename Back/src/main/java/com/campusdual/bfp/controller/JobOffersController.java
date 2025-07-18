@@ -1,6 +1,7 @@
 package com.campusdual.bfp.controller;
 
 import com.campusdual.bfp.api.IJobOffersService;
+import com.campusdual.bfp.model.dto.CandidateDTO;
 import com.campusdual.bfp.model.dto.JobOffersDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,6 +19,23 @@ public class JobOffersController {
 
     @Autowired
     private IJobOffersService jobOffersService;
+
+    private static final Logger logger = LoggerFactory.getLogger(JobOffersController.class);
+
+    @PostMapping(value = "/getCandidatesByJobOffer")
+    public ResponseEntity<List<CandidateDTO>> getCandidatesByJobOffer(@RequestBody JobOffersDTO jobOffersDTO) {
+        try {
+            long offerId = jobOffersDTO.getId();
+            if (offerId <= 0) {
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            }
+            List<CandidateDTO> candidates = jobOffersService.getCandidatesByJobOffer(offerId);
+            return ResponseEntity.ok(candidates);
+        } catch (Exception e) {
+            logger.error("Error getting candidates for job offer: " + e.getMessage(), e);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 
     @GetMapping(value = "/testController")
     public String testJobOffersController() {
@@ -53,8 +71,6 @@ public class JobOffersController {
             return ResponseEntity.notFound().build();
         }
     }
-
-    private static final Logger logger = LoggerFactory.getLogger(JobOffersController.class);
 
     @PutMapping("/{id}/status")
     public ResponseEntity<JobOffersDTO> updateJobOfferStatus(
@@ -100,6 +116,7 @@ public class JobOffersController {
     }
 
     /*
+
     @DeleteMapping(value = "/delete")
     public ResponseEntity<Long> deleteJobOffer(@RequestBody JobOffersDTO jobOffersDTO) {
         try {

@@ -1,34 +1,41 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, map } from 'rxjs';
+import { Application } from '../model/application';
+import { Candidate } from '../model/candidate';
 
 @Injectable({ providedIn: 'root' })
 export class ApplicationService {
-  private apiUrl = 'http://localhost:30030/applications'; 
+  private apiUrl = 'http://localhost:30030/applications';
+  private apiUrlCandidate = 'http://localhost:30030/candidate';
 
   constructor(private http: HttpClient) {}
 
   getUserApplications(): Observable<any> {
     console.log('ApplicationService: Getting user applications...');
     const token = localStorage.getItem('token');
-    
+
     if (!token) {
-      const errorMsg = 'No token found in localStorage. User might not be authenticated.';
+      const errorMsg =
+        'No token found in localStorage. User might not be authenticated.';
       console.error(errorMsg);
       throw new Error(errorMsg);
     }
 
-    console.log('Using token for request:', token ? 'Token exists' : 'No token');
-    
+    console.log(
+      'Using token for request:',
+      token ? 'Token exists' : 'No token'
+    );
+
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
-      'Authorization': `Bearer ${token}`,
+      Authorization: `Bearer ${token}`,
     });
 
     const url = `${this.apiUrl}/user`;
     console.log('Making GET request to:', url);
-    
-    return new Observable(observer => {
+
+    return new Observable((observer) => {
       this.http.get<any>(url, { headers }).subscribe({
         next: (response) => {
           console.log('ApplicationService: Received response:', response);
@@ -36,12 +43,17 @@ export class ApplicationService {
           observer.complete();
         },
         error: (error) => {
-          console.error('ApplicationService: Error fetching applications:', error);
+          console.error(
+            'ApplicationService: Error fetching applications:',
+            error
+          );
           if (error.status === 401) {
-            console.error('Authentication failed. Token might be invalid or expired.');
+            console.error(
+              'Authentication failed. Token might be invalid or expired.'
+            );
           }
           observer.error(error);
-        }
+        },
       });
     });
   }
@@ -61,5 +73,61 @@ export class ApplicationService {
         responseType: 'text',
       }
     );
+  }
+
+  getApplicationsForOffer(offerId: number): Observable<Application[]> {
+    const token = localStorage.getItem('token');
+
+    if (!token) {
+      console.error('Authentication token not found.');
+      return new Observable((observer) =>
+        observer.error(new Error('Authentication token not found.'))
+      );
+    }
+
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    });
+
+    const url = `${this.apiUrl}/offer/${offerId}`;
+    console.log('Making GET request to:', url);
+
+    return this.http.get<Application[]>(url, { headers });
+  }
+
+  getCandidatesOnlyForOffer(offerId: number): Observable<Candidate[]> {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      console.error('Authentication token not found for candidates.');
+      return new Observable((observer) =>
+        observer.error(new Error('Authentication token not found.'))
+      );
+    }
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    });
+    const url = `${this.apiUrl}/getcandidates/${offerId}`;
+    return this.http.get<Candidate[]>(url, { headers });
+  }
+
+  getApplicationbyofferbycandidate(
+    candidateId: number,
+    offerId: number
+  ): Observable<Application> {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      console.error('Authentication token not found for candidates.');
+      return new Observable((observer) =>
+        observer.error(new Error('Authentication token not found.'))
+      );
+    }
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    });
+    const url = `${this.apiUrl}/getapplications/${offerId}/${candidateId}`;
+    return this.http.get<Application>(url, { headers });
   }
 }

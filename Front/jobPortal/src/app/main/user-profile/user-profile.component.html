@@ -6,7 +6,18 @@
         <!-- Información de la empresa -->
         <div class="company-info" *ngIf="userData?.company">
           <div class="company-header">
-            <h3 class="company-name">{{ userData?.company?.name }}</h3>
+            <div class="logo-name-container">
+              <div class="company-logo-container">
+                <img *ngIf="userData?.company?.logo; else defaultIcon" 
+                     [src]="userData?.company?.logo" 
+                     alt="Logo empresa" 
+                     class="company-logo" />
+                <ng-template #defaultIcon>
+                  <mat-icon class="default-logo">business</mat-icon>
+                </ng-template>
+              </div>
+              <h3 class="company-name">{{ userData?.company?.name }}</h3>
+            </div>
           </div>
           <div class="info-item" *ngIf="userData?.company?.phone">
             <mat-icon>phone</mat-icon>
@@ -14,7 +25,7 @@
           </div>
           <div class="info-item" *ngIf="userData?.company?.web">
             <mat-icon>language</mat-icon>
-            <a [href]="userData?.company?.web" target="_blank" class="web-link">{{ userData?.company?.web }}</a>
+            <a [href]="userData?.company?.web" target="_blank" class="web-link">{{ formatWebsiteUrl(userData?.company?.web || '') }}</a>
           </div>
           <div class="info-item" *ngIf="userData?.company?.cif">
             <mat-icon>badge</mat-icon>
@@ -29,7 +40,8 @@
     
       <!-- Botón de nueva oferta -->
       <button mat-button class="newOffer" (click)="moveToCreateOffer()">
-        Nueva Oferta
+        <mat-icon>add_circle</mat-icon>
+        <span>Nueva Oferta</span>
       </button>
     </div>
 
