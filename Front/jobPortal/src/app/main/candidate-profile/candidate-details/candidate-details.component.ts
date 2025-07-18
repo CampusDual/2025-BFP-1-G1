@@ -397,7 +397,6 @@ export class CandidateDetailsComponent implements OnInit, OnDestroy {
         idCandidate: this.candidate?.id || 0,
       };
 
-      // Format dates for new experience as well, similar to edit
       if (
         experienceData.startPeriod instanceof Date &&
         !isNaN(experienceData.startPeriod.getTime())
@@ -421,8 +420,8 @@ export class CandidateDetailsComponent implements OnInit, OnDestroy {
         .addWorkExperience(experienceData)
         .pipe(takeUntil(this.destroy$))
         .subscribe({
-          next: (response) => {
-            this.experiences = [...this.experiences, response];
+          next: () => {
+            this.loadExperiences();
             this.snackBar.open('Experiencia añadida correctamente', 'Cerrar', {
               duration: 3000,
               panelClass: ['successSnackbar'],
@@ -452,7 +451,6 @@ export class CandidateDetailsComponent implements OnInit, OnDestroy {
         idCandidate: this.candidate?.id || 0,
       };
 
-      // Format dates for new education as well, similar to edit
       if (
         educationData.startPeriod instanceof Date &&
         !isNaN(educationData.startPeriod.getTime())
@@ -476,8 +474,8 @@ export class CandidateDetailsComponent implements OnInit, OnDestroy {
         .addEducation(educationData)
         .pipe(takeUntil(this.destroy$))
         .subscribe({
-          next: (response) => {
-            this.educations = [...this.educations, response];
+          next: () => {
+            this.loadEducations();
             this.snackBar.open('Educación añadida correctamente', 'Cerrar', {
               duration: 3000,
               panelClass: ['successSnackbar'],
@@ -673,7 +671,6 @@ export class CandidateDetailsComponent implements OnInit, OnDestroy {
         idCandidate: this.candidate?.id || 0,
       };
 
-      // Ensure startPeriod and endPeriod are formatted as strings before sending
       if (
         experience.startPeriod instanceof Date &&
         !isNaN(experience.startPeriod.getTime())
@@ -688,7 +685,7 @@ export class CandidateDetailsComponent implements OnInit, OnDestroy {
       ) {
         experience.endPeriod = experience.endPeriod.toISOString().split('T')[0];
       } else if (experience.endPeriod === '') {
-        experience.endPeriod = null; // Send null if empty string to backend
+        experience.endPeriod = null; 
       }
 
       this.candidateService
@@ -743,8 +740,9 @@ export class CandidateDetailsComponent implements OnInit, OnDestroy {
   }
 
   editEducation(): void {
+    this.loadEducations();
     if (this.educationForm.valid) {
-      // Added check for editingEduId
+    this.loadEducations();
       if (
         this.editingEduId === null ||
         this.editingEduId === undefined ||

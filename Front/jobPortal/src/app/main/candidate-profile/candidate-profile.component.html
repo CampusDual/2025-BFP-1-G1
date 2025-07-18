@@ -58,13 +58,6 @@
         </div>
 
         <div class="application-details">
-          <!-- <p>
-            <strong>Estado de la Oferta:</strong>
-            <span *ngIf="offerDetails[app.offerId]?.active" class="offer-status-active">Activa</span>
-            <span *ngIf="offerDetails[app.offerId] && !offerDetails[app.offerId].active"
-              class="offer-status-inactive">Desactivada</span>
-            <span *ngIf="!offerDetails[app.offerId]">Cargando...</span>
-          </p>-->
           <p *ngIf="offerDetails[app.offerId]?.company?.name">
             <strong>Empresa:</strong> {{ offerDetails[app.offerId].company?.name }}
           </p>
@@ -80,11 +73,20 @@
         </div>
 
         <div class="application-actions">
-          <button mat-button color="primary" [routerLink]="['/main/offerDetails', app.offerId]"
-            [disabled]="!offerDetails[app.offerId].active">
-            <mat-icon>visibility</mat-icon>
-            Ver oferta
-          </button>
+          <ng-container *ngIf="offerDetails[app.offerId] as offer">
+            <button mat-button color="primary" [routerLink]="['/main/offerDetails', app.offerId]"
+              [disabled]="!offer.active || offer.loading || offer.error">
+              <mat-icon>visibility</mat-icon>
+              Ver oferta
+            </button>
+            <div *ngIf="offer.loading" class="loading-offer">
+              <mat-spinner diameter="20"></mat-spinner>
+            </div>
+            <div *ngIf="offer.error" class="error-offer">
+              <mat-icon color="warn">error_outline</mat-icon>
+              <span>Error al cargar</span>
+            </div>
+          </ng-container>
         </div>
       </div>
     </div>
