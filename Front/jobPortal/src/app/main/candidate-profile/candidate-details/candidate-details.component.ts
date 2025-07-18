@@ -39,7 +39,6 @@ export class CandidateDetailsComponent implements OnInit, OnDestroy {
   editingExpId: number | null = null;
   editingEduId: number | null | undefined = null;
 
-  // URL formatting utilities
   formatUrl = UrlUtils.formatUrl;
 
   workExperience: WorkExperience = {
@@ -73,8 +72,7 @@ export class CandidateDetailsComponent implements OnInit, OnDestroy {
     private snackBar: MatSnackBar,
     private fb: FormBuilder,
     private route: ActivatedRoute,
-    private loadingScreenService: LoadingScreenService,
-    
+    private loadingScreenService: LoadingScreenService
   ) {}
 
   parseDate(dateString: string | null | undefined): Date | null {
@@ -172,7 +170,6 @@ export class CandidateDetailsComponent implements OnInit, OnDestroy {
   }
 
   private initializeForms(): void {
-    
     this.experienceForm = this.fb.group({
       jobTitle: ['', [Validators.required, Validators.maxLength(100)]],
       company: ['', [Validators.required, Validators.maxLength(100)]],
@@ -342,6 +339,74 @@ export class CandidateDetailsComponent implements OnInit, OnDestroy {
     });
   }
 
+  private calculateAndUpdateExperience(): void {
+    if (!this.experiences || this.experiences.length === 0) {
+      this.updateExperienceField('');
+      return;
+    }
+
+    // Calcular la experiencia total en milisegundos
+    let totalMs = 0;
+    const now = new Date();
+
+    this.experiences.forEach(exp => {
+      if (exp.startPeriod) {
+        const startDate = new Date(exp.startPeriod);
+        const endDate = exp.endPeriod ? new Date(exp.endPeriod) : now;
+        
+        // Sumar la duración de esta experiencia
+        if (startDate && !isNaN(startDate.getTime()) && endDate && !isNaN(endDate.getTime())) {
+          totalMs += endDate.getTime() - startDate.getTime();
+        }
+      }
+    });
+
+    // Convertir a años
+    const totalYears = totalMs / (1000 * 60 * 60 * 24 * 365.25);
+    
+    // Formatear el texto
+    let experienceText = '';
+    if (totalYears < 1) {
+      experienceText = 'Menos de 1 año';
+    } else if (totalYears < 2) {
+      experienceText = '1 año';
+    } else {
+      experienceText = `${Math.floor(totalYears)} años`;
+    }
+
+    this.updateExperienceField(experienceText);
+  }
+
+  private updateExperienceField(experienceText: string): void {
+    if (!this.candidate) return;
+
+    // Update the form control if it exists
+    if (this.candidateForm) {
+      this.candidateForm.patchValue({
+        experience: experienceText
+      }, { emitEvent: false });
+    }
+
+    // Update the candidate object
+    this.candidate.experience = experienceText;
+    
+    // Update the backend
+    this.candidateService.updateCandidateProfile(this.candidate).subscribe({
+      next: () => {
+        console.log('Experiencia actualizada correctamente');
+      },
+      error: (error) => {
+        console.error('Error actualizando experiencia:', error);
+        this.snackBar.open('Error al actualizar la experiencia', 'Cerrar', {
+          duration: 3000,
+          panelClass: ['errorSnackbar'],
+          verticalPosition: 'top',
+          horizontalPosition: 'center',
+        });
+      }
+    });
+  }
+
   private loadExperiences(): void {
     if (!this.candidate?.id) return;
 
@@ -351,6 +416,7 @@ export class CandidateDetailsComponent implements OnInit, OnDestroy {
       .subscribe({
         next: (experiences) => {
           this.experiences = experiences;
+          this.calculateAndUpdateExperience();
         },
         error: (error) => {
           console.error('Error loading experiences:', error);
@@ -685,7 +751,7 @@ export class CandidateDetailsComponent implements OnInit, OnDestroy {
       ) {
         experience.endPeriod = experience.endPeriod.toISOString().split('T')[0];
       } else if (experience.endPeriod === '') {
-        experience.endPeriod = null; 
+        experience.endPeriod = null;
       }
 
       this.candidateService
@@ -742,7 +808,7 @@ export class CandidateDetailsComponent implements OnInit, OnDestroy {
   editEducation(): void {
     this.loadEducations();
     if (this.educationForm.valid) {
-    this.loadEducations();
+      this.loadEducations();
       if (
         this.editingEduId === null ||
         this.editingEduId === undefined ||
@@ -780,7 +846,7 @@ export class CandidateDetailsComponent implements OnInit, OnDestroy {
       ) {
         education.endPeriod = education.endPeriod.toISOString().split('T')[0];
       } else if (education.endPeriod === '') {
-        education.endPeriod = null; 
+        education.endPeriod = null;
       }
 
       this.candidateService
