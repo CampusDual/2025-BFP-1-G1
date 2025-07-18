@@ -1,127 +1,111 @@
 <form [formGroup]="offerForm" (ngSubmit)="onSubmit()" class="offer-form-container">
-    <!-- Cabecera -->
-    <div class="header-container">
-        <!-- izquierda: logo + datos empresa -->
-        <div class="company-info">
-            <div class="logo-container">
-                <img *ngIf="offerForm.get('company')?.value?.logo" [src]="offerForm.get('company')?.value.logo"
-                    alt="Logo empresa" class="company-logo" />
-                <div *ngIf="!offerForm.get('company')?.value?.logo" class="logo-placeholder">
-                    <mat-icon>business</mat-icon>
-                </div>
-            </div>
-            <div class="company-details">
-                <div class="company-name">
-                    {{ offerForm.get('company')?.value?.name || 'Nombre de la empresa' }}
-                </div>
-            </div>
+  <div class="header-container">
+    <div class="company-info">
+      <div class="logo-container">
+        <img *ngIf="offerForm.get('company')?.value?.logo" [src]="offerForm.get('company')?.value.logo"
+          alt="Logo empresa" class="company-logo" />
+        <div *ngIf="!offerForm.get('company')?.value?.logo" class="logo-placeholder">
+          <mat-icon>business</mat-icon>
         </div>
-
-        <!-- derecha: título + localización + modalidad -->
-        <div class="title-container">
-            <div class="title-meta">
-                <mat-form-field appearance="outline" class="title-field">
-                    <mat-label>Título de la oferta</mat-label>
-                    <input matInput formControlName="title" placeholder="Introduce el título" required />
-                    <mat-error *ngIf="offerForm.get('title')?.touched && offerForm.get('title')?.hasError('required')">
-                        El título es obligatorio
-                    </mat-error>
-                    <mat-error *ngIf="offerForm.get('title')?.touched && offerForm.get('title')?.hasError('maxlength')">
-                        El título no puede superar los 120 caracteres
-                    </mat-error>
-                </mat-form-field>
-
-                <div class="offer-meta">
-                    <mat-form-field appearance="outline" class="location-field">
-                        <mat-label>Localización</mat-label>
-                        <input matInput formControlName="localizacion" placeholder="Ciudad, país" />
-                        <mat-error
-                            *ngIf="offerForm.get('localizacion')?.touched && offerForm.get('localizacion')?.hasError('required')">
-                            La localización es obligatoria
-                        </mat-error>
-                    </mat-form-field>
-
-                    <mat-form-field appearance="outline" class="mode-field">
-                        <mat-label>Modalidad</mat-label>
-                        <mat-select formControlName="modalidad">
-                            <mat-option value="presencial">Presencial</mat-option>
-                            <mat-option value="remoto">Remoto</mat-option>
-                            <mat-option value="hibrido">Híbrido</mat-option>
-                        </mat-select>
-                        <mat-error
-                            *ngIf="offerForm.get('modalidad')?.touched && offerForm.get('modalidad')?.hasError('required')">
-                            Selecciona una modalidad
-                        </mat-error>
-                    </mat-form-field>
-                </div>
-            </div>
+      </div>
+      <div class="company-details">
+        <div class="company-name">
+          {{ offerForm.get('company')?.value?.name || 'Nombre de la empresa' }}
         </div>
+      </div>
     </div>
 
-    <!-- Contenido principal: 3 columnas -->
-    <div class="main-content">
-        <!-- columna 1: descripción -->
-        <div class="form-section description-section">
-            <div class="section-title">
-                <mat-icon>description</mat-icon> Descripción <span class="required-asterisk">*</span>
-            </div>
-            <textarea matInput formControlName="description" placeholder="Descripción de la oferta" class="full-width"
-                required></textarea>
+    <div class="title-container">
+      <div class="title-meta">
+        <mat-form-field appearance="outline" class="title-field">
+          <mat-label>Título de la oferta</mat-label>
+          <input matInput formControlName="title" placeholder="Introduce el título" required />
+          <mat-error *ngIf="offerForm.get('title')?.touched && offerForm.get('title')?.hasError('required')">
+            El título es obligatorio
+          </mat-error>
+          <mat-error *ngIf="offerForm.get('title')?.touched && offerForm.get('title')?.hasError('maxlength')">
+            El título no puede superar los 120 caracteres
+          </mat-error>
+        </mat-form-field>
+
+        <div class="offer-meta">
+          <mat-form-field appearance="outline" class="location-field">
+            <mat-label>Localización</mat-label>
+            <input matInput formControlName="localizacion" placeholder="Ciudad, país" />
             <mat-error
-                *ngIf="offerForm.get('description')?.touched && offerForm.get('description')?.hasError('required')">
-                La descripción es obligatoria
+              *ngIf="offerForm.get('localizacion')?.touched && offerForm.get('localizacion')?.hasError('required')">
+              La localización es obligatoria
             </mat-error>
-            <mat-error *ngIf="offerForm.get('description')?.hasError('maxlength')">
-                La descripción no puede superar los 4000 caracteres
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="mode-field">
+            <mat-label>Modalidad</mat-label>
+            <mat-select formControlName="modalidad">
+              <mat-option value="presencial">Presencial</mat-option>
+              <mat-option value="remoto">Remoto</mat-option>
+              <mat-option value="hibrido">Híbrido</mat-option>
+            </mat-select>
+            <mat-error *ngIf="offerForm.get('modalidad')?.touched && offerForm.get('modalidad')?.hasError('required')">
+              Selecciona una modalidad
             </mat-error>
+          </mat-form-field>
         </div>
-
-        <!-- columna 2: requisitos -->
-        <div class="form-section requirements-section">
-            <div class="required">
-                <div class="section-title">
-                    <mat-icon>check_circle</mat-icon> Requisitos requeridos
-                </div>
-                <textarea matInput formControlName="requisitos" placeholder="Requisitos obligatorios" class="full-width"
-                    required></textarea>
-                <mat-error
-                    *ngIf="offerForm.get('requisitos')?.touched && offerForm.get('requisitos')?.hasError('required')">
-                    Los requisitos son obligatorios
-                </mat-error>
-            </div>
-
-            <div class="desirables">
-                <div class="section-title">
-                    <mat-icon>check_circle_outline</mat-icon> Requisitos deseables
-                </div>
-                <textarea matInput formControlName="deseables" placeholder="Requisitos deseables"
-                    class="full-width"></textarea>
-            </div>
-        </div>
-
-        <!-- columna 3: beneficios -->
-        <div class="form-section benefits-section">
-            <div class="section-title">
-                <mat-icon>card_giftcard</mat-icon> Beneficios
-            </div>
-            <textarea matInput formControlName="beneficios" placeholder="Beneficios de la oferta" class="full-width"
-                required></textarea>
-            <mat-error
-                *ngIf="offerForm.get('beneficios')?.touched && offerForm.get('beneficios')?.hasError('required')">
-                Los beneficios son obligatorios
-            </mat-error>
-        </div>
+      </div>
     </div>
+  </div>
 
-    <!-- Botones -->
-    <div class="button-container">
-        <button type="button" mat-button class="cancel-button" (click)="onCancel()" [disabled]="isSubmitting">
-            <mat-icon>cancel</mat-icon> Cancelar
-        </button>
-        <button type="submit" mat-raised-button color="primary" class="publish-button"
-            [disabled]="!offerForm.valid || isSubmitting">
-            <mat-icon>save</mat-icon>
-            {{ isSubmitting ? 'Guardando...' : 'Guardar cambios' }}
-        </button>
+  <div class="main-content">
+    <div class="form-section description-section">
+      <div class="section-title">
+        <mat-icon>description</mat-icon> Descripción <span class="required-asterisk">*</span>
+      </div>
+      <textarea matInput formControlName="description" placeholder="Descripción de la oferta" class="full-width"
+        required></textarea>
+      <mat-error *ngIf="offerForm.get('description')?.touched && offerForm.get('description')?.hasError('required')">
+        La descripción es obligatoria
+      </mat-error>
+      <mat-error *ngIf="offerForm.get('description')?.hasError('maxlength')">
+        La descripción no puede superar los 4000 caracteres
+      </mat-error>
     </div>
+    <div class="form-section requirements-section">
+      <div class="required">
+        <div class="section-title">
+          <mat-icon>check_circle</mat-icon> Requisitos requeridos
+        </div>
+        <textarea matInput formControlName="requisitos" placeholder="Requisitos obligatorios" class="full-width"
+          required></textarea>
+        <mat-error *ngIf="offerForm.get('requisitos')?.touched && offerForm.get('requisitos')?.hasError('required')">
+          Los requisitos son obligatorios
+        </mat-error>
+      </div>
+
+      <div class="desirables">
+        <div class="section-title">
+          <mat-icon>check_circle_outline</mat-icon> Requisitos deseables
+        </div>
+        <textarea matInput formControlName="deseables" placeholder="Requisitos deseables" class="full-width"></textarea>
+      </div>
+    </div>
+    <div class="form-section benefits-section">
+      <div class="section-title">
+        <mat-icon>card_giftcard</mat-icon> Beneficios
+      </div>
+      <textarea matInput formControlName="beneficios" placeholder="Beneficios de la oferta" class="full-width"
+        required></textarea>
+      <mat-error *ngIf="offerForm.get('beneficios')?.touched && offerForm.get('beneficios')?.hasError('required')">
+        Los beneficios son obligatorios
+      </mat-error>
+    </div>
+  </div>
+  <div class="button-container">
+    <button type="button" mat-button class="cancel-button" (click)="onCancel()" [disabled]="isSubmitting">
+      <mat-icon>cancel</mat-icon> Cancelar
+    </button>
+    <button type="submit" mat-raised-button color="primary" class="publish-button"
+      [disabled]="!offerForm.valid || isSubmitting">
+      <mat-icon>save</mat-icon>
+      {{ isSubmitting ? 'Guardando...' : 'Guardar cambios' }}
+    </button>
+  </div>
 </form>
