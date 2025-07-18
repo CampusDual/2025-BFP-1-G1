@@ -766,8 +766,6 @@ export class CandidateDetailsComponent implements OnInit, OnDestroy {
         id: this.editingEduId,
         idCandidate: this.candidate?.id || 0,
       };
-
-      // Ensure startPeriod and endPeriod are formatted as strings before sending
       if (
         education.startPeriod instanceof Date &&
         !isNaN(education.startPeriod.getTime())
@@ -782,7 +780,7 @@ export class CandidateDetailsComponent implements OnInit, OnDestroy {
       ) {
         education.endPeriod = education.endPeriod.toISOString().split('T')[0];
       } else if (education.endPeriod === '') {
-        education.endPeriod = null; // Send null if empty string to backend
+        education.endPeriod = null; 
       }
 
       this.candidateService
