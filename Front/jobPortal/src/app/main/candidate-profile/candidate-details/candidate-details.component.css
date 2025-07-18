@@ -157,7 +157,8 @@
 }
 
 .candidate-qualification,
-.candidate-location {
+.candidate-location,
+.candidate-birthdate {
   color: #5b5152;
   font-size: 0.95rem;
   display: flex;
@@ -168,7 +169,8 @@
 }
 
 .candidate-qualification mat-icon,
-.candidate-location mat-icon {
+.candidate-location mat-icon,
+.candidate-birthdate mat-icon {
   font-size: 1.1rem;
   width: 1.1rem;
   height: 1.1rem;

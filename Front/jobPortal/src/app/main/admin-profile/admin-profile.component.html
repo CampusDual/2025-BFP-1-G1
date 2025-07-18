@@ -84,7 +84,12 @@
             <ng-container *ngIf="editMode[company.id!]; else viewWeb">
               <input [(ngModel)]="company.web" />
             </ng-container>
-            <ng-template #viewWeb>{{ company.web }}</ng-template>
+            <ng-template #viewWeb>
+              <a *ngIf="company.web" [href]="company.web" target="_blank" class="company-website">
+                {{ formatUrl(company.web) }}
+              </a>
+              <span *ngIf="!company.web">-</span>
+            </ng-template>
           </td>
 
           <!-- Editar -->

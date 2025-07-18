@@ -23,7 +23,7 @@
         </div>
         <a *ngIf="offer.company?.web" [href]="offer.company?.web" target="_blank" class="company-website">
           <mat-icon>language</mat-icon>
-          {{ offer.company?.web || 'Sitio web no disponible' }}
+          {{ formatUrl(offer.company?.web) || 'Sitio web no disponible' }}
         </a>
         <div class="company-email">
           <mat-icon>email</mat-icon>
@@ -90,7 +90,7 @@
     </mat-tab>
 
     <ng-container *ngIf="(userData$ | async) as userData">
-      <mat-tab label="Candidatos inscritos" *ngIf="isOfferOwner(userData) || isAdmin(userData)">
+      <mat-tab *ngIf="isOfferOwner(userData) && !isAdmin(userData)" label="Candidatos inscritos">
         <div class="candidates-list-section">
 
 

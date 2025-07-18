@@ -11,6 +11,7 @@ import { UserData } from 'src/app/model/userData';
 import { CandidateProfileService } from 'src/app/services/candidate-profile.service';
 import { UsersService } from 'src/app/services/users.service';
 import { ActivatedRoute } from '@angular/router';
+import { UrlUtils } from 'src/app/utils/url.utils';
 
 @Component({
   selector: 'app-candidate-details',
@@ -36,6 +37,9 @@ export class CandidateDetailsComponent implements OnInit, OnDestroy {
   editingCandidate: boolean = false;
   editingExpId: number | null = null;
   editingEduId: number | null | undefined = null;
+
+  // URL formatting utilities
+  formatUrl = UrlUtils.formatUrl;
 
   workExperience: WorkExperience = {
     idCandidate: 0,
@@ -69,6 +73,14 @@ export class CandidateDetailsComponent implements OnInit, OnDestroy {
     private fb: FormBuilder,
     private route: ActivatedRoute
   ) {}
+
+  parseDate(dateString: string | null | undefined): Date | null {
+    if (!dateString) return null;
+    // Try to parse the date string
+    const date = new Date(dateString);
+    // Check if the date is valid
+    return isNaN(date.getTime()) ? null : date;
+  }
 
   ngOnInit(): void {
     this.initializeForms();
@@ -129,9 +141,7 @@ export class CandidateDetailsComponent implements OnInit, OnDestroy {
             web: this.candidate.web,
             email: this.candidate.user?.email,
             phone: this.candidate.phone,
-            birthdate: this.candidate.birthdate
-              ? new Date(this.candidate.birthdate)
-              : null,
+            birthDate: this.candidate.birthDate,
             profileImg: this.candidate.profileImg || '',
           });
 
@@ -158,38 +168,56 @@ export class CandidateDetailsComponent implements OnInit, OnDestroy {
 
   private initializeForms(): void {
     this.experienceForm = this.fb.group({
-      jobTitle: ['', [Validators.required, Validators.maxLength(120)]],
-      company: ['', Validators.required],
-      startPeriod: [null, Validators.required],
-      endPeriod: [null],
-      description: ['', [Validators.required, Validators.maxLength(4000)]],
+      jobTitle: ['', [Validators.required, Validators.maxLength(100)]],
+      company: ['', [Validators.required, Validators.maxLength(100)]],
+      startPeriod: [null, [Validators.required, Validators.maxLength(100)]],
+      endPeriod: [null, [Validators.maxLength(100)]],
+      description: ['', [Validators.required, Validators.maxLength(1000)]],
     });
 
     this.educationForm = this.fb.group({
-      degree: ['', Validators.required],
-      institution: ['', Validators.required],
-      startPeriod: [null, Validators.required],
-      endPeriod: [null],
-      description: ['', [Validators.required, Validators.maxLength(4000)]],
+      degree: ['', [Validators.required, Validators.maxLength(100)]],
+      institution: ['', [Validators.required, Validators.maxLength(100)]],
+      startPeriod: [null, [Validators.required, Validators.maxLength(100)]],
+      endPeriod: [null, [Validators.maxLength(100)]],
+      description: ['', [Validators.required, Validators.maxLength(1000)]],
     });
 
     this.candidateForm = this.fb.group({
-      name: ['', [Validators.required, Validators.maxLength(100)]],
+      name: ['', [Validators.required, Validators.maxLength(60)]],
       surname: ['', [Validators.required, Validators.maxLength(100)]],
-      qualification: ['', Validators.maxLength(100)],
-      location: ['', Validators.maxLength(100)],
-      experience: [''],
-      employmentStatus: ['no definido', Validators.required],
-      modality: ['indiferente', Validators.required],
-      availability: [''],
-      aboutMe: ['', Validators.maxLength(4000)],
+      qualification: ['', [Validators.maxLength(200)]],
+      location: ['', [Validators.maxLength(120)]],
+      experience: ['', [Validators.maxLength(180)]],
+      employmentStatus: ['no definido', [Validators.required]],
+      modality: ['indiferente', [Validators.required]],
+      availability: ['', [Validators.maxLength(128)]],
+      aboutMe: ['', [Validators.maxLength(1000)]],
       linkedin: [
         '',
-        Validators.pattern('^(https?://)?(www\\.)?linkedin\\.com/.*'),
+        [
+          Validators.maxLength(2048),
+          Validators.pattern('^(https?://)?(www\\.)?linkedin\\.com/.*'),
+        ],
       ],
-      github: ['', Validators.pattern('^(https?://)?(www\\.)?github\\.com/.*')],
-      web: ['', Validators.pattern('^(https?://)?(www\\.)?.*')],
-      email: [{ value: '' }, [Validators.required, Validators.email]],
+      github: [
+        '',
+        [
+          Validators.maxLength(2048),
+          Validators.pattern('^(https?://)?(www\\.)?github\\.com/.*'),
+        ],
+      ],
+      web: [
+        '',
+        [
+          Validators.maxLength(2048),
+          Validators.pattern('^(https?://)?(www\\.)?.*'),
+        ],
+      ],
+      email: [
+        { value: '' },
+        [Validators.required, Validators.email, Validators.maxLength(255)],
+      ],
       phone: [
         '',
         [
@@ -198,10 +226,11 @@ export class CandidateDetailsComponent implements OnInit, OnDestroy {
           Validators.maxLength(15),
         ],
       ],
-      birthdate: [null],
+      birthDate: [null, [Validators.required, Validators.maxLength(100)]],
       profileImg: [''],
     });
   }
+
   private loadUserData(): void {
     this.userService.userData$
       .pipe(takeUntil(this.destroy$))
@@ -230,9 +259,7 @@ export class CandidateDetailsComponent implements OnInit, OnDestroy {
               web: this.candidate.web,
               email: this.userData?.user?.email,
               phone: this.candidate.phone,
-              birthdate: this.candidate.birthdate
-                ? new Date(this.candidate.birthdate)
-                : null,
+              birthDate: this.candidate.birthDate,
               profileImg: this.candidate.profileImg || '',
             });
 
@@ -502,29 +529,27 @@ export class CandidateDetailsComponent implements OnInit, OnDestroy {
 
       let formattedBirthdate: string | null = null;
       if (
-        formData.birthdate instanceof Date &&
-        !isNaN(formData.birthdate.getTime())
+        formData.birthDate instanceof Date &&
+        !isNaN(formData.birthDate.getTime())
       ) {
-        formattedBirthdate = formData.birthdate.toISOString().split('T')[0];
-      } else if (typeof formData.birthdate === 'string' && formData.birthdate) {
-        formattedBirthdate = formData.birthdate;
+        formattedBirthdate = formData.birthDate.toISOString().split('T')[0];
+      } else if (typeof formData.birthDate === 'string' && formData.birthDate) {
+        formattedBirthdate = formData.birthDate;
       }
 
       formData.employmentStatus =
         formData.employmentStatus?.toLowerCase() || 'no definido';
       formData.modality = formData.modality?.toLowerCase() || 'indiferente';
 
-      const candidateDataToUpdate: Candidate = {
+      const candidateDataToUpdate: any = {
         id: this.candidate.id,
         ...formData,
+        birthDate: formattedBirthdate,
         user: {
           ...this.candidate.user,
           email: formData.email,
         },
       };
-
-      delete (candidateDataToUpdate as any).birthdate;
-      candidateDataToUpdate.birthdate = formattedBirthdate;
 
       let updateObservable;
       if (this.selectedFile) {

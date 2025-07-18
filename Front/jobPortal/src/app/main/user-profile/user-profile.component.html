@@ -25,7 +25,7 @@
           </div>
           <div class="info-item" *ngIf="userData?.company?.web">
             <mat-icon>language</mat-icon>
-            <a [href]="userData?.company?.web" target="_blank" class="web-link">{{ userData?.company?.web }}</a>
+            <a [href]="userData?.company?.web" target="_blank" class="web-link">{{ formatWebsiteUrl(userData?.company?.web || '') }}</a>
           </div>
           <div class="info-item" *ngIf="userData?.company?.cif">
             <mat-icon>badge</mat-icon>

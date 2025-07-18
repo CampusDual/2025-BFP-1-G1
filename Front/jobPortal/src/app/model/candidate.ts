@@ -6,7 +6,7 @@ export class Candidate {
   surname!: string;
   phone!: string;
   user!: User;
-  birthdate?: string | null;
+  birthDate?: Date; 
   profileImg?: string;
   location?: string;
   qualification?: string;
@@ -18,4 +18,5 @@ export class Candidate {
   linkedin?: string;
   github?: string;
   web?: string;
+
 }

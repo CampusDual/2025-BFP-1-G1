@@ -79,7 +79,7 @@ export class UsersService {
       surname,
       phone,
       user: user,
-      birthdate: undefined,
+      birthDate: undefined,
     };
     const userData: UserData = {
       user: user,

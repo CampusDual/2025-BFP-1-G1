@@ -19,6 +19,7 @@ import {
 } from 'rxjs';
 import { Location } from '@angular/common';
 import { Application } from 'src/app/model/application';
+import { UrlUtils } from 'src/app/utils/url.utils';
 
 @Component({
   selector: 'app-offer-details',
@@ -36,6 +37,8 @@ export class OfferDetailsComponent implements OnInit {
   errorLoadingCandidates: string | null = null;
   displayedColumns: string[] = ['candidateName', 'qualification', 'date'];
   count: number = 0;
+
+  formatUrl = UrlUtils.formatUrl;
 
   constructor(
     private route: ActivatedRoute,
@@ -84,7 +87,7 @@ export class OfferDetailsComponent implements OnInit {
         });
       }
 
-      if (this.isOfferOwner(userData) || this.isAdmin(userData)) {
+      if (this.isOfferOwner(userData) && !this.isAdmin(userData)) {
         this.loadCandidatesbyId(id);
       }
     });

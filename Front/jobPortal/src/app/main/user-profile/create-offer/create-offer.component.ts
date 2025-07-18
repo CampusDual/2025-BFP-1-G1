@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { UsersService } from 'src/app/services/users.service';
 import { UserData } from 'src/app/model/userData';
+import { UrlUtils } from 'src/app/utils/url.utils';
 
 @Component({
   selector: 'app-create-offer',
@@ -18,6 +19,8 @@ export class CreateOfferComponent implements OnInit {
   offerForm!: FormGroup;
   userData: UserData | null = null;
   modalidad = ['presencial', 'remoto', 'hibrido'];
+  
+  formatUrl = UrlUtils.formatUrl;
 
 
   constructor(

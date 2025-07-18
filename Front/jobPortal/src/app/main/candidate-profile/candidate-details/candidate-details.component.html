@@ -21,6 +21,10 @@
           <mat-icon>location_on</mat-icon>
           {{ candidate.location }}
         </p>
+        <p class="candidate-birthdate" *ngIf="candidate?.birthDate">
+          <mat-icon>cake</mat-icon>
+          {{ candidate.birthDate | date:'longDate' }}
+        </p>
       </div>
       <div class="edit-button-container">
         <button *ngIf="isCandidate() && isOwner()" mat-icon-button class="edit-button" (click)="editCandidate()">
@@ -88,9 +92,7 @@
                   </li>
                   <li *ngIf="candidate?.web">
                     <mat-icon>language</mat-icon>
-                    <a [href]="candidate.web" target="_blank">{{
-                      candidate.web
-                      }}</a>
+                    <a [href]="candidate.web" target="_blank">{{ formatUrl(candidate.web) }}</a>
                   </li>
                 </ul>
               </div>
@@ -664,7 +666,7 @@
             </mat-form-field>
             <mat-form-field appearance="outline">
               <mat-label>Fecha de Nacimiento</mat-label>
-              <input matInput [matDatepicker]="picker" formControlName="birthdate" />
+              <input matInput [matDatepicker]="picker" formControlName="birthDate" />
               <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
               <mat-datepicker #picker></mat-datepicker>
             </mat-form-field>

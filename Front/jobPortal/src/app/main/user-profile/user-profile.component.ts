@@ -50,6 +50,11 @@ export class UserProfileComponent implements OnInit {
     this.isMobile = window.innerWidth <= 768;
   }
 
+  formatWebsiteUrl(url: string): string {
+    if (!url) return '';
+    return url.replace(/^https?:\/\//, '');
+  }
+
   private loadJobOffers(): void {
     this.jobOfferService.getProfileOffers().subscribe({
       next: (offers) => (this.jobOffers = offers),
