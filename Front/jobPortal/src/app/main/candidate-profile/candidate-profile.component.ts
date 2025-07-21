@@ -113,7 +113,6 @@ export class CandidateProfileComponent implements OnInit, OnDestroy {
 
     if (offerIds.length === 0) return;
 
-    // Mark all as loading
     offerIds.forEach(id => {
       updatedOfferDetails[id] = {
         ...(updatedOfferDetails[id] || {}),
@@ -122,7 +121,6 @@ export class CandidateProfileComponent implements OnInit, OnDestroy {
       };
     });
 
-    // Update the component's offerDetails
     this.offerDetails = updatedOfferDetails;
 
     const offerObservables = offerIds.map(offerId => 
@@ -144,7 +142,6 @@ export class CandidateProfileComponent implements OnInit, OnDestroy {
       takeUntil(this.destroy$)
     ).subscribe({
       next: (offers) => {
-        // Create a new object to trigger change detection
         const updatedOffers = { ...this.offerDetails };
         
         offers.forEach((offer, index) => {
@@ -156,7 +153,6 @@ export class CandidateProfileComponent implements OnInit, OnDestroy {
               error: false
             };
           } else if (updatedOffers[offerId]) {
-            // Mark as error if offer is null (error case)
             updatedOffers[offerId] = {
               ...updatedOffers[offerId],
               loading: false,
@@ -165,12 +161,10 @@ export class CandidateProfileComponent implements OnInit, OnDestroy {
           }
         });
         
-        // Update the component's offerDetails
         this.offerDetails = updatedOffers;
       },
       error: (error) => {
         console.error('Error loading offer details:', error);
-        // Update with error state
         const updatedOffers = { ...this.offerDetails };
         offerIds.forEach(id => {
           if (updatedOffers[id]) {
@@ -258,4 +252,21 @@ export class CandidateProfileComponent implements OnInit, OnDestroy {
     this.error = message;
     this.setLoading(false);
   }
+
+
+formatDate(dateInput: string | Date | undefined | null): string {
+  if (!dateInput) return '';
+
+  const date = typeof dateInput === 'string' ? new Date(dateInput) : dateInput;
+  if (isNaN(date.getTime())) return '';
+
+  const options: Intl.DateTimeFormatOptions = {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+    timeZone: 'UTC',
+  };
+
+  return date.toLocaleDateString('es-ES', options);
+}
 }
