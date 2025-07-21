@@ -106,20 +106,22 @@ export class CandidateDetailsComponent implements OnInit, OnDestroy {
     }
   }
 
-  formatDate(dateString: string | undefined | null): string {
-    if (!dateString) return '';
+formatDate(dateInput: string | Date | undefined | null): string {
+  if (!dateInput) return '';
 
-    const date = new Date(dateString);
-    if (isNaN(date.getTime())) return dateString;
+  const date = typeof dateInput === 'string' ? new Date(dateInput) : dateInput;
+  if (isNaN(date.getTime())) return '';
 
-    const options: Intl.DateTimeFormatOptions = {
-      year: 'numeric',
-      month: 'short',
-      timeZone: 'UTC',
-    };
+  const options: Intl.DateTimeFormatOptions = {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+    timeZone: 'UTC',
+  };
 
-    return date.toLocaleDateString('es-ES', options);
-  }
+  return date.toLocaleDateString('es-ES', options);
+}
+
 
   private loadCandidate(id: number): void {
     this.candidateService
@@ -377,35 +379,30 @@ export class CandidateDetailsComponent implements OnInit, OnDestroy {
     this.updateExperienceField(experienceText);
   }
 
-  private updateExperienceField(experienceText: string): void {
-    if (!this.candidate) return;
+private updateExperienceField(experienceText: string): void {
+  if (!this.candidate) return;
 
-    // Update the form control if it exists
-    if (this.candidateForm) {
-      this.candidateForm.patchValue({
-        experience: experienceText
-      }, { emitEvent: false });
-    }
-
-    // Update the candidate object
-    this.candidate.experience = experienceText;
-    
-    // Update the backend
-    this.candidateService.updateCandidateProfile(this.candidate).subscribe({
-      next: () => {
-        console.log('Experiencia actualizada correctamente');
-      },
-      error: (error) => {
-        console.error('Error actualizando experiencia:', error);
-        this.snackBar.open('Error al actualizar la experiencia', 'Cerrar', {
-          duration: 3000,
-          panelClass: ['errorSnackbar'],
-          verticalPosition: 'top',
-          horizontalPosition: 'center',
-        });
-      }
-    });
+  if (this.candidate.experience === experienceText) {
+    return;
   }
+
+  this.candidate.experience = experienceText;
+
+  this.candidateService.updateCandidateProfile(this.candidate).subscribe({
+    next: () => {
+      console.log('Experiencia actualizada correctamente');
+    },
+    error: (error) => {
+      console.error('Error actualizando experiencia:', error);
+      this.snackBar.open('Error al actualizar la experiencia', 'Cerrar', {
+        duration: 3000,
+        panelClass: ['errorSnackbar'],
+        verticalPosition: 'top',
+        horizontalPosition: 'center',
+      });
+    }
+  });
+}
 
   private loadExperiences(): void {
     if (!this.candidate?.id) return;
