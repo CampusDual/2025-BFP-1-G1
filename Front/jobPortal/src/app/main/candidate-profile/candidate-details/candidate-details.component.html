@@ -23,7 +23,7 @@
         </p>
         <p class="candidate-birthdate" *ngIf="candidate?.birthDate">
           <mat-icon>cake</mat-icon>
-          {{ candidate.birthDate | date:'longDate' }}
+          {{ formatDate(candidate.birthDate) }}
         </p>
       </div>
       <div class="edit-button-container">
@@ -568,7 +568,7 @@
           <div class="form-grid">
             <mat-form-field appearance="outline">
               <mat-label>Años de experiencia</mat-label>
-              <input matInput type="number" formControlName="experience" />
+              <input matInput type="text" [value]="candidate?.experience" disabled />
             </mat-form-field>
             <mat-form-field appearance="outline">
               <mat-label>Situación laboral</mat-label>
