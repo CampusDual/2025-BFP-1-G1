@@ -15,7 +15,7 @@
           <mat-icon>phone</mat-icon> {{ userData?.candidate?.phone }}
         </p>
         <p class="candidate-extra" *ngIf="userData?.candidate?.birthDate">
-          <mat-icon>cake</mat-icon> {{ userData?.candidate?.birthDate | date }}
+          <mat-icon>cake</mat-icon> {{ formatDate(userData?.candidate?.birthDate)}}
         </p>
       </div>
     </div>
