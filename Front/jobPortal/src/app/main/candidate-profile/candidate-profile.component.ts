@@ -264,7 +264,6 @@ formatDate(dateInput: string | Date | undefined | null): string {
     year: 'numeric',
     month: 'long',
     day: 'numeric',
-    timeZone: 'UTC',
   };
 
   return date.toLocaleDateString('es-ES', options);

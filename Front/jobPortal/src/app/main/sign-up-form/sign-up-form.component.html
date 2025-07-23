@@ -18,7 +18,7 @@
         <div class="inputs1">
           <mat-form-field appearance="outline" class="formulario">
             <mat-label>Nombre de usuario</mat-label>
-            <input matInput id="login" formControlName="login" placeholder="Tu usuario" required />
+            <input matInput tabindex="1" id="login" formControlName="login" placeholder="Tu usuario" required />
             <mat-error *ngIf="login?.invalid && (login?.touched || login?.dirty)">
               {{ getFieldErrorMessage('login') }}
             </mat-error>
@@ -26,7 +26,7 @@
 
           <mat-form-field appearance="outline" class="formulario">
             <mat-label>Nombre</mat-label>
-            <input matInput type="text" id="name" formControlName="name" placeholder="Tu nombre" required />
+            <input matInput tabindex="3" type="text" id="name" formControlName="name" placeholder="Tu nombre" required />
             <mat-error *ngIf="name?.invalid && (name?.touched || name?.dirty)">
               {{ getFieldErrorMessage('name') }}
             </mat-error>
@@ -34,7 +34,7 @@
 
           <mat-form-field appearance="outline" class="form-field-custom">
             <mat-label>Email</mat-label>
-            <input matInput type="text" formControlName="email" placeholder="Tu email" />
+            <input matInput tabindex="5" type="text" formControlName="email" placeholder="Tu email" />
             <mat-error *ngIf="email?.invalid && (email?.touched || email?.dirty)">
               {{ getFieldErrorMessage('email') }}
             </mat-error>
@@ -44,7 +44,7 @@
         <div class="inputs2">
           <mat-form-field appearance="outline" class="formulario">
             <mat-label>Contraseña</mat-label>
-            <input matInput type="password" id="password" formControlName="password" placeholder="**********"
+            <input matInput tabindex="2" type="password" id="password" formControlName="password" placeholder="**********"
               required />
             <mat-error *ngIf="password?.invalid && (password?.touched || password?.dirty)">
               {{ getFieldErrorMessage('password') }}
@@ -53,7 +53,7 @@
 
           <mat-form-field appearance="outline" class="formulario">
             <mat-label>Apellidos</mat-label>
-            <input matInput id="surname" formControlName="surname" placeholder="Tu apellido" required />
+            <input matInput tabindex="4" id="surname" formControlName="surname" placeholder="Tu apellido" required />
             <mat-error *ngIf="surname?.invalid && (surname?.touched || surname?.dirty)">
               {{ getFieldErrorMessage('surname') }}
             </mat-error>
@@ -61,7 +61,7 @@
 
           <mat-form-field appearance="outline" class="formulario">
             <mat-label>Teléfono</mat-label>
-            <input matInput id="phone" formControlName="phone" placeholder="Tu teléfono" required />
+            <input matInput tabindex="6" id="phone" formControlName="phone" placeholder="Tu teléfono" required />
             <mat-error *ngIf="phone?.invalid && (phone?.touched || phone?.dirty)">
               {{ getFieldErrorMessage('phone') }}
             </mat-error>

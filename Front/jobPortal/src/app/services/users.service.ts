@@ -151,6 +151,7 @@ export class UsersService {
   logout(): void {
     localStorage.removeItem('token');
     localStorage.removeItem('role');
+    localStorage.removeItem('userData');
     this.userDataSubject.next(null);
   }
 

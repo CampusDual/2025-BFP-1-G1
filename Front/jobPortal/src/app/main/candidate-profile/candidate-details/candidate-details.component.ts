@@ -106,22 +106,22 @@ export class CandidateDetailsComponent implements OnInit, OnDestroy {
     }
   }
 
-formatDate(dateInput: string | Date | undefined | null): string {
-  if (!dateInput) return '';
+  formatDate(dateInput: string | Date | undefined | null): string {
+    if (!dateInput) return '';
 
-  const date = typeof dateInput === 'string' ? new Date(dateInput) : dateInput;
-  if (isNaN(date.getTime())) return '';
+    const date =
+      typeof dateInput === 'string' ? new Date(dateInput) : dateInput;
+    if (isNaN(date.getTime())) return '';
 
-  const options: Intl.DateTimeFormatOptions = {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-    timeZone: 'UTC',
-  };
+    const options: Intl.DateTimeFormatOptions = {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+      timeZone: 'UTC',
+    };
 
-  return date.toLocaleDateString('es-ES', options);
-}
-
+    return date.toLocaleDateString('es-ES', options);
+  }
 
   private loadCandidate(id: number): void {
     this.candidateService
@@ -351,13 +351,18 @@ formatDate(dateInput: string | Date | undefined | null): string {
     let totalMs = 0;
     const now = new Date();
 
-    this.experiences.forEach(exp => {
+    this.experiences.forEach((exp) => {
       if (exp.startPeriod) {
         const startDate = new Date(exp.startPeriod);
         const endDate = exp.endPeriod ? new Date(exp.endPeriod) : now;
-        
+
         // Sumar la duración de esta experiencia
-        if (startDate && !isNaN(startDate.getTime()) && endDate && !isNaN(endDate.getTime())) {
+        if (
+          startDate &&
+          !isNaN(startDate.getTime()) &&
+          endDate &&
+          !isNaN(endDate.getTime())
+        ) {
           totalMs += endDate.getTime() - startDate.getTime();
         }
       }
@@ -365,7 +370,7 @@ formatDate(dateInput: string | Date | undefined | null): string {
 
     // Convertir a años
     const totalYears = totalMs / (1000 * 60 * 60 * 24 * 365.25);
-    
+
     // Formatear el texto
     let experienceText = '';
     if (totalYears < 1) {
@@ -379,30 +384,30 @@ formatDate(dateInput: string | Date | undefined | null): string {
     this.updateExperienceField(experienceText);
   }
 
-private updateExperienceField(experienceText: string): void {
-  if (!this.candidate) return;
+  private updateExperienceField(experienceText: string): void {
+    if (!this.candidate) return;
 
-  if (this.candidate.experience === experienceText) {
-    return;
-  }
-
-  this.candidate.experience = experienceText;
-
-  this.candidateService.updateCandidateProfile(this.candidate).subscribe({
-    next: () => {
-      console.log('Experiencia actualizada correctamente');
-    },
-    error: (error) => {
-      console.error('Error actualizando experiencia:', error);
-      this.snackBar.open('Error al actualizar la experiencia', 'Cerrar', {
-        duration: 3000,
-        panelClass: ['errorSnackbar'],
-        verticalPosition: 'top',
-        horizontalPosition: 'center',
-      });
+    if (this.candidate.experience === experienceText) {
+      return;
     }
-  });
-}
+
+    this.candidate.experience = experienceText;
+
+    this.candidateService.updateCandidateProfile(this.candidate).subscribe({
+      next: () => {
+        console.log('Experiencia actualizada correctamente');
+      },
+      error: (error) => {
+        console.error('Error actualizando experiencia:', error);
+        this.snackBar.open('Error al actualizar la experiencia', 'Cerrar', {
+          duration: 3000,
+          panelClass: ['errorSnackbar'],
+          verticalPosition: 'top',
+          horizontalPosition: 'center',
+        });
+      },
+    });
+  }
 
   private loadExperiences(): void {
     if (!this.candidate?.id) return;
@@ -599,7 +604,11 @@ private updateExperienceField(experienceText: string): void {
         formData.birthDate instanceof Date &&
         !isNaN(formData.birthDate.getTime())
       ) {
-        formattedBirthdate = formData.birthDate.toISOString().split('T')[0];
+        const date = formData.birthDate;
+        const year = date.getFullYear();
+        const month = (date.getMonth() + 1).toString().padStart(2, '0');
+        const day = date.getDate().toString().padStart(2, '0');
+        formattedBirthdate = `${year}-${month}-${day}`;
       } else if (typeof formData.birthDate === 'string' && formData.birthDate) {
         formattedBirthdate = formData.birthDate;
       }
