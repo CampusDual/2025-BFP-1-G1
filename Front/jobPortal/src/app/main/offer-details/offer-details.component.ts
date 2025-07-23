@@ -46,7 +46,7 @@ export class OfferDetailsComponent implements OnInit {
     private jobService: JobOfferService,
     private applicationService: ApplicationService,
     private usersService: UsersService,
-    public _snackBar: MatSnackBar,
+    public snackBar: MatSnackBar,
     private location: Location
   ) {}
 
@@ -135,7 +135,7 @@ export class OfferDetailsComponent implements OnInit {
   }
 
   openSnackBar(message: string, panelClass: string = '') {
-    this._snackBar.open(message, 'Cerrar', {
+    this.snackBar.open(message, 'Cerrar', {
       duration: 10000,
       horizontalPosition: 'center',
       verticalPosition: 'top',
@@ -145,8 +145,13 @@ export class OfferDetailsComponent implements OnInit {
 
   aplicarAOferta(oferta: any) {
     this.applicationService.aplicarAOferta(oferta.id).subscribe({
-      next: (res) => {
-        this.openSnackBar(res, 'success');
+       next: (res) => {
+        this.snackBar.open('Te has inscrito correctamente', 'Cerrar', {
+          duration: 1000,
+          horizontalPosition: 'center',
+          verticalPosition: 'top',
+          panelClass: ['successSnackbar'],
+        });
         this.appliedOfferIds.push(oferta.id);
         this.appliedOfferIds = [...this.appliedOfferIds];
       },
@@ -165,7 +170,7 @@ export class OfferDetailsComponent implements OnInit {
         }
         this.openSnackBar(errorMessage, 'error');
         console.error('Error al aplicar a la oferta:', err);
-        this._snackBar.open(errorMessage, 'Cerrar', {
+        this.snackBar.open(errorMessage, 'Cerrar', {
           duration: 1000,
           horizontalPosition: 'center',
           verticalPosition: 'top',
@@ -255,7 +260,7 @@ export class OfferDetailsComponent implements OnInit {
         error: (err) => {
           this.errorLoadingCandidates =
             'Error al cargar las aplicaciones y los detalles de los candidatos.';
-          this._snackBar.open(this.errorLoadingCandidates, 'Cerrar', {
+          this.snackBar.open(this.errorLoadingCandidates, 'Cerrar', {
             duration: 3000,
             verticalPosition: 'top',
           });

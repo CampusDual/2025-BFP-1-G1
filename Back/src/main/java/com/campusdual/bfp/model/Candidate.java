@@ -1,5 +1,6 @@
 package com.campusdual.bfp.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -28,6 +29,7 @@ public class Candidate {
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Europe/Madrid")
     @Column(name = "birth_date")
     private Date birthDate;
 

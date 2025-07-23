@@ -203,7 +203,7 @@
 .desirables-section {
   background-color: var(--gray-megalightest);
   flex: 1;
-  min-height: 150px;
+  height: 100%;
 }
 
 .form-section p {
