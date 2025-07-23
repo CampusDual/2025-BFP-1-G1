@@ -154,9 +154,10 @@
               <mat-form-field appearance="outline">
                 <mat-label>Fecha de Inicio</mat-label>
                 <input matInput [matDatepicker]="startPeriod" formControlName="startPeriod" required />
-
                 <mat-datepicker-toggle matSuffix [for]="startPeriod"></mat-datepicker-toggle>
                 <mat-datepicker #startPeriod></mat-datepicker>
+                <mat-hint class="custom-hint">MM/DD/AAAA</mat-hint>
+
                 <mat-error
                   *ngIf="experienceForm.get('startPeriod')?.hasError('required') && experienceForm.get('startPeriod')?.touched">
                   La fecha de inicio es obligatoria.
@@ -170,6 +171,7 @@
 
                 <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
                 <mat-datepicker #endPicker></mat-datepicker>
+                <mat-hint class="custom-hint">MM/DD/AAAA</mat-hint>
                 <mat-error
                   *ngIf="experienceForm.get('endPeriod')?.hasError('matDatepickerMin') && experienceForm.get('endPeriod')?.touched">
                   La fecha de fin debe ser posterior a la fecha de inicio.
@@ -252,7 +254,7 @@
 
                   <mat-form-field appearance="outline" class="full-width">
                     <mat-label>Descripción</mat-label>
-                    <textarea matInput formControlName="description" rows="3"></textarea>
+                    <textarea matInput formControlName="description" rows="3" class="fixed-size-textarea"></textarea>
                     <mat-error
                       *ngIf="experienceForm.get('description')?.hasError('required') && experienceForm.get('description')?.touched">
                       La descripción es obligatoria.
@@ -343,6 +345,8 @@
 
                 <mat-datepicker-toggle matSuffix [for]="eduStartPicker"></mat-datepicker-toggle>
                 <mat-datepicker #eduStartPicker [startAt]="startDate"></mat-datepicker>
+                <mat-hint class="custom-hint">MM/DD/AAAA</mat-hint>
+
                 <mat-error
                   *ngIf="educationForm.get('startPeriod')?.hasError('required') && educationForm.get('startPeriod')?.touched">
                   La fecha de inicio es obligatoria.
@@ -356,6 +360,8 @@
 
                 <mat-datepicker-toggle matSuffix [for]="eduEndPicker"></mat-datepicker-toggle>
                 <mat-datepicker #eduEndPicker [startAt]="startDate"></mat-datepicker>
+                <mat-hint class="custom-hint">MM/DD/AAAA</mat-hint>
+
                 <mat-error
                   *ngIf="educationForm.get('endPeriod')?.hasError('matDatepickerMin') && educationForm.get('endPeriod')?.touched">
                   La fecha de fin debe ser posterior a la fecha de inicio.
@@ -435,7 +441,7 @@
 
                   <mat-form-field appearance="outline" class="full-width">
                     <mat-label>Descripción</mat-label>
-                    <textarea matInput formControlName="description" rows="3" required></textarea>
+                    <textarea matInput formControlName="description" rows="3" required class="fixed-size-textarea"></textarea>
                     <mat-error
                       *ngIf="educationForm.get('description')?.hasError('required') && educationForm.get('description')?.touched">
                       La descripción es obligatoria.
@@ -601,7 +607,7 @@
             </mat-form-field>
             <mat-form-field appearance="outline" class="full-width">
               <mat-label>Presentación</mat-label>
-              <textarea matInput formControlName="aboutMe" rows="5"></textarea>
+              <textarea matInput formControlName="aboutMe" rows="5" class="fixed-size-textarea"></textarea>
               <mat-error
                 *ngIf="candidateForm.get('aboutMe')?.hasError('maxlength') && candidateForm.get('aboutMe')?.touched">
                 La presentación no puede exceder los 4000 caracteres.
@@ -669,6 +675,8 @@
               <input matInput [matDatepicker]="picker" formControlName="birthDate" />
               <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
               <mat-datepicker #picker></mat-datepicker>
+              <mat-hint class="custom-hint">MM/DD/AAAA</mat-hint>
+
             </mat-form-field>
           </div>
           <div class="form-actions edit-candidate-actions">

@@ -204,7 +204,7 @@ export class JobCatalogueComponent implements OnInit, OnDestroy {
   aplicarAOferta(oferta: any) {
     this.applicationService.aplicarAOferta(oferta.id).subscribe({
       next: (res) => {
-        this.snackBar.open(res, 'Cerrar', {
+        this.snackBar.open('Te has inscrito correctamente', 'Cerrar', {
           duration: 1000,
           horizontalPosition: 'center',
           verticalPosition: 'top',

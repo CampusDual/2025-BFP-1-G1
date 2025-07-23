@@ -293,6 +293,12 @@ h4:after {
   border: 1px solid var(--gray-lightest, #e0e0e0);
 }
 
+.custom-hint {
+  font-size: 13px;
+  color: var(--gray);
+}
+
+
 .form-container,
 .edit-form-container {
   background: white;
