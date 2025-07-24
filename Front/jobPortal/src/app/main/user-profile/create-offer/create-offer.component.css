@@ -462,13 +462,16 @@ mat-hint {
   display: block;
 }
 
-/* Specific red border for inputs/textareas within .form-section (main content) when invalid and touched */
+.mat-mdc-select-value {
+  color: black;
+  font-weight: 500;
+}
+
 .form-section input.ng-invalid.ng-touched,
 .form-section textarea.ng-invalid.ng-touched {
   border: 1px solid #e81c34 !important;
 }
 
-/* Specific red border for Material form fields within .form-section when invalid and touched */
 .form-section .mat-form-field-invalid.ng-touched .mat-mdc-text-field-wrapper {
   border-color: #e81c34 !important;
 }
@@ -478,20 +481,19 @@ mat-hint {
   color: #e81c34 !important;
 }
 
-/* Ensure header inputs and Material fields maintain their default non-red border */
 .header-container input:not(.ng-invalid),
 .header-container textarea:not(.ng-invalid),
-.header-container .mat-form-field:not(.mat-form-field-invalid) .mat-mdc-text-field-wrapper {
-    border-color: #ebe9e9 !important; /* Revert to default for non-invalid header fields */
-    box-shadow: none !important;
+.header-container
+  .mat-form-field:not(.mat-form-field-invalid)
+  .mat-mdc-text-field-wrapper {
+  border-color: #ebe9e9 !important;
+  box-shadow: none !important;
 }
 
-/* Ensure focus outline for header inputs maintains non-red default */
 .header-container .mat-mdc-form-field-focus .mat-mdc-text-field-wrapper {
-    border-color: #ebe9e9; /* Revert to default for focused header fields */
-    box-shadow: none;
+  border-color: #ebe9e9;
+  box-shadow: none;
 }
-
 
 @media (max-width: 999px) {
   .offer-form-container {
