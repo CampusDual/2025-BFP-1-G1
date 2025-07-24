@@ -418,47 +418,6 @@
   color: var(--primary, #e81c34);
 }
 
-::ng-deep .mat-mdc-paginator-page-size {
-  margin-right: 8px;
-}
-
-::ng-deep .mat-mdc-paginator-range-actions {
-  margin: 0 8px;
-}
-
-::ng-deep .mat-mdc-paginator-page-size-label {
-  margin-right: 8px;
-  color: rgba(0, 0, 0, 0.6);
-}
-
-::ng-deep .mat-mdc-select-value {
-  color: #3f51b5;
-  font-weight: 500;
-}
-
-::ng-deep .mat-mdc-paginator-page-size .mat-mdc-select-arrow {
-  color: #3f51b5;
-}
-
-::ng-deep .mat-mdc-paginator-range-label {
-  margin: 0 16px;
-  color: rgba(0, 0, 0, 0.6);
-}
-
-::ng-deep .mat-mdc-paginator-navigation-previous,
-::ng-deep .mat-mdc-paginator-navigation-next,
-::ng-deep .mat-mdc-paginator-navigation-first,
-::ng-deep .mat-mdc-paginator-navigation-last {
-  color: #3f51b5;
-}
-
-::ng-deep .mat-mdc-paginator-navigation-previous[disabled],
-::ng-deep .mat-mdc-paginator-navigation-next[disabled],
-::ng-deep .mat-mdc-paginator-navigation-first[disabled],
-::ng-deep .mat-mdc-paginator-navigation-last[disabled] {
-  color: rgba(0, 0, 0, 0.38);
-}
-
 /* Estilos para móviles */
 @media (max-width: 600px) {
   .pagination-container {

@@ -336,10 +336,10 @@ mat-form-field {
   transition: all 0.2s ease;
 }
 
-/* Remove border-color and box-shadow on focus for header inputs */
+
 .header-container .mat-mdc-form-field-focus .mat-mdc-text-field-wrapper {
-  border-color: #ebe9e9; /* Revert to default */
-  box-shadow: none; /* Remove box-shadow */
+  border-color: #ebe9e9; 
+  box-shadow: none; 
 }
 
 .mat-mdc-form-field-subscript-wrapper {
@@ -369,16 +369,9 @@ mat-form-field .mat-form-field-outline {
   color: #e2e8f0;
 }
 
-mat-form-field.mat-focused .mat-form-field-outline-thick {
-  color: #3b82f6;
-}
 
 mat-form-field .mat-form-field-label {
   color: #64748b;
-}
-
-mat-form-field .mat-form-field-ripple {
-  background-color: #3b82f6;
 }
 
 .full-width:focus {
@@ -463,7 +456,7 @@ mat-hint {
 }
 
 .mat-mdc-select-value {
-  color: black;
+  color: black !important;
   font-weight: 500;
 }
 
