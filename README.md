@@ -1,22 +1,43 @@
-
 # Job Portal
 
-Este proyecto es una **aplicación web de portal de empleo**. Actualmente está en desarrollo y permite tanto a **empresas** como a **candidatos** registrarse, iniciar sesión y gestionar sus respectivas funcionalidades.
+Este proyecto es una **aplicación web de portal de empleo**. Está en desarrollo activo y permite tanto a **empresas** como a **candidatos** registrarse, iniciar sesión y gestionar sus funcionalidades de forma sencilla.
 
-> ✅ Las **empresas** pueden registrarse, iniciar sesión y gestionar sus ofertas de empleo.  
-> ✅ Los **candidatos** ya pueden registrarse desde la interfaz web, iniciar sesión e **inscribirse en ofertas**.  
-> 🛠️ La creación de cuenta de empresa aún se realiza **vía Postman** (API), no desde la interfaz web.
+> ✅ Las **empresas** pueden registrarse desde la web, iniciar sesión, crear ofertas y ver los candidatos inscritos.  
+> ✅ Los **candidatos** pueden registrarse, iniciar sesión, **ver su perfil**, completarlo y **postularse a ofertas**.  
+> ✅ El **administrador** puede **añadir, editar y eliminar empresas** desde su panel privado.  
 
 ---
 
-## Funcionalidades (estado actual)
+## Funcionalidades actuales
 
-- ✅ Registro de empresas vía Postman  
-- ✅ Inicio de sesión de empresa desde el frontend  
-- ✅ Panel de empresa para gestionar ofertas  
+- ✅ Registro de empresas desde el frontend  
+- ✅ Inicio de sesión de empresa  
+- ✅ Panel de empresa con gestión de ofertas  
+- ✅ Visualización de candidatos inscritos en cada oferta  
+- ✅ Acceso al perfil de cada candidato desde la vista de empresa  
 - ✅ Registro e inicio de sesión de candidatos desde la web  
+- ✅ Visualización y edición del perfil de candidato  
 - ✅ Inscripción de candidatos en ofertas  
+- ✅ Panel de administrador para añadir, editar y eliminar empresas  
 - 🔐 Autenticación segura con Spring Security  
+
+---
+
+## Usuarios de prueba
+
+Puedes usar los siguientes usuarios para probar la plataforma:
+
+### Candidato
+- **Usuario:** federico  
+- **Contraseña:** 1234
+
+### Empresa
+- **Usuario:** demo  
+- **Contraseña:** demo
+
+### Administrador
+- **Usuario:** admin  
+- **Contraseña:** 1234
 
 ---
 
@@ -31,9 +52,16 @@ Asegúrate de tener instalado lo siguiente:
 - Node.js y npm  
 - Angular CLI  
 - PostgreSQL  
-- Postman (u otro cliente REST)
+- Postman (opcional, para pruebas API)
 
 ---
+
+## Ejecutar el proyecto desde tu IDE o usando Maven:
+
+
+```
+mvn spring-boot:run
+```
 
 ## Ejecutar frontend
 
