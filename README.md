@@ -1,4 +1,4 @@
-# Job Portal
+# Portal de empleo
 
 Este proyecto es una **aplicación web de portal de empleo**. Está en desarrollo activo y permite tanto a **empresas** como a **candidatos** registrarse, iniciar sesión y gestionar sus funcionalidades de forma sencilla.
 
